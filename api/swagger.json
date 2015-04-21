@@ -1,0 +1,763 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "SDH API",
+    "description": "This service provides data to feed widgets and graphics contained in the dashboards.",
+    "version": "1.0.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+  
+  "/projects/": {
+    "get": {
+      "x-swagger-router-controller": "Project",
+      "tags": ["Project"],
+      "operationId": "allProjects",
+      "responses": {
+        
+        "200": {
+  "description" : "Projects list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/project"
+    }
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/projects/{pid}": {
+    "get": {
+      "x-swagger-router-controller": "Project",
+      "tags": ["Project"],
+      "operationId": "projectInfo",
+      "parameters": [
+        
+        {
+  "name" : "pid",
+  "in" : "path",
+  "description" : "Project id",
+  "required" : true,
+  "type" : "string"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "Project info.",
+  "schema" : {
+    "$ref" : "#/definitions/projectinfo"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/projects/{pid}/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "Project",
+      "tags": ["Project"],
+      "operationId": "projectMetrics",
+      "parameters": [
+        
+        {
+  "name" : "pid",
+  "in" : "path",
+  "description" : "Project id",
+  "required" : true,
+  "type" : "string"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "Project metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/projects/{pid}/metrics/{mid}": {
+    "get": {
+      "x-swagger-router-controller": "Project",
+      "tags": ["Project"],
+      "operationId": "projectById",
+      "parameters": [
+        
+        {
+  "name" : "pid",
+  "in" : "path",
+  "description" : "project id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "mid",
+  "in" : "path",
+  "description" : "metric id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "from",
+  "in" : "query",
+  "description" : "From this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "to",
+  "in" : "query",
+  "description" : "To this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "serie",
+  "in" : "query",
+  "description" : "This parameter represents whether the response is a series of values or only one value",
+  "required" : false,
+  "type" : "boolean"
+},
+        
+        {
+  "name" : "step",
+  "in" : "query",
+  "description" : "Number of days between serie points",
+  "required" : false,
+  "type" : "number",
+  "format" : "date"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "Project metric value",
+  "schema" : {
+    "$ref" : "#/definitions/metricresult"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } 
+  
+   ,
+  
+  "/": {
+    "get": {
+      "x-swagger-router-controller": "Organization",
+      "tags": ["Organization"],
+      "operationId": "orgInfo",
+      "responses": {
+        
+        "200": {
+  "description" : "Organization information",
+  "schema" : {
+    "$ref" : "#/definitions/organizationinfo"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "Organization",
+      "tags": ["Organization"],
+      "operationId": "globalMetrics",
+      "responses": {
+        
+        "200": {
+  "description" : "Global metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/metrics/{mid}": {
+    "get": {
+      "x-swagger-router-controller": "Organization",
+      "tags": ["Organization"],
+      "operationId": "globalMetricById",
+      "parameters": [
+        
+        {
+  "name" : "mid",
+  "in" : "path",
+  "description" : "Metric id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "from",
+  "in" : "query",
+  "description" : "From this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "to",
+  "in" : "query",
+  "description" : "To this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "serie",
+  "in" : "query",
+  "description" : "This parameter represents whether the response is a series of values or only one value",
+  "required" : false,
+  "type" : "boolean"
+},
+        
+        {
+  "name" : "step",
+  "in" : "query",
+  "description" : "Number of days between serie points",
+  "required" : false,
+  "type" : "number",
+  "format" : "date"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "Organization metric value",
+  "schema" : {
+    "$ref" : "#/definitions/metricresult"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } 
+  
+   ,
+  
+  "/users/": {
+    "get": {
+      "x-swagger-router-controller": "User",
+      "tags": ["User"],
+      "operationId": "allUsers",
+      "responses": {
+        
+        "200": {
+  "description" : "Users list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/user"
+    }
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/users/{uid}": {
+    "get": {
+      "x-swagger-router-controller": "User",
+      "tags": ["User"],
+      "operationId": "userInfo",
+      "parameters": [
+        
+        {
+  "name" : "uid",
+  "in" : "path",
+  "description" : "User id",
+  "required" : true,
+  "type" : "string"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "Project info.",
+  "schema" : {
+    "$ref" : "#/definitions/userinfo"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/users/{uid}/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "User",
+      "tags": ["User"],
+      "operationId": "userMetrics",
+      "parameters": [
+        
+        {
+  "name" : "uid",
+  "in" : "path",
+  "description" : "User id",
+  "required" : true,
+  "type" : "string"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "Users metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/userinfo"
+    }
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/users/{uid}/metrics/{mid}": {
+    "get": {
+      "x-swagger-router-controller": "User",
+      "tags": ["User"],
+      "operationId": "usersById",
+      "parameters": [
+        
+        {
+  "name" : "uid",
+  "in" : "path",
+  "description" : "user id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "mid",
+  "in" : "path",
+  "description" : "metric id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "from",
+  "in" : "query",
+  "description" : "From this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "to",
+  "in" : "query",
+  "description" : "To this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "serie",
+  "in" : "query",
+  "description" : "This parameter represents whether the response is a series of values or only one value",
+  "required" : false,
+  "type" : "boolean"
+},
+        
+        {
+  "name" : "step",
+  "in" : "query",
+  "description" : "Number of days between serie points",
+  "required" : false,
+  "type" : "number",
+  "format" : "date"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "User metric value",
+  "schema" : {
+    "$ref" : "#/definitions/metricresult"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } 
+  
+   ,
+  
+  "/api/": {
+    "get": {
+      "x-swagger-router-controller": "API",
+      "tags": ["API"],
+      "operationId": "apiInfo",
+      "responses": {
+        
+        "200": {
+  "description" : "API JSON template",
+  "schema" : {
+    "$ref" : "#/definitions/apitemplate"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } 
+  
+   
+  }, "definitions": {
+  "apitemplate": {
+  "properties" : {
+    "swaggerjson" : {
+      "type" : "string",
+      "description" : "Swagger json"
+    },
+    "host" : {
+      "type" : "string",
+      "description" : "API host"
+    }
+  }
+},"organizationinfo": {
+  "properties" : {
+    "organizationid" : {
+      "type" : "string",
+      "description" : "Unique organization id"
+    },
+    "longdesc" : {
+      "type" : "string",
+      "description" : "Organization long description"
+    },
+    "shortdesc" : {
+      "type" : "string",
+      "description" : "Organization short description"
+    }
+  }
+},"project": {
+  "properties" : {
+    "projectid" : {
+      "type" : "string",
+      "description" : "Unique project identifier"
+    },
+    "name" : {
+      "type" : "string",
+      "description" : "The project name"
+    },
+    "description" : {
+      "type" : "string",
+      "description" : "The project description"
+    }
+  }
+},"projectinfo": {
+  "properties" : {
+    "projectid" : {
+      "type" : "string",
+      "description" : "Unique project identifier"
+    },
+    "name" : {
+      "type" : "string",
+      "description" : "The project name"
+    },
+    "description" : {
+      "type" : "string",
+      "description" : "The project description"
+    },
+    "team" : {
+      "type" : "string",
+      "description" : "Team Id"
+    },
+    "health" : {
+      "type" : "number",
+      "description" : "Project health percent"
+    },
+    "lastCommit" : {
+      "type" : "string",
+      "format" : "date",
+      "description" : "Last commit date"
+    }
+  }
+},"user": {
+  "properties" : {
+    "userid" : {
+      "type" : "string",
+      "description" : "Unique user identifier"
+    },
+    "name" : {
+      "type" : "string",
+      "description" : "The user name"
+    },
+    "description" : {
+      "type" : "string",
+      "description" : "The user description"
+    }
+  }
+},"userinfo": {
+  "properties" : {
+    "userid" : {
+      "type" : "string",
+      "description" : "Unique user identifier"
+    },
+    "name" : {
+      "type" : "string",
+      "description" : "The user name"
+    },
+    "description" : {
+      "type" : "string",
+      "description" : "The user description"
+    },
+    "team" : {
+      "type" : "string",
+      "description" : "Team Id"
+    },
+    "activity" : {
+      "type" : "number",
+      "description" : "User health percent"
+    },
+    "projects" : {
+      "type" : "array",
+      "description" : "User projects info",
+      "items" : {
+        "$ref" : "#/definitions/project"
+      }
+    }
+  }
+},"metricinfo": {
+  "properties" : {
+    "metric_id" : {
+      "type" : "string",
+      "description" : "Unique identifier representing a specific metric"
+    },
+    "description" : {
+      "type" : "string",
+      "description" : "Metric description"
+    },
+    "path" : {
+      "type" : "string",
+      "description" : "Metric path schema"
+    }
+  },
+  "description" : "This object describes a specific metric"
+},"metricresult": {
+  "properties" : {
+    "values" : {
+      "type" : "object",
+      "description" : "De requested value or values for this metric"
+    },
+    "interval" : {
+      "$ref" : "#/definitions/interval"
+    },
+    "timestamp" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "the date on which the metric has been updated"
+    },
+    "metricinfo" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+},"interval": {
+  "properties" : {
+    "from" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "from date"
+    },
+    "to" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "to date"
+    }
+  },
+  "description" : "This array contains a date range"
+},"intervalq": {
+  "properties" : {
+    "from" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "from date"
+    },
+    "to" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "to date"
+    }
+  },
+  "description" : "This array contains a date range"
+},"serie": {
+  "properties" : {
+    "step" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "number of days between serie points"
+    },
+    "max" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "max number of points in result"
+    }
+  },
+  "description" : "this object describe the optional serie information"
+},"error": {
+  "properties" : {
+    "code" : {
+      "type" : "integer",
+      "format" : "int32"
+    },
+    "message" : {
+      "type" : "string"
+    },
+    "fields" : {
+      "type" : "string"
+    }
+  }
+}
+  }
+}
