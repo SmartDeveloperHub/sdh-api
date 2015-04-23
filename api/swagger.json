@@ -161,9 +161,9 @@
 },
         
         {
-  "name" : "acumulated",
+  "name" : "accumulated",
   "in" : "query",
-  "description" : "Puntual serie or acumulated serie",
+  "description" : "Puntual serie or accumulated serie",
   "required" : false,
   "type" : "boolean",
   "default" : "false"
@@ -304,9 +304,9 @@
 },
         
         {
-  "name" : "acumulated",
+  "name" : "accumulated",
   "in" : "query",
-  "description" : "Puntual serie or acumulated serie",
+  "description" : "Puntual serie or accumulated serie",
   "required" : false,
   "type" : "boolean",
   "default" : "false"
@@ -507,9 +507,9 @@
 },
         
         {
-  "name" : "acumulated",
+  "name" : "accumulated",
   "in" : "query",
-  "description" : "Puntual serie or acumulated serie",
+  "description" : "Puntual serie or accumulated serie",
   "required" : false,
   "type" : "boolean",
   "default" : "false"
@@ -658,9 +658,9 @@
 },
         
         {
-  "name" : "acumulated",
+  "name" : "accumulated",
   "in" : "query",
-  "description" : "Puntual serie or acumulated serie",
+  "description" : "Puntual serie or accumulated serie",
   "required" : false,
   "type" : "boolean",
   "default" : "false"
@@ -875,20 +875,29 @@
       "description" : "Metric path schema"
     }
   },
-  "description" : "This object describes a specific metric"
+  "description" : "Metric description"
 },"metricresult": {
   "properties" : {
     "values" : {
-      "type" : "object",
-      "description" : "De requested value or values for this metric"
+      "type" : "array",
+      "description" : "De requested value or values for this metric",
+      "items" : {
+        "type" : "number"
+      }
     },
     "interval" : {
+      "description" : "Total sample interval",
       "$ref" : "#/definitions/interval"
+    },
+    "step" : {
+      "type" : "integer",
+      "format" : "int32",
+      "description" : "The interval for each metric"
     },
     "timestamp" : {
       "type" : "integer",
       "format" : "int32",
-      "description" : "the date on which the metric has been updated"
+      "description" : "The date on which the metric has been updated"
     },
     "metricinfo" : {
       "$ref" : "#/definitions/metricinfo"
@@ -906,36 +915,7 @@
       "format" : "int32",
       "description" : "to date"
     }
-  },
-  "description" : "This array contains a date range"
-},"intervalq": {
-  "properties" : {
-    "from" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "from date"
-    },
-    "to" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "to date"
-    }
-  },
-  "description" : "This array contains a date range"
-},"serie": {
-  "properties" : {
-    "step" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "number of days between serie points"
-    },
-    "max" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "max number of points in result"
-    }
-  },
-  "description" : "this object describe the optional serie information"
+  }
 },"error": {
   "properties" : {
     "code" : {

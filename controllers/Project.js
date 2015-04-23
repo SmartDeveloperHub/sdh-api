@@ -52,12 +52,12 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
   var mid = req.swagger.params['mid'].value;
   var from = req.swagger.params['from'].value;
   var to = req.swagger.params['to'].value;
-  var acumulated = req.swagger.params['acumulated'].value;
+  var accumulated = req.swagger.params['accumulated'].value;
   var max = req.swagger.params['max'].value;
   var aggr = req.swagger.params['aggr'].value;
   
 
-  var result = Project.projectMetric(pid, mid, from, to, acumulated, max, aggr);
+  var result = Project.projectMetric(pid, mid, from, to, accumulated, max, aggr);
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');

@@ -1,12 +1,14 @@
 'use strict';
 
+var fs = require('fs');
+
 exports.apiInfo = function() {
 
-  var examples = {};
-  
-  examples['application/json'] = {
-  "swaggerjson" : "aeiou",
-  "host" : "aeiou"
+	var examples = {};
+
+	examples['application/json'] = {
+	"swaggerjson" : fs.readFileSync('./api/swagger.json', 'utf8'),
+	"host" : "http://localhost:8080"
 };
   
 

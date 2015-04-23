@@ -1,6 +1,6 @@
 {
   "name": "",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This service provides data to feed widgets and graphics contained in the dashboards.",
   "main": "index.js",
   "keywords": [
