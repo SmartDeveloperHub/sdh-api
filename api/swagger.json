@@ -14,7 +14,7 @@
     "get": {
       "x-swagger-router-controller": "Project",
       "tags": ["Project"],
-      "operationId": "allProjects",
+      "operationId": "allProjectsInfo",
       "responses": {
         
         "200": {
@@ -123,7 +123,7 @@
     "get": {
       "x-swagger-router-controller": "Project",
       "tags": ["Project"],
-      "operationId": "projectById",
+      "operationId": "projectMetric",
       "parameters": [
         
         {
@@ -161,20 +161,31 @@
 },
         
         {
-  "name" : "serie",
+  "name" : "acumulated",
   "in" : "query",
-  "description" : "This parameter represents whether the response is a series of values or only one value",
+  "description" : "Puntual serie or acumulated serie",
   "required" : false,
-  "type" : "boolean"
+  "type" : "boolean",
+  "default" : "false"
 },
         
         {
-  "name" : "step",
+  "name" : "max",
   "in" : "query",
-  "description" : "Number of days between serie points",
+  "description" : "Max number of values in serie or 0 for all available values",
   "required" : false,
   "type" : "number",
-  "format" : "date"
+  "default" : "0"
+},
+        
+        {
+  "name" : "aggr",
+  "in" : "query",
+  "description" : "this value defines the meaning of the data series",
+  "required" : false,
+  "type" : "string",
+  "default" : "sum",
+  "enum" : [ "sum", "avg", "max", "min" ]
 }
         
       ],
@@ -233,7 +244,7 @@
     "get": {
       "x-swagger-router-controller": "Organization",
       "tags": ["Organization"],
-      "operationId": "globalMetrics",
+      "operationId": "globalMetricsInfo",
       "responses": {
         
         "200": {
@@ -263,7 +274,7 @@
     "get": {
       "x-swagger-router-controller": "Organization",
       "tags": ["Organization"],
-      "operationId": "globalMetricById",
+      "operationId": "globalMetric",
       "parameters": [
         
         {
@@ -293,20 +304,31 @@
 },
         
         {
-  "name" : "serie",
+  "name" : "acumulated",
   "in" : "query",
-  "description" : "This parameter represents whether the response is a series of values or only one value",
+  "description" : "Puntual serie or acumulated serie",
   "required" : false,
-  "type" : "boolean"
+  "type" : "boolean",
+  "default" : "false"
 },
         
         {
-  "name" : "step",
+  "name" : "max",
   "in" : "query",
-  "description" : "Number of days between serie points",
+  "description" : "Max number of values in serie or 0 for all available values",
   "required" : false,
   "type" : "number",
-  "format" : "date"
+  "default" : "0"
+},
+        
+        {
+  "name" : "aggr",
+  "in" : "query",
+  "description" : "this value defines the meaning of the data series",
+  "required" : false,
+  "type" : "string",
+  "default" : "sum",
+  "enum" : [ "sum", "avg", "max", "min" ]
 }
         
       ],
@@ -406,7 +428,7 @@
     "get": {
       "x-swagger-router-controller": "User",
       "tags": ["User"],
-      "operationId": "userMetrics",
+      "operationId": "userMetricsInfo",
       "parameters": [
         
         {
@@ -425,7 +447,7 @@
   "schema" : {
     "type" : "array",
     "items" : {
-      "$ref" : "#/definitions/userinfo"
+      "$ref" : "#/definitions/metricinfo"
     }
   }
 }
@@ -447,7 +469,7 @@
     "get": {
       "x-swagger-router-controller": "User",
       "tags": ["User"],
-      "operationId": "usersById",
+      "operationId": "userMetric",
       "parameters": [
         
         {
@@ -485,20 +507,182 @@
 },
         
         {
-  "name" : "serie",
+  "name" : "acumulated",
   "in" : "query",
-  "description" : "This parameter represents whether the response is a series of values or only one value",
+  "description" : "Puntual serie or acumulated serie",
   "required" : false,
-  "type" : "boolean"
+  "type" : "boolean",
+  "default" : "false"
 },
         
         {
-  "name" : "step",
+  "name" : "max",
   "in" : "query",
-  "description" : "Number of days between serie points",
+  "description" : "Max number of values in serie or 0 for all available values",
   "required" : false,
   "type" : "number",
+  "default" : "0"
+},
+        
+        {
+  "name" : "aggr",
+  "in" : "query",
+  "description" : "this value defines the meaning of the data series",
+  "required" : false,
+  "type" : "string",
+  "default" : "sum",
+  "enum" : [ "sum", "avg", "max", "min" ]
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "User metric value",
+  "schema" : {
+    "$ref" : "#/definitions/metricresult"
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } 
+  
+   ,
+  
+  "/users/{uid}/projects/{pid}/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "UserProject",
+      "tags": ["UserProject"],
+      "operationId": "userProjectMetricsInfo",
+      "parameters": [
+        
+        {
+  "name" : "uid",
+  "in" : "path",
+  "description" : "User id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "pid",
+  "in" : "path",
+  "description" : "Project id",
+  "required" : true,
+  "type" : "string"
+}
+        
+      ],
+      "responses": {
+        
+        "200": {
+  "description" : "User-Project metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+}
+        ,
+        
+        "default": {
+  "description" : "error",
+  "schema" : {
+    "$ref" : "#/definitions/error"
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
+  "/users/{uid}/projects/{pid}/metrics/{mid}": {
+    "get": {
+      "x-swagger-router-controller": "UserProject",
+      "tags": ["UserProject"],
+      "operationId": "userProjectMetric",
+      "parameters": [
+        
+        {
+  "name" : "uid",
+  "in" : "path",
+  "description" : "user id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "pid",
+  "in" : "path",
+  "description" : "Project id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "mid",
+  "in" : "path",
+  "description" : "metric id",
+  "required" : true,
+  "type" : "string"
+},
+        
+        {
+  "name" : "from",
+  "in" : "query",
+  "description" : "From this date.",
+  "required" : false,
+  "type" : "string",
   "format" : "date"
+},
+        
+        {
+  "name" : "to",
+  "in" : "query",
+  "description" : "To this date.",
+  "required" : false,
+  "type" : "string",
+  "format" : "date"
+},
+        
+        {
+  "name" : "acumulated",
+  "in" : "query",
+  "description" : "Puntual serie or acumulated serie",
+  "required" : false,
+  "type" : "boolean",
+  "default" : "false"
+},
+        
+        {
+  "name" : "max",
+  "in" : "query",
+  "description" : "Max number of values in serie or 0 for all available values",
+  "required" : false,
+  "type" : "number",
+  "default" : "0"
+},
+        
+        {
+  "name" : "aggr",
+  "in" : "query",
+  "description" : "this value defines the meaning of the data series",
+  "required" : false,
+  "type" : "string",
+  "default" : "sum",
+  "enum" : [ "sum", "avg", "max", "min" ]
 }
         
       ],
@@ -616,12 +800,19 @@
     },
     "health" : {
       "type" : "number",
-      "description" : "Project health percent"
+      "description" : "Project health factor"
     },
     "lastCommit" : {
       "type" : "string",
       "format" : "date",
       "description" : "Last commit date"
+    },
+    "users" : {
+      "type" : "array",
+      "description" : "all project users",
+      "items" : {
+        "$ref" : "#/definitions/user"
+      }
     }
   }
 },"user": {
@@ -659,11 +850,11 @@
     },
     "activity" : {
       "type" : "number",
-      "description" : "User health percent"
+      "description" : "User activity factor"
     },
     "projects" : {
       "type" : "array",
-      "description" : "User projects info",
+      "description" : "All user projects",
       "items" : {
         "$ref" : "#/definitions/project"
       }
