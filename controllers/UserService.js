@@ -39,21 +39,14 @@ exports.userInfo = function(uid) {
     return examples[Object.keys(examples)[0]];
   
 }
-exports.userMetrics = function(uid) {
+exports.userMetricsInfo = function(uid) {
 
   var examples = {};
   
   examples['application/json'] = [ {
-  "projects" : [ {
-    "name" : "aeiou",
-    "description" : "aeiou",
-    "projectid" : "aeiou"
-  } ],
-  "activity" : 1.3579000000000001069366817318950779736042022705078125,
-  "name" : "aeiou",
-  "description" : "aeiou",
-  "team" : "aeiou",
-  "userid" : "aeiou"
+  "metric_id" : "aeiou",
+  "path" : "aeiou",
+  "description" : "aeiou"
 } ];
   
 
@@ -62,7 +55,7 @@ exports.userMetrics = function(uid) {
     return examples[Object.keys(examples)[0]];
   
 }
-exports.usersById = function(uid, mid, from, to, serie, step) {
+exports.userMetric = function(uid, mid, from, to, acumulated, max, aggr) {
 
   var examples = {};
   

@@ -1,22 +1,6 @@
 'use strict';
 
-exports.orgInfo = function() {
-
-  var examples = {};
-  
-  examples['application/json'] = {
-  "organizationid" : "aeiou",
-  "shortdesc" : "aeiou",
-  "longdesc" : "aeiou"
-};
-  
-
-  
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-exports.globalMetricsInfo = function() {
+exports.userProjectMetricsInfo = function(uid, pid) {
 
   var examples = {};
   
@@ -32,7 +16,7 @@ exports.globalMetricsInfo = function() {
     return examples[Object.keys(examples)[0]];
   
 }
-exports.globalMetric = function(mid, from, to, acumulated, max, aggr) {
+exports.userProjectMetric = function(uid, pid, mid, from, to, acumulated, max, aggr) {
 
   var examples = {};
   

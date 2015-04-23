@@ -3,13 +3,15 @@
 var url = require('url');
 
 
-var Organization = require('./OrganizationService');
+var UserProject = require('./UserProjectService');
 
 
-module.exports.orgInfo = function orgInfo (req, res, next) {
+module.exports.userProjectMetricsInfo = function userProjectMetricsInfo (req, res, next) {
+  var uid = req.swagger.params['uid'].value;
+  var pid = req.swagger.params['pid'].value;
   
 
-  var result = Organization.orgInfo();
+  var result = UserProject.userProjectMetricsInfo(uid, pid);
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
@@ -19,20 +21,9 @@ module.exports.orgInfo = function orgInfo (req, res, next) {
     res.end();
 };
 
-module.exports.globalMetricsInfo = function globalMetricsInfo (req, res, next) {
-  
-
-  var result = Organization.globalMetricsInfo();
-
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else
-    res.end();
-};
-
-module.exports.globalMetric = function globalMetric (req, res, next) {
+module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
+  var uid = req.swagger.params['uid'].value;
+  var pid = req.swagger.params['pid'].value;
   var mid = req.swagger.params['mid'].value;
   var from = req.swagger.params['from'].value;
   var to = req.swagger.params['to'].value;
@@ -41,7 +32,7 @@ module.exports.globalMetric = function globalMetric (req, res, next) {
   var aggr = req.swagger.params['aggr'].value;
   
 
-  var result = Organization.globalMetric(mid, from, to, acumulated, max, aggr);
+  var result = UserProject.userProjectMetric(uid, pid, mid, from, to, acumulated, max, aggr);
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');

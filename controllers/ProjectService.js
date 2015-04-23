@@ -1,6 +1,6 @@
 'use strict';
 
-exports.allProjects = function() {
+exports.allProjectsInfo = function() {
 
   var examples = {};
   
@@ -24,9 +24,14 @@ exports.projectInfo = function(pid) {
   "name" : "aeiou",
   "description" : "aeiou",
   "health" : 1.3579000000000001069366817318950779736042022705078125,
-  "lastCommit" : "2015-04-21T08:12:25.156+0000",
+  "lastCommit" : "2015-04-23T10:29:44.522+0000",
   "team" : "aeiou",
-  "projectid" : "aeiou"
+  "projectid" : "aeiou",
+  "users" : [ {
+    "name" : "aeiou",
+    "description" : "aeiou",
+    "userid" : "aeiou"
+  } ]
 };
   
 
@@ -51,7 +56,7 @@ exports.projectMetrics = function(pid) {
     return examples[Object.keys(examples)[0]];
   
 }
-exports.projectById = function(pid, mid, from, to, serie, step) {
+exports.projectMetric = function(pid, mid, from, to, acumulated, max, aggr) {
 
   var examples = {};
   
