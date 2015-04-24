@@ -1,5 +1,7 @@
 'use strict';
 
+var orgMetrics = require('../orgMetrics.js');
+
 exports.orgInfo = function() {
 
     var examples = {};
@@ -20,23 +22,7 @@ exports.globalMetricsInfo = function() {
 
     var examples = {};
 
-    examples['application/json'] = [ 
-        {
-            "metric_id" : "commits",
-            "path" : "/metrics/<mid>",
-            "description" : "commits number"
-        },
-        {
-            "metric_id" : "developers",
-            "path" : "/metrics/<mid>",
-            "description" : "developers number"
-        },
-        {
-            "metric_id" : "pojects",
-            "path" : "/metrics/<mid>",
-            "description" : "pojects number"
-        },
-    ];
+    examples['application/json'] = orgMetrics.metrics;
 
     if(Object.keys(examples).length > 0) {
         return examples[Object.keys(examples)[0]];
@@ -87,7 +73,7 @@ exports.globalMetric = function(mid, from, to, accumulated, max, aggr) {
         "metricinfo" : {
         "metric_id" : mid,
         "path" : "/metrics/<metric_id>",
-        "description" : "aeiou"
+        "description" : "Organization mnetric"
     },
         "timestamp" : new Date()
     };
