@@ -30,6 +30,7 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else
+    res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
 };
 
@@ -44,6 +45,7 @@ module.exports.projectMetrics = function projectMetrics (req, res, next) {
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else
+    res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
 };
 
@@ -64,5 +66,6 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else
+    res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
 };

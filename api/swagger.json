@@ -26,14 +26,6 @@
     }
   }
 }
-        ,
-        
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
-}
         
         
       }
@@ -66,11 +58,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Project not found"
 }
         
         
@@ -107,11 +96,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Project not found"
 }
         
         
@@ -199,11 +185,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Resource not found"
 }
         
         
@@ -226,14 +209,6 @@
     "$ref" : "#/definitions/organizationinfo"
   }
 }
-        ,
-        
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
-}
         
         
       }
@@ -254,14 +229,6 @@
     "items" : {
       "$ref" : "#/definitions/metricinfo"
     }
-  }
-}
-        ,
-        
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
   }
 }
         
@@ -342,11 +309,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Metric not found"
 }
         
         
@@ -374,11 +338,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Resource not found"
 }
         
         
@@ -412,11 +373,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "User not found"
 }
         
         
@@ -453,11 +411,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "User not found"
 }
         
         
@@ -545,11 +500,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Resource not found"
 }
         
         
@@ -596,11 +548,8 @@
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Resource not found"
 }
         
         
@@ -689,18 +638,15 @@
       "responses": {
         
         "200": {
-  "description" : "User metric value",
+  "description" : "User-Project metric value",
   "schema" : {
     "$ref" : "#/definitions/metricresult"
   }
 }
         ,
         
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
-  }
+        "404": {
+  "description" : "Resource not found"
 }
         
         
@@ -718,17 +664,9 @@
       "responses": {
         
         "200": {
-  "description" : "API JSON template",
+  "description" : "successful operation",
   "schema" : {
     "$ref" : "#/definitions/apitemplate"
-  }
-}
-        ,
-        
-        "default": {
-  "description" : "error",
-  "schema" : {
-    "$ref" : "#/definitions/error"
   }
 }
         
@@ -914,19 +852,6 @@
       "type" : "integer",
       "format" : "int32",
       "description" : "to date"
-    }
-  }
-},"error": {
-  "properties" : {
-    "code" : {
-      "type" : "integer",
-      "format" : "int32"
-    },
-    "message" : {
-      "type" : "string"
-    },
-    "fields" : {
-      "type" : "string"
     }
   }
 }

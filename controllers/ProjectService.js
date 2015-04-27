@@ -5,9 +5,14 @@ var usersFake = require('../fakeUsersInfo.js');
 var projectsMetrics = require('../projectsMetrics.js');
 
 var projectsById = {};
+var metricsById = {};
 for(var i = 0; i < projectsFake.fakeProjectsInfo.length; i++) {
   projectsById[projectsFake.fakeProjectsInfo[i].projectid] = projectsFake.fakeProjectsInfo[i];
 }
+for(var i = 0; i < projectsMetrics.metrics.length; i++) {
+  metricsById[projectsMetrics.metrics[i].metric_id] = projectsMetrics.metrics[i];
+}
+
 console.log("++projectsFake " + JSON.stringify(projectsFake.fakeProjectsInfo))
 console.log("++projectsById " + JSON.stringify(projectsById))
 
@@ -39,11 +44,8 @@ exports.projectInfo = function(pid) {
       "users" : usersFake.fakeUsersInfo
     };
   } else {
-    console.log("--projectInfo {}")
-    examples['application/json'] = {}
+    console.log("--PID not found")
   }
-  
-
   
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
@@ -53,10 +55,12 @@ exports.projectMetrics = function(pid) {
 
   var examples = {};
   
-  examples['application/json'] = projectsMetrics;
-  
+  if (pid in projectsById) {
+    examples['application/json'] = projectsMetrics;
+  } else {
+    console.log("--PID not found");
+  }
 
-  
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
   
@@ -67,6 +71,14 @@ exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
     var examples = {};
     var val = [];
     var acum = 0;
+
+    if (!(pid in projectsById)) {
+      return console.log("--PID not found");
+    }
+
+    if (!(mid in metricsById)) {
+      return console.log("--MID not found");
+    }
 
     if (!from || !to) {
         // default dates
