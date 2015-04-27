@@ -763,6 +763,10 @@
       "type" : "string",
       "description" : "The user name"
     },
+    "email" : {
+      "type" : "string",
+      "description" : "The user email"
+    },
     "description" : {
       "type" : "string",
       "description" : "The user description"
@@ -777,6 +781,10 @@
     "name" : {
       "type" : "string",
       "description" : "The user name"
+    },
+    "email" : {
+      "type" : "string",
+      "description" : "The user email"
     },
     "description" : {
       "type" : "string",
@@ -800,7 +808,7 @@
   }
 },"metricinfo": {
   "properties" : {
-    "metric_id" : {
+    "metricid" : {
       "type" : "string",
       "description" : "Unique identifier representing a specific metric"
     },
