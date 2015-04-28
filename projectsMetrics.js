@@ -3,12 +3,12 @@
 exports.metrics = [
 	{
 	    "metricid" : "commits",
-	    "path" : "projects/<uid>/commits",
+	    "path" : "projects/{pid}/commits",
 	    "description" : "Commits number"
 	},
 	{
 	    "metricid" : "developers",
-	    "path" : "projects/<uid>/developers",
+	    "path" : "projects/{pid}/developers",
 	    "description" : "Developers number"
 	},
  ];
