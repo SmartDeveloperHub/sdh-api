@@ -17,8 +17,10 @@ module.exports.userProjectMetricsInfo = function userProjectMetricsInfo (req, re
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
   }
-  else
+  else {
+    res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
+  }
 };
 
 module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
@@ -38,6 +40,8 @@ module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
   }
-  else
+  else {
+    res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
+  }
 };

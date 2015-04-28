@@ -7,7 +7,7 @@ exports.apiInfo = function() {
 	var examples = {};
 
 	examples['application/json'] = {
-	"swaggerjson" : fs.readFileSync('./api/swagger.json', 'utf8'),
+	"swaggerjson" : JSON.parse(fs.readFileSync('./api/swagger.json', 'utf8')),
 	"host" : "http://localhost:8080"
 };
   

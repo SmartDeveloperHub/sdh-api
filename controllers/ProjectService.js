@@ -10,11 +10,8 @@ for(var i = 0; i < projectsFake.fakeProjectsInfo.length; i++) {
   projectsById[projectsFake.fakeProjectsInfo[i].projectid] = projectsFake.fakeProjectsInfo[i];
 }
 for(var i = 0; i < projectsMetrics.metrics.length; i++) {
-  metricsById[projectsMetrics.metrics[i].metric_id] = projectsMetrics.metrics[i];
+  metricsById[projectsMetrics.metrics[i].metricid] = projectsMetrics.metrics[i];
 }
-
-console.log("++projectsFake " + JSON.stringify(projectsFake.fakeProjectsInfo))
-console.log("++projectsById " + JSON.stringify(projectsById))
 
 exports.allProjectsInfo = function() {
 
@@ -29,10 +26,7 @@ exports.allProjectsInfo = function() {
 exports.projectInfo = function(pid) {
 
   var examples = {};
-  console.log("--projectInfo pid " + pid)
-  console.log("--projectInfo projectsById " + JSON.stringify(projectsById))
   if (pid in projectsById) {
-    console.log("--projectInfo pid " + pid)
     var proj = projectsById[pid];
     examples['application/json'] = {
       "name" : proj.name,
@@ -73,11 +67,13 @@ exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
     var acum = 0;
 
     if (!(pid in projectsById)) {
-      return console.log("--PID not found");
+      console.log("--PID not found");
+      return;
     }
 
     if (!(mid in metricsById)) {
-      return console.log("--MID not found");
+      console.log("--MID not found");
+      return;
     }
 
     if (!from || !to) {
@@ -110,20 +106,18 @@ exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
     examples['application/json'] = {
         "values" : val,
         "interval" : {
-        "from" : from,
-        "to" : to
-    },
+          "from" : from,
+          "to" : to
+        },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
         "metricinfo" : {
-        "metric_id" : mid,
-        "path" : "projects/metrics/<metric_id>",
-        "description" : "Project metric"
-    },
+          "metricid" : mid,
+          "path" : metricsById[mid].path,
+          "description" : metricsById[mid].description
+        },
         "timestamp" : new Date()
     };
-  
 
-  
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
   

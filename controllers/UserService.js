@@ -2,14 +2,16 @@
 
 var projectsFake = require('../fakeProjectsInfo.js');
 var usersFake = require('../fakeUsersInfo.js');
-var usersMetrics = require('../usersMetrics.js');
+var projectsMetrics = require('../projectsMetrics.js');
 
 var usersById = {};
+var metricsById = {};
 for(var i = 0; i < usersFake.fakeUsersInfo.length; i++) {
-  usersById[usersFake.fakeUsersInfo[i].projectid] = usersFake.fakeUsersInfo[i];
+  usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
 }
-console.log("++usersFake " + JSON.stringify(usersFake.fakeUsersInfo))
-console.log("++usersById " + JSON.stringify(usersById))
+for(var i = 0; i < projectsMetrics.metrics.length; i++) {
+  metricsById[projectsMetrics.metrics[i].metricid] = projectsMetrics.metrics[i];
+}
 
 exports.allUsers = function() {
 
@@ -24,10 +26,7 @@ exports.allUsers = function() {
 exports.userInfo = function(uid) {
 
   var examples = {};
-  console.log("--userInfo uid " + uid)
-  console.log("--userInfo usersById " + JSON.stringify(usersById))
   if (uid in usersById) {
-    console.log("--userInfo uid " + uid)
     var user = usersById[uid];
     examples['application/json'] = {
       "name" : user.name,
@@ -38,8 +37,7 @@ exports.userInfo = function(uid) {
       "projects" : projectsFake.fakeProjectsInfo
     };
   } else {
-    console.log("--userInfo {}")
-    examples['application/json'] = {}
+    console.log("UID not found");
   }
   
 
@@ -51,11 +49,12 @@ exports.userInfo = function(uid) {
 exports.userMetricsInfo = function(uid) {
 
   var examples = {};
-  
-  examples['application/json'] = usersMetrics.metrics;
-  
+  if (uid in usersById) {
+    examples['application/json'] = usersMetrics.metrics;
+  } else {
+    console.log("UID not found");
+  }
 
-  
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
   
@@ -66,6 +65,16 @@ exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
     var examples = {};
     var val = [];
     var acum = 0;
+
+    if (!(uid in usersById)) {
+      console.log("--UID not found");
+      return;
+    }
+
+    if (!(mid in metricsById)) {
+      console.log("--MID not found");
+      return;
+    }
 
     if (!from || !to) {
         // default dates
@@ -97,15 +106,15 @@ exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
     examples['application/json'] = {
         "values" : val,
         "interval" : {
-        "from" : from,
-        "to" : to
-    },
+          "from" : from,
+          "to" : to
+        },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
         "metricinfo" : {
-        "metric_id" : mid,
-        "path" : "users/metrics/<metric_id>",
-        "description" : "User metric"
-    },
+          "metricid" : mid,
+          "path" : metricsById[mid].path,
+          "description" : metricsById[mid].description
+        },
         "timestamp" : new Date()
     };
   

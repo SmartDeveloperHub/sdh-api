@@ -15,8 +15,9 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
   }
-  else
+  else {
     res.end();
+  }
 };
 
 module.exports.projectInfo = function projectInfo (req, res, next) {
@@ -29,9 +30,10 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
   }
-  else
+  else {
     res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
+  }
 };
 
 module.exports.projectMetrics = function projectMetrics (req, res, next) {
@@ -44,9 +46,10 @@ module.exports.projectMetrics = function projectMetrics (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
   }
-  else
+  else {
     res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
+  }
 };
 
 module.exports.projectMetric = function projectMetric (req, res, next) {
@@ -65,7 +68,8 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(result || {}, null, 2));
   }
-  else
+  else {
     res.statusCode = 404;       // HTTP status 404: NotFound
     res.end();
+  }
 };
