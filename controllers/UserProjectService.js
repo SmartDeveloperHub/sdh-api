@@ -13,11 +13,22 @@ for(var i = 0; i < projectsFake.fakeProjectsInfo.length; i++) {
 for(var i = 0; i < userProjectsMetrics.metrics.length; i++) {
   metricsById[userProjectsMetrics.metrics[i].metricid] = userProjectsMetrics.metrics[i];
 }
+
 for(var i = 0; i < usersFake.fakeUsersInfo.length; i++) {
   usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
 }
 
-exports.userProjectMetricsInfo = function(uid, pid) {
+exports.userProjectGeneralMetrics = function() {
+
+  var examples = {};
+  examples['application/json'] = userProjectsMetrics.metrics;
+
+  if(Object.keys(examples).length > 0) {
+    return examples[Object.keys(examples)[0]];
+  }
+};
+
+exports.userProjectMetrics = function(uid, pid) {
 
   if (!(uid in usersById)) {
     console.log("--UID not found");
@@ -30,15 +41,14 @@ exports.userProjectMetricsInfo = function(uid, pid) {
   }
 
   var examples = {};
-  examples['application/json'] = metricsById.metrics;
+  examples['application/json'] = userProjectsMetrics.metrics;
 
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
-}
+};
 
 exports.userProjectMetric = function(uid, pid, mid, from, to, accumulated, max, aggr) {
 
-    console.log("userProjectMetric params: " + uid + ' ' + mid + ' ' + from + ' ' + to + ' ' + accumulated + ' ' + max + ' ' + aggr);
     var examples = {};
     var val = [];
     var acum = 0;

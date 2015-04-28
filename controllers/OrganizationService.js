@@ -1,6 +1,10 @@
 'use strict';
 
 var orgMetrics = require('../orgMetrics.js');
+var metricsById = {};
+for(var i = 0; i < orgMetrics.metrics.length; i++) {
+  metricsById[orgMetrics.metrics[i].metricid] = orgMetrics.metrics[i];
+}
 
 exports.orgInfo = function() {
 
@@ -31,10 +35,15 @@ exports.globalMetricsInfo = function() {
 }
 
 exports.globalMetric = function(mid, from, to, accumulated, max, aggr) {
-    console.log("globalMetric params: " + mid + ' ' + from + ' ' + to + ' ' + accumulated + ' ' + max + ' ' + aggr);
+
     var examples = {};
     var val = [];
     var acum = 0;
+
+    if (!(mid in metricsById)) {
+      console.log("--MID not found");
+      return;
+    }
 
     if (!from || !to) {
         // default dates

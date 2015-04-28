@@ -23,6 +23,17 @@ exports.allProjectsInfo = function() {
     return examples[Object.keys(examples)[0]];
   
 }
+
+exports.projectGeneralMetrics = function() {
+
+  var examples = {};
+  examples['application/json'] = projectsMetrics;
+
+  if(Object.keys(examples).length > 0)
+    return examples[Object.keys(examples)[0]];
+  
+}
+
 exports.projectInfo = function(pid) {
 
   var examples = {};
@@ -61,7 +72,6 @@ exports.projectMetrics = function(pid) {
 }
 exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
 
-    console.log("projectMetric params: " + pid + ' ' + mid + ' ' + from + ' ' + to + ' ' + accumulated + ' ' + max + ' ' + aggr);
     var examples = {};
     var val = [];
     var acum = 0;

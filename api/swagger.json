@@ -32,6 +32,28 @@
     }
   } ,
   
+  "/projects/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "Project",
+      "tags": ["Project"],
+      "operationId": "projectGeneralMetrics",
+      "responses": {
+        
+        "200": {
+  "description" : "Project metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
   "/projects/{pid}": {
     "get": {
       "x-swagger-router-controller": "Project",
@@ -347,6 +369,28 @@
     }
   } ,
   
+  "/users/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "User",
+      "tags": ["User"],
+      "operationId": "userGeneralMetrics",
+      "responses": {
+        
+        "200": {
+  "description" : "Users metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
   "/users/{uid}": {
     "get": {
       "x-swagger-router-controller": "User",
@@ -386,7 +430,7 @@
     "get": {
       "x-swagger-router-controller": "User",
       "tags": ["User"],
-      "operationId": "userMetricsInfo",
+      "operationId": "userMetrics",
       "parameters": [
         
         {
@@ -511,11 +555,33 @@
   
    ,
   
+  "/users/projects/metrics/": {
+    "get": {
+      "x-swagger-router-controller": "UserProject",
+      "tags": ["UserProject"],
+      "operationId": "userProjectGeneralMetrics",
+      "responses": {
+        
+        "200": {
+  "description" : "User-Project metrics list",
+  "schema" : {
+    "type" : "array",
+    "items" : {
+      "$ref" : "#/definitions/metricinfo"
+    }
+  }
+}
+        
+        
+      }
+    }
+  } ,
+  
   "/users/{uid}/projects/{pid}/metrics/": {
     "get": {
       "x-swagger-router-controller": "UserProject",
       "tags": ["UserProject"],
-      "operationId": "userProjectMetricsInfo",
+      "operationId": "userProjectMetrics",
       "parameters": [
         
         {

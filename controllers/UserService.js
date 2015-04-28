@@ -2,15 +2,15 @@
 
 var projectsFake = require('../fakeProjectsInfo.js');
 var usersFake = require('../fakeUsersInfo.js');
-var projectsMetrics = require('../projectsMetrics.js');
+var usersMetrics = require('../usersMetrics.js');
 
 var usersById = {};
 var metricsById = {};
 for(var i = 0; i < usersFake.fakeUsersInfo.length; i++) {
   usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
 }
-for(var i = 0; i < projectsMetrics.metrics.length; i++) {
-  metricsById[projectsMetrics.metrics[i].metricid] = projectsMetrics.metrics[i];
+for(var i = 0; i < usersMetrics.metrics.length; i++) {
+  metricsById[usersMetrics.metrics[i].metricid] = usersMetrics.metrics[i];
 }
 
 exports.allUsers = function() {
@@ -23,6 +23,17 @@ exports.allUsers = function() {
     return examples[Object.keys(examples)[0]];
   
 }
+
+exports.userGeneralMetrics = function() {
+
+  var examples = {};
+  examples['application/json'] = usersMetrics.metrics;
+
+  if(Object.keys(examples).length > 0)
+    return examples[Object.keys(examples)[0]];
+  
+};
+
 exports.userInfo = function(uid) {
 
   var examples = {};
@@ -45,8 +56,9 @@ exports.userInfo = function(uid) {
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
   
-}
-exports.userMetricsInfo = function(uid) {
+};
+
+exports.userMetrics = function(uid) {
 
   var examples = {};
   if (uid in usersById) {
@@ -58,10 +70,10 @@ exports.userMetricsInfo = function(uid) {
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
   
-}
+};
+
 exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
 
-    console.log("userMetric params: " + uid + ' ' + mid + ' ' + from + ' ' + to + ' ' + accumulated + ' ' + max + ' ' + aggr);
     var examples = {};
     var val = [];
     var acum = 0;

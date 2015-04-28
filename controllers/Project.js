@@ -20,6 +20,18 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
   }
 };
 
+module.exports.projectGeneralMetrics = function projectGeneralMetrics (req, res, next) {
+  var result = Project.projectGeneralMetrics();
+
+  if(typeof result !== 'undefined') {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(result || {}, null, 2));
+  }
+  else {
+    res.end();
+  }
+};
+
 module.exports.projectInfo = function projectInfo (req, res, next) {
   var pid = req.swagger.params['pid'].value;
   

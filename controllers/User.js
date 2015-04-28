@@ -20,6 +20,21 @@ module.exports.allUsers = function allUsers (req, res, next) {
   }
 };
 
+// TODO
+module.exports.userGeneralMetrics = function userGeneralMetrics (req, res, next) {
+  
+
+  var result = User.userGeneralMetrics();
+
+  if(typeof result !== 'undefined') {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(result || {}, null, 2));
+  }
+  else {
+    res.end();
+  }
+};
+
 module.exports.userInfo = function userInfo (req, res, next) {
   var uid = req.swagger.params['uid'].value;
   
@@ -36,11 +51,11 @@ module.exports.userInfo = function userInfo (req, res, next) {
   }
 };
 
-module.exports.userMetricsInfo = function userMetricsInfo (req, res, next) {
+module.exports.userMetrics = function userMetrics (req, res, next) {
   var uid = req.swagger.params['uid'].value;
   
 
-  var result = User.userMetricsInfo(uid);
+  var result = User.userMetrics(uid);
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');

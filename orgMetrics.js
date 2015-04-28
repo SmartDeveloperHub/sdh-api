@@ -2,18 +2,18 @@
 
 exports.metrics = [ 
     {
-        "metric_id" : "commits",
-        "path" : "/metrics/<mid>",
-        "description" : "Commits number"
+        "metricid" : "orgcommits",
+        "path" : "/metrics/orgcommits",
+        "description" : "Organization commits number"
     },
     {
-        "metric_id" : "developers",
-        "path" : "/metrics/<mid>",
-        "description" : "Developers number"
+        "metricid" : "orgdevelopers",
+        "path" : "/metrics/orgdevelopers",
+        "description" : "Organization developers number"
     },
     {
-        "metric_id" : "pojects",
-        "path" : "/metrics/<mid>",
-        "description" : "Pojects number"
+        "metricid" : "orgprojects",
+        "path" : "/metrics/orgprojects",
+        "description" : "Organization projects number"
     }
 ];
