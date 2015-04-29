@@ -13,6 +13,7 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -25,6 +26,7 @@ module.exports.projectGeneralMetrics = function projectGeneralMetrics (req, res,
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -40,6 +42,7 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -56,6 +59,7 @@ module.exports.projectMetrics = function projectMetrics (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -78,6 +82,7 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
