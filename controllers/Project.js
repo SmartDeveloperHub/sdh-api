@@ -10,10 +10,10 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
   
 
   var result = Project.allProjectsInfo();
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -23,10 +23,10 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
 
 module.exports.projectGeneralMetrics = function projectGeneralMetrics (req, res, next) {
   var result = Project.projectGeneralMetrics();
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -39,10 +39,10 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
   
 
   var result = Project.projectInfo(pid);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -56,10 +56,10 @@ module.exports.projectMetrics = function projectMetrics (req, res, next) {
   
 
   var result = Project.projectMetrics(pid);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -79,10 +79,10 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
   
 
   var result = Project.projectMetric(pid, mid, from, to, accumulated, max, aggr);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {

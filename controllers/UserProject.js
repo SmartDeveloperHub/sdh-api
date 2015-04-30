@@ -8,9 +8,10 @@ var UserProject = require('./UserProjectService');
 module.exports.userProjectGeneralMetrics = function userProjectGeneralMetrics (req, res, next) {
 
   var result = UserProject.userProjectGeneralMetrics();
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else
@@ -24,10 +25,10 @@ module.exports.userProjectMetrics = function userProjectMetrics (req, res, next)
   
 
   var result = UserProject.userProjectMetrics(uid, pid);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -49,10 +50,10 @@ module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
   
 
   var result = UserProject.userProjectMetric(uid, pid, mid, from, to, accumulated, max, aggr);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {

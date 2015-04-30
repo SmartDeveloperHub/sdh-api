@@ -10,10 +10,10 @@ module.exports.allUsers = function allUsers (req, res, next) {
   
 
   var result = User.allUsers();
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -26,10 +26,10 @@ module.exports.userGeneralMetrics = function userGeneralMetrics (req, res, next)
   
 
   var result = User.userGeneralMetrics();
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -42,10 +42,10 @@ module.exports.userInfo = function userInfo (req, res, next) {
   
 
   var result = User.userInfo(uid);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -59,10 +59,10 @@ module.exports.userMetrics = function userMetrics (req, res, next) {
   
 
   var result = User.userMetrics(uid);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
@@ -82,10 +82,10 @@ module.exports.userMetric = function userMetric (req, res, next) {
   
 
   var result = User.userMetric(uid, mid, from, to, accumulated, max, aggr);
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.end(JSON.stringify(result || {}, null, 2));
   }
   else {
