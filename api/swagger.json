@@ -1,933 +1,967 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "SDH API",
-    "description": "This service provides data to feed widgets and graphics contained in the dashboards.",
-    "version": "1.0.0"
-  },
-  "produces": ["application/json"],
-  "host": "localhost:8080",
-  "basePath": "/",
-  "paths": {
-  
-  "/projects/": {
-    "get": {
-      "x-swagger-router-controller": "Project",
-      "tags": ["Project"],
-      "operationId": "allProjectsInfo",
-      "responses": {
-        
-        "200": {
-  "description" : "Projects list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/project"
-    }
-  }
-}
-        
-        
+    "swagger": "2.0",
+    "info": {
+        "title": "SDH API",
+        "description": "This service provides data to feed dashboards widgets.",
+        "version": "1.0.1"
+    },
+    "produces": ["application/json"],
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "tags": [
+      {
+        "name": "API",
+        "description": "Operations about API"
+      },
+      {
+        "name": "Organization",
+        "description": "Operations about Organization"
+      },
+      {
+        "name": "Project",
+        "description": "Operations about Projects"
+      },
+      {
+        "name": "User",
+        "description": "Operations about User"
+      },
+      {
+        "name": "UserProject",
+        "description": "Operations about Specific User and Project"
       }
-    }
-  } ,
-  
-  "/projects/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "Project",
-      "tags": ["Project"],
-      "operationId": "projectGeneralMetrics",
-      "responses": {
-        
-        "200": {
-  "description" : "Project metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/projects/{pid}": {
-    "get": {
-      "x-swagger-router-controller": "Project",
-      "tags": ["Project"],
-      "operationId": "projectInfo",
-      "parameters": [
-        
-        {
-  "name" : "pid",
-  "in" : "path",
-  "description" : "Project id",
-  "required" : true,
-  "type" : "string"
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "Project info.",
-  "schema" : {
-    "$ref" : "#/definitions/projectinfo"
-  }
-}
+    ],
+    "paths": {
+        "/api/": {
+            "get": {
+                "x-swagger-router-controller": "API",
+                "tags": ["API"],
+                "summary": "API JSON Definition",
+                "operationId": "apiInfo",
+                "responses": {
+
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/apitemplate"
+                        }
+                    }
+
+
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "x-swagger-router-controller": "Organization",
+                "tags": ["Organization"],
+                "summary": "Organization description",
+                "operationId": "orgInfo",
+                "responses": {
+
+                    "200": {
+                        "description": "Organization information",
+                        "schema": {
+                            "$ref": "#/definitions/organizationinfo"
+                        }
+                    }
+
+
+                }
+            }
+        },
+
+        "/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "Organization",
+                "tags": ["Organization"],
+                "summary": "Organization metrics list",
+                "operationId": "globalMetricsInfo",
+                "responses": {
+
+                    "200": {
+                        "description": "Global metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        },
+
+        "/metrics/{mid}": {
+            "get": {
+                "x-swagger-router-controller": "Organization",
+                "tags": ["Organization"],
+                "summary": "Organization metric value",
+                "operationId": "globalMetric",
+                "parameters": [
+
+                    {
+                        "name": "mid",
+                        "in": "path",
+                        "description": "Metric id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "From this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "To this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "accumulated",
+                        "in": "query",
+                        "description": "Puntual serie or accumulated serie",
+                        "required": false,
+                        "type": "boolean",
+                        "default": "false"
+                    },
+
+                    {
+                        "name": "max",
+                        "in": "query",
+                        "description": "Max number of values in serie or 0 for all available values",
+                        "required": false,
+                        "type": "number",
+                        "default": "0"
+                    },
+
+                    {
+                        "name": "aggr",
+                        "in": "query",
+                        "description": "this value defines the meaning of the data series",
+                        "required": false,
+                        "type": "string",
+                        "default": "sum",
+                        "enum": ["sum", "avg", "max", "min"]
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Organization metric value",
+                        "schema": {
+                            "$ref": "#/definitions/metricresult"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Metric not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/projects/": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": ["Project"],
+                "summary": "Projects info list",
+                "operationId": "allProjectsInfo",
+                "responses": {
+
+                    "200": {
+                        "description": "Projects list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/project"
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        },
+
+        "/projects/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": ["Project"],
+                "summary": "Project metrics list",
+                "operationId": "projectGeneralMetrics",
+                "responses": {
+
+                    "200": {
+                        "description": "Project metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        },
+
+        "/projects/{pid}": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": ["Project"],
+                "summary": "Project description",
+                "operationId": "projectInfo",
+                "parameters": [
+
+                    {
+                        "name": "pid",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Project info.",
+                        "schema": {
+                            "$ref": "#/definitions/projectinfo"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Project not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/projects/{pid}/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": ["Project"],
+                "summary": "Specific project metrics list",
+                "operationId": "projectMetrics",
+                "parameters": [
+
+                    {
+                        "name": "pid",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Project metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    },
+
+                    "404": {
+                        "description": "Project not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/projects/{pid}/metrics/{mid}": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": ["Project"],
+                "summary": "Projects metric value",
+                "operationId": "projectMetric",
+                "parameters": [
+
+                    {
+                        "name": "pid",
+                        "in": "path",
+                        "description": "project id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "mid",
+                        "in": "path",
+                        "description": "metric id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "From this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "To this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "accumulated",
+                        "in": "query",
+                        "description": "Puntual serie or accumulated serie",
+                        "required": false,
+                        "type": "boolean",
+                        "default": "false"
+                    },
+
+                    {
+                        "name": "max",
+                        "in": "query",
+                        "description": "Max number of values in serie or 0 for all available values",
+                        "required": false,
+                        "type": "number",
+                        "default": "0"
+                    },
+
+                    {
+                        "name": "aggr",
+                        "in": "query",
+                        "description": "this value defines the meaning of the data series",
+                        "required": false,
+                        "type": "string",
+                        "default": "sum",
+                        "enum": ["sum", "avg", "max", "min"]
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Project metric value",
+                        "schema": {
+                            "$ref": "#/definitions/metricresult"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Resource not found"
+                    }
+
+
+                }
+            }
+        }
+
         ,
-        
-        "404": {
-  "description" : "Project not found"
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/projects/{pid}/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "Project",
-      "tags": ["Project"],
-      "operationId": "projectMetrics",
-      "parameters": [
-        
-        {
-  "name" : "pid",
-  "in" : "path",
-  "description" : "Project id",
-  "required" : true,
-  "type" : "string"
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "Project metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
+
+        "/users/": {
+            "get": {
+                "x-swagger-router-controller": "User",
+                "tags": ["User"],
+                "summary": "Users info list",
+                "operationId": "allUsers",
+                "responses": {
+
+                    "200": {
+                        "description": "Users list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user"
+                            }
+                        }
+                    },
+
+                    "404": {
+                        "description": "Resource not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/users/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "User",
+                "tags": ["User"],
+                "summary": "User metrics list",
+                "operationId": "userGeneralMetrics",
+                "responses": {
+
+                    "200": {
+                        "description": "Users metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        },
+
+        "/users/{uid}": {
+            "get": {
+                "x-swagger-router-controller": "User",
+                "tags": ["User"],
+                "summary": "User description",
+                "operationId": "userInfo",
+                "parameters": [
+
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Project info.",
+                        "schema": {
+                            "$ref": "#/definitions/userinfo"
+                        }
+                    },
+
+                    "404": {
+                        "description": "User not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/users/{uid}/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "User",
+                "tags": ["User"],
+                "summary": "Specific user metrics list",
+                "operationId": "userMetrics",
+                "parameters": [
+
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Users metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    },
+
+                    "404": {
+                        "description": "User not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/users/{uid}/metrics/{mid}": {
+            "get": {
+                "x-swagger-router-controller": "User",
+                "tags": ["User"],
+                "summary": "User metric value",
+                "operationId": "userMetric",
+                "parameters": [
+
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "user id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "mid",
+                        "in": "path",
+                        "description": "metric id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "From this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "To this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "accumulated",
+                        "in": "query",
+                        "description": "Puntual serie or accumulated serie",
+                        "required": false,
+                        "type": "boolean",
+                        "default": "false"
+                    },
+
+                    {
+                        "name": "max",
+                        "in": "query",
+                        "description": "Max number of values in serie or 0 for all available values",
+                        "required": false,
+                        "type": "number",
+                        "default": "0"
+                    },
+
+                    {
+                        "name": "aggr",
+                        "in": "query",
+                        "description": "this value defines the meaning of the data series",
+                        "required": false,
+                        "type": "string",
+                        "default": "sum",
+                        "enum": ["sum", "avg", "max", "min"]
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "User metric value",
+                        "schema": {
+                            "$ref": "#/definitions/metricresult"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Resource not found"
+                    }
+
+
+                }
+            }
+        }
+
         ,
-        
-        "404": {
-  "description" : "Project not found"
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/projects/{pid}/metrics/{mid}": {
-    "get": {
-      "x-swagger-router-controller": "Project",
-      "tags": ["Project"],
-      "operationId": "projectMetric",
-      "parameters": [
-        
-        {
-  "name" : "pid",
-  "in" : "path",
-  "description" : "project id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "mid",
-  "in" : "path",
-  "description" : "metric id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "from",
-  "in" : "query",
-  "description" : "From this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "to",
-  "in" : "query",
-  "description" : "To this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "accumulated",
-  "in" : "query",
-  "description" : "Puntual serie or accumulated serie",
-  "required" : false,
-  "type" : "boolean",
-  "default" : "false"
-},
-        
-        {
-  "name" : "max",
-  "in" : "query",
-  "description" : "Max number of values in serie or 0 for all available values",
-  "required" : false,
-  "type" : "number",
-  "default" : "0"
-},
-        
-        {
-  "name" : "aggr",
-  "in" : "query",
-  "description" : "this value defines the meaning of the data series",
-  "required" : false,
-  "type" : "string",
-  "default" : "sum",
-  "enum" : [ "sum", "avg", "max", "min" ]
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "Project metric value",
-  "schema" : {
-    "$ref" : "#/definitions/metricresult"
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "Resource not found"
-}
-        
-        
-      }
-    }
-  } 
-  
-   ,
-  
-  "/": {
-    "get": {
-      "x-swagger-router-controller": "Organization",
-      "tags": ["Organization"],
-      "operationId": "orgInfo",
-      "responses": {
-        
-        "200": {
-  "description" : "Organization information",
-  "schema" : {
-    "$ref" : "#/definitions/organizationinfo"
-  }
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "Organization",
-      "tags": ["Organization"],
-      "operationId": "globalMetricsInfo",
-      "responses": {
-        
-        "200": {
-  "description" : "Global metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/metrics/{mid}": {
-    "get": {
-      "x-swagger-router-controller": "Organization",
-      "tags": ["Organization"],
-      "operationId": "globalMetric",
-      "parameters": [
-        
-        {
-  "name" : "mid",
-  "in" : "path",
-  "description" : "Metric id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "from",
-  "in" : "query",
-  "description" : "From this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "to",
-  "in" : "query",
-  "description" : "To this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "accumulated",
-  "in" : "query",
-  "description" : "Puntual serie or accumulated serie",
-  "required" : false,
-  "type" : "boolean",
-  "default" : "false"
-},
-        
-        {
-  "name" : "max",
-  "in" : "query",
-  "description" : "Max number of values in serie or 0 for all available values",
-  "required" : false,
-  "type" : "number",
-  "default" : "0"
-},
-        
-        {
-  "name" : "aggr",
-  "in" : "query",
-  "description" : "this value defines the meaning of the data series",
-  "required" : false,
-  "type" : "string",
-  "default" : "sum",
-  "enum" : [ "sum", "avg", "max", "min" ]
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "Organization metric value",
-  "schema" : {
-    "$ref" : "#/definitions/metricresult"
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "Metric not found"
-}
-        
-        
-      }
-    }
-  } 
-  
-   ,
-  
-  "/users/": {
-    "get": {
-      "x-swagger-router-controller": "User",
-      "tags": ["User"],
-      "operationId": "allUsers",
-      "responses": {
-        
-        "200": {
-  "description" : "Users list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/user"
-    }
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "Resource not found"
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/users/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "User",
-      "tags": ["User"],
-      "operationId": "userGeneralMetrics",
-      "responses": {
-        
-        "200": {
-  "description" : "Users metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/users/{uid}": {
-    "get": {
-      "x-swagger-router-controller": "User",
-      "tags": ["User"],
-      "operationId": "userInfo",
-      "parameters": [
-        
-        {
-  "name" : "uid",
-  "in" : "path",
-  "description" : "User id",
-  "required" : true,
-  "type" : "string"
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "Project info.",
-  "schema" : {
-    "$ref" : "#/definitions/userinfo"
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "User not found"
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/users/{uid}/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "User",
-      "tags": ["User"],
-      "operationId": "userMetrics",
-      "parameters": [
-        
-        {
-  "name" : "uid",
-  "in" : "path",
-  "description" : "User id",
-  "required" : true,
-  "type" : "string"
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "Users metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "User not found"
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/users/{uid}/metrics/{mid}": {
-    "get": {
-      "x-swagger-router-controller": "User",
-      "tags": ["User"],
-      "operationId": "userMetric",
-      "parameters": [
-        
-        {
-  "name" : "uid",
-  "in" : "path",
-  "description" : "user id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "mid",
-  "in" : "path",
-  "description" : "metric id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "from",
-  "in" : "query",
-  "description" : "From this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "to",
-  "in" : "query",
-  "description" : "To this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "accumulated",
-  "in" : "query",
-  "description" : "Puntual serie or accumulated serie",
-  "required" : false,
-  "type" : "boolean",
-  "default" : "false"
-},
-        
-        {
-  "name" : "max",
-  "in" : "query",
-  "description" : "Max number of values in serie or 0 for all available values",
-  "required" : false,
-  "type" : "number",
-  "default" : "0"
-},
-        
-        {
-  "name" : "aggr",
-  "in" : "query",
-  "description" : "this value defines the meaning of the data series",
-  "required" : false,
-  "type" : "string",
-  "default" : "sum",
-  "enum" : [ "sum", "avg", "max", "min" ]
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "User metric value",
-  "schema" : {
-    "$ref" : "#/definitions/metricresult"
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "Resource not found"
-}
-        
-        
-      }
-    }
-  } 
-  
-   ,
-  
-  "/users/projects/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "UserProject",
-      "tags": ["UserProject"],
-      "operationId": "userProjectGeneralMetrics",
-      "responses": {
-        
-        "200": {
-  "description" : "User-Project metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/users/{uid}/projects/{pid}/metrics/": {
-    "get": {
-      "x-swagger-router-controller": "UserProject",
-      "tags": ["UserProject"],
-      "operationId": "userProjectMetrics",
-      "parameters": [
-        
-        {
-  "name" : "uid",
-  "in" : "path",
-  "description" : "User id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "pid",
-  "in" : "path",
-  "description" : "Project id",
-  "required" : true,
-  "type" : "string"
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "User-Project metrics list",
-  "schema" : {
-    "type" : "array",
-    "items" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "Resource not found"
-}
-        
-        
-      }
-    }
-  } ,
-  
-  "/users/{uid}/projects/{pid}/metrics/{mid}": {
-    "get": {
-      "x-swagger-router-controller": "UserProject",
-      "tags": ["UserProject"],
-      "operationId": "userProjectMetric",
-      "parameters": [
-        
-        {
-  "name" : "uid",
-  "in" : "path",
-  "description" : "user id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "pid",
-  "in" : "path",
-  "description" : "Project id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "mid",
-  "in" : "path",
-  "description" : "metric id",
-  "required" : true,
-  "type" : "string"
-},
-        
-        {
-  "name" : "from",
-  "in" : "query",
-  "description" : "From this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "to",
-  "in" : "query",
-  "description" : "To this date.",
-  "required" : false,
-  "type" : "string",
-  "format" : "date"
-},
-        
-        {
-  "name" : "accumulated",
-  "in" : "query",
-  "description" : "Puntual serie or accumulated serie",
-  "required" : false,
-  "type" : "boolean",
-  "default" : "false"
-},
-        
-        {
-  "name" : "max",
-  "in" : "query",
-  "description" : "Max number of values in serie or 0 for all available values",
-  "required" : false,
-  "type" : "number",
-  "default" : "0"
-},
-        
-        {
-  "name" : "aggr",
-  "in" : "query",
-  "description" : "this value defines the meaning of the data series",
-  "required" : false,
-  "type" : "string",
-  "default" : "sum",
-  "enum" : [ "sum", "avg", "max", "min" ]
-}
-        
-      ],
-      "responses": {
-        
-        "200": {
-  "description" : "User-Project metric value",
-  "schema" : {
-    "$ref" : "#/definitions/metricresult"
-  }
-}
-        ,
-        
-        "404": {
-  "description" : "Resource not found"
-}
-        
-        
-      }
-    }
-  } 
-  
-   ,
-  
-  "/api/": {
-    "get": {
-      "x-swagger-router-controller": "API",
-      "tags": ["API"],
-      "operationId": "apiInfo",
-      "responses": {
-        
-        "200": {
-  "description" : "successful operation",
-  "schema" : {
-    "$ref" : "#/definitions/apitemplate"
-  }
-}
-        
-        
-      }
-    }
-  } 
-  
-   
-  }, "definitions": {
-  "apitemplate": {
-  "properties" : {
-    "swaggerjson" : {
-      "type" : "string",
-      "description" : "Swagger json"
+
+        "/users/projects/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "UserProject",
+                "tags": ["UserProject"],
+                "summary": "User-Project metrics list",
+                "operationId": "userProjectGeneralMetrics",
+                "responses": {
+
+                    "200": {
+                        "description": "User-Project metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        },
+
+        "/users/{uid}/projects/{pid}/metrics/": {
+            "get": {
+                "x-swagger-router-controller": "UserProject",
+                "tags": ["UserProject"],
+                "summary": "Specific User and Project metrics list",
+                "operationId": "userProjectMetrics",
+                "parameters": [
+
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "pid",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "User-Project metrics list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/metricinfo"
+                            }
+                        }
+                    },
+
+                    "404": {
+                        "description": "Resource not found"
+                    }
+
+
+                }
+            }
+        },
+
+        "/users/{uid}/projects/{pid}/metrics/{mid}": {
+            "get": {
+                "x-swagger-router-controller": "UserProject",
+                "tags": ["UserProject"],
+                "summary": "User-Project metric value",
+                "operationId": "userProjectMetric",
+                "parameters": [
+
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "description": "user id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "pid",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "mid",
+                        "in": "path",
+                        "description": "metric id",
+                        "required": true,
+                        "type": "string"
+                    },
+
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "From this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "To this date.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+
+                    {
+                        "name": "accumulated",
+                        "in": "query",
+                        "description": "Puntual serie or accumulated serie",
+                        "required": false,
+                        "type": "boolean",
+                        "default": "false"
+                    },
+
+                    {
+                        "name": "max",
+                        "in": "query",
+                        "description": "Max number of values in serie or 0 for all available values",
+                        "required": false,
+                        "type": "number",
+                        "default": "0"
+                    },
+
+                    {
+                        "name": "aggr",
+                        "in": "query",
+                        "description": "this value defines the meaning of the data series",
+                        "required": false,
+                        "type": "string",
+                        "default": "sum",
+                        "enum": ["sum", "avg", "max", "min"]
+                    }
+
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "User-Project metric value",
+                        "schema": {
+                            "$ref": "#/definitions/metricresult"
+                        }
+                    },
+
+                    "404": {
+                        "description": "Resource not found"
+                    }
+
+
+                }
+            }
+        }
+
     },
-    "host" : {
-      "type" : "string",
-      "description" : "API host"
+    "definitions": {
+        "apitemplate": {
+            "properties": {
+                "swaggerjson": {
+                    "type": "string",
+                    "description": "Swagger json"
+                },
+                "host": {
+                    "type": "string",
+                    "description": "API host"
+                }
+            }
+        },
+        "organizationinfo": {
+            "properties": {
+                "organizationid": {
+                    "type": "string",
+                    "description": "Unique organization id"
+                },
+                "longdesc": {
+                    "type": "string",
+                    "description": "Organization long description"
+                },
+                "shortdesc": {
+                    "type": "string",
+                    "description": "Organization short description"
+                }
+            }
+        },
+        "project": {
+            "properties": {
+                "projectid": {
+                    "type": "string",
+                    "description": "Unique project identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The project name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The project description"
+                }
+            }
+        },
+        "projectinfo": {
+            "properties": {
+                "projectid": {
+                    "type": "string",
+                    "description": "Unique project identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The project name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The project description"
+                },
+                "team": {
+                    "type": "string",
+                    "description": "Team Id"
+                },
+                "health": {
+                    "type": "number",
+                    "description": "Project health factor"
+                },
+                "lastCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Last commit date"
+                },
+                "users": {
+                    "type": "array",
+                    "description": "all project users",
+                    "items": {
+                        "$ref": "#/definitions/user"
+                    }
+                }
+            }
+        },
+        "user": {
+            "properties": {
+                "userid": {
+                    "type": "string",
+                    "description": "Unique user identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The user name"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "The user email"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The user description"
+                }
+            }
+        },
+        "userinfo": {
+            "properties": {
+                "userid": {
+                    "type": "string",
+                    "description": "Unique user identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The user name"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "The user email"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The user description"
+                },
+                "team": {
+                    "type": "string",
+                    "description": "Team Id"
+                },
+                "activity": {
+                    "type": "number",
+                    "description": "User activity factor"
+                },
+                "projects": {
+                    "type": "array",
+                    "description": "All user projects",
+                    "items": {
+                        "$ref": "#/definitions/project"
+                    }
+                }
+            }
+        },
+        "metricinfo": {
+            "properties": {
+                "metricid": {
+                    "type": "string",
+                    "description": "Unique identifier representing a specific metric"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Metric description"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Metric path schema"
+                }
+            },
+            "description": "Metric description"
+        },
+        "metricresult": {
+            "properties": {
+                "values": {
+                    "type": "array",
+                    "description": "De requested value or values for this metric",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "interval": {
+                    "description": "Total sample interval",
+                    "$ref": "#/definitions/interval"
+                },
+                "step": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The interval for each metric"
+                },
+                "timestamp": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The date on which the metric has been updated"
+                },
+                "metricinfo": {
+                    "$ref": "#/definitions/metricinfo"
+                }
+            }
+        },
+        "interval": {
+            "properties": {
+                "from": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "from date"
+                },
+                "to": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "to date"
+                }
+            }
+        }
     }
-  }
-},"organizationinfo": {
-  "properties" : {
-    "organizationid" : {
-      "type" : "string",
-      "description" : "Unique organization id"
-    },
-    "longdesc" : {
-      "type" : "string",
-      "description" : "Organization long description"
-    },
-    "shortdesc" : {
-      "type" : "string",
-      "description" : "Organization short description"
-    }
-  }
-},"project": {
-  "properties" : {
-    "projectid" : {
-      "type" : "string",
-      "description" : "Unique project identifier"
-    },
-    "name" : {
-      "type" : "string",
-      "description" : "The project name"
-    },
-    "description" : {
-      "type" : "string",
-      "description" : "The project description"
-    }
-  }
-},"projectinfo": {
-  "properties" : {
-    "projectid" : {
-      "type" : "string",
-      "description" : "Unique project identifier"
-    },
-    "name" : {
-      "type" : "string",
-      "description" : "The project name"
-    },
-    "description" : {
-      "type" : "string",
-      "description" : "The project description"
-    },
-    "team" : {
-      "type" : "string",
-      "description" : "Team Id"
-    },
-    "health" : {
-      "type" : "number",
-      "description" : "Project health factor"
-    },
-    "lastCommit" : {
-      "type" : "string",
-      "format" : "date",
-      "description" : "Last commit date"
-    },
-    "users" : {
-      "type" : "array",
-      "description" : "all project users",
-      "items" : {
-        "$ref" : "#/definitions/user"
-      }
-    }
-  }
-},"user": {
-  "properties" : {
-    "userid" : {
-      "type" : "string",
-      "description" : "Unique user identifier"
-    },
-    "name" : {
-      "type" : "string",
-      "description" : "The user name"
-    },
-    "email" : {
-      "type" : "string",
-      "description" : "The user email"
-    },
-    "description" : {
-      "type" : "string",
-      "description" : "The user description"
-    }
-  }
-},"userinfo": {
-  "properties" : {
-    "userid" : {
-      "type" : "string",
-      "description" : "Unique user identifier"
-    },
-    "name" : {
-      "type" : "string",
-      "description" : "The user name"
-    },
-    "email" : {
-      "type" : "string",
-      "description" : "The user email"
-    },
-    "description" : {
-      "type" : "string",
-      "description" : "The user description"
-    },
-    "team" : {
-      "type" : "string",
-      "description" : "Team Id"
-    },
-    "activity" : {
-      "type" : "number",
-      "description" : "User activity factor"
-    },
-    "projects" : {
-      "type" : "array",
-      "description" : "All user projects",
-      "items" : {
-        "$ref" : "#/definitions/project"
-      }
-    }
-  }
-},"metricinfo": {
-  "properties" : {
-    "metricid" : {
-      "type" : "string",
-      "description" : "Unique identifier representing a specific metric"
-    },
-    "description" : {
-      "type" : "string",
-      "description" : "Metric description"
-    },
-    "path" : {
-      "type" : "string",
-      "description" : "Metric path schema"
-    }
-  },
-  "description" : "Metric description"
-},"metricresult": {
-  "properties" : {
-    "values" : {
-      "type" : "array",
-      "description" : "De requested value or values for this metric",
-      "items" : {
-        "type" : "number"
-      }
-    },
-    "interval" : {
-      "description" : "Total sample interval",
-      "$ref" : "#/definitions/interval"
-    },
-    "step" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "The interval for each metric"
-    },
-    "timestamp" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "The date on which the metric has been updated"
-    },
-    "metricinfo" : {
-      "$ref" : "#/definitions/metricinfo"
-    }
-  }
-},"interval": {
-  "properties" : {
-    "from" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "from date"
-    },
-    "to" : {
-      "type" : "integer",
-      "format" : "int32",
-      "description" : "to date"
-    }
-  }
-}
-  }
 }
