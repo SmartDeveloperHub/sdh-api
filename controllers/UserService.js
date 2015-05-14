@@ -41,10 +41,17 @@ exports.userInfo = function(uid) {
     var user = usersById[uid];
     examples['application/json'] = {
       "name" : user.name,
-      "description" : user.description,
-      "activity" : parseInt(Math.random() * 100) / 100,
-      "team" : "Team" + uid.split('u')[1],
-      "userid" : uid,
+      "email" : user.email,
+      "userid" : user.userid,
+      "avatar" : user.avatar,
+      "scmuserurl" : user.scmuserurl,
+      "register" :  user.register,
+      "lastcommit" :  user.lastcommit,
+      "firstcommit":  user.firstcommit,
+      "skype" :  user.skype,
+      "linkedin" :  user.linkedin,
+      "twitter" :  user.twitter,
+      "website" :  user.website,
       "projects" : projectsFake.fakeProjectsInfo
     };
   } else {
@@ -104,7 +111,7 @@ exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
 
     if (!max || max == 0) {
         // default long
-        max = 25;
+        max = 24;
     }
     for (var i = 0; i < max; i++) {
         if (accumulated) {
@@ -122,11 +129,7 @@ exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
           "to" : to
         },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-        "metricinfo" : {
-          "metricid" : mid,
-          "path" : metricsById[mid].path,
-          "description" : metricsById[mid].description
-        },
+        "metricinfo" : metricsById[mid].path,
         "timestamp" : new Date()
     };
   

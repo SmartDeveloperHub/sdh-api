@@ -61,7 +61,7 @@ exports.globalMetric = function(mid, from, to, accumulated, max, aggr) {
 
     if (!max || max == 0) {
         // default long
-        max = 25;
+        max = 24;
     }
     for (var i = 0; i < max; i++) {
         if (accumulated) {
@@ -79,11 +79,7 @@ exports.globalMetric = function(mid, from, to, accumulated, max, aggr) {
         "to" : to
     },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-        "metricinfo" : {
-        "metric_id" : mid,
-        "path" : "/metrics/<metric_id>",
-        "description" : "Organization mnetric"
-    },
+        "metricinfo" : metricsById [mid],
         "timestamp" : new Date()
     };
   

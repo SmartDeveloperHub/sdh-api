@@ -84,7 +84,7 @@ exports.userProjectMetric = function(uid, pid, mid, from, to, accumulated, max, 
 
     if (!max || max == 0) {
         // default long
-        max = 25;
+        max = 24;
     }
     for (var i = 0; i < max; i++) {
         if (accumulated) {
@@ -102,11 +102,7 @@ exports.userProjectMetric = function(uid, pid, mid, from, to, accumulated, max, 
           "to" : to
         },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-        "metricinfo" : {
-          "metricid" : mid,
-          "path" : metricsById[mid].path,
-          "description" : metricsById[mid].description
-        },
+        "metricinfo" : metricsById[mid],
         "timestamp" : new Date()
     };
 

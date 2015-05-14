@@ -10,9 +10,7 @@ exports.apiInfo = function() {
 	"swaggerjson" : JSON.parse(fs.readFileSync('./api/swagger.json', 'utf8')),
 	"host" : "http://localhost:8080"
 };
-  
 
-  
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
   

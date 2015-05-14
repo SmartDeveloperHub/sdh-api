@@ -42,10 +42,18 @@ exports.projectInfo = function(pid) {
     examples['application/json'] = {
       "name" : proj.name,
       "description" : proj.description,
-      "health" : parseInt(Math.random() * 100) / 100,
-      "lastCommit" : "2015-04-23T18:12:30.763+0000",
-      "team" : "Team" + pid.split('p')[1],
-      "projectid" : pid,
+      "projectid" : proj.projectid,
+      "lastcommit" : proj.lastcommit,
+      "fistcommit": proj.fistcommit,
+      "scmlink" : proj.scmlink,
+      "creation" : proj.creation,
+      "lastbuildstatus" : proj.lastbuildstatus,
+      "lastbuilddate" : proj.lastbuilddate,
+      "cilink" : proj.cilink,
+      "tags" : proj.tags,
+      "avatar": proj.avatar,
+      "archived" : proj.archived,
+      "public" : proj.public,
       "users" : usersFake.fakeUsersInfo
     };
   } else {
@@ -102,7 +110,7 @@ exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
 
     if (!max || max == 0) {
         // default long
-        max = 25;
+        max = 24;
     }
     for (var i = 0; i < max; i++) {
         if (accumulated) {
@@ -120,11 +128,7 @@ exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
           "to" : to
         },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-        "metricinfo" : {
-          "metricid" : mid,
-          "path" : metricsById[mid].path,
-          "description" : metricsById[mid].description
-        },
+        "metricinfo" : metricsById[mid],
         "timestamp" : new Date()
     };
 
