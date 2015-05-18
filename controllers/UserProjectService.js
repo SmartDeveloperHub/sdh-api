@@ -72,6 +72,9 @@ exports.userProjectMetric = function(uid, pid, mid, from, to, accumulated, max, 
         // default dates
         from = new Date("Thu Apr 1 2015").getTime();
         to = new Date("Thu Apr 25 2015").getTime();
+    } else {
+        from = from.getTime();
+        to = to.getTime();
     }
 
     if (!accumulated) {
