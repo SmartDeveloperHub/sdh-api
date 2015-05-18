@@ -14,7 +14,10 @@ module.exports.orgInfo = function orgInfo (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2))
+    },1500);
   }
   else
     res.end();
@@ -28,7 +31,10 @@ module.exports.globalMetricsInfo = function globalMetricsInfo (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },1500);
   }
   else
     res.end();
@@ -49,7 +55,10 @@ module.exports.globalMetric = function globalMetric (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },2000);
   }
   else
     res.end();

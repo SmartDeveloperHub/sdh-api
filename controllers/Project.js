@@ -14,7 +14,10 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },1500);
   }
   else {
     res.end();
@@ -27,7 +30,10 @@ module.exports.projectGeneralMetrics = function projectGeneralMetrics (req, res,
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },1500);
   }
   else {
     res.end();
@@ -43,7 +49,10 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },1500);
   }
   else {
     res.statusCode = 404;       // HTTP status 404: NotFound
@@ -60,7 +69,10 @@ module.exports.projectMetrics = function projectMetrics (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },1500);
   }
   else {
     res.statusCode = 404;       // HTTP status 404: NotFound
@@ -83,7 +95,10 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      console.log('--> Sending response for the request: ' + JSON.stringify(req.originalUrl));
+      res.end(JSON.stringify(result || {}, null, 2));
+    },2300);
   }
   else {
     res.statusCode = 404;       // HTTP status 404: NotFound

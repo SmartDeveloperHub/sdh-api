@@ -29,7 +29,9 @@ module.exports.userProjectMetrics = function userProjectMetrics (req, res, next)
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      res.end(JSON.stringify(result || {}, null, 2));
+    },1500);
   }
   else {
     res.statusCode = 404;       // HTTP status 404: NotFound
@@ -54,7 +56,9 @@ module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
 
   if(typeof result !== 'undefined') {
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
+    setTimeout(function(){
+      res.end(JSON.stringify(result || {}, null, 2));
+    },2400);
   }
   else {
     res.statusCode = 404;       // HTTP status 404: NotFound
