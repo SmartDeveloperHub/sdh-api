@@ -52,7 +52,7 @@ exports.allProjectsInfo = function() {
 exports.projectGeneralMetrics = function() {
 
   var examples = {};
-  examples['application/json'] = projectsMetrics;
+  examples['application/json'] = projectsMetrics.metrics;
 
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
@@ -94,7 +94,7 @@ exports.projectMetrics = function(pid) {
   var examples = {};
   
   if (pid in projectsById) {
-    examples['application/json'] = projectsMetrics;
+    examples['application/json'] = projectsMetrics.metrics;
   } else {
     console.log("--PID not found");
   }
