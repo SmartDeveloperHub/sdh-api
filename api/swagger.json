@@ -3,7 +3,7 @@
     "info": {
         "title": "SDH API",
         "description": "This service provides data to feed dashboards widgets.",
-        "version": "1.0.1"
+        "version": "1.1.0"
     },
     "produces": ["application/json"],
     "host": "localhost:8080",
@@ -21,16 +21,16 @@
         "description": "Operations about Organization"
       },
       {
-        "name": "Project",
-        "description": "Operations about Projects"
+        "name": "Repository",
+        "description": "Operations about Repositories"
       },
       {
         "name": "User",
         "description": "Operations about User"
       },
       {
-        "name": "UserProject",
-        "description": "Operations about Specific User and Project"
+        "name": "UserRepository",
+        "description": "Operations about Specific User and Repository"
       }
     ],
     "paths": {
@@ -177,20 +177,20 @@
             }
         },
 
-        "/projects/": {
+        "/repositories/": {
             "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": ["Project"],
-                "summary": "Projects info list",
-                "operationId": "allProjectsInfo",
+                "x-swagger-router-controller": "Repository",
+                "tags": ["Repository"],
+                "summary": "Repositories info list",
+                "operationId": "allRepositoriesInfo",
                 "responses": {
 
                     "200": {
-                        "description": "Projects list",
+                        "description": "Repositories list",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/project"
+                                "$ref": "#/definitions/repository"
                             }
                         }
                     }
@@ -200,16 +200,16 @@
             }
         },
 
-        "/projects/metrics/": {
+        "/repositories/metrics/": {
             "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": ["Project"],
-                "summary": "Project metrics list",
-                "operationId": "projectGeneralMetrics",
+                "x-swagger-router-controller": "Repository",
+                "tags": ["Repository"],
+                "summary": "Repository metrics list",
+                "operationId": "repositoryGeneralMetrics",
                 "responses": {
 
                     "200": {
-                        "description": "Project metrics list",
+                        "description": "Repository metrics list",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -223,18 +223,18 @@
             }
         },
 
-        "/projects/{pid}": {
+        "/repositories/{pid}": {
             "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": ["Project"],
-                "summary": "Project description",
-                "operationId": "projectInfo",
+                "x-swagger-router-controller": "Repository",
+                "tags": ["Repository"],
+                "summary": "Repository description",
+                "operationId": "repositoryInfo",
                 "parameters": [
 
                     {
                         "name": "pid",
                         "in": "path",
-                        "description": "Project id",
+                        "description": "Repository id",
                         "required": true,
                         "type": "string"
                     }
@@ -243,14 +243,14 @@
                 "responses": {
 
                     "200": {
-                        "description": "Project info.",
+                        "description": "Repository info.",
                         "schema": {
-                            "$ref": "#/definitions/projectinfo"
+                            "$ref": "#/definitions/repositoryinfo"
                         }
                     },
 
                     "404": {
-                        "description": "Project not found"
+                        "description": "Repository not found"
                     }
 
 
@@ -258,18 +258,18 @@
             }
         },
 
-        "/projects/{pid}/metrics/": {
+        "/repositories/{pid}/metrics/": {
             "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": ["Project"],
-                "summary": "Specific project metrics list",
-                "operationId": "projectMetrics",
+                "x-swagger-router-controller": "Repository",
+                "tags": ["Repository"],
+                "summary": "Specific Repository metrics list",
+                "operationId": "repositoryMetrics",
                 "parameters": [
 
                     {
                         "name": "pid",
                         "in": "path",
-                        "description": "Project id",
+                        "description": "Repository id",
                         "required": true,
                         "type": "string"
                     }
@@ -278,7 +278,7 @@
                 "responses": {
 
                     "200": {
-                        "description": "Project metrics list",
+                        "description": "Repository metrics list",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -288,7 +288,7 @@
                     },
 
                     "404": {
-                        "description": "Project not found"
+                        "description": "Repository not found"
                     }
 
 
@@ -296,18 +296,18 @@
             }
         },
 
-        "/projects/{pid}/metrics/{mid}": {
+        "/repositories/{pid}/metrics/{mid}": {
             "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": ["Project"],
-                "summary": "Projects metric value",
-                "operationId": "projectMetric",
+                "x-swagger-router-controller": "Repository",
+                "tags": ["Repository"],
+                "summary": "Repository metric value",
+                "operationId": "repositoryMetric",
                 "parameters": [
 
                     {
                         "name": "pid",
                         "in": "path",
-                        "description": "project id",
+                        "description": "Repository id",
                         "required": true,
                         "type": "string"
                     },
@@ -315,7 +315,7 @@
                     {
                         "name": "mid",
                         "in": "path",
-                        "description": "metric id",
+                        "description": "Metric id",
                         "required": true,
                         "type": "string"
                     },
@@ -370,7 +370,7 @@
                 "responses": {
 
                     "200": {
-                        "description": "Project metric value",
+                        "description": "Repository metric value",
                         "schema": {
                             "$ref": "#/definitions/metricresult"
                         }
@@ -457,7 +457,7 @@
                 "responses": {
 
                     "200": {
-                        "description": "Project info.",
+                        "description": "Repository info.",
                         "schema": {
                             "$ref": "#/definitions/userinfo"
                         }
@@ -601,16 +601,16 @@
 
         ,
 
-        "/users/projects/metrics/": {
+        "/users/repositories/metrics/": {
             "get": {
-                "x-swagger-router-controller": "UserProject",
-                "tags": ["UserProject"],
-                "summary": "User-Project metrics list",
-                "operationId": "userProjectGeneralMetrics",
+                "x-swagger-router-controller": "UserRepository",
+                "tags": ["UserRepository"],
+                "summary": "User-Repository metrics list",
+                "operationId": "userRepositoryGeneralMetrics",
                 "responses": {
 
                     "200": {
-                        "description": "User-Project metrics list",
+                        "description": "User-Repository metrics list",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -624,12 +624,12 @@
             }
         },
 
-        "/users/{uid}/projects/{pid}/metrics/": {
+        "/users/{uid}/repositories/{pid}/metrics/": {
             "get": {
-                "x-swagger-router-controller": "UserProject",
-                "tags": ["UserProject"],
-                "summary": "Specific User and Project metrics list",
-                "operationId": "userProjectMetrics",
+                "x-swagger-router-controller": "UserRepository",
+                "tags": ["UserRepository"],
+                "summary": "Specific User and Repository metrics list",
+                "operationId": "userRepositoryMetrics",
                 "parameters": [
 
                     {
@@ -643,7 +643,7 @@
                     {
                         "name": "pid",
                         "in": "path",
-                        "description": "Project id",
+                        "description": "Repository id",
                         "required": true,
                         "type": "string"
                     }
@@ -652,7 +652,7 @@
                 "responses": {
 
                     "200": {
-                        "description": "User-Project metrics list",
+                        "description": "User-Repository metrics list",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -670,12 +670,12 @@
             }
         },
 
-        "/users/{uid}/projects/{pid}/metrics/{mid}": {
+        "/users/{uid}/repositories/{pid}/metrics/{mid}": {
             "get": {
-                "x-swagger-router-controller": "UserProject",
-                "tags": ["UserProject"],
-                "summary": "User-Project metric value",
-                "operationId": "userProjectMetric",
+                "x-swagger-router-controller": "UserRepository",
+                "tags": ["UserRepository"],
+                "summary": "User-Repository metric value",
+                "operationId": "userRepositoryMetric",
                 "parameters": [
 
                     {
@@ -689,7 +689,7 @@
                     {
                         "name": "pid",
                         "in": "path",
-                        "description": "Project id",
+                        "description": "Repository id",
                         "required": true,
                         "type": "string"
                     },
@@ -752,7 +752,7 @@
                 "responses": {
 
                     "200": {
-                        "description": "User-Project metric value",
+                        "description": "User-Repository metric value",
                         "schema": {
                             "$ref": "#/definitions/metricresult"
                         }
@@ -797,35 +797,35 @@
                 }
             }
         },
-        "project": {
+        "repository": {
             "properties": {
-                "projectid": {
+                "repositoryid": {
                     "type": "string",
-                    "description": "Unique project identifier"
+                    "description": "Unique Repository identifier"
                 },
                 "name": {
                     "type": "string",
-                    "description": "The project name"
+                    "description": "The Repository name"
                 },
                 "description": {
                     "type": "string",
-                    "description": "The project description"
+                    "description": "The Repository description"
                 }
             }
         },
-        "projectinfo": {
+        "repositoryinfo": {
             "properties": {
-                "projectid": {
+                "repositoryid": {
                     "type": "string",
-                    "description": "Unique project identifier"
+                    "description": "Unique Repository identifier"
                 },
                 "name": {
                     "type": "string",
-                    "description": "The project name"
+                    "description": "The Repository name"
                 },
                 "description": {
                     "type": "string",
-                    "description": "The project description"
+                    "description": "The Repository description"
                 },
                 "team": {
                     "type": "string",
@@ -833,7 +833,7 @@
                 },
                 "health": {
                     "type": "number",
-                    "description": "Project health factor"
+                    "description": "Repository health factor"
                 },
                 "lastCommit": {
                     "type": "string",
@@ -842,7 +842,7 @@
                 },
                 "users": {
                     "type": "array",
-                    "description": "all project users",
+                    "description": "all Repository users",
                     "items": {
                         "$ref": "#/definitions/user"
                     }
@@ -895,11 +895,11 @@
                     "type": "number",
                     "description": "User activity factor"
                 },
-                "projects": {
+                "repositories": {
                     "type": "array",
-                    "description": "All user projects",
+                    "description": "All user Repositories",
                     "items": {
-                        "$ref": "#/definitions/project"
+                        "$ref": "#/definitions/repository"
                     }
                 }
             }

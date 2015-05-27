@@ -28,11 +28,11 @@
 var url = require('url');
 
 
-var UserProject = require('./UserProjectService');
+var UserRepository = require('./UserRepositoryService');
 
-module.exports.userProjectGeneralMetrics = function userProjectGeneralMetrics (req, res, next) {
+module.exports.userRepositoryGeneralMetrics = function userRepositoryGeneralMetrics (req, res, next) {
 
-  var result = UserProject.userProjectGeneralMetrics();
+  var result = UserRepository.userRepositoryGeneralMetrics();
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
@@ -43,13 +43,13 @@ module.exports.userProjectGeneralMetrics = function userProjectGeneralMetrics (r
     res.end();
 };
 
-module.exports.userProjectMetrics = function userProjectMetrics (req, res, next) {
+module.exports.userRepositoryMetrics = function userRepositoryMetrics (req, res, next) {
 
   var uid = req.swagger.params['uid'].value;
   var pid = req.swagger.params['pid'].value;
   
 
-  var result = UserProject.userProjectMetrics(uid, pid);
+  var result = UserRepository.userRepositoryMetrics(uid, pid);
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
@@ -62,7 +62,7 @@ module.exports.userProjectMetrics = function userProjectMetrics (req, res, next)
   }
 };
 
-module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
+module.exports.userRepositoryMetric = function userRepositoryMetric (req, res, next) {
 
   var uid = req.swagger.params['uid'].value;
   var pid = req.swagger.params['pid'].value;
@@ -74,7 +74,7 @@ module.exports.userProjectMetric = function userProjectMetric (req, res, next) {
   var aggr = req.swagger.params['aggr'].value;
   
 
-  var result = UserProject.userProjectMetric(uid, pid, mid, from, to, accumulated, max, aggr);
+  var result = UserRepository.userRepositoryMetric(uid, pid, mid, from, to, accumulated, max, aggr);
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {

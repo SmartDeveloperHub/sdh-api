@@ -27,43 +27,43 @@
 
 exports.metrics = [
 	{
-	    "metricid" : "projectcommits",
-	    "path" : "/projects/{pid}/metrics/projectcommits",
-	    "description" : "Total project commits"
+	    "metricid" : "repositorycommits",
+	    "path" : "/repositories/{pid}/metrics/repositorycommits",
+	    "description" : "Total repository commits"
 	},
 	{
-	    "metricid" : "projectdevelopers",
-	    "path" : "/projects/{pid}/metrics/projectdevelopers",
-	    "description" : "Total project developers"
+	    "metricid" : "repositorydevelopers",
+	    "path" : "/repositories/{pid}/metrics/repositorydevelopers",
+	    "description" : "Total repository developers"
 	},
 	{
-	    "metricid" : "projectbuilds",
-	    "path" : "/projects/{pid}/metrics/projectbuilds",
-	    "description" : "Total project builds"
+	    "metricid" : "repositorybuilds",
+	    "path" : "/repositories/{pid}/metrics/repositorybuilds",
+	    "description" : "Total repository builds"
 	},
 	{
-	    "metricid" : "projectexec",
-	    "path" : "/projects/{pid}/metrics/projectexec",
-	    "description" : "Total project executions"
+	    "metricid" : "repositoryexec",
+	    "path" : "/repositories/{pid}/metrics/repositoryexec",
+	    "description" : "Total repository executions"
 	},
 	{
-	    "metricid" : "projectsuccessexec",
-	    "path" : "/projects/{pid}/metrics/projectsuccessexec",
-	    "description" : "Total project successful executions"
+	    "metricid" : "repositoriesuccessexec",
+	    "path" : "/repositories/{pid}/metrics/repositoriesuccessexec",
+	    "description" : "Total repository successful executions"
 	},
 	{
-	    "metricid" : "projectbrokenexec",
-	    "path" : "/projects/{pid}/metrics/projectbrokenexec",
-	    "description" : "Total project broken executions"
+	    "metricid" : "repositorybrokenexec",
+	    "path" : "/repositories/{pid}/metrics/repositorybrokenexec",
+	    "description" : "Total repository broken executions"
 	},
 	{
-	    "metricid" : "projectbrokentime",
-	    "path" : "/projects/{pid}/metrics/projectbrokentime",
-	    "description" : "Project build broken time"
+	    "metricid" : "repositorybrokentime",
+	    "path" : "/repositories/{pid}/metrics/repositorybrokentime",
+	    "description" : "Repository build broken time"
 	},
 	{
-	    "metricid" : "projectexectime",
-	    "path" : "/projects/{pid}/metrics/projectexectime",
-	    "description" : "Project build execution time"
+	    "metricid" : "repositoryexectime",
+	    "path" : "/repositories/{pid}/metrics/repositoryexectime",
+	    "description" : "Repository build execution time"
 	}
  ];

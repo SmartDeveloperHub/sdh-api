@@ -37,9 +37,9 @@ exports.metrics = [
         "description" : "Organization developers number"
     },
     {
-        "metricid" : "orgprojects",
-        "path" : "/metrics/orgprojects",
-        "description" : "Organization projects number"
+        "metricid" : "orgrepositories",
+        "path" : "/metrics/orgrepositories",
+        "description" : "Organization repositories number"
     },
     {
         "metricid" : "orgbuilds",

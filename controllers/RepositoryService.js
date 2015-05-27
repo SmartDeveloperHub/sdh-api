@@ -25,65 +25,91 @@
 
 'use strict';
 
-var projectsFake = require('../fakeProjectsInfo.js');
+var repositoriesFake = require('../fakeRepositoriesInfo.js');
 var usersFake = require('../fakeUsersInfo.js');
-var userProjectsMetrics = require('../userProjectsMetrics.js');
+var repositoriesMetrics = require('../repositoriesMetrics.js');
 
-var projectsById = {};
+var repositoriesById = {};
 var metricsById = {};
-var usersById = {};
-for(var i = 0; i < projectsFake.fakeProjectsInfo.length; i++) {
-  projectsById[projectsFake.fakeProjectsInfo[i].projectid] = projectsFake.fakeProjectsInfo[i];
+for(var i = 0; i < repositoriesFake.fakeRepositoriesInfo.length; i++) {
+  repositoriesById[repositoriesFake.fakeRepositoriesInfo[i].repositoryid] = repositoriesFake.fakeRepositoriesInfo[i];
 }
-for(var i = 0; i < userProjectsMetrics.metrics.length; i++) {
-  metricsById[userProjectsMetrics.metrics[i].metricid] = userProjectsMetrics.metrics[i];
-}
-
-for(var i = 0; i < usersFake.fakeUsersInfo.length; i++) {
-  usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
+for(var i = 0; i < repositoriesMetrics.metrics.length; i++) {
+  metricsById[repositoriesMetrics.metrics[i].metricid] = repositoriesMetrics.metrics[i];
 }
 
-exports.userProjectGeneralMetrics = function() {
+exports.allRepositoriesInfo = function() {
 
   var examples = {};
-  examples['application/json'] = userProjectsMetrics.metrics;
 
-  if(Object.keys(examples).length > 0) {
-    return examples[Object.keys(examples)[0]];
-  }
-};
-
-exports.userProjectMetrics = function(uid, pid) {
-
-  if (!(uid in usersById)) {
-    console.log("--UID not found");
-    return;
-  }
-
-  if (!(pid in projectsById)) {
-    console.log("--PID not found");
-    return;
-  }
-
-  var examples = {};
-  examples['application/json'] = userProjectsMetrics.metrics;
+  examples['application/json'] = repositoriesFake.fakeRepositoriesInfo;
 
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
-};
+  
+}
 
-exports.userProjectMetric = function(uid, pid, mid, from, to, accumulated, max, aggr) {
+exports.repositoryGeneralMetrics = function() {
+
+  var examples = {};
+  examples['application/json'] = repositoriesMetrics.metrics;
+
+  if(Object.keys(examples).length > 0)
+    return examples[Object.keys(examples)[0]];
+  
+}
+
+exports.repositoryInfo = function(pid) {
+
+  var examples = {};
+  if (pid in repositoriesById) {
+    var proj = repositoriesById[pid];
+    examples['application/json'] = {
+      "name" : proj.name,
+      "description" : proj.description,
+      "repositoryid" : proj.repositoryid,
+      "lastcommit" : proj.lastcommit,
+      "fistcommit": proj.fistcommit,
+      "scmlink" : proj.scmlink,
+      "creation" : proj.creation,
+      "lastbuildstatus" : proj.lastbuildstatus,
+      "lastbuilddate" : proj.lastbuilddate,
+      "cilink" : proj.cilink,
+      "tags" : proj.tags,
+      "avatar": proj.avatar,
+      "archived" : proj.archived,
+      "public" : proj.public,
+      "users" : usersFake.fakeUsersInfo
+    };
+  } else {
+    console.log("--PID not found")
+  }
+  
+  if(Object.keys(examples).length > 0)
+    return examples[Object.keys(examples)[0]];
+  
+}
+exports.repositoryMetrics = function(pid) {
+
+  var examples = {};
+  
+  if (pid in repositoriesById) {
+    examples['application/json'] = repositoriesMetrics.metrics;
+  } else {
+    console.log("--PID not found");
+  }
+
+  if(Object.keys(examples).length > 0)
+    return examples[Object.keys(examples)[0]];
+  
+}
+exports.repositoryMetric = function(pid, mid, from, to, accumulated, max, aggr) {
 
     var examples = {};
     var val = [];
     var acum = 0;
 
-    if (!(uid in usersById)) {
-      console.log("--UID not found");
-      return;
-    }
-
-    if (!(pid in projectsById)) {
+    if (!(pid in repositoriesById)) {
       console.log("--PID not found");
       return;
     }
@@ -136,4 +162,5 @@ exports.userProjectMetric = function(uid, pid, mid, from, to, accumulated, max, 
 
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
-};
+  
+}

@@ -25,7 +25,7 @@
 
 'use strict';
 
-var projectsFake = require('../fakeProjectsInfo.js');
+var repositoriesFake = require('../fakeRepositoriesInfo.js');
 var usersFake = require('../fakeUsersInfo.js');
 var usersMetrics = require('../usersMetrics.js');
 
@@ -77,7 +77,7 @@ exports.userInfo = function(uid) {
       "linkedin" :  user.linkedin,
       "twitter" :  user.twitter,
       "website" :  user.website,
-      "projects" : projectsFake.fakeProjectsInfo
+      "repositories" : repositoriesFake.fakeRepositoriesInfo
     };
   } else {
     console.log("UID not found");

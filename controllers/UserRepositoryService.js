@@ -25,91 +25,65 @@
 
 'use strict';
 
-var projectsFake = require('../fakeProjectsInfo.js');
+var repositoriesFake = require('../fakeRepositoriesInfo.js');
 var usersFake = require('../fakeUsersInfo.js');
-var projectsMetrics = require('../projectsMetrics.js');
+var userRepositoriesMetrics = require('../userRepositoriesMetrics.js');
 
-var projectsById = {};
+var repositoriesById = {};
 var metricsById = {};
-for(var i = 0; i < projectsFake.fakeProjectsInfo.length; i++) {
-  projectsById[projectsFake.fakeProjectsInfo[i].projectid] = projectsFake.fakeProjectsInfo[i];
+var usersById = {};
+for(var i = 0; i < repositoriesFake.fakeRepositoriesInfo.length; i++) {
+  repositoriesById[repositoriesFake.fakeRepositoriesInfo[i].repositoryid] = repositoriesFake.fakeRepositoriesInfo[i];
 }
-for(var i = 0; i < projectsMetrics.metrics.length; i++) {
-  metricsById[projectsMetrics.metrics[i].metricid] = projectsMetrics.metrics[i];
+for(var i = 0; i < userRepositoriesMetrics.metrics.length; i++) {
+  metricsById[userRepositoriesMetrics.metrics[i].metricid] = userRepositoriesMetrics.metrics[i];
 }
 
-exports.allProjectsInfo = function() {
+for(var i = 0; i < usersFake.fakeUsersInfo.length; i++) {
+  usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
+}
+
+exports.userRepositoryGeneralMetrics = function() {
 
   var examples = {};
+  examples['application/json'] = userRepositoriesMetrics.metrics;
 
-  examples['application/json'] = projectsFake.fakeProjectsInfo;
-
-  if(Object.keys(examples).length > 0)
+  if(Object.keys(examples).length > 0) {
     return examples[Object.keys(examples)[0]];
-  
-}
-
-exports.projectGeneralMetrics = function() {
-
-  var examples = {};
-  examples['application/json'] = projectsMetrics.metrics;
-
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-
-exports.projectInfo = function(pid) {
-
-  var examples = {};
-  if (pid in projectsById) {
-    var proj = projectsById[pid];
-    examples['application/json'] = {
-      "name" : proj.name,
-      "description" : proj.description,
-      "projectid" : proj.projectid,
-      "lastcommit" : proj.lastcommit,
-      "fistcommit": proj.fistcommit,
-      "scmlink" : proj.scmlink,
-      "creation" : proj.creation,
-      "lastbuildstatus" : proj.lastbuildstatus,
-      "lastbuilddate" : proj.lastbuilddate,
-      "cilink" : proj.cilink,
-      "tags" : proj.tags,
-      "avatar": proj.avatar,
-      "archived" : proj.archived,
-      "public" : proj.public,
-      "users" : usersFake.fakeUsersInfo
-    };
-  } else {
-    console.log("--PID not found")
   }
-  
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-exports.projectMetrics = function(pid) {
+};
 
-  var examples = {};
-  
-  if (pid in projectsById) {
-    examples['application/json'] = projectsMetrics.metrics;
-  } else {
+exports.userRepositoryMetrics = function(uid, pid) {
+
+  if (!(uid in usersById)) {
+    console.log("--UID not found");
+    return;
+  }
+
+  if (!(pid in repositoriesById)) {
     console.log("--PID not found");
+    return;
   }
+
+  var examples = {};
+  examples['application/json'] = userRepositoriesMetrics.metrics;
 
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
-  
-}
-exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
+};
+
+exports.userRepositoryMetric = function(uid, pid, mid, from, to, accumulated, max, aggr) {
 
     var examples = {};
     var val = [];
     var acum = 0;
 
-    if (!(pid in projectsById)) {
+    if (!(uid in usersById)) {
+      console.log("--UID not found");
+      return;
+    }
+
+    if (!(pid in repositoriesById)) {
       console.log("--PID not found");
       return;
     }
@@ -162,5 +136,4 @@ exports.projectMetric = function(pid, mid, from, to, accumulated, max, aggr) {
 
   if(Object.keys(examples).length > 0)
     return examples[Object.keys(examples)[0]];
-  
-}
+};

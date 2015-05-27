@@ -25,10 +25,51 @@
 
 'use strict';
 
-exports.metrics = [
-	{
-	    "metricid" : "userprojectcommits",
-	    "path" : "/users/{uid}/projects/{pid}/metrics/userprojectcommits",
-	    "description" : "User-Project commits number"
-	}
- ];
+exports.fakeRepositoriesInfo = [ {
+  "name" : "Repository ALPHA",
+  "description" : "A repository",
+  "repositoryid" : "p1",
+  "lastcommit" : 1431208800000,
+  "fistcommit": 1273010400000,
+  "scmlink" : "http://gitlabRepositoryURL",
+  "creation" : 1273010400000,
+  "lastbuildstatus" : 1,
+  "lastbuilddate" : 1432591200000,
+  "cilink" : "http://jenkinsRepositoryURL",
+  "tags" :['framework','hack','dark'],
+  "avatar": "http://repositoryAvatarURL",
+  "archived" : true,
+  "public" : true
+},
+{
+  "name" : "Repository BETA",
+  "description" : "A repository",
+  "repositoryid" : "p2",
+  "lastcommit" : 1431036000000,
+  "fistcommit": 1273010400000,
+  "scmlink" : "http://gitlabRepositoryURL",
+  "creation" : 1273010400000,
+  "lastbuildstatus" : 1,
+  "lastbuilddate" : 1432591200000,
+  "cilink" : "http://jenkinsRepositoryURL",
+  "tags" :['framework','php','laravel'],
+  "avatar": "http://repositoryAvatarURL",
+  "archived" : true,
+  "public" : true
+},
+{
+  "name" : "Repository TETA",
+  "description" : "A repository",
+  "repositoryid" : "p3",
+  "lastcommit" : 1430431200000,
+  "fistcommit": 1273010400000,
+  "scmlink" : "http://gitlabRepositoryURL",
+  "creation" : 1273010400000,
+  "lastbuildstatus" : 1,
+  "lastbuilddate" : 1432591200000,
+  "cilink" : "http://jenkinsRepositoryURL",
+  "tags" :['web','blue','bad'],
+  "avatar": "http://repositoryAvatarURL",
+  "archived" : true,
+  "public" : true
+} ];

@@ -32,8 +32,8 @@ exports.metrics = [
 	    "description" : "Total user commits"
 	},
 	{
-	    "metricid" : "userprojects",
-	    "path" : "/users/{uid}/metrics/userprojects",
-	    "description" : "Total user projects"
+	    "metricid" : "userrepositories",
+	    "path" : "/users/{uid}/metrics/userrepositories",
+	    "description" : "Total user repositories"
 	},
  ];

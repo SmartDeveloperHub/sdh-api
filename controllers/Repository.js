@@ -28,13 +28,13 @@
 var url = require('url');
 
 
-var Project = require('./ProjectService');
+var Repository = require('./RepositoryService');
 
 
-module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
+module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res, next) {
   
 
-  var result = Project.allProjectsInfo();
+  var result = Repository.allRepositoriesInfo();
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
@@ -46,8 +46,8 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
   }
 };
 
-module.exports.projectGeneralMetrics = function projectGeneralMetrics (req, res, next) {
-  var result = Project.projectGeneralMetrics();
+module.exports.repositoryGeneralMetrics = function repositoryGeneralMetrics (req, res, next) {
+  var result = Repository.repositoryGeneralMetrics();
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
@@ -59,11 +59,11 @@ module.exports.projectGeneralMetrics = function projectGeneralMetrics (req, res,
   }
 };
 
-module.exports.projectInfo = function projectInfo (req, res, next) {
+module.exports.repositoryInfo = function repositoryInfo (req, res, next) {
   var pid = req.swagger.params['pid'].value;
   
 
-  var result = Project.projectInfo(pid);
+  var result = Repository.repositoryInfo(pid);
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
@@ -76,11 +76,11 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
   }
 };
 
-module.exports.projectMetrics = function projectMetrics (req, res, next) {
+module.exports.repositoryMetrics = function repositoryMetrics (req, res, next) {
   var pid = req.swagger.params['pid'].value;
   
 
-  var result = Project.projectMetrics(pid);
+  var result = Repository.repositoryMetrics(pid);
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
@@ -93,7 +93,7 @@ module.exports.projectMetrics = function projectMetrics (req, res, next) {
   }
 };
 
-module.exports.projectMetric = function projectMetric (req, res, next) {
+module.exports.repositoryMetric = function repositoryMetric (req, res, next) {
   var pid = req.swagger.params['pid'].value;
   var mid = req.swagger.params['mid'].value;
   var from = req.swagger.params['from'].value;
@@ -103,7 +103,7 @@ module.exports.projectMetric = function projectMetric (req, res, next) {
   var aggr = req.swagger.params['aggr'].value;
   
 
-  var result = Project.projectMetric(pid, mid, from, to, accumulated, max, aggr);
+  var result = Repository.repositoryMetric(pid, mid, from, to, accumulated, max, aggr);
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   if(typeof result !== 'undefined') {
