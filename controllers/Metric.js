@@ -24,9 +24,32 @@
 
 var url = require('url');
 
-var Organization = require('./OrganizationService');
+var Metric = require('./MetricService');
 
-module.exports.orgInfo = function orgInfo (req, res, next) {
+module.exports.metricList = function metricList (req, res, next) {
+
+    var result = Metric.metricList();
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    if(typeof result !== 'undefined') {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(result || {}, null, 2));
+    }
+    else {
+        res.end();
+    }
+};
+
+module.exports.getMetric = function getMetric (req, res, next) {
+    var tid = req.swagger.params['tid'].value;
+    var rid = req.swagger.params['rid'].value;
+    var uid = req.swagger.params['uid'].value;
+    var from = req.swagger.params['from'].value;
+    var to = req.swagger.params['to'].value;
+    var accumulated = req.swagger.params['accumulated'].value;
+    var max = req.swagger.params['max'].value;
+    var aggr = req.swagger.params['aggr'].value;
+
     var callback = function() {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -34,9 +57,10 @@ module.exports.orgInfo = function orgInfo (req, res, next) {
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(result || {}, null, 2));
         } else {
+            res.statusCode = 404; // HTTP status 404: NotFound
             res.end();
         }
     };
 
-    Organization.getStaticData(callback);
+    Metric.getMetric(tid, rid, uid, from, to, accumulated, max, aggr, callback);
 };

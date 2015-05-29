@@ -37,4 +37,4 @@ exports.apiInfo = function() {
         return examples[Object.keys(examples)[0]];
     }
   
-}
+};

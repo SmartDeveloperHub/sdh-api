@@ -26,23 +26,53 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     //TODO Agora rules :)
     console.log('getTBDValue');
     callback({
-        'data': parseInt(Math.random() * 100),
+        'data': parseInt(Math.random() * 1000),
         'timestamp': new Date()
     });
 };
 
 exports.getMetricValue = function (mid, from, to, accumulated, max, aggr, callback) {
-    //TODO Agora rules :)
-    callback({
-        'data': parseInt(Math.random() * 100),
-        'timestamp': new Date()
-    });
-};
+    var val = [];
+    var acum = 0;
 
-exports.getStaticValue = function (tid, rid, uid, callback) {
+    if (!(mid in metricsById)) {
+      console.log("--MID not found");
+      return;
+    }
+
+    if (!from || !to) {
+        // default dates
+        from = new Date("Thu Apr 1 2015").getTime();
+        to = new Date("Thu Apr 25 2015").getTime();
+    } else {
+        from = from.getTime();
+        to = to.getTime();
+    }
+
+    if (!accumulated) {
+        accumulated = false;
+    }
+
+    if (!aggr) {
+        aggr = "sum";
+    }
+
+    if (!max || max == 0) {
+        // default long
+        max = 24;
+    }
+    for (var i = 0; i < max; i++) {
+        if (accumulated) {
+            acum += parseInt(Math.random() * 100);
+            val.push(acum);
+        } else {
+            val.push(parseInt(Math.random() * 100));
+        }
+    }
+
     //TODO Agora rules :)
     callback({
-        'data': parseInt(Math.random() * 100),
+        'data': val,
         'timestamp': new Date()
     });
 };

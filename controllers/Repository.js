@@ -24,91 +24,34 @@
 
 var url = require('url');
 
-
 var Repository = require('./RepositoryService');
 
-
 module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res, next) {
-  
 
-  var result = Repository.allRepositoriesInfo();
-  res.setHeader('Access-Control-Allow-Origin', '*');
+    var result = Repository.allRepositoriesInfo();
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else {
-    res.end();
-  }
-};
-
-module.exports.repositoryGeneralMetrics = function repositoryGeneralMetrics (req, res, next) {
-  var result = Repository.repositoryGeneralMetrics();
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else {
-    res.end();
-  }
+    if(typeof result !== 'undefined') {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(result || {}, null, 2));
+    }
+    else {
+        res.end();
+    }
 };
 
 module.exports.repositoryInfo = function repositoryInfo (req, res, next) {
-  var pid = req.swagger.params['pid'].value;
-  
+    var rid = req.swagger.params['rid'].value;
 
-  var result = Repository.repositoryInfo(pid);
-  res.setHeader('Access-Control-Allow-Origin', '*');
+    var result = Repository.repositoryInfo(rid);
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else {
-    res.statusCode = 404;       // HTTP status 404: NotFound
-    res.end();
-  }
-};
-
-module.exports.repositoryMetrics = function repositoryMetrics (req, res, next) {
-  var pid = req.swagger.params['pid'].value;
-  
-
-  var result = Repository.repositoryMetrics(pid);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else {
-    res.statusCode = 404;       // HTTP status 404: NotFound
-    res.end();
-  }
-};
-
-module.exports.repositoryMetric = function repositoryMetric (req, res, next) {
-  var pid = req.swagger.params['pid'].value;
-  var mid = req.swagger.params['mid'].value;
-  var from = req.swagger.params['from'].value;
-  var to = req.swagger.params['to'].value;
-  var accumulated = req.swagger.params['accumulated'].value;
-  var max = req.swagger.params['max'].value;
-  var aggr = req.swagger.params['aggr'].value;
-  
-
-  var result = Repository.repositoryMetric(pid, mid, from, to, accumulated, max, aggr);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
-  if(typeof result !== 'undefined') {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result || {}, null, 2));
-  }
-  else {
-    res.statusCode = 404;       // HTTP status 404: NotFound
-    res.end();
-  }
+    if(typeof result !== 'undefined') {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(result || {}, null, 2));
+    }
+    else {
+        res.statusCode = 404; // HTTP status 404: NotFound
+        res.end();
+    }
 };

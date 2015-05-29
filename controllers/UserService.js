@@ -29,76 +29,50 @@ var usersMetrics = require('../usersMetrics.js');
 var usersById = {};
 var metricsById = {};
 for(var i = 0; i < usersFake.fakeUsersInfo.length; i++) {
-  usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
+    usersById[usersFake.fakeUsersInfo[i].userid] = usersFake.fakeUsersInfo[i];
 }
 for(var i = 0; i < usersMetrics.metrics.length; i++) {
-  metricsById[usersMetrics.metrics[i].metricid] = usersMetrics.metrics[i];
+    metricsById[usersMetrics.metrics[i].metricid] = usersMetrics.metrics[i];
 }
 
 exports.allUsers = function() {
 
-  var examples = {};
+    var examples = {};
 
-  examples['application/json'] = usersFake.fakeUsersInfo;
+    examples['application/json'] = usersFake.fakeUsersInfo;
 
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-
-exports.userGeneralMetrics = function() {
-
-  var examples = {};
-  examples['application/json'] = usersMetrics.metrics;
-
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
+    if(Object.keys(examples).length > 0) {
+        return examples[Object.keys(examples)[0]];
+    }
 };
 
 exports.userInfo = function(uid) {
 
-  var examples = {};
-  if (uid in usersById) {
-    var user = usersById[uid];
-    examples['application/json'] = {
-      "name" : user.name,
-      "email" : user.email,
-      "userid" : user.userid,
-      "avatar" : user.avatar,
-      "scmuserurl" : user.scmuserurl,
-      "register" :  user.register,
-      "lastcommit" :  user.lastcommit,
-      "firstcommit":  user.firstcommit,
-      "skype" :  user.skype,
-      "linkedin" :  user.linkedin,
-      "twitter" :  user.twitter,
-      "website" :  user.website,
-      "repositories" : repositoriesFake.fakeRepositoriesInfo
-    };
-  } else {
-    console.log("UID not found");
-  }
-  
+    var examples = {};
+    if (uid in usersById) {
+        var user = usersById[uid];
+        examples['application/json'] = {
+            "name" : user.name,
+            "email" : user.email,
+            "userid" : user.userid,
+            "avatar" : user.avatar,
+            "scmuserurl" : user.scmuserurl,
+            "register" :  user.register,
+            "lastcommit" :  user.lastcommit,
+            "firstcommit":  user.firstcommit,
+            "skype" :  user.skype,
+            "linkedin" :  user.linkedin,
+            "twitter" :  user.twitter,
+            "website" :  user.website,
+            "repositories" : repositoriesFake.fakeRepositoriesInfo
+        };
+    } else {
+        console.log("UID not found");
+    }
 
-  
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-};
-
-exports.userMetrics = function(uid) {
-
-  var examples = {};
-  if (uid in usersById) {
-    examples['application/json'] = usersMetrics.metrics;
-  } else {
-    console.log("UID not found");
-  }
-
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
+    if(Object.keys(examples).length > 0) {
+        return examples[Object.keys(examples)[0]];
+    }
 };
 
 exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
@@ -108,13 +82,13 @@ exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
     var acum = 0;
 
     if (!(uid in usersById)) {
-      console.log("--UID not found");
-      return;
+        console.log("--UID not found");
+        return;
     }
 
     if (!(mid in metricsById)) {
-      console.log("--MID not found");
-      return;
+        console.log("--MID not found");
+        return;
     }
 
     if (!from || !to) {
@@ -150,17 +124,15 @@ exports.userMetric = function(uid, mid, from, to, accumulated, max, aggr) {
     examples['application/json'] = {
         "values" : val,
         "interval" : {
-          "from" : from,
-          "to" : to
+            "from" : from,
+            "to" : to
         },
         "step" : parseInt((parseInt(to) - parseInt(from))/ max),
         "metricinfo" : metricsById[mid].path,
         "timestamp" : new Date()
     };
-  
 
-  
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
+    if(Object.keys(examples).length > 0) {
+        return examples[Object.keys(examples)[0]];
+    }
+};

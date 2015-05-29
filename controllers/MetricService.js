@@ -30,7 +30,7 @@ for(var i = 0; i < orgMetrics.metrics.length; i++) {
     tbdById[orgMetrics.metrics[i].metricid] = orgMetrics.metrics[i];
 }
 
-exports.timeBasedDataList = function() {
+exports.metricList = function() {
 
     var examples = {};
     //TODO timebasedmetrics
@@ -42,12 +42,17 @@ exports.timeBasedDataList = function() {
 
 };
 
-exports.getTimeBasedData = function(tid, rid, uid, from, to) {
+exports.getMetric = function(tid, rid, uid, from, to, accumulated, max, aggr, callback) {
+    // TODO
+    var acum = 0;
 
-    var result = {};
+    if (!(uid in usersById)) {
+        console.log("--UID not found");
+        return;
+    }
 
-    if (!(tid in tbdById)) {
-        console.log("--TID not found");
+    if (!(mid in metricsById)) {
+        console.log("--MID not found");
         return;
     }
 
@@ -60,20 +65,33 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to) {
         to = to.getTime();
     }
 
+    if (!accumulated) {
+        accumulated = false;
+    }
+
+    if (!aggr) {
+        aggr = "sum";
+    }
+
+    if (!max || max == 0) {
+        // default long
+        max = 24;
+    }
+
     var callback = function(val) {
         result = {
-            "values" : val.data,
+            "values" : val,
             "interval" : {
                 "from" : from,
                 "to" : to
             },
-            "metricinfo" : tbdById [mid],
-            "timestamp" : val.timestamp
+            "step" : parseInt((parseInt(to) - parseInt(from))/ max),
+            "metricinfo" : metricsById[mid].path,
+            "timestamp" : new Date()
         };
         console.log('result: ' +JSON.stringify(result));
         return result;
-    }
+    };
 
-    sdhWrapper.getTBDValue(tid, rid, uid, from, to, callback);
-
+    sdhWrapper.getMetricValue(tid, rid, uid, from, to, accumulated, max, aggr, callback);
 };

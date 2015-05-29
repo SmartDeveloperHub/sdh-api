@@ -29,135 +29,50 @@ var repositoriesMetrics = require('../repositoriesMetrics.js');
 var repositoriesById = {};
 var metricsById = {};
 for(var i = 0; i < repositoriesFake.fakeRepositoriesInfo.length; i++) {
-  repositoriesById[repositoriesFake.fakeRepositoriesInfo[i].repositoryid] = repositoriesFake.fakeRepositoriesInfo[i];
+    repositoriesById[repositoriesFake.fakeRepositoriesInfo[i].repositoryid] = repositoriesFake.fakeRepositoriesInfo[i];
 }
 for(var i = 0; i < repositoriesMetrics.metrics.length; i++) {
-  metricsById[repositoriesMetrics.metrics[i].metricid] = repositoriesMetrics.metrics[i];
+    metricsById[repositoriesMetrics.metrics[i].metricid] = repositoriesMetrics.metrics[i];
 }
 
 exports.allRepositoriesInfo = function() {
 
-  var examples = {};
+    var examples = {};
 
-  examples['application/json'] = repositoriesFake.fakeRepositoriesInfo;
+    examples['application/json'] = repositoriesFake.fakeRepositoriesInfo;
 
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
+    if(Object.keys(examples).length > 0) {
+        return examples[Object.keys(examples)[0]];
+    }
+};
 
-exports.repositoryGeneralMetrics = function() {
-
-  var examples = {};
-  examples['application/json'] = repositoriesMetrics.metrics;
-
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-
-exports.repositoryInfo = function(pid) {
-
-  var examples = {};
-  if (pid in repositoriesById) {
-    var proj = repositoriesById[pid];
-    examples['application/json'] = {
-      "name" : proj.name,
-      "description" : proj.description,
-      "repositoryid" : proj.repositoryid,
-      "lastcommit" : proj.lastcommit,
-      "fistcommit": proj.fistcommit,
-      "scmlink" : proj.scmlink,
-      "creation" : proj.creation,
-      "lastbuildstatus" : proj.lastbuildstatus,
-      "lastbuilddate" : proj.lastbuilddate,
-      "cilink" : proj.cilink,
-      "tags" : proj.tags,
-      "avatar": proj.avatar,
-      "archived" : proj.archived,
-      "public" : proj.public,
-      "users" : usersFake.fakeUsersInfo
-    };
-  } else {
-    console.log("--PID not found")
-  }
-  
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-exports.repositoryMetrics = function(pid) {
-
-  var examples = {};
-  
-  if (pid in repositoriesById) {
-    examples['application/json'] = repositoriesMetrics.metrics;
-  } else {
-    console.log("--PID not found");
-  }
-
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
-exports.repositoryMetric = function(pid, mid, from, to, accumulated, max, aggr) {
+exports.repositoryInfo = function(rid) {
 
     var examples = {};
-    var val = [];
-    var acum = 0;
-
-    if (!(pid in repositoriesById)) {
-      console.log("--PID not found");
-      return;
-    }
-
-    if (!(mid in metricsById)) {
-      console.log("--MID not found");
-      return;
-    }
-
-    if (!from || !to) {
-        // default dates
-        from = new Date("Thu Apr 1 2015").getTime();
-        to = new Date("Thu Apr 25 2015").getTime();
+    if (rid in repositoriesById) {
+        var proj = repositoriesById[rid];
+        examples['application/json'] = {
+            "name" : proj.name,
+            "description" : proj.description,
+            "repositoryid" : proj.repositoryid,
+            "lastcommit" : proj.lastcommit,
+            "fistcommit": proj.fistcommit,
+            "scmlink" : proj.scmlink,
+            "creation" : proj.creation,
+            "lastbuildstatus" : proj.lastbuildstatus,
+            "lastbuilddate" : proj.lastbuilddate,
+            "cilink" : proj.cilink,
+            "tags" : proj.tags,
+            "avatar": proj.avatar,
+            "archived" : proj.archived,
+            "public" : proj.public,
+            "users" : usersFake.fakeUsersInfo
+        };
     } else {
-        from = from.getTime();
-        to = to.getTime();
+        console.log("--RID not found")
     }
 
-    if (!accumulated) {
-        accumulated = false;
+    if(Object.keys(examples).length > 0) {
+        return examples[Object.keys(examples)[0]];
     }
-
-    if (!aggr) {
-        aggr = "sum";
-    }
-
-    if (!max || max == 0) {
-        // default long
-        max = 24;
-    }
-    for (var i = 0; i < max; i++) {
-        if (accumulated) {
-            acum += parseInt(Math.random() * 100);
-            val.push(acum);
-        } else {
-            val.push(parseInt(Math.random() * 100));
-        }
-    }
-    // TODO pedir metrica <mid> al Agora
-    examples['application/json'] = {
-        "values" : val,
-        "interval" : {
-          "from" : from,
-          "to" : to
-        },
-        "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-        "metricinfo" : metricsById[mid],
-        "timestamp" : new Date()
-    };
-
-  if(Object.keys(examples).length > 0)
-    return examples[Object.keys(examples)[0]];
-  
-}
+};

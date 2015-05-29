@@ -34,6 +34,7 @@ module.exports.apiInfo = function apiInfo (req, res, next) {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(result || {}, null, 2));
     }
-  else
-    res.end();
+    else {
+        res.end();
+    }
 };

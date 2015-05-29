@@ -231,171 +231,23 @@
                 }
             }
         },
-        "/repositories/metrics/": {
+        "/static/": {
             "get": {
-                "x-swagger-router-controller": "Repository",
+                "x-swagger-router-controller": "StaticInfo",
                 "tags": [
-                    "Repository"
+                    "StaticInfo"
                 ],
-                "summary": "Repository metrics list",
-                "operationId": "repositoryGeneralMetrics",
+                "summary": "Available static info list",
+                "operationId": "timeBasedDataList",
                 "responses": {
                     "200": {
-                        "description": "Repository metrics list",
+                        "description": "Available static info resorces",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/metricinfo"
+                                "$ref": "#/definitions/stinfo"
                             }
                         }
-                    }
-                }
-            }
-        },
-        "/repositories/{rid}/metrics/": {
-            "get": {
-                "x-swagger-router-controller": "Repository",
-                "tags": [
-                    "Repository"
-                ],
-                "summary": "Specific Repository metrics list",
-                "operationId": "repositoryMetrics",
-                "parameters": [
-                    {
-                        "name": "rid",
-                        "in": "path",
-                        "description": "Repository id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Repository metrics list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/metricinfo"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Repository not found"
-                    }
-                }
-            }
-        },
-        "/users/metrics/": {
-            "get": {
-                "x-swagger-router-controller": "User",
-                "tags": [
-                    "User"
-                ],
-                "summary": "User metrics list",
-                "operationId": "userGeneralMetrics",
-                "responses": {
-                    "200": {
-                        "description": "Users metrics list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/metricinfo"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/{uid}/metrics/": {
-            "get": {
-                "x-swagger-router-controller": "User",
-                "tags": [
-                    "User"
-                ],
-                "summary": "Specific user metrics list",
-                "operationId": "userMetrics",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "in": "path",
-                        "description": "User id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Users metrics list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/metricinfo"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                }
-            }
-        },
-        "/users/repositories/metrics/": {
-            "get": {
-                "x-swagger-router-controller": "UserRepository",
-                "tags": [
-                    "UserRepository"
-                ],
-                "summary": "User-Repository metrics list",
-                "operationId": "userRepositoryGeneralMetrics",
-                "responses": {
-                    "200": {
-                        "description": "User-Repository metrics list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/metricinfo"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/{uid}/repositories/{rid}/metrics/": {
-            "get": {
-                "x-swagger-router-controller": "UserRepository",
-                "tags": [
-                    "UserRepository"
-                ],
-                "summary": "Specific User and Repository metrics list",
-                "operationId": "userRepositoryMetrics",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "in": "path",
-                        "description": "User id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "rid",
-                        "in": "path",
-                        "description": "Repository id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User-Repository metrics list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/metricinfo"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
                     }
                 }
             }
@@ -546,262 +398,6 @@
                     },
                     "404": {
                         "description": "Time Based Data not found"
-                    }
-                }
-            }
-        },
-        "/repositories/{rid}/metrics/{mid}": {
-            "get": {
-                "x-swagger-router-controller": "Repository",
-                "tags": [
-                    "Repository"
-                ],
-                "summary": "Repository metric value",
-                "operationId": "repositoryMetric",
-                "parameters": [
-                    {
-                        "name": "rid",
-                        "in": "path",
-                        "description": "Repository id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "mid",
-                        "in": "path",
-                        "description": "Metric id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "From this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "To this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "accumulated",
-                        "in": "query",
-                        "description": "Puntual serie or accumulated serie",
-                        "required": false,
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    {
-                        "name": "max",
-                        "in": "query",
-                        "description": "Max number of values in serie or 0 for all available values",
-                        "required": false,
-                        "type": "number",
-                        "default": "0"
-                    },
-                    {
-                        "name": "aggr",
-                        "in": "query",
-                        "description": "this value defines the meaning of the data series",
-                        "required": false,
-                        "type": "string",
-                        "default": "sum",
-                        "enum": [
-                            "sum",
-                            "avg",
-                            "max",
-                            "min"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Repository metric value",
-                        "schema": {
-                            "$ref": "#/definitions/metricresult"
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
-                    }
-                }
-            }
-        },
-        "/users/{uid}/metrics/{mid}": {
-            "get": {
-                "x-swagger-router-controller": "User",
-                "tags": [
-                    "User"
-                ],
-                "summary": "User metric value",
-                "operationId": "userMetric",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "in": "path",
-                        "description": "user id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "mid",
-                        "in": "path",
-                        "description": "metric id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "From this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "To this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "accumulated",
-                        "in": "query",
-                        "description": "Puntual serie or accumulated serie",
-                        "required": false,
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    {
-                        "name": "max",
-                        "in": "query",
-                        "description": "Max number of values in serie or 0 for all available values",
-                        "required": false,
-                        "type": "number",
-                        "default": "0"
-                    },
-                    {
-                        "name": "aggr",
-                        "in": "query",
-                        "description": "this value defines the meaning of the data series",
-                        "required": false,
-                        "type": "string",
-                        "default": "sum",
-                        "enum": [
-                            "sum",
-                            "avg",
-                            "max",
-                            "min"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User metric value",
-                        "schema": {
-                            "$ref": "#/definitions/metricresult"
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
-                    }
-                }
-            }
-        },
-        "/users/{uid}/repositories/{rid}/metrics/{mid}": {
-            "get": {
-                "x-swagger-router-controller": "UserRepository",
-                "tags": [
-                    "UserRepository"
-                ],
-                "summary": "User-Repository metric value",
-                "operationId": "userRepositoryMetric",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "in": "path",
-                        "description": "user id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "rid",
-                        "in": "path",
-                        "description": "Repository id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "mid",
-                        "in": "path",
-                        "description": "metric id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "From this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "To this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "accumulated",
-                        "in": "query",
-                        "description": "Puntual serie or accumulated serie",
-                        "required": false,
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    {
-                        "name": "max",
-                        "in": "query",
-                        "description": "Max number of values in serie or 0 for all available values",
-                        "required": false,
-                        "type": "number",
-                        "default": "0"
-                    },
-                    {
-                        "name": "aggr",
-                        "in": "query",
-                        "description": "this value defines the meaning of the data series",
-                        "required": false,
-                        "type": "string",
-                        "default": "sum",
-                        "enum": [
-                            "sum",
-                            "avg",
-                            "max",
-                            "min"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User-Repository metric value",
-                        "schema": {
-                            "$ref": "#/definitions/metricresult"
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
                     }
                 }
             }
@@ -976,6 +572,23 @@
                 }
             },
             "description": "Time-based data description"
+        },
+        "stinfo": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier representing a specific static information"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Static information description"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Static information path schema"
+                }
+            },
+            "description": "Static information description"
         },
         "metricresult": {
             "properties": {
