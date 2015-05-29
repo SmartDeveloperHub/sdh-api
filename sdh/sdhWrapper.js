@@ -22,19 +22,27 @@
 
 'use strict';
 
-var fs = require('fs');
+exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
+    //TODO Agora rules :)
+    console.log('getTBDValue');
+    callback({
+        'data': parseInt(Math.random() * 100),
+        'timestamp': new Date()
+    });
+};
 
-exports.apiInfo = function() {
+exports.getMetricValue = function (mid, from, to, accumulated, max, aggr, callback) {
+    //TODO Agora rules :)
+    callback({
+        'data': parseInt(Math.random() * 100),
+        'timestamp': new Date()
+    });
+};
 
-    var examples = {};
-
-    examples['application/json'] = {
-        "swaggerjson" : JSON.parse(fs.readFileSync('./api/swagger.json', 'utf8')),
-        "host" : "http://localhost:8080"
-    };
-
-    if(Object.keys(examples).length > 0) {
-        return examples[Object.keys(examples)[0]];
-    }
-  
-}
+exports.getStaticValue = function (tid, rid, uid, callback) {
+    //TODO Agora rules :)
+    callback({
+        'data': parseInt(Math.random() * 100),
+        'timestamp': new Date()
+    });
+};

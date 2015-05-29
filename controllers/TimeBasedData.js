@@ -24,25 +24,11 @@
 
 var url = require('url');
 
-var Organization = require('./OrganizationService');
+var TimeBasedData = require('./TimeBasedDataService');
 
-module.exports.orgInfo = function orgInfo (req, res, next) {
+module.exports.timeBasedDataList = function timeBasedDataList (req, res, next) {
 
-  var result = Organization.orgInfo();
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.end();
-    }
-};
-
-module.exports.globalMetricsInfo = function globalMetricsInfo (req, res, next) {
-
-    var result = Organization.globalMetricsInfo();
+    var result = TimeBasedData.timeBasedDataList();
     res.setHeader('Access-Control-Allow-Origin', '*');
 
     if(typeof result !== 'undefined') {
@@ -54,23 +40,23 @@ module.exports.globalMetricsInfo = function globalMetricsInfo (req, res, next) {
     }
 };
 
-module.exports.globalMetric = function globalMetric (req, res, next) {
-    var mid = req.swagger.params['mid'].value;
+module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
+    var tid = req.swagger.params['tid'].value;
+    var rid = req.swagger.params['rid'].value;
+    var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
-    var accumulated = req.swagger.params['accumulated'].value;
-    var max = req.swagger.params['max'].value;
-    var aggr = req.swagger.params['aggr'].value;
+    var callback = function() {
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
-    var result = Organization.globalMetric(mid, from, to, accumulated, max, aggr);
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.end();
+        }
+    };
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    TimeBasedData.getTimeBasedData(tid, rid, uid, from, to, callback);
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.end();
-    }
 };

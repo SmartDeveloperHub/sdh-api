@@ -18,9 +18,6 @@
       See the License for the specific language governing permissions and
      limitations under the License.
     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
-      contributors: Alejandro Vera (alejandro.vera@centeropenmiddleware.com ),
-                    Carlos Blanco. (carlos.blanco@centeropenmiddleware.com)
-    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
 */
 
 'use strict';
@@ -33,31 +30,44 @@ var serverPort = 8080;
 
 // swaggerRouter configuration
 var options = {
-  swaggerUi: '/swagger.json',
-  controllers: './controllers',
-  useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
+    swaggerUi: '/swagger.json',
+    controllers: './controllers',
+    useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
 };
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 var swaggerDoc = require('./api/swagger.json');
 
+// Shut down function
+var gracefullyShuttinDown = function gracefullyShuttinDown() {
+    console.log('Shut down signal Received ');
+    console.log('Exiting...');
+    process.exit(0);
+};
+
+// Set security handlers
+process.on('SIGINT', gracefullyShuttinDown);
+process.on('SIGTERM', gracefullyShuttinDown);
+
+// TODO discover SDH platform metrics.
+
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
-  // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
-  app.use(middleware.swaggerMetadata());
+    // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
+    app.use(middleware.swaggerMetadata());
 
-  // Validate Swagger requests
-  app.use(middleware.swaggerValidator());
+    // Validate Swagger requests
+    app.use(middleware.swaggerValidator());
 
-  // Route validated requests to appropriate controller
-  app.use(middleware.swaggerRouter(options));
+    // Route validated requests to appropriate controller
+    app.use(middleware.swaggerRouter(options));
 
-  // Serve the Swagger documents and Swagger UI
-  app.use(middleware.swaggerUi());
+    // Serve the Swagger documents and Swagger UI
+    app.use(middleware.swaggerUi());
 
-  // Start the server
-  http.createServer(app).listen(8080, function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', 8080, 8080);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', 8080);
-  });
+    // Start the server
+    http.createServer(app).listen(serverPort, function () {
+        console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+        console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+    });
 });
