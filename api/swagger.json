@@ -191,12 +191,12 @@
         },
         "/metrics/": {
             "get": {
-                "x-swagger-router-controller": "Metrics",
+                "x-swagger-router-controller": "Metric",
                 "tags": [
                     "Metric"
                 ],
                 "summary": "Available metrics list",
-                "operationId": "metricsList",
+                "operationId": "metricList",
                 "responses": {
                     "200": {
                         "description": "Available metrics list",
@@ -254,7 +254,7 @@
         },
         "/metrics/{mid}": {
             "get": {
-                "x-swagger-router-controller": "Metrics",
+                "x-swagger-router-controller": "Metric",
                 "tags": [
                     "Metric"
                 ],
