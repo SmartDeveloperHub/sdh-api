@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "connect": "^3.2.0",
-    "swagger-tools": "0.8.*"
+    "swagger-tools": "0.8.*",
+    "moment": "^2.10.3"
   }
 }
