@@ -27,33 +27,36 @@ var url = require('url');
 var User = require('./UserService');
 
 module.exports.allUsers = function allUsers (req, res, next) {
-  
-    var result = User.allUsers();
-    res.setHeader('Access-Control-Allow-Origin', '*');
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.end();
-    }
+    var callback = function(result) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.end();
+        }
+    };
+
+    User.allUsers(callback);
 };
 
 module.exports.userInfo = function userInfo (req, res, next) {
 
     var uid = req.swagger.params['uid'].value;
 
-    var result = User.userInfo(uid);
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    var callback = function(result) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    };
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.statusCode = 404;       // HTTP status 404: NotFound
-        res.end();
-    }
+    User.userInfo(uid, callback);
 };
 

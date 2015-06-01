@@ -22,57 +22,23 @@
 
 'use strict';
 
-var repositoriesFake = require('../fakeRepositoriesInfo.js');
-var usersFake = require('../fakeUsersInfo.js');
-var repositoriesMetrics = require('../repositoriesMetrics.js');
+exports.allRepositoriesInfo = function(callback) {
 
-var repositoriesById = {};
-var metricsById = {};
-for(var i = 0; i < repositoriesFake.fakeRepositoriesInfo.length; i++) {
-    repositoriesById[repositoriesFake.fakeRepositoriesInfo[i].repositoryid] = repositoriesFake.fakeRepositoriesInfo[i];
-}
-for(var i = 0; i < repositoriesMetrics.metrics.length; i++) {
-    metricsById[repositoriesMetrics.metrics[i].metricid] = repositoriesMetrics.metrics[i];
-}
-
-exports.allRepositoriesInfo = function() {
-
-    var examples = {};
-
-    examples['application/json'] = repositoriesFake.fakeRepositoriesInfo;
-
-    if(Object.keys(examples).length > 0) {
-        return examples[Object.keys(examples)[0]];
-    }
+    callback(repositories);
 };
 
-exports.repositoryInfo = function(rid) {
+exports.repositoryInfo = function(rid, callback) {
 
-    var examples = {};
+    var rep;
     if (rid in repositoriesById) {
-        var proj = repositoriesById[rid];
-        examples['application/json'] = {
-            "name" : proj.name,
-            "description" : proj.description,
-            "repositoryid" : proj.repositoryid,
-            "lastcommit" : proj.lastcommit,
-            "fistcommit": proj.fistcommit,
-            "scmlink" : proj.scmlink,
-            "creation" : proj.creation,
-            "lastbuildstatus" : proj.lastbuildstatus,
-            "lastbuilddate" : proj.lastbuilddate,
-            "cilink" : proj.cilink,
-            "tags" : proj.tags,
-            "avatar": proj.avatar,
-            "archived" : proj.archived,
-            "public" : proj.public,
-            "users" : usersFake.fakeUsersInfo
-        };
-    } else {
-        console.log("--RID not found")
-    }
+        rep = repositoriesById[rid];
+        var localUsers = [];
+        /*for() {
 
-    if(Object.keys(examples).length > 0) {
-        return examples[Object.keys(examples)[0]];
+        }*/
+        rep['users'] = localUsers;
+    } else {
+        console.log("--RID not found");
     }
+    callback(rep);
 };

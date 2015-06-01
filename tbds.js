@@ -18,17 +18,20 @@
       See the License for the specific language governing permissions and
      limitations under the License.
     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
-      contributors: Alejandro Vera (alejandro.vera@centeropenmiddleware.com ),
-                    Carlos Blanco. (carlos.blanco@centeropenmiddleware.com)
-    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
 */
 
 'use strict';
 
-exports.metrics = [
-	{
-	    "metricid" : "userrepositorycommits",
-	    "path" : "/users/{uid}/repositories/{pid}/metrics/userrepositorycommits",
-	    "description" : "User-Repository commits number"
-	}
- ];
+exports.tbd = [
+    // API Time-based data
+    {
+        "metricid" : "rangeduserlist",
+        "path" : "/tbd/rangeduserlist",
+        "description" : "Ranged users List"
+    },
+    {
+        "metricid" : "rangedrepolist",
+        "path" : "/tbd/rangedrepolist",
+        "description" : "Ranged repository List"
+    }
+];

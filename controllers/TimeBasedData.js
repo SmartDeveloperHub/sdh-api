@@ -54,6 +54,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(result || {}, null, 2));
         } else {
+            res.statusCode = 404;
             res.end();
         }
     };

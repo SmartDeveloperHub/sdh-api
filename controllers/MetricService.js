@@ -22,49 +22,60 @@
 
 'use strict';
 
-var sdhWrapper = require('../sdh/sdhWrapper');
+exports.metricList = function(callback) {
 
-var orgMetrics = require('../orgMetrics.js');
-var tbdById = {};
-for(var i = 0; i < orgMetrics.metrics.length; i++) {
-    tbdById[orgMetrics.metrics[i].metricid] = orgMetrics.metrics[i];
-}
-
-exports.metricList = function() {
-
-    var examples = {};
-    //TODO timebasedmetrics
-    examples['application/json'] = orgMetrics.metrics;
-
-    if(Object.keys(examples).length > 0) {
-        return examples[Object.keys(examples)[0]];
-    }
-
+    callback(metrics);
 };
 
-exports.getMetric = function(tid, rid, uid, from, to, accumulated, max, aggr, callback) {
-    // TODO
+exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
     var acum = 0;
 
-    if (!(uid in usersById)) {
-        console.log("--UID not found");
+    // Normalice parameters
+    if (uid && !(uid in usersById)) {
+        console.log("UID not found");
+        return;
+    }
+
+    if (rid && !(rid in usersById)) {
+        console.log("RID not found");
         return;
     }
 
     if (!(mid in metricsById)) {
-        console.log("--MID not found");
+        console.log("MID not found");
         return;
     }
 
-    if (!from || !to) {
-        // default dates
-        from = new Date("Thu Apr 1 2015").getTime();
-        to = new Date("Thu Apr 25 2015").getTime();
-    } else {
-        from = from.getTime();
-        to = to.getTime();
+    if (typeof from == 'undefined') {
+        // default date
+        from = new Date("Thu Apr 1 2015");
+        console.log("default from")
     }
-
+    if (typeof to == 'undefined') {
+        to = new Date("Thu Apr 25 2015");
+        // default date
+        console.log("default to")
+    }
+    from = from.getTime();
+    to = to.getTime();
+    /* Unnecessary. Swagger auto-validation
+    if (moment(from).isValid()) {
+        console.log("valid from")
+        from = from.getTime();
+    } else {
+        // default from date
+        console.log("'from' date is not valid. default date: " + from);
+        from = new Date("Thu Apr 1 2015").getTime();
+    }
+    if (moment(to).isValid()) {
+        console.log("valid to")
+        to = to.getTime();
+    } else {
+        // default to date
+        console.log("'to' date is not valid. default date: " + to);
+        to = new Date("Thu Apr 25 2015").getTime();
+    }
+    */
     if (!accumulated) {
         accumulated = false;
     }
@@ -78,20 +89,19 @@ exports.getMetric = function(tid, rid, uid, from, to, accumulated, max, aggr, ca
         max = 24;
     }
 
-    var callback = function(val) {
-        result = {
-            "values" : val,
+    var localcallback = function(themetric) {
+        var result = {
+            "values" : themetric.data,
             "interval" : {
                 "from" : from,
                 "to" : to
             },
             "step" : parseInt((parseInt(to) - parseInt(from))/ max),
             "metricinfo" : metricsById[mid].path,
-            "timestamp" : new Date()
+            "timestamp" : themetric.timestamp
         };
-        console.log('result: ' +JSON.stringify(result));
-        return result;
+        callback(result);
     };
 
-    sdhWrapper.getMetricValue(tid, rid, uid, from, to, accumulated, max, aggr, callback);
+    sdhWrapper.getMetricValue(mid, rid, uid, from, to, accumulated, max, aggr, localcallback);
 };

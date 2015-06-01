@@ -26,32 +26,37 @@ var url = require('url');
 
 var Repository = require('./RepositoryService');
 
-module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res, next) {
+module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res) {
 
-    var result = Repository.allRepositoriesInfo();
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    var callback = function(result) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.end();
-    }
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.end();
+        }
+    };
+
+    Repository.allRepositoriesInfo(callback);
 };
 
-module.exports.repositoryInfo = function repositoryInfo (req, res, next) {
+module.exports.repositoryInfo = function repositoryInfo (req, res) {
+    
     var rid = req.swagger.params['rid'].value;
 
-    var result = Repository.repositoryInfo(rid);
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    var callback = function(result) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.statusCode = 404; // HTTP status 404: NotFound
-        res.end();
-    }
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.statusCode = 404;
+            res.end();
+        }
+    };
+
+    Repository.repositoryInfo(rid, callback);
 };

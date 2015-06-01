@@ -18,22 +18,50 @@
       See the License for the specific language governing permissions and
      limitations under the License.
     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
-      contributors: Alejandro Vera (alejandro.vera@centeropenmiddleware.com ),
-                    Carlos Blanco. (carlos.blanco@centeropenmiddleware.com)
-    #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
 */
 
 'use strict';
 
-exports.metrics = [
-	{
-	    "metricid" : "usercommits",
-	    "path" : "/users/{uid}/metrics/usercommits",
-	    "description" : "Total user commits"
-	},
-	{
-	    "metricid" : "userrepositories",
-	    "path" : "/users/{uid}/metrics/userrepositories",
-	    "description" : "Total user repositories"
-	},
- ];
+exports.statInfo = [
+    // API static Information description
+    {
+        "metricid" : "userinfo",
+        "path" : "/users/<uid>",
+        "description" : "User Information"
+    },
+    {
+        "metricid" : "repoinfo",
+        "path" : "/repository/<rid>",
+        "description" : "Repository Information"
+    },
+    {
+        "metricid" : "orginfo",
+        "path" : "/",
+        "description" : "Organization Information"
+    },
+    {
+        "metricid" : "userlist",
+        "path" : "/users/",
+        "description" : "Users List"
+    },
+    {
+        "metricid" : "repolist",
+        "path" : "/repository/",
+        "description" : "Repository List"
+    },
+    {
+        "metricid" : "metriclist",
+        "path" : "/metrics/",
+        "description" : "Metrics list"
+    },
+    {
+        "metricid" : "tbdlist",
+        "path" : "/tbd/",
+        "description" : "Time-based data list"
+    },
+    {
+        "metricid" : "staticlist",
+        "path" : "/static/",
+        "description" : "Static information list"
+    }
+];

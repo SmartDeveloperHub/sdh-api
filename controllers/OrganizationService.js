@@ -22,25 +22,11 @@
 
 'use strict';
 
-var orgMetrics = require('../orgMetrics.js');
-var metricsById = {};
-for(var i = 0; i < orgMetrics.metrics.length; i++) {
-  metricsById[orgMetrics.metrics[i].metricid] = orgMetrics.metrics[i];
-}
+exports.orgInfo = function(callback) {
 
-exports.orgInfo = function() {
-
-    var examples = {};
-
-    // TODO take it from SDH-plaform
-    examples['application/json'] = {
+    callback({
         "organizationid" : "Organization DePalo 1",
         "shortdesc" : "Center Open Middleware Researches ",
         "longdesc" : "Esta es la descripción larga de la organizacion y es muy útil para describirla"
-    };
-
-    if(Object.keys(examples).length > 0) {
-        return {'swaggerjson': examples[Object.keys(examples)[0]],
-                'host': "http://localhost:8080"};
-    }
+    });
 };

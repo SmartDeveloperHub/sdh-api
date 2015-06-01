@@ -27,7 +27,7 @@ var url = require('url');
 var Organization = require('./OrganizationService');
 
 module.exports.orgInfo = function orgInfo (req, res, next) {
-    var callback = function() {
+    var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -38,5 +38,5 @@ module.exports.orgInfo = function orgInfo (req, res, next) {
         }
     };
 
-    Organization.getStaticData(callback);
+    Organization.orgInfo(callback);
 };

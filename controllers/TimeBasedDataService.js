@@ -22,14 +22,6 @@
 
 'use strict';
 
-var sdhWrapper = require('../sdh/sdhWrapper');
-
-var orgMetrics = require('../orgMetrics.js');
-var tbdById = {};
-for(var i = 0; i < orgMetrics.metrics.length; i++) {
-    tbdById[orgMetrics.metrics[i].metricid] = orgMetrics.metrics[i];
-}
-
 exports.timeBasedDataList = function() {
 
     var examples = {};

@@ -38,6 +38,9 @@ var options = {
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 var swaggerDoc = require('./api/swagger.json');
 
+// global moment.js
+GLOBAL.moment = require('moment');
+
 // Shut down function
 var gracefullyShuttinDown = function gracefullyShuttinDown() {
     console.log('Shut down signal Received ');
@@ -49,7 +52,24 @@ var gracefullyShuttinDown = function gracefullyShuttinDown() {
 process.on('SIGINT', gracefullyShuttinDown);
 process.on('SIGTERM', gracefullyShuttinDown);
 
-// TODO discover SDH platform metrics.
+// TODO discover SDH platform metrics
+GLOBAL.metrics = require('./metrics.js');
+GLOBAL.tbd = require('./tbds.js');
+GLOBAL.staticInfo = require('./statics.js');
+
+// TODO get from SDH platform
+GLOBAL.sdhWrapper = require('./sdh/sdhWrapper');
+
+// Get static info (get it one time by the moment)
+var staticObject = require('./staticObject');
+GLOBAL.metricsById = staticObject.getMetricsById();
+GLOBAL.repositories = staticObject.getRepositories();
+GLOBAL.users = staticObject.getUsers();
+GLOBAL.usersById = staticObject.getUsersById();
+GLOBAL.repositoriesById = staticObject.getRepositoriesById();
+GLOBAL.tbdById = staticObject.getTbdById();
+GLOBAL.staticInfoById = staticObject.getStaticInfoById();
+
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {

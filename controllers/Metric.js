@@ -26,22 +26,24 @@ var url = require('url');
 
 var Metric = require('./MetricService');
 
-module.exports.metricList = function metricList (req, res, next) {
+module.exports.metricList = function metricList (req, res) {
 
-    var result = Metric.metricList();
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    var callback = function(result) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.end();
-    }
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.end();
+        }
+    };
+
+    Metric.metricList(callback);
 };
 
-module.exports.getMetric = function getMetric (req, res, next) {
-    var tid = req.swagger.params['tid'].value;
+module.exports.getMetric = function getMetric (req, res) {
+    var mid = req.swagger.params['mid'].value;
     var rid = req.swagger.params['rid'].value;
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
@@ -50,7 +52,7 @@ module.exports.getMetric = function getMetric (req, res, next) {
     var max = req.swagger.params['max'].value;
     var aggr = req.swagger.params['aggr'].value;
 
-    var callback = function() {
+    var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -62,5 +64,5 @@ module.exports.getMetric = function getMetric (req, res, next) {
         }
     };
 
-    Metric.getMetric(tid, rid, uid, from, to, accumulated, max, aggr, callback);
+    Metric.getMetric(mid, rid, uid, from, to, accumulated, max, aggr, callback);
 };

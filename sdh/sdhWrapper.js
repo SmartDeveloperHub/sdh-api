@@ -31,36 +31,10 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     });
 };
 
-exports.getMetricValue = function (mid, from, to, accumulated, max, aggr, callback) {
+exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
     var val = [];
     var acum = 0;
 
-    if (!(mid in metricsById)) {
-      console.log("--MID not found");
-      return;
-    }
-
-    if (!from || !to) {
-        // default dates
-        from = new Date("Thu Apr 1 2015").getTime();
-        to = new Date("Thu Apr 25 2015").getTime();
-    } else {
-        from = from.getTime();
-        to = to.getTime();
-    }
-
-    if (!accumulated) {
-        accumulated = false;
-    }
-
-    if (!aggr) {
-        aggr = "sum";
-    }
-
-    if (!max || max == 0) {
-        // default long
-        max = 24;
-    }
     for (var i = 0; i < max; i++) {
         if (accumulated) {
             acum += parseInt(Math.random() * 100);

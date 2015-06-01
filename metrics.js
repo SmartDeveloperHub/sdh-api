@@ -22,7 +22,8 @@
 
 'use strict';
 
-exports.metrics = [ 
+exports.metrics = [
+    // Organization Metrics
     {
         "metricid" : "orgcommits",
         "path" : "/metrics/orgcommits",
@@ -67,5 +68,63 @@ exports.metrics = [
         "metricid" : "organizationexectime",
         "path" : "/metrics/organizationexectime",
         "description" : "Organization build execution time"
+    },
+    // User Metrics
+    {
+        "metricid" : "usercommits",
+        "path" : "/users/{uid}/metrics/usercommits",
+        "description" : "Total user commits"
+    },
+    {
+        "metricid" : "userrepositories",
+        "path" : "/users/{uid}/metrics/userrepositories",
+        "description" : "Total user repositories"
+    },
+    // Repository Metrics
+    {
+        "metricid" : "repositorycommits",
+        "path" : "/repositories/{pid}/metrics/repositorycommits",
+        "description" : "Total repository commits"
+    },
+    {
+        "metricid" : "repositorydevelopers",
+        "path" : "/repositories/{pid}/metrics/repositorydevelopers",
+        "description" : "Total repository developers"
+    },
+    {
+        "metricid" : "repositorybuilds",
+        "path" : "/repositories/{pid}/metrics/repositorybuilds",
+        "description" : "Total repository builds"
+    },
+    {
+        "metricid" : "repositoryexec",
+        "path" : "/repositories/{pid}/metrics/repositoryexec",
+        "description" : "Total repository executions"
+    },
+    {
+        "metricid" : "repositoriesuccessexec",
+        "path" : "/repositories/{pid}/metrics/repositoriesuccessexec",
+        "description" : "Total repository successful executions"
+    },
+    {
+        "metricid" : "repositorybrokenexec",
+        "path" : "/repositories/{pid}/metrics/repositorybrokenexec",
+        "description" : "Total repository broken executions"
+    },
+    {
+        "metricid" : "repositorybrokentime",
+        "path" : "/repositories/{pid}/metrics/repositorybrokentime",
+        "description" : "Repository build broken time"
+    },
+    {
+        "metricid" : "repositoryexectime",
+        "path" : "/repositories/{pid}/metrics/repositoryexectime",
+        "description" : "Repository build execution time"
+    },
+    // User-Repository Metrics
+    {
+        "metricid" : "userrepositorycommits",
+        "path" : "/users/{uid}/repositories/{pid}/metrics/userrepositorycommits",
+        "description" : "User-Repository commits number"
     }
 ];
