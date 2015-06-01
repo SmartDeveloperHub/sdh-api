@@ -49,12 +49,10 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     if (typeof from == 'undefined') {
         // default date
         from = new Date("Thu Apr 1 2015");
-        console.log("default from")
     }
     if (typeof to == 'undefined') {
-        to = new Date("Thu Apr 25 2015");
         // default date
-        console.log("default to")
+        to = new Date("Thu Apr 25 2015");
     }
     from = from.getTime();
     to = to.getTime();
