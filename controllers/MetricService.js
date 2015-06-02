@@ -24,7 +24,7 @@
 
 exports.metricList = function(callback) {
 
-    callback(metrics);
+    callback(metrics.metrics);
 };
 
 exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
@@ -32,7 +32,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
 
     // Normalice parameters
     if (!(mid in metricsById)) {
-        console.log("MID not found");
+        console.log("MID not found: " + mid);
         callback(404);
         return;
     }
@@ -44,7 +44,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
             callback();
             return;
         } else if (!(uid in usersById)) {
-            console.log("UID not found");
+            console.log("UID not found: " + uid);
             callback(404);
             return;
         }
@@ -111,7 +111,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     }
 
     if (metricsById[mid].aggr.indexOf(aggr) < 0) {
-        console.log(mid + " metric does not accept '" + aggr + "' aggregator;" + metricsById[mid].aggr.indexOf(aggr)+'   '+ metricsById[mid].aggr);
+        console.log(mid + " metric does not accept '" + aggr + "' aggregator");
         callback();
         return;
     }
