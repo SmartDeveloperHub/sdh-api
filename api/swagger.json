@@ -527,6 +527,20 @@
                 "path": {
                     "type": "string",
                     "description": "Metric path schema"
+                },
+                "params": {
+                    "type": "array",
+                    "description": "Required parameters",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "aggr": {
+                    "type": "array",
+                    "description": "Accepted aggregators",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             },
             "description": "Metric description"
