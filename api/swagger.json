@@ -36,15 +36,15 @@
         },
         {
             "name": "Metric",
-            "description": "Specific Metric serie. Time-based and aggregated"
+            "description": "Metrics. Time-based and aggregated"
         },
         {
             "name": "TimeBasedData",
-            "description": "General time-based data"
+            "description": "Time-based data"
         },
         {
             "name": "StaticInfo",
-            "description": "General time-based data"
+            "description": "Static data descriptions"
         }
     ],
     "paths": {
