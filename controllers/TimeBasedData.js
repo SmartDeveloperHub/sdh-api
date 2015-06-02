@@ -28,16 +28,18 @@ var TimeBasedData = require('./TimeBasedDataService');
 
 module.exports.timeBasedDataList = function timeBasedDataList (req, res, next) {
 
-    var result = TimeBasedData.timeBasedDataList();
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    var callback = function(result) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
 
-    if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
-        res.end();
-    }
+        if(typeof result !== 'undefined') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        } else {
+            res.end();
+        }
+    };
+
+    TimeBasedData.timeBasedDataList(callback);
 };
 
 module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
@@ -47,7 +49,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
-    var callback = function() {
+    var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {

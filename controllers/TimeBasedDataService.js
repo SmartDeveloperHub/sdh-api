@@ -22,50 +22,91 @@
 
 'use strict';
 
-exports.timeBasedDataList = function() {
+exports.timeBasedDataList = function(callback) {
 
-    var examples = {};
-    //TODO timebasedmetrics
-    examples['application/json'] = orgMetrics.metrics;
-
-    if(Object.keys(examples).length > 0) {
-        return examples[Object.keys(examples)[0]];
-    }
-
+    callback(tbd.tbd);
 };
 
-exports.getTimeBasedData = function(tid, rid, uid, from, to) {
+exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
+    var acum = 0;
 
-    var result = {};
-
+    // Normalice parameters
     if (!(tid in tbdById)) {
-        console.log("--TID not found");
+        console.log("TID not found");
+        callback(404);
         return;
     }
 
-    if (!from || !to) {
-        // default dates
-        from = new Date("Thu Apr 1 2015").getTime();
-        to = new Date("Thu Apr 25 2015").getTime();
-    } else {
-        from = from.getTime();
-        to = to.getTime();
+    if (tbdById[tid].params.indexOf('uid') >= 0) {
+        // uid required for this metric
+        if (typeof uid == 'undefined') {
+            console.log(tid + " metric require query param 'uid' ");
+            callback();
+            return;
+        } else if (!(uid in usersById)) {
+            console.log("UID not found: " + uid);
+            callback(404);
+            return;
+        }
+    } else if (typeof uid !== 'undefined') {
+        console.log(tid + " metric does not require query param 'uid'");
+        uid = null;
     }
 
-    var callback = function(val) {
-        result = {
-            "values" : val.data,
+    if (tbdById[tid].params.indexOf('rid') >= 0) {
+        // rid required for this metric
+        if (typeof rid == 'undefined') {
+            console.log(tid + " metric require query param 'rid'");
+            callback();
+            return;
+        } else if (!(rid in repositoriesById)) {
+            console.log("RID not found: " + uid);
+            callback(404);
+            return;
+        }
+    } else if (typeof rid !== 'undefined') {
+        console.log(tid + " metric does not require query param 'rid'");
+        rid = null;
+    }
+
+    if (tbdById[tid].params.indexOf('from') >= 0) {
+        // from date parameter required for this metric
+        if (typeof from == 'undefined') {
+            console.log(tid + " metric require query param 'from'");
+            callback();
+            return;
+        }
+    } else if (typeof from == 'undefined') {
+        from = defaultDateRange.from;
+    }
+
+    if (tbdById[tid].params.indexOf('to') >= 0) {
+        // to date parameter required for this metric
+        if (typeof to == 'undefined') {
+            console.log(tid + " metric require query param 'to'");
+            callback();
+            return;
+        }
+    } else if (typeof to == 'undefined') {
+        to = defaultDateRange.to;
+    }
+    // Dates in ms
+    from = from.getTime();
+    to = to.getTime();
+
+    var localcallback = function(thetbd) {
+        var result = {
+            "values" : thetbd.data,
             "interval" : {
                 "from" : from,
                 "to" : to
             },
-            "metricinfo" : tbdById [mid],
-            "timestamp" : val.timestamp
+            "tbdinfo" : tbdById[tid],
+            "timestamp" : thetbd.timestamp
         };
-        console.log('result: ' +JSON.stringify(result));
-        return result;
-    }
+        callback(result);
+    };
 
-    sdhWrapper.getTBDValue(tid, rid, uid, from, to, callback);
+    sdhWrapper.getTBDValue(tid, rid, uid, from, to, localcallback);
 
 };
