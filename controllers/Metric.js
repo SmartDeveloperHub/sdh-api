@@ -56,10 +56,17 @@ module.exports.getMetric = function getMetric (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(result || {}, null, 2));
+            if(typeof result == 'number') {
+                // specific error
+                res.statusCode = result;
+                res.end();
+            } else {
+                // success
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(result || {}, null, 2));
+            }
         } else {
-            res.statusCode = 404; // HTTP status 404: NotFound
+            res.statusCode = 500;
             res.end();
         }
     };
