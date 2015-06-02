@@ -67,6 +67,7 @@ GLOBAL.users = staticObject.getUsers();
 GLOBAL.usersById = staticObject.getUsersById();
 GLOBAL.repositoriesById = staticObject.getRepositoriesById();
 GLOBAL.tbdById = staticObject.getTbdById();
+GLOBAL.defaultDateRange = staticObject.getDefaultDateRange();
 
 
 // Initialize the Swagger middleware

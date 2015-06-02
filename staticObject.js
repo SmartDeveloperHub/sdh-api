@@ -22,16 +22,19 @@
 
 'use strict';
 
-// Test
+// TODO get from SDH platform
 var _repositoriesFake = require('./fakeRepositoriesInfo.js');
 var _usersFake = require('./fakeUsersInfo.js');
+var _defaultDateRange = {'from': new Date("Thu Apr 1 2015"), 'to': new Date("Thu Apr 25 2015")};
 
+// Local vars
 var _usersById = {};
 var _repositoriesById = {};
 var _metricsById = {};
 var _tbdById = {};
 var _staticInfoById = {};
 
+// Static data structures generation
 for(var i = 0; i < metrics.metrics.length; i++) {
     _metricsById[metrics.metrics[i].metricid] = metrics.metrics[i];
 }
@@ -79,4 +82,10 @@ module.exports.getTbdById = function getTbdById () {
 
   //TODO
   return _tbdById;
+};
+
+module.exports.getDefaultDateRange = function getDefaultDateRange () {
+
+  //TODO
+  return _defaultDateRange;
 };
