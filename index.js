@@ -55,7 +55,6 @@ process.on('SIGTERM', gracefullyShuttinDown);
 // TODO discover SDH platform metrics
 GLOBAL.metrics = require('./metrics.js');
 GLOBAL.tbd = require('./tbds.js');
-GLOBAL.staticInfo = require('./statics.js');
 
 // TODO get from SDH platform
 GLOBAL.sdhWrapper = require('./sdh/sdhWrapper');
@@ -68,7 +67,6 @@ GLOBAL.users = staticObject.getUsers();
 GLOBAL.usersById = staticObject.getUsersById();
 GLOBAL.repositoriesById = staticObject.getRepositoriesById();
 GLOBAL.tbdById = staticObject.getTbdById();
-GLOBAL.staticInfoById = staticObject.getStaticInfoById();
 
 
 // Initialize the Swagger middleware

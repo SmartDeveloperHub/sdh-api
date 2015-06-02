@@ -38,9 +38,7 @@ for(var i = 0; i < metrics.metrics.length; i++) {
 for(var i = 0; i < tbd.tbd.length; i++) {
     _tbdById[tbd.tbd[i].metricid] = tbd.tbd[i];
 }
-for(var i = 0; i < staticInfo.statInfo.length; i++) {
-    _staticInfoById[staticInfo.statInfo[i].metricid] = staticInfo.statInfo[i];
-}
+
 for(var i = 0; i < _usersFake.fakeUsersInfo.length; i++) {
     _usersById[_usersFake.fakeUsersInfo[i].userid] = _usersFake.fakeUsersInfo[i];
 }
@@ -81,10 +79,4 @@ module.exports.getTbdById = function getTbdById () {
 
   //TODO
   return _tbdById;
-};
-
-module.exports.getStaticInfoById = function getStaticInfoById () {
-
-  //TODO
-  return _staticInfoById;
 };

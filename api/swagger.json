@@ -41,10 +41,6 @@
         {
             "name": "TimeBasedData",
             "description": "Time-based data"
-        },
-        {
-            "name": "StaticInfo",
-            "description": "Static data descriptions"
         }
     ],
     "paths": {
@@ -225,27 +221,6 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/tbdinfo"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/static/": {
-            "get": {
-                "x-swagger-router-controller": "StaticInfo",
-                "tags": [
-                    "StaticInfo"
-                ],
-                "summary": "Available static info list",
-                "operationId": "timeBasedDataList",
-                "responses": {
-                    "200": {
-                        "description": "Available static info resorces",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/stinfo"
                             }
                         }
                     }
@@ -572,23 +547,6 @@
                 }
             },
             "description": "Time-based data description"
-        },
-        "stinfo": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "Unique identifier representing a specific static information"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "Static information description"
-                },
-                "path": {
-                    "type": "string",
-                    "description": "Static information path schema"
-                }
-            },
-            "description": "Static information description"
         },
         "metricresult": {
             "properties": {
