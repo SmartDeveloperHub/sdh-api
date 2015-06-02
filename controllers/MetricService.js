@@ -31,6 +31,13 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     var acum = 0;
 
     // Normalice parameters
+    if (!(mid in metricsById)) {
+        console.log("MID not found");
+        callback();
+        return;
+    }
+
+    // TODO take the correct params for the specific metric and validate it (uid & rid)
     if (uid && !(uid in usersById)) {
         console.log("UID not found");
         callback();
@@ -43,22 +50,16 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         return;
     }
 
-    if (!(mid in metricsById)) {
-        console.log("MID not found");
-        callback();
-        return;
-    }
-
+    // default dates
     if (typeof from == 'undefined') {
-        // default date
         from = new Date("Thu Apr 1 2015");
     }
     if (typeof to == 'undefined') {
-        // default date
         to = new Date("Thu Apr 25 2015");
     }
     from = from.getTime();
     to = to.getTime();
+
     /* Unnecessary. Swagger auto-validation
     if (moment(from).isValid()) {
         console.log("valid from")
@@ -77,6 +78,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         to = new Date("Thu Apr 25 2015").getTime();
     }
     */
+    // TODO take the correct params for the specific metric and validate it (accumulated, aggr, max)
     if (!accumulated) {
         accumulated = false;
     }

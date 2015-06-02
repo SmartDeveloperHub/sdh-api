@@ -27,104 +27,144 @@ exports.metrics = [
     {
         "metricid" : "orgcommits",
         "path" : "/metrics/orgcommits",
-        "description" : "Organization commits number"
+        "description" : "Organization commits number",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "orgdevelopers",
         "path" : "/metrics/orgdevelopers",
-        "description" : "Organization developers number"
+        "description" : "Organization developers number",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "orgrepositories",
         "path" : "/metrics/orgrepositories",
-        "description" : "Organization repositories number"
+        "description" : "Organization repositories number",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "orgbuilds",
         "path" : "/metrics/orgbuilds",
-        "description" : "Total organization builds"
+        "description" : "Total organization builds",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "organizationexec",
         "path" : "/metrics/organizationexec",
-        "description" : "Total organization executions"
+        "description" : "Total organization executions",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "organizationsuccessexec",
         "path" : "/metrics/organizationsuccessexec",
-        "description" : "Total organization successful executions"
+        "description" : "Total organization successful executions",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "organizationbrokenexec",
         "path" : "/metrics/organizationbrokenexec",
-        "description" : "Total organization broken executions"
+        "description" : "Total organization broken executions",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "organizationbrokentime",
         "path" : "/metrics/organizationbrokentime",
-        "description" : "Organization build broken time"
+        "description" : "Organization build broken time",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "organizationexectime",
         "path" : "/metrics/organizationexectime",
-        "description" : "Organization build execution time"
+        "description" : "Organization build execution time",
+        "params": [],
+        "aggregates": ['sum','max','min','avg']
     },
     // User Metrics
     {
         "metricid" : "usercommits",
         "path" : "/users/{uid}/metrics/usercommits",
-        "description" : "Total user commits"
+        "description" : "Total user commits",
+        "params": ['uid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "userrepositories",
         "path" : "/users/{uid}/metrics/userrepositories",
-        "description" : "Total user repositories"
+        "description" : "Total user repositories",
+        "params": ['uid'],
+        "aggregates": ['sum','max','min','avg']
     },
     // Repository Metrics
     {
         "metricid" : "repositorycommits",
-        "path" : "/repositories/{pid}/metrics/repositorycommits",
-        "description" : "Total repository commits"
+        "path" : "/repositories/{rid}/metrics/repositorycommits",
+        "description" : "Total repository commits",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositorydevelopers",
-        "path" : "/repositories/{pid}/metrics/repositorydevelopers",
-        "description" : "Total repository developers"
+        "path" : "/repositories/{rid}/metrics/repositorydevelopers",
+        "description" : "Total repository developers",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositorybuilds",
-        "path" : "/repositories/{pid}/metrics/repositorybuilds",
-        "description" : "Total repository builds"
+        "path" : "/repositories/{rid}/metrics/repositorybuilds",
+        "description" : "Total repository builds",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositoryexec",
-        "path" : "/repositories/{pid}/metrics/repositoryexec",
-        "description" : "Total repository executions"
+        "path" : "/repositories/{rid}/metrics/repositoryexec",
+        "description" : "Total repository executions",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositoriesuccessexec",
-        "path" : "/repositories/{pid}/metrics/repositoriesuccessexec",
-        "description" : "Total repository successful executions"
+        "path" : "/repositories/{rid}/metrics/repositoriesuccessexec",
+        "description" : "Total repository successful executions",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositorybrokenexec",
-        "path" : "/repositories/{pid}/metrics/repositorybrokenexec",
-        "description" : "Total repository broken executions"
+        "path" : "/repositories/{rid}/metrics/repositorybrokenexec",
+        "description" : "Total repository broken executions",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositorybrokentime",
-        "path" : "/repositories/{pid}/metrics/repositorybrokentime",
-        "description" : "Repository build broken time"
+        "path" : "/repositories/{rid}/metrics/repositorybrokentime",
+        "description" : "Repository build broken time",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     {
         "metricid" : "repositoryexectime",
-        "path" : "/repositories/{pid}/metrics/repositoryexectime",
-        "description" : "Repository build execution time"
+        "path" : "/repositories/{rid}/metrics/repositoryexectime",
+        "description" : "Repository build execution time",
+        "params": ['rid'],
+        "aggregates": ['sum','max','min','avg']
     },
     // User-Repository Metrics
     {
         "metricid" : "userrepositorycommits",
-        "path" : "/users/{uid}/repositories/{pid}/metrics/userrepositorycommits",
-        "description" : "User-Repository commits number"
+        "path" : "/users/{uid}/repositories/{rid}/metrics/userrepositorycommits",
+        "description" : "User-Repository commits number",
+        "params": ['uid','rid'],
+        "aggregates": ['sum','max','min','avg']
     }
 ];
