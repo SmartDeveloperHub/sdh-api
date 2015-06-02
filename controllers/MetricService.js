@@ -124,7 +124,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
                 "to" : to
             },
             "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-            "metricinfo" : metricsById[mid].path,
+            "metricinfo" : metricsById[mid],
             "timestamp" : themetric.timestamp
         };
         callback(result);
