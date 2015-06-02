@@ -558,6 +558,13 @@
                 "path": {
                     "type": "string",
                     "description": "Time-based data path schema"
+                },
+                "params": {
+                    "type": "array",
+                    "description": "Required parameters",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             },
             "description": "Time-based data description"
