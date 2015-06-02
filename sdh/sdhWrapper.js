@@ -34,7 +34,10 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
 exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
     var val = [];
     var acum = 0;
-
+    // Only for test, max=0 ---> all available values
+    if (max == 0) {
+        max = 24;
+    }
     for (var i = 0; i < max; i++) {
         if (accumulated) {
             acum += parseInt(Math.random() * 100);
