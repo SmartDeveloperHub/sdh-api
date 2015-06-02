@@ -33,63 +33,87 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     // Normalice parameters
     if (!(mid in metricsById)) {
         console.log("MID not found");
-        callback();
+        callback(404);
         return;
     }
 
-    // TODO take the correct params for the specific metric and validate it (uid & rid)
-    if (uid && !(uid in usersById)) {
-        console.log("UID not found");
-        callback();
-        return;
+    if (metricsById[mid].params.indexOf('uid') >= 0) {
+        // uid required for this metric
+        if (typeof uid == 'undefined') {
+            console.log(mid + " metric require query param 'uid' ");
+            callback();
+            return;
+        } else if (!(uid in usersById)) {
+            console.log("UID not found");
+            callback(404);
+            return;
+        }
+    } else if (typeof uid !== 'undefined') {
+        console.log(mid + " metric does not require query param 'uid'");
+        uid = null;
     }
 
-    if (rid && !(rid in repositoriesById)) {
-        console.log("RID not found");
-        callback();
-        return;
+    if (metricsById[mid].params.indexOf('rid') >= 0) {
+        // rid required for this metric
+        if (typeof rid == 'undefined') {
+            console.log(mid + " metric require query param 'rid'");
+            callback();
+            return;
+        } else if (!(rid in repositoriesById)) {
+            console.log("RID not found");
+            callback(404);
+            return;
+        }
+    } else if (typeof rid !== 'undefined') {
+        console.log(mid + " metric does not require query param 'rid'");
+        rid = null;
     }
 
-    // default dates
-    if (typeof from == 'undefined') {
-        from = new Date("Thu Apr 1 2015");
+    if (metricsById[mid].params.indexOf('from') >= 0) {
+        // from date parameter required for this metric
+        if (typeof from == 'undefined') {
+            console.log(mid + " metric require query param 'from'");
+            callback();
+            return;
+        }
+    } else if (typeof from == 'undefined') {
+        from = defaultDateRange.from;
     }
-    if (typeof to == 'undefined') {
-        to = new Date("Thu Apr 25 2015");
+
+    if (metricsById[mid].params.indexOf('to') >= 0) {
+        // to date parameter required for this metric
+        if (typeof to == 'undefined') {
+            console.log(mid + " metric require query param 'to'");
+            callback();
+            return;
+        }
+    } else if (typeof to == 'undefined') {
+        to = defaultDateRange.to;
     }
+    // Dates in ms
     from = from.getTime();
     to = to.getTime();
 
-    /* Unnecessary. Swagger auto-validation
-    if (moment(from).isValid()) {
-        console.log("valid from")
-        from = from.getTime();
-    } else {
-        // default from date
-        console.log("'from' date is not valid. default date: " + from);
-        from = new Date("Thu Apr 1 2015").getTime();
-    }
-    if (moment(to).isValid()) {
-        console.log("valid to")
-        to = to.getTime();
-    } else {
-        // default to date
-        console.log("'to' date is not valid. default date: " + to);
-        to = new Date("Thu Apr 25 2015").getTime();
-    }
-    */
-    // TODO take the correct params for the specific metric and validate it (accumulated, aggr, max)
-    if (!accumulated) {
-        accumulated = false;
-    }
-
-    if (!aggr) {
-        aggr = "sum";
-    }
-
-    if (!max || max == 0) {
+    if (metricsById[mid].params.indexOf('max') >= 0) {
+        // max parameter required for this metric
+        if (typeof max == 'undefined') {
+            console.log(mid + " metric require query param 'max'");
+            callback();
+            return;
+        } else if (typeof max !== 'number') {
+            console.log("invalid query param 'max': " + max);
+            callback();
+            return;
+        }
+    } else if (typeof max == 'undefined') {
         // default long
-        max = 24;
+        max = 0; //all available values in serie
+    }
+
+    if (metricsById[mid].aggr.indexOf(aggr) < 0) {
+        console.log(mid + " metric does not accept '" + aggr + "' aggregator;" + metricsById[mid].aggr.indexOf(aggr)+'   '+ metricsById[mid].aggr);
+        callback();
+        return;
     }
 
     var localcallback = function(themetric) {
