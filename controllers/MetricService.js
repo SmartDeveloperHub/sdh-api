@@ -33,16 +33,19 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     // Normalice parameters
     if (uid && !(uid in usersById)) {
         console.log("UID not found");
+        callback();
         return;
     }
 
-    if (rid && !(rid in usersById)) {
+    if (rid && !(rid in repositoriesById)) {
         console.log("RID not found");
+        callback();
         return;
     }
 
     if (!(mid in metricsById)) {
         console.log("MID not found");
+        callback();
         return;
     }
 
