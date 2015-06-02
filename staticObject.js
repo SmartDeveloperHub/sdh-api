@@ -33,15 +33,14 @@ var _repositoriesById = {};
 var _metricsById = {};
 var _tbdById = {};
 var _staticInfoById = {};
-
 // Static data structures generation
 for(var i = 0; i < metrics.metrics.length; i++) {
-    _metricsById[metrics.metrics[i].metricid] = metrics.metrics[i];
-}
-for(var i = 0; i < tbd.tbd.length; i++) {
-    _tbdById[tbd.tbd[i].metricid] = tbd.tbd[i];
+    _metricsById[metrics.metrics[i].id] = metrics.metrics[i];
 }
 
+for(var i = 0; i < tbd.tbd.length; i++) {
+    _tbdById[tbd.tbd[i].id] = tbd.tbd[i];
+}
 for(var i = 0; i < _usersFake.fakeUsersInfo.length; i++) {
     _usersById[_usersFake.fakeUsersInfo[i].userid] = _usersFake.fakeUsersInfo[i];
 }
