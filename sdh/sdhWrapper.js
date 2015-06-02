@@ -24,7 +24,6 @@
 
 exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     //TODO Agora rules :)
-    console.log('getTBDValue');
     callback({
         'data': parseInt(Math.random() * 1000),
         'timestamp': new Date()
