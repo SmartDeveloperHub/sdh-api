@@ -25,13 +25,13 @@
 exports.tbd = [
     // API Time-based data
     {
-        "metricid" : "reporangeduserlist",
+        "id" : "reporangeduserlist",
         "path" : "/tbd/rangeduserlist",
         "description" : "Ranged users list in repository",
         "params": ['uid']
     },
     {
-        "metricid" : "userrangedrepolist",
+        "id" : "userrangedrepolist",
         "path" : "/tbd/rangedrepolist",
         "description" : "Ranged repository list for user",
         "params": ['rid']
