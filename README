@@ -5,3 +5,5 @@ npm install
 node index.js
 
 try it in localhost:8080
+
+If you want to change the port, you need to replace '8080' with your own port in /api/swagger.json and index.html files.
