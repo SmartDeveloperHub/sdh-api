@@ -31,10 +31,17 @@ module.exports.apiInfo = function apiInfo (req, res, next) {
     var result = API.apiInfo();
     res.setHeader('Access-Control-Allow-Origin', '*');
     if(typeof result !== 'undefined') {
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    }
-    else {
+        if(typeof result == 'number') {
+            // specific error
+            res.statusCode = result;
+            res.end();
+        } else {
+            // success
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(result || {}, null, 2));
+        }
+    } else {
+        res.statusCode = 500;
         res.end();
     }
 };
