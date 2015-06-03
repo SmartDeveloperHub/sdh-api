@@ -52,3 +52,11 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         'timestamp': new Date()
     });
 };
+
+exports.userExist = function (uid, callback) {
+  callback(uid in userById);
+}
+
+exports.repoExist = function (rid, callback) {
+  callback(rid in repositoriesById);
+}
