@@ -61,13 +61,6 @@ GLOBAL.sdhWrapper = require('./sdh/sdhWrapper');
 
 // Get static info (get it one time by the moment)
 var staticObject = require('./staticObject');
-GLOBAL.metricsById = staticObject.getMetricsById();
-GLOBAL.repositories = staticObject.getRepositories();
-GLOBAL.users = staticObject.getUsers();
-GLOBAL.usersById = staticObject.getUsersById();
-GLOBAL.repositoriesById = staticObject.getRepositoriesById();
-GLOBAL.tbdById = staticObject.getTbdById();
-GLOBAL.defaultDateRange = staticObject.getDefaultDateRange();
 
 
 // Initialize the Swagger middleware

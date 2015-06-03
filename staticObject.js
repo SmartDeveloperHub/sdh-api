@@ -88,3 +88,11 @@ module.exports.getDefaultDateRange = function getDefaultDateRange () {
   //TODO
   return _defaultDateRange;
 };
+
+GLOBAL.metricsById = this.getMetricsById();
+GLOBAL.repositories = this.getRepositories();
+GLOBAL.users = this.getUsers();
+GLOBAL.usersById = this.getUsersById();
+GLOBAL.repositoriesById = this.getRepositoriesById();
+GLOBAL.tbdById = this.getTbdById();
+GLOBAL.defaultDateRange = this.getDefaultDateRange();
