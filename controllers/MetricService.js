@@ -28,107 +28,148 @@ exports.metricList = function(callback) {
 };
 
 exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
+
+        var metricRequest = function metricRequest () {
+        // Normalize params
+        if (!uidRequired && typeof uid !== 'undefined') {
+            console.log(mid + " metric does not require query param 'uid'");
+            uid = null;
+        }
+        if (!ridRequired && typeof rid !== 'undefined') {
+            console.log(mid + " metric does not require query param 'rid'");
+            rid = null;
+        }
+
+        // Date Range
+        if (typeof from == 'undefined') {
+            from = defaultDateRange.from;
+        }
+        if (typeof to == 'undefined') {
+            to = defaultDateRange.to;
+        }
+        // Dates in ms
+        from = from.getTime();
+        to = to.getTime();
+
+        // max
+        if (typeof max == 'undefined') {
+            max = 0; //all available values in serie
+        } else if (typeof max !== 'number' || max < 0) {
+            console.log("invalid query param 'max': " + max);
+            callback(400);
+            return;
+        }
+
+        // aggregator
+        if (typeof aggr == 'undefined') {
+            aggr = null; //null aggr
+        } else if (metricsById[mid].aggr.indexOf(aggr) < 0) {
+            console.log(mid + " metric does not accept '" + aggr + "' aggregator");
+            callback(400);
+            return;
+        }
+
+        var localcallback2 = function(themetric) {
+            var result = {
+                "values" : themetric.data,
+                "interval" : {
+                    "from" : from,
+                    "to" : to
+                },
+                "step" : parseInt((parseInt(to) - parseInt(from))/ max),
+                "metricinfo" : metricsById[mid],
+                "timestamp" : themetric.timestamp
+            };
+            callback(result);
+        };
+
+        sdhWrapper.getMetricValue(mid, rid, uid, from, to, accumulated, max, aggr, localcallback2);
+    };
+
     var acum = 0;
 
-    // Normalice parameters
+    // check ids
     if (!(mid in metricsById)) {
-        console.log("MID not found: " + mid);
+        console.error("MID not found: " + mid);
         callback(404);
         return;
     }
 
-    if (metricsById[mid].params.indexOf('uid') >= 0) {
-        // uid required for this metric
+    var uidRequired = metricsById[mid].params.indexOf('uid') >= 0;
+    var ridRequired = metricsById[mid].params.indexOf('rid') >= 0;
+
+    if (uidRequired && ridRequired) {
+        // uid and rid required for this metric
         if (typeof uid == 'undefined') {
-            console.log(mid + " metric require query param 'uid' ");
-            callback();
-            return;
-        } else if (!(uid in usersById)) {
-            console.log("UID not found: " + uid);
-            callback(404);
+            console.error(mid + " metric require query param 'uid'");
+            callback(400);
             return;
         }
-    } else if (typeof uid !== 'undefined') {
-        console.log(mid + " metric does not require query param 'uid'");
-        uid = null;
-    }
-
-    if (metricsById[mid].params.indexOf('rid') >= 0) {
-        // rid required for this metric
+        if (typeof rid == 'undefined') {
+            console.error(mid + " metric require query param 'rid'");
+            callback(400);
+            return;
+        }
+        sdhWrapper.userExist(uid, function(usExist) {
+            if (!usExist) {
+                console.error("UID not found: " + uid);
+                callback(404);
+            } else {
+                sdhWrapper.repoExist(rid, function(reExist) {
+                    if (!reExist) {
+                        console.error("RID not found: " + rid);
+                        callback(404);
+                    } else {
+                        // continue with the metric
+                        metricRequest();
+                    }
+                    return;
+                });
+            }
+            return;
+        });
+        return;
+    } else if (uidRequired) {
+        // only uid required for this metric
+        if (typeof uid == 'undefined') {
+            console.error(mid + " metric require query param 'uid'");
+            callback(400);
+            return;
+        } else {
+            sdhWrapper.userExist(uid, function(usExist) {
+                if (!usExist) {
+                    console.error("UID not found: " + uid);
+                    callback(404);
+                } else {
+                    // continue with the metric
+                    metricRequest();
+                }
+                return;
+            });
+        }
+        return;
+    } else if (ridRequired) {
+        // only rid required for this metric
         if (typeof rid == 'undefined') {
             console.log(mid + " metric require query param 'rid'");
-            callback();
+            callback(400);
             return;
-        } else if (!(rid in repositoriesById)) {
-            console.log("RID not found");
-            callback(404);
-            return;
+        } else {
+            sdhWrapper.repoExist(rid, function(reExist) {
+                if (!reExist) {
+                    console.log("RID not found: " + rid);
+                    callback(404);
+                } else {
+                    // continue with the metric
+                    metricRequest();
+                }
+                return;
+            });
+            
         }
-    } else if (typeof rid !== 'undefined') {
-        console.log(mid + " metric does not require query param 'rid'");
-        rid = null;
-    }
-
-    if (metricsById[mid].params.indexOf('from') >= 0) {
-        // from date parameter required for this metric
-        if (typeof from == 'undefined') {
-            console.log(mid + " metric require query param 'from'");
-            callback();
-            return;
-        }
-    } else if (typeof from == 'undefined') {
-        from = defaultDateRange.from;
-    }
-
-    if (metricsById[mid].params.indexOf('to') >= 0) {
-        // to date parameter required for this metric
-        if (typeof to == 'undefined') {
-            console.log(mid + " metric require query param 'to'");
-            callback();
-            return;
-        }
-    } else if (typeof to == 'undefined') {
-        to = defaultDateRange.to;
-    }
-    // Dates in ms
-    from = from.getTime();
-    to = to.getTime();
-
-    if (metricsById[mid].params.indexOf('max') >= 0) {
-        // max parameter required for this metric
-        if (typeof max == 'undefined') {
-            console.log(mid + " metric require query param 'max'");
-            callback();
-            return;
-        } else if (typeof max !== 'number') {
-            console.log("invalid query param 'max': " + max);
-            callback();
-            return;
-        }
-    } else if (typeof max == 'undefined') {
-        // default long
-        max = 0; //all available values in serie
-    }
-
-    if (metricsById[mid].aggr.indexOf(aggr) < 0) {
-        console.log(mid + " metric does not accept '" + aggr + "' aggregator");
-        callback();
         return;
+    } else {
+        // no one id is required
+        metricRequest();
     }
-
-    var localcallback = function(themetric) {
-        var result = {
-            "values" : themetric.data,
-            "interval" : {
-                "from" : from,
-                "to" : to
-            },
-            "step" : parseInt((parseInt(to) - parseInt(from))/ max),
-            "metricinfo" : metricsById[mid],
-            "timestamp" : themetric.timestamp
-        };
-        callback(result);
-    };
-
-    sdhWrapper.getMetricValue(mid, rid, uid, from, to, accumulated, max, aggr, localcallback);
 };
