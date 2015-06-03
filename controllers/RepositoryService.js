@@ -32,11 +32,14 @@ exports.repositoryInfo = function(rid, callback) {
     var rep;
     if (rid in repositoriesById) {
         rep = repositoriesById[rid];
-        var localUsers = [];
-        /*for() {
-
-        }*/
-        rep['users'] = localUsers;
+        var localUsers = users;
+        var repoUsers = [];
+        for(var i = 0; i < localUsers.length; i ++) {
+            if (localUsers[i].userid == rep.owner) {
+                repoUsers.push(localUsers[i]);
+            }
+        }
+        rep['users'] = repoUsers;
     } else {
         console.log("--RID not found");
     }

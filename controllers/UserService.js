@@ -32,13 +32,18 @@ exports.userInfo = function(uid, callback) {
     var _user;
     if (uid in usersById) {
         _user = usersById[uid];
-        var localRepos = [];
-        /*for() {
-          
-        }*/
-        _user['repositories'] = localRepos;
+        var localRepos = repositories;
+        var userRepos = [];
+        for(var i = 0; i < localRepos.length; i ++) {
+            if (localRepos[i].owner == uid) {
+                userRepos.push(localRepos[i]);
+            }
+        }
+        _user['repositories'] = userRepos;
     } else {
         console.log("--UID not found");
+        callback(404);
+        return;
     }
     callback(_user);
 };
