@@ -24,8 +24,27 @@
 
 exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     //TODO Agora rules :)
+    var i;
+    var val = [];
+    // For test
+    if (tid == 'userrangedrepolist') {
+        for (i = 0; i < repositories.length; i ++) {
+            if (repositories[i].owner == uid) {
+               val.push(repositories[i]);
+            }
+        }
+    } else if (tid == 'reporangeduserlist') {
+       for (i = 0; i < repositories.length; i ++) {
+            if (repositories[i].repositoryid == rid) {
+               val.push(usersById[repositories[i].owner]);
+            }
+        }
+    } else {
+        val = parseInt(Math.random() * 1000);
+    }
+
     callback({
-        'data': parseInt(Math.random() * 1000),
+        'data': val,
         'timestamp': new Date()
     });
 };
@@ -54,9 +73,9 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
 };
 
 exports.userExist = function (uid, callback) {
-  callback(uid in userById);
+    callback(uid in usersById);
 }
 
 exports.repoExist = function (rid, callback) {
-  callback(rid in repositoriesById);
+    callback(rid in repositoriesById);
 }
