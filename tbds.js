@@ -26,15 +26,15 @@ exports.tbd = [
     // API Time-based data
     {
         "id" : "reporangeduserlist",
-        "path" : "/tbd/rangeduserlist",
+        "path" : "/tbd/reporangeduserlist",
         "description" : "Ranged users list in repository",
-        "params": ['uid']
+        "params": ['rid']
     },
     {
         "id" : "userrangedrepolist",
-        "path" : "/tbd/rangedrepolist",
+        "path" : "/tbd/userrangedrepolist",
         "description" : "Ranged repository list for user",
-        "params": ['rid']
+        "params": ['uid']
     },
     // TODO orgrangeduserlist y orgrangedrepolist
     // TODO rangedlastcommit rangedfirstcommit (user, org, repo, user in repo, user in org)

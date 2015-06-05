@@ -90,14 +90,14 @@ exports.metrics = [
     // User Metrics
     {
         "id" : "usercommits",
-        "path" : "/users/{uid}/metrics/usercommits",
+        "path" : "/metrics/usercommits",
         "description" : "Total user commits",
         "params": ['uid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "userrepositories",
-        "path" : "/users/{uid}/metrics/userrepositories",
+        "path" : "/metrics/userrepositories",
         "description" : "Total user repositories",
         "params": ['uid'],
         "aggr": ['sum','max','min','avg']
@@ -105,56 +105,56 @@ exports.metrics = [
     // Repository Metrics
     {
         "id" : "repositorycommits",
-        "path" : "/repositories/{rid}/metrics/repositorycommits",
+        "path" : "/metrics/repositorycommits",
         "description" : "Total repository commits",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositorydevelopers",
-        "path" : "/repositories/{rid}/metrics/repositorydevelopers",
+        "path" : "/metrics/repositorydevelopers",
         "description" : "Total repository developers",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositorybuilds",
-        "path" : "/repositories/{rid}/metrics/repositorybuilds",
+        "path" : "/metrics/repositorybuilds",
         "description" : "Total repository builds",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositoryexec",
-        "path" : "/repositories/{rid}/metrics/repositoryexec",
+        "path" : "/metrics/repositoryexec",
         "description" : "Total repository executions",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositoriesuccessexec",
-        "path" : "/repositories/{rid}/metrics/repositoriesuccessexec",
+        "path" : "/metrics/repositoriesuccessexec",
         "description" : "Total repository successful executions",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositorybrokenexec",
-        "path" : "/repositories/{rid}/metrics/repositorybrokenexec",
+        "path" : "/metrics/repositorybrokenexec",
         "description" : "Total repository broken executions",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositorybrokentime",
-        "path" : "/repositories/{rid}/metrics/repositorybrokentime",
+        "path" : "/metrics/repositorybrokentime",
         "description" : "Repository build broken time",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
     },
     {
         "id" : "repositoryexectime",
-        "path" : "/repositories/{rid}/metrics/repositoryexectime",
+        "path" : "/metrics/repositoryexectime",
         "description" : "Repository build execution time",
         "params": ['rid'],
         "aggr": ['sum','max','min','avg']
@@ -162,7 +162,7 @@ exports.metrics = [
     // User-Repository Metrics
     {
         "id" : "userrepositorycommits",
-        "path" : "/users/{uid}/repositories/{rid}/metrics/userrepositorycommits",
+        "path" : "/metrics/userrepositorycommits",
         "description" : "User-Repository commits number",
         "params": ['uid','rid'],
         "aggr": ['sum','max','min','avg']
