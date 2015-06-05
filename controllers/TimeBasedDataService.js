@@ -28,85 +28,125 @@ exports.timeBasedDataList = function(callback) {
 };
 
 exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
-    var acum = 0;
 
-    // Normalice parameters
+    var tbdRequest = function tbdRequest () {
+        // Normalize params
+        if (!uidRequired && typeof uid !== 'undefined') {
+            console.log(tid + " time-based data does not require query param 'uid'");
+            uid = null;
+        }
+        if (!ridRequired && typeof rid !== 'undefined') {
+            console.log(tid + " time-based data does not require query param 'rid'");
+            rid = null;
+        }
+
+        // Date Range
+        if (typeof from == 'undefined') {
+            from = defaultDateRange.from;
+        }
+        if (typeof to == 'undefined') {
+            to = defaultDateRange.to;
+        }
+        // Dates in ms
+        from = from.getTime();
+        to = to.getTime();
+
+        var localcallback2 = function(thetbd) {
+            var result = {
+                "values" : thetbd.data,
+                "interval" : {
+                    "from" : from,
+                    "to" : to
+                },
+                "tbdinfo" : tbdById[tid],
+                "timestamp" : thetbd.timestamp
+            };
+            callback(result);
+        };
+        sdhWrapper.getTBDValue(tid, rid, uid, from, to, localcallback2);
+    };
+
+    // check ids
     if (!(tid in tbdById)) {
-        console.log("TID not found");
+        console.error("TID not found: " + tid);
         callback(404);
         return;
     }
 
-    if (tbdById[tid].params.indexOf('uid') >= 0) {
-        // uid required for this metric
+    var uidRequired = tbdById[tid].params.indexOf('uid') >= 0;
+    var ridRequired = tbdById[tid].params.indexOf('rid') >= 0;
+
+    if (uidRequired && ridRequired) {
+        // uid and rid required for this tbd
         if (typeof uid == 'undefined') {
-            console.log(tid + " metric require query param 'uid' ");
-            callback();
-            return;
-        } else if (!(uid in usersById)) {
-            console.log("UID not found: " + uid);
-            callback(404);
+            console.error(tid + " time-based data require query param 'uid'");
+            callback(400);
             return;
         }
-    } else if (typeof uid !== 'undefined') {
-        console.log(tid + " metric does not require query param 'uid'");
-        uid = null;
-    }
-
-    if (tbdById[tid].params.indexOf('rid') >= 0) {
-        // rid required for this metric
         if (typeof rid == 'undefined') {
-            console.log(tid + " metric require query param 'rid'");
-            callback();
-            return;
-        } else if (!(rid in repositoriesById)) {
-            console.log("RID not found: " + uid);
-            callback(404);
+            console.error(tid + " time-based data require query param 'rid'");
+            callback(400);
             return;
         }
-    } else if (typeof rid !== 'undefined') {
-        console.log(tid + " metric does not require query param 'rid'");
-        rid = null;
-    }
-
-    if (tbdById[tid].params.indexOf('from') >= 0) {
-        // from date parameter required for this metric
-        if (typeof from == 'undefined') {
-            console.log(tid + " metric require query param 'from'");
-            callback();
+        sdhWrapper.userExist(uid, function(usExist) {
+            if (!usExist) {
+                console.error("UID not found: " + uid);
+                callback(404);
+            } else {
+                sdhWrapper.repoExist(rid, function(reExist) {
+                    if (!reExist) {
+                        console.error("RID not found: " + rid);
+                        callback(404);
+                    } else {
+                        // continue with the tbd
+                        tbdRequest();
+                    }
+                    return;
+                });
+            }
             return;
-        }
-    } else if (typeof from == 'undefined') {
-        from = defaultDateRange.from;
-    }
-
-    if (tbdById[tid].params.indexOf('to') >= 0) {
-        // to date parameter required for this metric
-        if (typeof to == 'undefined') {
-            console.log(tid + " metric require query param 'to'");
-            callback();
+        });
+        return;
+    } else if (uidRequired) {
+        // only uid required for this tbd
+        if (typeof uid == 'undefined') {
+            console.error(tid + " time-based data require query param 'uid'");
+            callback(400);
             return;
+        } else {
+            sdhWrapper.userExist(uid, function(usExist) {
+                if (!usExist) {
+                    console.error("UID not found: " + uid);
+                    callback(404);
+                } else {
+                    // continue with the tbd
+                    tbdRequest();
+                }
+                return;
+            });
         }
-    } else if (typeof to == 'undefined') {
-        to = defaultDateRange.to;
+        return;
+    } else if (ridRequired) {
+        // only rid required for this tbd
+        if (typeof rid == 'undefined') {
+            console.log(tid + " time-based data require query param 'rid'");
+            callback(400);
+            return;
+        } else {
+            sdhWrapper.repoExist(rid, function(reExist) {
+                if (!reExist) {
+                    console.log("RID not found: " + rid);
+                    callback(404);
+                } else {
+                    // continue with the tbd
+                    tbdRequest();
+                }
+                return;
+            });
+        }
+        return;
+    } else {
+        // no one id is required
+        tbdRequest();
     }
-    // Dates in ms
-    from = from.getTime();
-    to = to.getTime();
-
-    var localcallback = function(thetbd) {
-        var result = {
-            "values" : thetbd.data,
-            "interval" : {
-                "from" : from,
-                "to" : to
-            },
-            "tbdinfo" : tbdById[tid],
-            "timestamp" : thetbd.timestamp
-        };
-        callback(result);
-    };
-
-    sdhWrapper.getTBDValue(tid, rid, uid, from, to, localcallback);
-
 };
