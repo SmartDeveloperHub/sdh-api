@@ -31,7 +31,7 @@ exports.userInfo = function(uid, callback) {
 
     var _user;
     if (uid in usersById) {
-        _user = usersById[uid];
+        _user = underscore(usersById[uid]).clone();
         var localRepos = repositories;
         var userRepos = [];
         for(var i = 0; i < localRepos.length; i ++) {

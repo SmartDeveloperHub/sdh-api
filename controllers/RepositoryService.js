@@ -31,7 +31,7 @@ exports.repositoryInfo = function(rid, callback) {
 
     var rep;
     if (rid in repositoriesById) {
-        rep = repositoriesById[rid];
+        rep = underscore(repositoriesById[rid]).clone();
         var localUsers = users;
         var repoUsers = [];
         for(var i = 0; i < localUsers.length; i ++) {
