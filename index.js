@@ -40,6 +40,7 @@ var swaggerDoc = require('./api/swagger.json');
 
 // global moment.js
 GLOBAL.moment = require('moment');
+GLOBAL.underscore = require('underscore');
 
 // Shut down function
 var gracefullyShuttinDown = function gracefullyShuttinDown() {
