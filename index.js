@@ -53,34 +53,29 @@ var gracefullyShuttinDown = function gracefullyShuttinDown() {
 process.on('SIGINT', gracefullyShuttinDown);
 process.on('SIGTERM', gracefullyShuttinDown);
 
-// TODO discover SDH platform metrics
-GLOBAL.metrics = require('./sdh/metrics.js');
-GLOBAL.tbd = require('./sdh/tbds.js');
+var launchSwaggerAPI = function() {
+    // Initialize the Swagger middleware
+    swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+        // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
+        app.use(middleware.swaggerMetadata());
 
-// SDH platform
-GLOBAL.sdhWrapper = require('./sdh/sdhWrapper');
+        // Validate Swagger requests
+        app.use(middleware.swaggerValidator());
 
-// Get static info (get it one time by the moment)
-var staticObject = require('./sdh/staticObject');
+        // Route validated requests to appropriate controller
+        app.use(middleware.swaggerRouter(options));
 
+        // Serve the Swagger documents and Swagger UI
+        app.use(middleware.swaggerUi());
 
-// Initialize the Swagger middleware
-swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
-    // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
-    app.use(middleware.swaggerMetadata());
-
-    // Validate Swagger requests
-    app.use(middleware.swaggerValidator());
-
-    // Route validated requests to appropriate controller
-    app.use(middleware.swaggerRouter(options));
-
-    // Serve the Swagger documents and Swagger UI
-    app.use(middleware.swaggerUi());
-
-    // Start the server
-    http.createServer(app).listen(serverPort, function () {
-        console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-        console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+        // Start the server
+        http.createServer(app).listen(serverPort, function () {
+            console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+            console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+        });
     });
-});
+};
+
+var loader = require('./sdh/init');
+
+loader.start(launchSwaggerAPI);

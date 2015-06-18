@@ -22,42 +22,63 @@
 
 'use strict';
 
-// TODO get from SDH platform
-var _repositoriesFake = require('./fakeRepositoriesInfo.js');
-var _usersFake = require('./fakeUsersInfo.js');
-var _defaultDateRange = {'from': new Date("Thu Apr 1 2015"), 'to': new Date("Thu Apr 25 2015")};
+var _repositories;
+var _users;
+var _defaultDateRange;
 
 // Local vars
-var _usersById = {};
-var _repositoriesById = {};
-var _metricsById = {};
-var _tbdById = {};
-var _staticInfoById = {};
-// Static data structures generation
-for(var i = 0; i < metrics.metrics.length; i++) {
-    _metricsById[metrics.metrics[i].id] = metrics.metrics[i];
-}
+var _usersById;
+var _repositoriesById;
+var _metricsById;
+var _tbdById;
+var _staticInfoById;
 
-for(var i = 0; i < tbd.tbd.length; i++) {
-    _tbdById[tbd.tbd[i].id] = tbd.tbd[i];
-}
-for(var i = 0; i < _usersFake.fakeUsersInfo.length; i++) {
-    _usersById[_usersFake.fakeUsersInfo[i].userid] = _usersFake.fakeUsersInfo[i];
-}
-for(var i = 0; i < _repositoriesFake.fakeRepositoriesInfo.length; i++) {
-    _repositoriesById[_repositoriesFake.fakeRepositoriesInfo[i].repositoryid] = _repositoriesFake.fakeRepositoriesInfo[i];
-}
+module.exports.preloadAll = function preloadAll (callback) {
+    // TODO get from SDH platform
+    _repositories = require('./fakeRepositoriesInfo.js');
+    _users = require('./fakeUsersInfo.js');
+    _defaultDateRange = {'from': new Date("Thu Apr 1 2015"), 'to': new Date("Thu Apr 25 2015")};
+
+    _usersById = {};
+    _repositoriesById = {};
+    _metricsById = {};
+    _tbdById = {};
+    _staticInfoById = {};
+
+    // Static data structures generation
+    for(var i = 0; i < metrics.metrics.length; i++) {
+        _metricsById[metrics.metrics[i].id] = metrics.metrics[i];
+    }
+    for(var i = 0; i < tbd.tbd.length; i++) {
+        _tbdById[tbd.tbd[i].id] = tbd.tbd[i];
+    }
+    for(var i = 0; i < _users.fakeUsersInfo.length; i++) {
+        _usersById[_users.fakeUsersInfo[i].userid] = _users.fakeUsersInfo[i];
+    }
+    for(var i = 0; i < _repositories.fakeRepositoriesInfo.length; i++) {
+        _repositoriesById[_repositories.fakeRepositoriesInfo[i].repositoryid] = _repositories.fakeRepositoriesInfo[i];
+    }
+    // Make global all this methods for param validation
+    GLOBAL.metricsById = this.getMetricsById();
+    GLOBAL.repositories = this.getRepositories();
+    GLOBAL.users = this.getUsers();
+    GLOBAL.usersById = this.getUsersById();
+    GLOBAL.repositoriesById = this.getRepositoriesById();
+    GLOBAL.tbdById = this.getTbdById();
+    GLOBAL.defaultDateRange = this.getDefaultDateRange();
+    callback();
+};
 
 module.exports.getRepositories = function getRepositories () {
 
   //TODO
-  return _repositoriesFake.fakeRepositoriesInfo;
+  return _repositories.fakeRepositoriesInfo;
 };
 
 module.exports.getUsers = function getUsers () {
 
   //TODO
-  return _usersFake.fakeUsersInfo;
+  return _users.fakeUsersInfo;
 };
 
 module.exports.getRepositoriesById = function getRepositoriesById () {
@@ -88,11 +109,3 @@ module.exports.getDefaultDateRange = function getDefaultDateRange () {
   //TODO
   return _defaultDateRange;
 };
-
-GLOBAL.metricsById = this.getMetricsById();
-GLOBAL.repositories = this.getRepositories();
-GLOBAL.users = this.getUsers();
-GLOBAL.usersById = this.getUsersById();
-GLOBAL.repositoriesById = this.getRepositoriesById();
-GLOBAL.tbdById = this.getTbdById();
-GLOBAL.defaultDateRange = this.getDefaultDateRange();

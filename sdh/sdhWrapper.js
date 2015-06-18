@@ -74,8 +74,20 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
 
 exports.userExist = function (uid, callback) {
     callback(uid in usersById);
-}
+};
 
 exports.repoExist = function (rid, callback) {
     callback(rid in repositoriesById);
-}
+};
+
+exports.getAvailableTbds = function getAvailableTbds(callback) {
+    // TODO discover SDH platform metrics
+    GLOBAL.tbd = require('./tbds.js');
+    callback();
+};
+
+exports.getAvailableMetrics = function getAvailableMetrics(callback) {
+    // TODO discover SDH platform metrics
+    GLOBAL.metrics = require('./metrics.js');
+    callback();
+};
