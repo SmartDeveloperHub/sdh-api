@@ -61,6 +61,13 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
                 "tbdinfo" : tbdById[tid],
                 "timestamp" : thetbd.timestamp
             };
+            // Add resource static information inside tbdinfo
+            if (result.tbdinfo.params.indexOf('uid') >= 0) {
+                result.tbdinfo['uid'] = usersById[uid];
+            }
+            if (result.tbdinfo.params.indexOf('rid') >= 0) {
+                result.tbdinfo['rid'] =  repositoriesById[rid];
+            }
             callback(result);
         };
         sdhWrapper.getTBDValue(tid, rid, uid, from, to, localcallback2);

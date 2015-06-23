@@ -80,6 +80,13 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
                 "metricinfo" : metricsById[mid],
                 "timestamp" : themetric.timestamp
             };
+            // Add resource static information inside metricinfo
+            if (result.metricinfo.params.indexOf('uid') >= 0) {
+                result.metricinfo['uid'] = usersById[uid];
+            }
+            if (result.metricinfo.params.indexOf('rid') >= 0) {
+                result.metricinfo['rid'] =  repositoriesById[rid];
+            }
             callback(result);
         };
 
