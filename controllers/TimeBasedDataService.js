@@ -58,15 +58,15 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
                     "from" : from,
                     "to" : to
                 },
-                "info" : tbdById[tid],
+                "info" : underscore(tbdById[tid]).clone(),
                 "timestamp" : thetbd.timestamp
             };
             // Add resource static information inside info
             if (result.info.params.indexOf('uid') >= 0) {
-                result.info['uid'] = usersById[uid];
+                result.info['uid'] = underscore(usersById[uid]).clone();
             }
             if (result.info.params.indexOf('rid') >= 0) {
-                result.info['rid'] =  repositoriesById[rid];
+                result.info['rid'] =  underscore(repositoriesById[rid]).clone();
             }
             callback(result);
         };

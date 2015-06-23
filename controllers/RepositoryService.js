@@ -39,7 +39,7 @@ exports.repositoryInfo = function(rid, callback) {
                 repoUsers.push(localUsers[i]);
             }
         }
-        rep['users'] = repoUsers;
+        rep['users'] = underscore(repoUsers).clone();
     } else {
         console.log("--RID not found");
     }

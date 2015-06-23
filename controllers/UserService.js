@@ -39,7 +39,7 @@ exports.userInfo = function(uid, callback) {
                 userRepos.push(localRepos[i]);
             }
         }
-        _user['repositories'] = userRepos;
+        _user['repositories'] = underscore(userRepos).clone();
     } else {
         console.log("--UID not found");
         callback(404);

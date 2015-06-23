@@ -77,15 +77,15 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
                     "to" : to
                 },
                 "step" : parseInt((parseInt(to) - parseInt(from))/ themetric.data.length),
-                "info" : metricsById[mid],
+                "info" : underscore(metricsById[mid]).clone(),
                 "timestamp" : themetric.timestamp
             };
             // Add resource static information inside info
             if (result.info.params.indexOf('uid') >= 0) {
-                result.info['uid'] = usersById[uid];
+                result.info['uid'] = underscore(usersById[uid]).clone();
             }
             if (result.info.params.indexOf('rid') >= 0) {
-                result.info['rid'] =  repositoriesById[rid];
+                result.info['rid'] = underscore(repositoriesById[rid]).clone();
             }
             callback(result);
         };
