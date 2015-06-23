@@ -58,7 +58,7 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
                     "from" : from,
                     "to" : to
                 },
-                "tbdinfo" : tbdById[tid],
+                "info" : tbdById[tid],
                 "timestamp" : thetbd.timestamp
             };
             // Add resource static information inside tbdinfo

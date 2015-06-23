@@ -77,7 +77,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
                     "to" : to
                 },
                 "step" : parseInt((parseInt(to) - parseInt(from))/ themetric.data.length),
-                "metricinfo" : metricsById[mid],
+                "info" : metricsById[mid],
                 "timestamp" : themetric.timestamp
             };
             // Add resource static information inside metricinfo
