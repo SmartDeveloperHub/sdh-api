@@ -23,19 +23,148 @@
 'use strict';
 
 exports.tbd = [
-    // API Time-based data
     {
-        "id" : "reporangeduserlist",
-        "path" : "/tbdata/reporangeduserlist",
-        "description" : "Ranged users list in repository",
-        "params": ['rid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "id": "reporangeduserlist",
+        "path": "/tbdata/reporangeduserlist",
+        "description": "Ranged users list in repository",
+        "params": [
+            "rid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
     },
     {
-        "id" : "userrangedrepolist",
-        "path" : "/tbdata/userrangedrepolist",
-        "description" : "Ranged repository list for user",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "id": "userrangedrepolist",
+        "path": "/tbdata/userrangedrepolist",
+        "description": "Ranged repository list for user",
+        "params": [
+            "uid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "orgrangeduserlist",
+        "path": "/tbdata/orgrangeduserlist",
+        "description": "Ranged repository list in the Organization",
+        "params": [],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "orgrangedrepolist",
+        "path": "/tbdata/orgrangedrepolist",
+        "description": "Ranged repository list in the Organization",
+        "params": [],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "orgrangedlastcommit",
+        "path": "/tbdata/orgrangedlastcommit",
+        "description": "Ranged last commit date in the Organization",
+        "params": [],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "orgrangedfirstcommit",
+        "path": "/tbdata/orgrangedfirstcommit",
+        "description": "Ranged first commit date in the Organization",
+        "params": [],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "userrangedlastcommit",
+        "path": "/tbdata/userrangedlastcommit",
+        "description": "Ranged user last commit date",
+        "params": [
+            "uid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "userrangedfirstcommit",
+        "path": "/tbdata/userrangedfirstcommit",
+        "description": "Ranged user first commit date",
+        "params": [
+            "uid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "userreporangedlastcommit",
+        "path": "/tbdata/userreporangedlastcommit",
+        "description": "Ranged user last commit date in a repository",
+        "params": [
+            "uid",
+            "rid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "userreporangedfirstcommit",
+        "path": "/tbdata/userreporangedfirstcommit",
+        "description": "Ranged user first commit date in a repository",
+        "params": [
+            "uid",
+            "rid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
     }
 ];
