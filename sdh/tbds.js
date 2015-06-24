@@ -28,14 +28,14 @@ exports.tbd = [
         "id" : "reporangeduserlist",
         "path" : "/tbdata/reporangeduserlist",
         "description" : "Ranged users list in repository",
-        "params": ['rid']
+        "params": ['rid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
     },
     {
         "id" : "userrangedrepolist",
         "path" : "/tbdata/userrangedrepolist",
         "description" : "Ranged repository list for user",
-        "params": ['uid']
-    },
-    // TODO orgrangeduserlist y orgrangedrepolist
-    // TODO rangedlastcommit rangedfirstcommit (user, org, repo, user in repo, user in org)
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+    }
 ];

@@ -535,6 +535,13 @@
                         "type": "string"
                     }
                 },
+                "optional": {
+                    "type": "array",
+                    "description": "Optional parameters",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "aggr": {
                     "type": "array",
                     "description": "Accepted aggregators",
@@ -562,6 +569,13 @@
                 "params": {
                     "type": "array",
                     "description": "Required parameters",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "optional": {
+                    "type": "array",
+                    "description": "Optional parameters",
                     "items": {
                         "type": "string"
                     }
