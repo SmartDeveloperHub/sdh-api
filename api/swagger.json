@@ -606,7 +606,7 @@
                     "format": "int32",
                     "description": "The date on which the metric has been updated"
                 },
-                "metricinfo": {
+                "info": {
                     "$ref": "#/definitions/metricinfo"
                 }
             }
@@ -626,7 +626,7 @@
                     "format": "int32",
                     "description": "The date on which the tbd has been updated"
                 },
-                "tbdinfo": {
+                "info": {
                     "$ref": "#/definitions/tbdinfo"
                 }
             }
