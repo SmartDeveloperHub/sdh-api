@@ -3,7 +3,7 @@
     "info": {
         "title": "SDH API",
         "description": "This service provides data to feed SDH dashboard widgets.",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -428,6 +428,29 @@
                 "description": {
                     "type": "string",
                     "description": "The Repository description"
+                },
+                "tags" : {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                      "type": "string"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Repository avatar URL"
+                },
+                "archived" : {
+                  "type": "boolean",
+                  "description": "Indicates if the repository is archived"
+                },
+                "public" : {
+                  "type": "boolean",
+                  "description": "Indicates if the repository is archived"
+                },
+                "owner" : {
+                  "type": "string",
+                  "description": "Repository Owner"
                 }
             }
         },
@@ -445,18 +468,56 @@
                     "type": "string",
                     "description": "The Repository description"
                 },
-                "team": {
+                "firstCommit": {
                     "type": "string",
-                    "description": "Team Id"
-                },
-                "health": {
-                    "type": "number",
-                    "description": "Repository health factor"
+                    "format": "date",
+                    "description": "First commit date"
                 },
                 "lastCommit": {
                     "type": "string",
                     "format": "date",
                     "description": "Last commit date"
+                },
+                "scmlink": {
+                    "type": "string",
+                    "description": "SCM URL"
+                },
+                "creation": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The Repository creation date"
+                },
+                "buildStatus": {
+                    "type": "string",
+                    "description": "Last build status"
+                },
+                "buildDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Last build date"
+                },
+                "tags" : {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Repository avatar URL"
+                },
+                "archived" : {
+                    "type": "boolean",
+                    "description": "Indicates if the repository is archived"
+                },
+                "public" : {
+                    "type": "boolean",
+                    "description": "Indicates if the repository is archived"
+                },
+                "owner" : {
+                    "type": "string",
+                    "description": "Repository Owner"
                 },
                 "users": {
                     "type": "array",
@@ -481,9 +542,9 @@
                     "type": "string",
                     "description": "The user email"
                 },
-                "description": {
+                "avatar": {
                     "type": "string",
-                    "description": "The user description"
+                    "description": "The user avatar URL"
                 }
             }
         },
@@ -501,17 +562,28 @@
                     "type": "string",
                     "description": "The user email"
                 },
-                "description": {
+                "avatar": {
                     "type": "string",
-                    "description": "The user description"
+                    "description": "The user avatar URL"
                 },
-                "team": {
+                "scmUserUrl": {
+                  "type": "string",
+                  "description": "The scm user URL"
+                },
+                "register": {
                     "type": "string",
-                    "description": "Team Id"
+                    "format": "date",
+                    "description": "The user registration date"
                 },
-                "activity": {
-                    "type": "number",
-                    "description": "User activity factor"
+                "firstCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "User first commit date"
+                },
+                "lastCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "User last commit date"
                 },
                 "repositories": {
                     "type": "array",
