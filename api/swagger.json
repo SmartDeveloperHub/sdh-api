@@ -2,8 +2,16 @@
     "swagger": "2.0",
     "info": {
         "title": "SDH API",
-        "description": "This service provides data to feed dashboards widgets.",
-        "version": "1.1.0"
+        "description": "This service provides data to feed SDH dashboard widgets.",
+        "version": "0.0.2",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "contact": {
+        "name": "Carlos Blanco",
+        "email": "carlos.blanco@centeropenmiddleware.com"
+        }
     },
     "produces": [
         "application/json"
