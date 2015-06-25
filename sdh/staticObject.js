@@ -72,13 +72,13 @@ module.exports.preloadAll = function preloadAll (callback) {
 module.exports.getRepositories = function getRepositories () {
 
   //TODO
-  return _repositories.fakeRepositoriesInfo;
+  return _repositories.repositoryList;
 };
 
 module.exports.getUsers = function getUsers () {
 
   //TODO
-  return _users.fakeUsersInfo;
+  return _users.userList;
 };
 
 module.exports.getRepositoriesById = function getRepositoriesById () {

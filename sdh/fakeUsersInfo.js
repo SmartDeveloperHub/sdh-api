@@ -69,3 +69,23 @@ exports.fakeUsersInfo = [
         "website" : "http://websiteURL",
     }
 ];
+
+exports.userList = [
+    {
+        "name" : "User PEPE",
+        "email" : "pepe@organization.com",
+        "userid" : "u1",
+        "avatar" : "http://avatarURL"
+    },
+    {
+        "name" : "User LOLA",
+        "email" : "lola@organization.com",
+        "userid" : "u2",
+        "avatar" : "http://avatarURL"
+    },
+    {
+        "name" : "User JORDI",
+        "email" : "jordi@organization.com",
+        "userid" : "u3",
+        "avatar" : "http://avatarURL"
+    }];

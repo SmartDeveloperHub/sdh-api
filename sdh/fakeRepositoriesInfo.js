@@ -135,3 +135,66 @@ exports.fakeRepositoriesInfo = [
         "lastchange": "1430431200000"
     }
 ];
+
+exports.repositoryList = [
+    {
+        "name" : "Repository ALPHA",
+        "description" : "A repository",
+        "repositoryid" : "r1",
+        "tags" :['framework','hack','dark'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1'
+    },
+    {
+        "name" : "Repository BETA",
+        "description" : "A repository",
+        "repositoryid" : "r2",
+        "tags" :['framework','php','laravel'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u2'
+    },
+    {
+        "name" : "Repository TETA",
+        "description" : "A repository",
+        "repositoryid" : "r3",
+        "tags" :['web','blue','bad'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u3'
+    },
+    {
+        "name" : "Repository GAMMA",
+        "description" : "A repository",
+        "repositoryid" : "r4",
+        "tags" :['framework','hard','red'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1'
+    },
+    {
+        "name" : "Repository DELTA",
+        "description" : "A repository",
+        "repositoryid" : "r5",
+        "tags" :['fast','yast','com'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1'
+    },
+    {
+        "name" : "Repository EPSILON",
+        "description" : "A repository",
+        "repositoryid" : "r6",
+        "tags" :['mom','pink','good'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u3'
+    }
+];
