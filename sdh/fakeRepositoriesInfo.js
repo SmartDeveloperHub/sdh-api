@@ -31,15 +31,13 @@ exports.fakeRepositoriesInfo = [
         "fistcommit": 1273010400000,
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
-        "lastbuildstatus" : 1,
-        "lastbuilddate" : 1432591200000,
-        "cilink" : "http://jenkinsRepositoryURL",
+        "buildstatus" : 1,
+        "builddate" : 1432591200000,
         "tags" :['framework','hack','dark'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1',
-        "lastchange": "1431208800000"
+        "owner" : 'u1'
     },
     {
         "name" : "Repository BETA",
@@ -49,15 +47,13 @@ exports.fakeRepositoriesInfo = [
         "fistcommit": 1273010400000,
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
-        "lastbuildstatus" : 1,
-        "lastbuilddate" : 1432591200000,
-        "cilink" : "http://jenkinsRepositoryURL",
+        "buildstatus" : 1,
+        "builddate" : 1432591200000,
         "tags" :['framework','php','laravel'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u2',
-        "lastchange": "1431036000000"
+        "owner" : 'u2'
     },
     {
         "name" : "Repository TETA",
@@ -67,15 +63,13 @@ exports.fakeRepositoriesInfo = [
         "fistcommit": 1273010400000,
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
-        "lastbuildstatus" : 1,
-        "lastbuilddate" : 1432591200000,
-        "cilink" : "http://jenkinsRepositoryURL",
+        "buildstatus" : 1,
+        "builddate" : 1432591200000,
         "tags" :['web','blue','bad'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u3',
-        "lastchange": "1430431200000"
+        "owner" : 'u3'
     },
     {
         "name" : "Repository GAMMA",
@@ -85,15 +79,13 @@ exports.fakeRepositoriesInfo = [
         "fistcommit": 1273010400000,
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
-        "lastbuildstatus" : 0,
-        "lastbuilddate" : 1432591200000,
-        "cilink" : "http://jenkinsRepositoryURL",
+        "buildstatus" : 0,
+        "builddate" : 1432591200000,
         "tags" :['framework','hard','red'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1',
-        "lastchange": "1431208800000"
+        "owner" : 'u1'
     },
     {
         "name" : "Repository DELTA",
@@ -103,15 +95,13 @@ exports.fakeRepositoriesInfo = [
         "fistcommit": 1273010400000,
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
-        "lastbuildstatus" : 1,
-        "lastbuilddate" : 1432591200000,
-        "cilink" : "http://jenkinsRepositoryURL",
+        "buildstatus" : 1,
+        "builddate" : 1432591200000,
         "tags" :['fast','yast','com'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1',
-        "lastchange": "1431036000000"
+        "owner" : 'u1'
     },
     {
         "name" : "Repository EPSILON",
@@ -121,15 +111,13 @@ exports.fakeRepositoriesInfo = [
         "fistcommit": 1273010400000,
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
-        "lastbuildstatus" : 0,
-        "lastbuilddate" : 1432591200000,
-        "cilink" : "http://jenkinsRepositoryURL",
+        "buildstatus" : 0,
+        "builddate" : 1432591200000,
         "tags" :['mom','pink','good'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u3',
-        "lastchange": "1430431200000"
+        "owner" : 'u3'
     }
 ];
 
