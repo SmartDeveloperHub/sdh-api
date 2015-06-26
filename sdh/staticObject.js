@@ -36,19 +36,38 @@ var _staticInfoById;
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     // TODO get from SDH platform
     var _reps = require('./fakeRepositoriesInfo.js');
-    // ?s a scm:Repository
+    // ?s a scm:Repository.
+    // ?s doap:name ?n.
+    // ?s doap:description ?d.
+    // ?s doap:id ?i.
+    // ?s doap:tags ?t.
+    // ?s doap:depiction ?p.
+    // ?s doap:archived ?a.
+    // ?s doap:public ?pu.
+    // ?s doap:owner ?o.
     // n3 parse and get Repositories list like this:
     /*
      [
          {
              "repositoryid": "string",
              "name": "string",
-             "description": "string"
+             "description": "string",
+             "tags": [
+                "string"
+             ],
+             "avatar": "string",
+             "archived": true,
+             "public": true,
+             "owner": "string"
          }
      ]
      */
     var _usrs = require('./fakeUsersInfo.js');
     // ?s a scm:User
+    // ?s doap:name ?n.
+    // ?s doap:id ?i.
+    // ?s doap:depiction ?d.
+    // ?s doap:email ?e
     // n3 parse and get Users list like this:
     /*
      [
@@ -56,7 +75,7 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
              "userid": "string",
              "name": "string",
              "email": "string",
-             "description": "string"
+             "avatar": "string"
          }
      ]
     */
