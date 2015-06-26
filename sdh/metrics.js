@@ -186,5 +186,48 @@ exports.metrics = [
         "params": ['uid','rid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum','max','min','avg']
+    },
+    // Doomy metrics for the first demo
+    // Doomy user issues
+    {
+        "id" : "useropenissue",
+        "path" : "/metrics/useropenissue",
+        "description" : "User assigned open issues",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum','max','min','avg']
+    },
+    {
+        "id" : "usersolvedissue",
+        "path" : "/metrics/usersolvedissue",
+        "description" : "Issues solved by user",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum','max','min','avg']
+    },
+    // Doomy user skils
+    {
+        "id" : "userspeed",
+        "path" : "/metrics/userspeed",
+        "description" : "User development speed skill value",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum','max','min','avg']
+    },
+    {
+        "id" : "usercollaboration",
+        "path" : "/metrics/usercollaboration",
+        "description" : "User development collaboration skill value",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum','max','min','avg']
+    },
+    {
+        "id" : "userquality",
+        "path" : "/metrics/userquality",
+        "description" : "User development quality skill value",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum','max','min','avg']
     }
 ];
