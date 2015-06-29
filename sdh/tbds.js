@@ -166,5 +166,51 @@ exports.tbd = [
             "accumulated",
             "aggr"
         ]
+    },
+    {
+        "id": "userlenguagelines",
+        "path": "/tbdata/lenguagelines",
+        "description": "User lines per language",
+        "params": [
+            "uid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "projectlenguagelines",
+        "path": "/tbdata/projectlenguagelines",
+        "description": "Project lines per language",
+        "params": [
+            "pid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
+    },
+    {
+        "id": "userprojectlenguagelines",
+        "path": "/tbdata/userprojectlenguagelines",
+        "description": "User lines per language in a project",
+        "params": [
+            "uid",
+            "pid"
+        ],
+        "optional": [
+            "from",
+            "to",
+            "max",
+            "accumulated",
+            "aggr"
+        ]
     }
 ];
