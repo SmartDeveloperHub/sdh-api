@@ -39,6 +39,17 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
                val.push(usersById[repositories[i].owner]);
             }
         }
+    } else if (tid == 'userprojectlanguagelines' || tid == 'projectlanguagelines' || tid == 'userlanguagelines') {
+        // TODO
+        val = {
+            'C++':  parseInt(Math.random() * 10000),
+            'JavaScript':  parseInt(Math.random() * 10000),
+            'Java':  parseInt(Math.random() * 10000),
+            'HTML':  parseInt(Math.random() * 1000),
+            'Python':  parseInt(Math.random() * 10000),
+            'Cobolt':  parseInt(Math.random() * 1000),
+            'css':  parseInt(Math.random() * 10000)
+        }
     } else {
         val = parseInt(Math.random() * 1000);
     }
