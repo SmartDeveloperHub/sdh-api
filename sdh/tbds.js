@@ -168,8 +168,8 @@ exports.tbd = [
         ]
     },
     {
-        "id": "userlenguagelines",
-        "path": "/tbdata/lenguagelines",
+        "id": "userlanguagelines",
+        "path": "/tbdata/userlanguagelines",
         "description": "User lines per language",
         "params": [
             "uid"
@@ -183,8 +183,8 @@ exports.tbd = [
         ]
     },
     {
-        "id": "projectlenguagelines",
-        "path": "/tbdata/projectlenguagelines",
+        "id": "projectlanguagelines",
+        "path": "/tbdata/projectlanguagelines",
         "description": "Project lines per language",
         "params": [
             "pid"
@@ -198,8 +198,8 @@ exports.tbd = [
         ]
     },
     {
-        "id": "userprojectlenguagelines",
-        "path": "/tbdata/userprojectlenguagelines",
+        "id": "userprojectlanguagelines",
+        "path": "/tbdata/userprojectlanguagelines",
         "description": "User lines per language in a project",
         "params": [
             "uid",
