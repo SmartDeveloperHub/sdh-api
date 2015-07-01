@@ -24,7 +24,7 @@
 
 exports.fakeUsersInfo = [
     {
-        "name" : "User PEPE",
+        "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
         "userid" : "u1",
         "avatar" : "http://avatarURL",
@@ -38,7 +38,7 @@ exports.fakeUsersInfo = [
         "website" : "http://websiteURL",
     },
     {
-        "name" : "User LOLA",
+        "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
         "userid" : "u2",
         "avatar" : "http://avatarURL",
@@ -52,7 +52,7 @@ exports.fakeUsersInfo = [
         "website" : "http://websiteURL",
     },
     {
-        "name" : "User JORDI",
+        "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
         "userid" : "u3",
         "avatar" : "http://avatarURL",
@@ -69,19 +69,19 @@ exports.fakeUsersInfo = [
 
 exports.userList = [
     {
-        "name" : "User PEPE",
+        "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
         "userid" : "u1",
         "avatar" : "http://avatarURL"
     },
     {
-        "name" : "User LOLA",
+        "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
         "userid" : "u2",
         "avatar" : "http://avatarURL"
     },
     {
-        "name" : "User JORDI",
+        "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
         "userid" : "u3",
         "avatar" : "http://avatarURL"
