@@ -118,12 +118,124 @@ exports.fakeRepositoriesInfo = [
         "archived" : true,
         "public" : true,
         "owner" : 'u3'
+    },
+    {
+        "name" : "BigBang-Repo",
+        "description" : "A repository",
+        "repositoryid" : "r7",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u2',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
+    },
+    {
+        "name": "Monkey-repo",
+        "description": "A repository",
+        "repositoryid": "r8",
+        "tags": ['BigBang', 'wololo', 'well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived": true,
+        "public": true,
+        "owner": 'u1',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
+    },
+    {
+        "name" : "Bunny-repo",
+        "description" : "A repository",
+        "repositoryid" : "r9",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u2',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
+    },
+    {
+        "name" : "Mouse-repo",
+        "description" : "A repository",
+        "repositoryid" : "r10",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u3',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
+    },
+    {
+        "name" : "Dog-repo",
+        "description" : "A repository",
+        "repositoryid" : "r11",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
+    },
+    {
+        "name" : "Cat-repo",
+        "description" : "A repository",
+        "repositoryid" : "r12",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u2',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
+    },
+    {
+        "name" : "Fly-repo",
+        "description" : "A repository",
+        "repositoryid" : "r13",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u3',
+        "lastcommit" : 1430431200000,
+        "firstcommit": 1273010400000,
+        "scmlink" : "http://gitlabRepositoryURL",
+        "creation" : 1273010400000,
+        "buildstatus" : 0,
+        "builddate" : 1432591200000
     }
 ];
 
 exports.repositoryList = [
     {
-        "name" : "Repository ALPHA",
+        "name" : "ALPHA jin",
         "description" : "A repository",
         "repositoryid" : "r1",
         "tags" :['framework','hack','dark'],
@@ -133,7 +245,7 @@ exports.repositoryList = [
         "owner" : 'u1'
     },
     {
-        "name" : "Repository BETA",
+        "name" : "BETA jang",
         "description" : "A repository",
         "repositoryid" : "r2",
         "tags" :['framework','php','laravel'],
@@ -143,17 +255,17 @@ exports.repositoryList = [
         "owner" : 'u2'
     },
     {
-        "name" : "Repository TETA",
+        "name" : "TETA log",
         "description" : "A repository",
         "repositoryid" : "r3",
         "tags" :['web','blue','bad'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u3'
+        "owner" : 'u2'
     },
     {
-        "name" : "Repository GAMMA",
+        "name" : "GAMMA rep",
         "description" : "A repository",
         "repositoryid" : "r4",
         "tags" :['framework','hard','red'],
@@ -163,7 +275,7 @@ exports.repositoryList = [
         "owner" : 'u1'
     },
     {
-        "name" : "Repository DELTA",
+        "name" : "DELTA red",
         "description" : "A repository",
         "repositoryid" : "r5",
         "tags" :['fast','yast','com'],
@@ -173,13 +285,83 @@ exports.repositoryList = [
         "owner" : 'u1'
     },
     {
-        "name" : "Repository EPSILON",
+        "name" : "EPSILON blue",
         "description" : "A repository",
         "repositoryid" : "r6",
         "tags" :['mom','pink','good'],
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
+        "owner" : 'u1'
+    },
+    {
+        "name" : "BigBang-Repo",
+        "description" : "A repository",
+        "repositoryid" : "r7",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1'
+    },
+    {
+        "name": "Monkey-repo",
+        "description": "A repository",
+        "repositoryid": "r8",
+        "tags": ['BigBang', 'wololo', 'well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived": true,
+        "public": true,
+        "owner": 'u1'
+    },
+    {
+        "name" : "Bunny-repo",
+        "description" : "A repository",
+        "repositoryid" : "r9",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u2'
+    },
+    {
+        "name" : "Mouse-repo",
+        "description" : "A repository",
+        "repositoryid" : "r10",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
         "owner" : 'u3'
+    },
+    {
+        "name" : "Dog-repo",
+        "description" : "A repository",
+        "repositoryid" : "r11",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1'
+    },
+    {
+        "name" : "Cat-repo",
+        "description" : "A repository",
+        "repositoryid" : "r12",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u2'
+    },
+    {
+        "name" : "Fly-repo",
+        "description" : "A repository",
+        "repositoryid" : "r13",
+        "tags" :['BigBang','wololo','well'],
+        "avatar": "http://repositoryAvatarURL",
+        "archived" : true,
+        "public" : true,
+        "owner" : 'u1'
     }
 ];
