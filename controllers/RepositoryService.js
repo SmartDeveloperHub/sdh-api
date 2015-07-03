@@ -43,5 +43,5 @@ exports.repositoryInfo = function(rid, callback) {
     } else {
         console.log("--RID not found");
     }
-    callback(rep);
+    sdhWrapper.getRepositoryInfo(rid, callback);
 };

@@ -33,53 +33,120 @@ var _metricsById;
 var _tbdById;
 var _staticInfoById;
 
+var url = require("url");
+
+var getHash = function getHash(data) {
+    return url.parse(data).hash.replace('#', '');
+};
+
+var getValuesByHash = function getValuesByHash(data) {
+    var values = {};
+    for (var i = 0; i < data.length; i++) {
+        for (var key in data[i]) {
+            values[getHash(key)] = data[i][key];
+            break;
+        }
+    }
+    return values;
+};
+
+var parseRepoList = function parseRepoList(data) {
+    var resF = {'repositoryList': []};
+    var res = resF.repositoryList;
+    for (var key in data.results) {
+        var attrObject = getValuesByHash(data.results[key]);
+        console.log(attrObject);
+        var newAt = {
+            "repositoryid": attrObject.repositoryId,
+            "name": attrObject.name,
+            "description": attrObject.description, // falta
+            "tags": attrObject.tags.split(','),
+            "avatar": attrObject.depiction, // falta
+            "archived": attrObject.isArchived,
+            "public": attrObject.isPublic,
+            "owner": attrObject.isPublicowner
+        };
+        res.push(newAt);
+    }
+    return resF;
+};
+
+var parseUserList = function parseUserList(data) {
+    console.log("_______parseUserList_______"+JSON.stringify(data));
+    var resF = {'userList': []};
+    var res = resF.userList;
+    for (var key in data.results) {
+        var attrObject = getValuesByHash(data.results[key]);
+        console.log(attrObject);
+        var newAt = {
+            "userid": attrObject.userId,
+            "name": attrObject.name,
+            "email": attrObject.mbox,
+            "avatar": attrObject.image
+        };
+        res.push(newAt);
+    }
+    return res;
+};
+
+var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
+    //http://localhost:9001/types/scm:Repository
+    // Query to get repository's information
+    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT * WHERE { ?s a scm:Repository . \ ' +
+        '?s ?p ?o \ ' +
+        '}';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['?s a scm:Repository', '?s doap:name ?n', '?s doap:description ?d',
+            '?s scm:repositoryId ?i', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
+            '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?de']
+    };
+    var frag = sdhGate.get_fragment(p.patterns);
+    /*get_results_from_query(q, function(e) {
+     parseTree(e, returnCallback);
+     });*/
+    sdhGate.get_parsed_result(frag.fragment, q, returnCallback);
+};
+
+var getUsersInfo = function getUsersInfo(returnCallback) {
+    //http://localhost:9001/scm/users/10
+    //http://localhost:9001/types/scm:Person
+    //http://localhost:9001/fragment?gp={?s%20doap:developer%20?d.%20?d%20foaf:name%20?n} repos-users
+    // Query to get user's information
+    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
+        'SELECT * WHERE { ?d a doap:developer . \ ' +
+        '?d ?p ?o \ ' +
+        '}';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['?s doap:developer ?d.', '?d foaf:name ?na',
+                '?d scm:userId ?id'] /*'?d foaf:image ?i', '?d foaf:mbox ?m'*/
+    };
+    var frag = sdhGate.get_fragment(p.patterns);
+    console.log(",,,,,,,,,,,,frag.fragment: " +frag.fragment)
+    sdhGate.get_results_from_fragment(frag.fragment, q, returnCallback);
+};
+
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
-    // TODO get from SDH platform
-    var _reps = require('./fakeRepositoriesInfo.js');
-    // ?s a scm:Repository.
-    // ?s doap:name ?n.
-    // ?s doap:description ?d.
-    // ?s doap:id ?i.
-    // ?s doap:tags ?t.
-    // ?s doap:depiction ?p.
-    // ?s doap:archived ?a.
-    // ?s doap:public ?pu.
-    // ?s doap:owner ?o.
-    // n3 parse and get Repositories list like this:
-    /*
-     [
-         {
-             "repositoryid": "string",
-             "name": "string",
-             "description": "string",
-             "tags": [
-                "string"
-             ],
-             "avatar": "string",
-             "archived": true,
-             "public": true,
-             "owner": "string"
-         }
-     ]
-     */
-    var _usrs = require('./fakeUsersInfo.js');
-    // ?s a scm:User
-    // ?s doap:name ?n.
-    // ?s doap:id ?i.
-    // ?s doap:depiction ?d.
-    // ?s doap:email ?e
-    // n3 parse and get Users list like this:
-    /*
-     [
-         {
-             "userid": "string",
-             "name": "string",
-             "email": "string",
-             "avatar": "string"
-         }
-     ]
-    */
-    returnCallback(_usrs, _reps);
+    getRepositoriesInfo(function(e){
+        var resultRepos = parseRepoList(e);
+        console.log('-->repositories: ' + JSON.stringify(resultRepos));
+        getUsersInfo(function(e){
+            console.log('-->e: ' + JSON.stringify(e));
+            var resultUsers = parseUserList(e);
+            console.log('-->users: ' + JSON.stringify(resultUsers));
+            // TODO
+            resultUsers = require('./fakeUsersInfo.js');
+            console.log('-->fake users: ' + JSON.stringify(resultUsers));
+            returnCallback(resultUsers, resultRepos);
+        });
+    });
+    // eg: http://localhost:9001/fragment?gp={?s%20a%20scm:Repository.%20?s%20doap:name%20?n}
+    //var _reps = require('./fakeRepositoriesInfo.js');
+
 };
 
 module.exports.preloadAll = function preloadAll (callback) {
@@ -101,11 +168,11 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < tbd.tbd.length; i++) {
             _tbdById[tbd.tbd[i].id] = tbd.tbd[i];
         }
-        for (var i = 0; i < _users.fakeUsersInfo.length; i++) {
-            _usersById[_users.fakeUsersInfo[i].userid] = _users.fakeUsersInfo[i];
+        for (var i = 0; i < _users.userList.length; i++) {
+            _usersById[_users.userList[i].userid] = _users.userList[i];
         }
-        for (var i = 0; i < _repositories.fakeRepositoriesInfo.length; i++) {
-            _repositoriesById[_repositories.fakeRepositoriesInfo[i].repositoryid] = _repositories.fakeRepositoriesInfo[i];
+        for (var i = 0; i < _repositories.repositoryList.length; i++) {
+            _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
         // Make global all this methods for param validation
         GLOBAL.metricsById = this.getMetricsById();

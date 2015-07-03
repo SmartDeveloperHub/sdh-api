@@ -21,6 +21,22 @@
 */
 
 'use strict';
+var url = require("url");
+
+var getHash = function getHash(data) {
+    return url.parse(data).hash.replace('#', '');
+};
+
+var getValuesByHash = function getValuesByHash(data) {
+    var values = {};
+    for (var i = 0; i < data.length; i++) {
+        for (var key in data[i]) {
+            values[getHash(key)] = data[i][key];
+            break;
+        }
+    }
+    return values;
+};
 
 exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     //TODO Agora rules :)
@@ -47,7 +63,7 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
             'Java':  parseInt(Math.random() * 10000),
             'HTML':  parseInt(Math.random() * 1000),
             'Python':  parseInt(Math.random() * 10000),
-            'Cobolt':  parseInt(Math.random() * 1000),
+            'Cobol':  parseInt(Math.random() * 1000),
             'css':  parseInt(Math.random() * 10000)
         }
     } else {
@@ -83,6 +99,26 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
     });
 };
 
+
+var getRepository = function getRepository(rid, retCallback) {
+    // Query to get repository's information
+    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT * WHERE { ?s a scm:Repository . \ ' +
+        '?s ?p ?o \ ' +
+        '}';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['?s a scm:Repository', '?s doap:name ?n', '?s doap:description ?d',
+            '?s scm:repositoryId "'+rid+'"', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
+            '?s scm:owner ?o', '?s scm:tags ?ta', '?s scm:createdOn ?co', '?s scm:lastCommit ?lc']/*,
+            '?s scm:firstCommit ?fc', '?s scm:depiction ?de', '?s scm:lastBuildStatus ?lbs',
+            '?s scm:lastBuildDate ?lbd']*/
+    };
+    var frag = sdhGate.get_fragment(p.patterns);
+    sdhGate.get_parsed_result(frag.fragment, q, retCallback);
+};
+
 exports.userExist = function (uid, callback) {
     callback(uid in usersById);
 };
@@ -102,3 +138,64 @@ exports.getAvailableMetrics = function getAvailableMetrics(callback) {
     GLOBAL.metrics = require('./metrics.js');
     callback();
 };
+
+exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
+    getRepository(rid, function(e) {
+        var resultRepo = parseRepositoryInfo(e);
+        console.log('-->repository: ' + JSON.stringify(resultRepo));
+        returnCallback(resultRepo);
+    });
+};
+var parseRepositoryInfo = function (data) {
+    var res = [];
+    for (var key in data.results) {
+        var attrObject = getValuesByHash(data.results[key]);
+        console.log(attrObject);
+        var newAt = {
+            "repositoryid": attrObject.repositoryId,
+            "name": attrObject.name,
+            "description": attrObject.description, // falta
+            "tags": attrObject.tags.split(','),
+            "avatar": attrObject.depiction, //falta
+            "archived": attrObject.isArchived,
+            "public": attrObject.isPublic,
+            "owner": attrObject.isPublicowner,
+            "creation": attrObject.createdOn,
+            "firstCommit": attrObject.firstCommit,
+            "lastCommit": attrObject.lastCommit,
+            "scmlink": "?",
+            "buildStatus": attrObject.lastBuildStatus,
+            "buildDate": attrObject.lastBuildDate,
+            "users": []
+        };
+        res.push(newAt);
+    }
+    return res;
+
+    /*{
+        "repositoryid": "string",
+        "name": "string",
+        "description": "string",
+        "firstCommit": "string",
+        "lastCommit": "string",
+        "scmlink": "string",
+        "creation": "string",
+        "buildStatus": "string",
+        "buildDate": "string",
+        "tags": [
+        "string"
+    ],
+        "avatar": "string",
+        "archived": true,
+        "public": true,
+        "owner": "string",
+        "users": [
+        {
+            "userid": "string",
+            "name": "string",
+            "email": "string",
+            "avatar": "string"
+        }
+    ]
+    }*/
+}
