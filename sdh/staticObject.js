@@ -55,16 +55,15 @@ var parseRepoList = function parseRepoList(data) {
     var res = resF.repositoryList;
     for (var key in data.results) {
         var attrObject = getValuesByHash(data.results[key]);
-        console.log(attrObject);
         var newAt = {
             "repositoryid": attrObject.repositoryId,
             "name": attrObject.name,
-            "description": attrObject.description, // falta
+            "description": attrObject.description,
             "tags": attrObject.tags.split(','),
-            "avatar": attrObject.depiction, // falta
+            "avatar": attrObject.depiction,
             "archived": attrObject.isArchived,
             "public": attrObject.isPublic,
-            "owner": attrObject.isPublicowner
+            "owner": attrObject.owner
         };
         res.push(newAt);
     }
@@ -72,25 +71,85 @@ var parseRepoList = function parseRepoList(data) {
 };
 
 var parseUserList = function parseUserList(data) {
-    console.log("_______parseUserList_______"+JSON.stringify(data));
     var resF = {'userList': []};
     var res = resF.userList;
     for (var key in data.results) {
-        var attrObject = getValuesByHash(data.results[key]);
-        console.log(attrObject);
+        var attrArray = data.results[key];
+        var attrObject = {};
+        for (var i = 0; i < attrArray.length; i ++) {
+            for (var k in attrArray[i]) {
+                attrObject[k] = attrArray[i][k];
+                break;
+            }
+        }
         var newAt = {
-            "userid": attrObject.userId,
-            "name": attrObject.name,
-            "email": attrObject.mbox,
-            "avatar": attrObject.image
+            "userid": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#userId"],
+            "name": attrObject["http://xmlns.com/foaf/0.1/name"],
+            "email": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#mbox"],
+            "avatar": attrObject["http://xmlns.com/foaf/0.1/img"]
         };
         res.push(newAt);
     }
-    return res;
+    return resF;
 };
 
+// Parse Repositories info
+var parseRepoTree = function parseRepoTree (e) {
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        for (var i = 0; i < r.length; i++) {
+            if(typeof re[r[i].s.value] === 'undefined') {
+                re[r[i].s.value] = [];
+            }
+            else{
+                var v = {};
+                v[r[i].p.value] = r[i].o.value;
+                re[r[i].s.value].push(v);
+            }
+        }
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
+};
+
+// Parse Users info
+var parseUserTree = function parseUserTree (e) {
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        var ubr = {};
+        for (var i = 0; i < r.length; i++) {
+            if(typeof ubr[r[i].s.value] === 'undefined') {
+                ubr[r[i].s.value] = {};
+            }
+            if (r[i].p.value == "http://www.smartdeveloperhub.org/vocabulary/scm#userId") {
+                // TODO value?? something usefull maybe better
+                ubr[r[i].s.value][r[i].d.value] = r[i].o.value;
+            }
+            if(typeof re[r[i].d.value] === 'undefined') {
+                re[r[i].d.value] = [];
+            }
+            var v = {};
+            v[r[i].p.value] = r[i].o.value;
+            re[r[i].d.value].push(v);
+        }
+        return {
+            "status": "OK",
+            "results": re,
+            "usersByRepo": ubr
+        };
+    }
+    else {
+        return e;
+    }
+};
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
-    //http://localhost:9001/types/scm:Repository
     // Query to get repository's information
     var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
         'SELECT * WHERE { ?s a scm:Repository . \ ' +
@@ -104,10 +163,9 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
             '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?de']
     };
     var frag = sdhGate.get_fragment(p.patterns);
-    /*get_results_from_query(q, function(e) {
-     parseTree(e, returnCallback);
-     });*/
-    sdhGate.get_parsed_result(frag.fragment, q, returnCallback);
+    sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
+        returnCallback(parseRepoTree(e));
+    });
 };
 
 var getUsersInfo = function getUsersInfo(returnCallback) {
@@ -116,37 +174,34 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
     //http://localhost:9001/fragment?gp={?s%20doap:developer%20?d.%20?d%20foaf:name%20?n} repos-users
     // Query to get user's information
     var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
-        'SELECT * WHERE { ?d a doap:developer . \ ' +
+        'SELECT * WHERE { ?s doap:developer ?d . \ ' +
         '?d ?p ?o \ ' +
         '}';
 
     var p = {
         "status": "OK",
-        "patterns": ['?s doap:developer ?d.', '?d foaf:name ?na',
-                '?d scm:userId ?id'] /*'?d foaf:image ?i', '?d foaf:mbox ?m'*/
+        "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
+                '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
     };
     var frag = sdhGate.get_fragment(p.patterns);
-    console.log(",,,,,,,,,,,,frag.fragment: " +frag.fragment)
-    sdhGate.get_results_from_fragment(frag.fragment, q, returnCallback);
+    sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
+        returnCallback(parseUserTree(e));
+    });
 };
 
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     getRepositoriesInfo(function(e){
         var resultRepos = parseRepoList(e);
         console.log('-->repositories: ' + JSON.stringify(resultRepos));
-        getUsersInfo(function(e){
+        getUsersInfo(function(e) {
             console.log('-->e: ' + JSON.stringify(e));
+            GLOBAL.usersByRepo = e.usersByRepo;
             var resultUsers = parseUserList(e);
             console.log('-->users: ' + JSON.stringify(resultUsers));
-            // TODO
-            resultUsers = require('./fakeUsersInfo.js');
-            console.log('-->fake users: ' + JSON.stringify(resultUsers));
             returnCallback(resultUsers, resultRepos);
         });
     });
     // eg: http://localhost:9001/fragment?gp={?s%20a%20scm:Repository.%20?s%20doap:name%20?n}
-    //var _reps = require('./fakeRepositoriesInfo.js');
-
 };
 
 module.exports.preloadAll = function preloadAll (callback) {

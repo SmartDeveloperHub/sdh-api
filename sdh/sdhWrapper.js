@@ -150,7 +150,6 @@ var parseRepositoryInfo = function (data) {
     var res = [];
     for (var key in data.results) {
         var attrObject = getValuesByHash(data.results[key]);
-        console.log(attrObject);
         var newAt = {
             "repositoryid": attrObject.repositoryId,
             "name": attrObject.name,
