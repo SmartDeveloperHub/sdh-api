@@ -111,13 +111,65 @@ var getRepository = function getRepository(rid, retCallback) {
         "status": "OK",
         "patterns": ['?s a scm:Repository', '?s doap:name ?n', '?s doap:description ?d',
             '?s scm:repositoryId "'+rid+'"', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
-            '?s scm:owner ?o', '?s scm:tags ?ta', '?s scm:createdOn ?co', '?s scm:lastCommit ?lc']/*,
-            '?s scm:firstCommit ?fc', '?s scm:depiction ?de', '?s scm:lastBuildStatus ?lbs',
-            '?s scm:lastBuildDate ?lbd']*/
+            '?s scm:owner ?o', '?s scm:tags ?ta', '?s scm:createdOn ?co', '?s scm:lastCommit ?lc',
+            '?s scm:firstCommit ?fc', '?s foaf:depiction ?de']
     };
     var frag = sdhGate.get_fragment(p.patterns);
-    sdhGate.get_parsed_result(frag.fragment, q, retCallback);
+    sdhGate.get_results_from_fragment(frag.fragment, q, retCallback);
 };
+
+// Parse Repository info
+var parseRepoTree = function parseRepoTree (e) {
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        for (var i = 0; i < r.length; i++) {
+            if(typeof re[r[i].s.value] === 'undefined') {
+                re[r[i].s.value] = {};
+            }
+            var v = {};
+            re[r[i].s.value][r[i].p.value] = r[i].o.value;
+        }
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
+};
+
+var parseRepositoryInfo = function (data) {
+    var res = [];
+    var parsedTree = parseRepoTree(data);
+    if (parsedTree.status === 'OK') {
+        for (var key in parsedTree.results) {
+            var repoUri = key;
+            var repoAtts = parsedTree.results[key];
+            break;
+        }
+        var tagList = repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',').splice(-1,1);
+        var theRep = {
+            "repositoryid": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
+            "name": repoAtts["http://usefulinc.com/ns/doap#name"],
+            "description": repoAtts["http://usefulinc.com/ns/doap#description"],
+            "tags": tagList,
+            "avatar": repoAtts["http://xmlns.com/foaf/0.1/#depiction"],
+            "archived": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
+            "public": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
+            "owner": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
+            "creation": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"],
+            "firstCommit": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"],
+            "lastCommit": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"],
+            "scmlink": repoAtts["http://usefulinc.com/ns/doap#location"],
+            "buildStatus": "OK",
+            "buildDate": "OK",
+            "users": []
+        };
+    }
+    return theRep;
+}
 
 exports.userExist = function (uid, callback) {
     callback(uid in usersById);
@@ -146,55 +198,3 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
         returnCallback(resultRepo);
     });
 };
-var parseRepositoryInfo = function (data) {
-    var res = [];
-    for (var key in data.results) {
-        var attrObject = getValuesByHash(data.results[key]);
-        var newAt = {
-            "repositoryid": attrObject.repositoryId,
-            "name": attrObject.name,
-            "description": attrObject.description, // falta
-            "tags": attrObject.tags.split(','),
-            "avatar": attrObject.depiction, //falta
-            "archived": attrObject.isArchived,
-            "public": attrObject.isPublic,
-            "owner": attrObject.isPublicowner,
-            "creation": attrObject.createdOn,
-            "firstCommit": attrObject.firstCommit,
-            "lastCommit": attrObject.lastCommit,
-            "scmlink": "?",
-            "buildStatus": attrObject.lastBuildStatus,
-            "buildDate": attrObject.lastBuildDate,
-            "users": []
-        };
-        res.push(newAt);
-    }
-    return res;
-
-    /*{
-        "repositoryid": "string",
-        "name": "string",
-        "description": "string",
-        "firstCommit": "string",
-        "lastCommit": "string",
-        "scmlink": "string",
-        "creation": "string",
-        "buildStatus": "string",
-        "buildDate": "string",
-        "tags": [
-        "string"
-    ],
-        "avatar": "string",
-        "archived": true,
-        "public": true,
-        "owner": "string",
-        "users": [
-        {
-            "userid": "string",
-            "name": "string",
-            "email": "string",
-            "avatar": "string"
-        }
-    ]
-    }*/
-}

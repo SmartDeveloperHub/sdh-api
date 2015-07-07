@@ -35,38 +35,37 @@ var _staticInfoById;
 
 var url = require("url");
 
-var getHash = function getHash(data) {
-    return url.parse(data).hash.replace('#', '');
-};
-
-var getValuesByHash = function getValuesByHash(data) {
-    var values = {};
-    for (var i = 0; i < data.length; i++) {
-        for (var key in data[i]) {
-            values[getHash(key)] = data[i][key];
-            break;
-        }
-    }
-    return values;
-};
-
 var parseRepoList = function parseRepoList(data) {
+
     var resF = {'repositoryList': []};
     var res = resF.repositoryList;
+    var rbyid = {};
+    var id;
     for (var key in data.results) {
-        var attrObject = getValuesByHash(data.results[key]);
+        var attrArray = data.results[key];
+        var attrObject = {};
+        for (var i = 0; i < attrArray.length; i ++) {
+            for (var k in attrArray[i]) {
+                attrObject[k] = attrArray[i][k];
+                break;
+            }
+        }
         var newAt = {
-            "repositoryid": attrObject.repositoryId,
-            "name": attrObject.name,
-            "description": attrObject.description,
-            "tags": attrObject.tags.split(','),
-            "avatar": attrObject.depiction,
-            "archived": attrObject.isArchived,
-            "public": attrObject.isPublic,
-            "owner": attrObject.owner
+            "repositoryid": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
+            "name": attrObject["http://usefulinc.com/ns/doap#name"],
+            "description": attrObject["http://usefulinc.com/ns/doap#description"],
+            "tags": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#tags"],
+            "avatar": attrObject["http://xmlns.com/foaf/0.1/#depiction"],
+            "archived": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
+            "public": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
+            "owner": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#owner"]
         };
+        id = newAt.repositoryid;
+        rbyid[id] = key;
         res.push(newAt);
     }
+    console.log("repoUriById" + JSON.stringify(rbyid));
+    GLOBAL.repoUriById = rbyid;
     return resF;
 };
 
@@ -123,14 +122,15 @@ var parseUserTree = function parseUserTree (e) {
     if (e.status === 'OK') {
         var r = e.results;
         var re = {};
-        var ubr = {};
+        var ubru = {};
+        var rbuu = {};
         for (var i = 0; i < r.length; i++) {
-            if(typeof ubr[r[i].s.value] === 'undefined') {
-                ubr[r[i].s.value] = {};
+            if(typeof ubru[r[i].s.value] === 'undefined') {
+                ubru[r[i].s.value] = {};
             }
             if (r[i].p.value == "http://www.smartdeveloperhub.org/vocabulary/scm#userId") {
                 // TODO value?? something usefull maybe better
-                ubr[r[i].s.value][r[i].d.value] = r[i].o.value;
+                ubru[r[i].s.value][r[i].d.value] = r[i].o.value;
             }
             if(typeof re[r[i].d.value] === 'undefined') {
                 re[r[i].d.value] = [];
@@ -139,10 +139,14 @@ var parseUserTree = function parseUserTree (e) {
             v[r[i].p.value] = r[i].o.value;
             re[r[i].d.value].push(v);
         }
+        console.log("re: " + JSON.stringify(re));
+        console.log("ubru: " + JSON.stringify(ubru));
+        console.log("rbuu: " + JSON.stringify(rbuu));
+        GLOBAL.usersByRepoUri = ubru;
+        GLOBAL.reposByUserUri = rbuu;
         return {
             "status": "OK",
-            "results": re,
-            "usersByRepo": ubr
+            "results": re
         };
     }
     else {
@@ -195,7 +199,6 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
         console.log('-->repositories: ' + JSON.stringify(resultRepos));
         getUsersInfo(function(e) {
             console.log('-->e: ' + JSON.stringify(e));
-            GLOBAL.usersByRepo = e.usersByRepo;
             var resultUsers = parseUserList(e);
             console.log('-->users: ' + JSON.stringify(resultUsers));
             returnCallback(resultUsers, resultRepos);
