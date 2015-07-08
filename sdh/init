@@ -24,7 +24,6 @@
 
 // SDH platform
 GLOBAL.sdhWrapper = require('./sdhWrapper');
-GLOBAL.sdhGate = require("../agora-fragment-js/SDHGate.js");
 
 exports.start = function (callback) {
 
