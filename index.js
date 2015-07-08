@@ -23,8 +23,12 @@
 'use strict';
 
 var app = require('connect')();
+
 GLOBAL.http = require('http');
+
 var swaggerTools = require('swagger-tools');
+
+GLOBAL.request = require('sync-request');
 
 var serverPort = 8080;
 

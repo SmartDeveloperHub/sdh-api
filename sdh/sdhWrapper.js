@@ -22,7 +22,6 @@
 
 'use strict';
 var url = require("url");
-var request = require('sync-request');
 
 var getHash = function getHash(data) {
     return url.parse(data).hash.replace('#', '');
