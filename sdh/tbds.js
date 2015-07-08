@@ -22,7 +22,7 @@
 
 'use strict';
 
-exports.tbd = [
+exports.tbds = [
     {
         "id": "reporangeduserlist",
         "path": "/tbdata/reporangeduserlist",

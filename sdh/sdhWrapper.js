@@ -154,7 +154,7 @@ exports.repoExist = function (rid, callback) {
 
 exports.getAvailableTbds = function getAvailableTbds(callback) {
     // TODO discover SDH platform metrics
-    GLOBAL.tbd = require('./tbds.js');
+    GLOBAL.tbds = require('./tbds.js');
     callback();
 };
 

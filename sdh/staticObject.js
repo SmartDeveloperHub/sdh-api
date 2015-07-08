@@ -233,8 +233,8 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < metrics.metrics.length; i++) {
             _metricsById[metrics.metrics[i].id] = metrics.metrics[i];
         }
-        for (var i = 0; i < tbd.tbd.length; i++) {
-            _tbdById[tbd.tbd[i].id] = tbd.tbd[i];
+        for (var i = 0; i < tbds.tbds.length; i++) {
+            _tbdById[tbds.tbds[i].id] = tbds.tbds[i];
         }
         for (var i = 0; i < _users.userList.length; i++) {
             _usersById[_users.userList[i].userid] = _users.userList[i];
