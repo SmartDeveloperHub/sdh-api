@@ -25,31 +25,37 @@
 // SDH platform
 GLOBAL.sdhWrapper = require('./sdhWrapper');
 
-exports.start = function (callback) {
+var theCallback;
 
-    var staticDataCallback = function staticDataCallback() {
-        console.log("        * " + users.length + " Users");
-        console.log("        * " + repositories.length + " Repositories");
-        // End
-        callback();
-    };
+var staticDataCallback = function staticDataCallback() {
+    console.log("        * " + users.length + " Users");
+    console.log("        * " + repositories.length + " Repositories");
+    // End
+    theCallback();
+};
 
-    var tdbCallback = function tdbCallback() {
-        // Get static Information. Users, repositories, organization...
-        console.log("        * " + tbds.tbds.length + " TBDs");
-        console.log("    #Getting basic information about Users, Repositories and Organization...");
-        var staticObject = require('./staticObject');
-        staticObject.preloadAll(staticDataCallback);
-    };
+var tdbCallback = function tdbCallback() {
+    // Get static Information. Users, repositories, organization...
+    console.log("        * " + tbds.tbds.length + " TBDs");
+    console.log("    #Getting basic information about Users, Repositories and Organization...");
+    var staticObject = require('./staticObject');
+    staticObject.preloadAll(staticDataCallback);
+};
 
-    var metricCallback = function metricCallback() {
-        // Get Tbds
-        console.log("        * " + metrics.metrics.length + " metrics");
-        console.log("    #Getting available Time Based Data from Agora-Platform...");
-        sdhWrapper.getAvailableTbds(tdbCallback);
-    };
+var metricCallback = function metricCallback() {
+    // Get Tbds
+    console.log("        * " + metrics.metrics.length + " metrics");
+    console.log("    #Getting available Time Based Data from Agora-Platform...");
+    sdhWrapper.getAvailableTbds(tdbCallback);
+};
 
-    // Get Metrics
+var getInfo = function getInfo() {
+    // Get Metrics, tbds, staic info... cascade
     console.log("    #Getting available metrics from Agora-Platform...");
     sdhWrapper.getAvailableMetrics(metricCallback);
+}
+
+exports.update = function update(callback) {
+    theCallback = callback;
+    getInfo();
 };

@@ -55,45 +55,60 @@ catch (err) {
     console.log('Exiting...');
     process.exit(0);
 }
-var serverPort = 8080;
-// swaggerRouter configuration
-var options = {
-    swaggerUi: '/swagger.json',
-    controllers: './controllers',
-    useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
-};
-
-var launchSwaggerAPI = function() {
-    // Initialize the Swagger middleware
-    swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
-        // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
-        app.use(middleware.swaggerMetadata());
-
-        // Validate Swagger requests
-        app.use(middleware.swaggerValidator());
-
-        // Route validated requests to appropriate controller
-        app.use(middleware.swaggerRouter(options));
-
-        // Serve the Swagger documents and Swagger UI
-        app.use(middleware.swaggerUi());
-
-        // Start the server
-        http.createServer(app).listen(serverPort, function () {
-            var now = moment();
-            loadStartDate = moment(loadStartDate);
-            var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
-            console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
-            console.log('');
-            console.log('SDH-API is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-            console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', serverPort);
-        });
-    });
-};
 
 try {
+    var serverPort = 8080;
+    // swaggerRouter configuration
+    var options = {
+        swaggerUi: '/swagger.json',
+        controllers: './controllers',
+        useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
+    };
     var loader = require('./sdh/init');
-    loader.start(launchSwaggerAPI);
+
+    var setRefreshRate = function setRefreshRate(frec) {
+        console.log("    > Setting sdh refresh rate in " + frec + 'ms');
+        setInterval( function() {
+            console.log("    -> Checking for sdh changes");
+            loadStartDate = moment();
+            loader.update(function() {
+                var now = moment();
+                var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
+                console.log("    -> API is updated!! " + now.format() + "--- ( " + loadTime + " ms )");
+            });
+        },frec);
+    };
+
+    var launchSwaggerAPI = function() {
+        // Initialize the Swagger middleware
+        swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+            // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
+            app.use(middleware.swaggerMetadata());
+
+            // Validate Swagger requests
+            app.use(middleware.swaggerValidator());
+
+            // Route validated requests to appropriate controller
+            app.use(middleware.swaggerRouter(options));
+
+            // Serve the Swagger documents and Swagger UI
+            app.use(middleware.swaggerUi());
+
+            // Start the server
+            http.createServer(app).listen(serverPort, function () {
+                setRefreshRate(600000);
+                var now = moment();
+                loadStartDate = moment(loadStartDate);
+                var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
+                console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
+                console.log('');
+                console.log('SDH-API is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+                console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', serverPort);
+            });
+        });
+    };
+
+    loader.update(launchSwaggerAPI);
 }
 catch (err) {
     console.error("Error loading initial data from SDH-Platform: " + err);
