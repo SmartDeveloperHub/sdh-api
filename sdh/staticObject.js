@@ -33,8 +33,6 @@ var _metricsById;
 var _tbdById;
 var _staticInfoById;
 
-var url = require("url");
-
 var parseRepoList = function parseRepoList(data) {
 
     var resF = {'repositoryList': []};
@@ -148,8 +146,6 @@ var parseUserTree = function parseUserTree (e) {
             v[r[i].p.value] = r[i].o.value;
             re[r[i].d.value].push(v);
         }
-        console.log("re: " + JSON.stringify(re));
-        console.log("ubru: " + JSON.stringify(ubru));
         GLOBAL.usersByRepoUri = ubru;
         for (var repUri in usersByRepoUri) {
             var userList = usersByRepoUri[repUri];
@@ -170,6 +166,7 @@ var parseUserTree = function parseUserTree (e) {
         return e;
     }
 };
+
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
     // Query to get repository's information
     var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
@@ -213,15 +210,11 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     getRepositoriesInfo(function(e){
         var resultRepos = parseRepoList(e);
-        console.log('-->repositories: ' + JSON.stringify(resultRepos));
         getUsersInfo(function(e) {
-            console.log('-->e: ' + JSON.stringify(e));
             var resultUsers = parseUserList(e);
-            console.log('-->users: ' + JSON.stringify(resultUsers));
             returnCallback(resultUsers, resultRepos);
         });
     });
-    // eg: http://localhost:9001/fragment?gp={?s%20a%20scm:Repository.%20?s%20doap:name%20?n}
 };
 
 module.exports.preloadAll = function preloadAll (callback) {

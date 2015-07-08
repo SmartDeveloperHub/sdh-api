@@ -22,8 +22,6 @@
 
 'use strict';
 
-var url = require('url');
-
 var Repository = require('./RepositoryService');
 
 module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res) {

@@ -22,8 +22,6 @@
 
 'use strict';
 
-var url = require('url');
-
 var User = require('./UserService');
 
 module.exports.allUsers = function allUsers (req, res, next) {

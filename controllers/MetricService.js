@@ -29,7 +29,7 @@ exports.metricList = function(callback) {
 
 exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
 
-        var metricRequest = function metricRequest () {
+    var metricRequest = function metricRequest () {
         // Normalize params
         if (!uidRequired && typeof uid !== 'undefined') {
             console.log(mid + " metric does not require query param 'uid'");

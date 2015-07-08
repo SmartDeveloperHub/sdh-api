@@ -21,84 +21,6 @@
 */
 
 'use strict';
-var url = require("url");
-
-var getHash = function getHash(data) {
-    return url.parse(data).hash.replace('#', '');
-};
-
-var getValuesByHash = function getValuesByHash(data) {
-    var values = {};
-    for (var i = 0; i < data.length; i++) {
-        for (var key in data[i]) {
-            values[getHash(key)] = data[i][key];
-            break;
-        }
-    }
-    return values;
-};
-
-exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
-    //TODO Agora rules :)
-    var i;
-    var val = [];
-    // For test
-    if (tid == 'userrangedrepolist') {
-        for (i = 0; i < repositories.length; i ++) {
-            if (repositories[i].owner == uid) {
-               val.push(repositories[i]);
-            }
-        }
-    } else if (tid == 'reporangeduserlist') {
-       for (i = 0; i < repositories.length; i ++) {
-            if (repositories[i].repositoryid == rid) {
-               val.push(usersById[repositories[i].owner]);
-            }
-        }
-    } else if (tid == 'userprojectlanguagelines' || tid == 'projectlanguagelines' || tid == 'userlanguagelines') {
-        // TODO
-        val = {
-            'C++':  parseInt(Math.random() * 10000),
-            'JavaScript':  parseInt(Math.random() * 10000),
-            'Java':  parseInt(Math.random() * 10000),
-            'HTML':  parseInt(Math.random() * 1000),
-            'Python':  parseInt(Math.random() * 10000),
-            'Cobol':  parseInt(Math.random() * 1000),
-            'css':  parseInt(Math.random() * 10000)
-        }
-    } else {
-        val = parseInt(Math.random() * 1000);
-    }
-
-    callback({
-        'data': val,
-        'timestamp': new Date()
-    });
-};
-
-exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
-    var val = [];
-    var acum = 0;
-    // Only for test, max=0 ---> all available values
-    if (max == 0) {
-        max = 24;
-    }
-    for (var i = 0; i < max; i++) {
-        if (accumulated) {
-            acum += parseInt(Math.random() * 100);
-            val.push(acum);
-        } else {
-            val.push(parseInt(Math.random() * 100));
-        }
-    }
-
-    //TODO Agora rules :)
-    callback({
-        'data': val,
-        'timestamp': new Date()
-    });
-};
-
 
 var getRepository = function getRepository(rid, retCallback) {
     // Query to get repository's information
@@ -255,5 +177,66 @@ exports.getUserInfo = function getUserInfo(uid, returnCallback) {
         var resultUser = parseUserInfo(e);
         console.log('-->user: ' + JSON.stringify(resultUser));
         returnCallback(resultUser);
+    });
+};
+
+exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
+    //TODO Agora rules :)
+    var i;
+    var val = [];
+    // For test
+    if (tid == 'userrangedrepolist') {
+        for (i = 0; i < repositories.length; i ++) {
+            if (repositories[i].owner == uid) {
+                val.push(repositories[i]);
+            }
+        }
+    } else if (tid == 'reporangeduserlist') {
+        for (i = 0; i < repositories.length; i ++) {
+            if (repositories[i].repositoryid == rid) {
+                val.push(usersById[repositories[i].owner]);
+            }
+        }
+    } else if (tid == 'userprojectlanguagelines' || tid == 'projectlanguagelines' || tid == 'userlanguagelines') {
+        // TODO
+        val = {
+            'C++':  parseInt(Math.random() * 10000),
+            'JavaScript':  parseInt(Math.random() * 10000),
+            'Java':  parseInt(Math.random() * 10000),
+            'HTML':  parseInt(Math.random() * 1000),
+            'Python':  parseInt(Math.random() * 10000),
+            'Cobol':  parseInt(Math.random() * 1000),
+            'css':  parseInt(Math.random() * 10000)
+        }
+    } else {
+        val = parseInt(Math.random() * 1000);
+    }
+
+    callback({
+        'data': val,
+        'timestamp': new Date()
+    });
+};
+
+exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
+    var val = [];
+    var acum = 0;
+    // Only for test, max=0 ---> all available values
+    if (max == 0) {
+        max = 24;
+    }
+    for (var i = 0; i < max; i++) {
+        if (accumulated) {
+            acum += parseInt(Math.random() * 100);
+            val.push(acum);
+        } else {
+            val.push(parseInt(Math.random() * 100));
+        }
+    }
+
+    //TODO Agora rules :)
+    callback({
+        'data': val,
+        'timestamp': new Date()
     });
 };
