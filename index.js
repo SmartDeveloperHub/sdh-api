@@ -22,32 +22,9 @@
 
 'use strict';
 
-var app = require('connect')();
-
-GLOBAL.http = require('http');
-
-var swaggerTools = require('swagger-tools');
-
-GLOBAL.request = require('sync-request');
-
-var serverPort = 8080;
-
-// swaggerRouter configuration
-var options = {
-    swaggerUi: '/swagger.json',
-    controllers: './controllers',
-    useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
-};
-
-// The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
-var swaggerDoc = require('./api/swagger.json');
-
-// global agora-fragment-js as sdhGate
-GLOBAL.sdhGate = require("agora-fragment-js");
-
-// global moment.js
-GLOBAL.moment = require('moment');
-GLOBAL.underscore = require('underscore');
+var loadStartDate = new Date();
+console.log('');
+console.log("--- SDH-API Initializing ---");
 
 // Shut down function
 var gracefullyShuttinDown = function gracefullyShuttinDown() {
@@ -55,10 +32,36 @@ var gracefullyShuttinDown = function gracefullyShuttinDown() {
     console.log('Exiting...');
     process.exit(0);
 };
-
 // Set security handlers
 process.on('SIGINT', gracefullyShuttinDown);
 process.on('SIGTERM', gracefullyShuttinDown);
+
+console.log("... Loading Modules...");
+try {
+    var app = require('connect')();
+    GLOBAL.http = require('http');
+    var swaggerTools = require('swagger-tools');
+    GLOBAL.request = require('sync-request');
+    // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
+    var swaggerDoc = require('./api/swagger.json');
+    // global agora-fragment-js as sdhGate
+    GLOBAL.sdhGate = require("agora-fragment-js");
+    // global moment.js
+    GLOBAL.moment = require('moment');
+    GLOBAL.underscore = require('underscore');
+}
+catch (err) {
+    console.error("Error loading dependencies: " + err);
+    console.log('Exiting...');
+    process.exit(0);
+}
+var serverPort = 8080;
+// swaggerRouter configuration
+var options = {
+    swaggerUi: '/swagger.json',
+    controllers: './controllers',
+    useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
+};
 
 var launchSwaggerAPI = function() {
     // Initialize the Swagger middleware
@@ -77,12 +80,23 @@ var launchSwaggerAPI = function() {
 
         // Start the server
         http.createServer(app).listen(serverPort, function () {
-            console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-            console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+            var now = moment();
+            loadStartDate = moment(loadStartDate);
+            var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
+            console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
+            console.log('');
+            console.log('SDH-API is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+            console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', serverPort);
         });
     });
 };
 
-var loader = require('./sdh/init');
-
-loader.start(launchSwaggerAPI);
+try {
+    var loader = require('./sdh/init');
+    loader.start(launchSwaggerAPI);
+}
+catch (err) {
+    console.error("Error loading initial data from SDH-Platform: " + err);
+    console.log('Exiting...');
+    process.exit(0);
+}

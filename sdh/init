@@ -28,21 +28,28 @@ GLOBAL.sdhWrapper = require('./sdhWrapper');
 exports.start = function (callback) {
 
     var staticDataCallback = function staticDataCallback() {
+        console.log("        * " + users.length + " Users");
+        console.log("        * " + repositories.length + " Repositories");
         // End
         callback();
     };
 
     var tdbCallback = function tdbCallback() {
         // Get static Information. Users, repositories, organization...
+        console.log("        * " + tbds.tbds.length + " TBDs");
+        console.log("    #Getting basic information about Users, Repositories and Organization...");
         var staticObject = require('./staticObject');
         staticObject.preloadAll(staticDataCallback);
     };
 
     var metricCallback = function metricCallback() {
         // Get Tbds
+        console.log("        * " + metrics.metrics.length + " metrics");
+        console.log("    #Getting available Time Based Data from Agora-Platform...");
         sdhWrapper.getAvailableTbds(tdbCallback);
     };
 
     // Get Metrics
+    console.log("    #Getting available metrics from Agora-Platform...");
     sdhWrapper.getAvailableMetrics(metricCallback);
 };
