@@ -50,11 +50,15 @@ var parseRepoList = function parseRepoList(data) {
                 break;
             }
         }
+        var tagList = [];
+        if (typeof attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
+            tagList = attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
+        }
         var newAt = {
             "repositoryid": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
             "name": attrObject["http://usefulinc.com/ns/doap#name"],
             "description": attrObject["http://usefulinc.com/ns/doap#description"],
-            "tags": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#tags"],
+            "tags": tagList,
             "avatar": attrObject["http://xmlns.com/foaf/0.1/#depiction"],
             "archived": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
             "public": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],

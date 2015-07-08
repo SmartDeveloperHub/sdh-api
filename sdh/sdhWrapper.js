@@ -149,7 +149,10 @@ var parseRepositoryInfo = function (data) {
             var repoAtts = parsedTree.results[key];
             break;
         }
-        var tagList = repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',').splice(-1,1);
+        var tagList = [];
+        if (typeof repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
+            tagList = repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
+        }
         var theRep = {
             "repositoryid": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
             "name": repoAtts["http://usefulinc.com/ns/doap#name"],
