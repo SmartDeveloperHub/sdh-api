@@ -22,6 +22,7 @@
 
 'use strict';
 var url = require("url");
+var request = require('sync-request');
 
 var getHash = function getHash(data) {
     return url.parse(data).hash.replace('#', '');
@@ -140,7 +141,7 @@ var parseRepoTree = function parseRepoTree (e) {
     }
 };
 
-var parseRepositoryInfo = function (data) {
+var parseRepositoryInfo = function parseRepositoryInfo(data) {
     var res = [];
     var parsedTree = parseRepoTree(data);
     if (parsedTree.status === 'OK') {
@@ -172,7 +173,55 @@ var parseRepositoryInfo = function (data) {
         };
     }
     return theRep;
-}
+};
+
+var getUser = function getUser(uid, retCallback) {
+    var http_path = userUriById[uid];
+    var infoPack = null;
+    // Here we use the user uri to get the information wanted (We can use a fragment request too)
+    try {
+        var req = request('GET', http_path, {
+            "headers": {"Accept": "text/turtle"}
+        });
+        if (req.statusCode === 200) {
+            infoPack = {
+                "status": "OK",
+                "data": req.getBody().toString('utf-8')
+            };
+        }
+        else {
+            console.log('error ' + req.statusCode);
+        }
+    }
+    catch (err) {
+        console.log('--bad request!');
+    }
+    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT * WHERE {?s <http://xmlns.com/foaf/0.1/name> ?name. ?i <http://xmlns.com/foaf/0.1/depicts> ?avatar.' +
+        '?s scm:firstCommit ?firstCommit. ?s scm:lastCommit ?lastCommit. ?s scm:mbox ?email.' +
+        '?s scm:signUpDate ?register. ?s scm:signUpDate ?register. ?s scm:userId ?userid.}';
+    sdhGate.get_results_from_fragment(infoPack.data, q, retCallback);
+};
+
+var parseUserInfo = function parseUserInfo(data) {
+    var res = [];
+    if (data.status === 'OK') {
+        var userAtts = data.results[0];
+
+        var theUser = {
+            "userid": userAtts["userid"].value,
+            "name": userAtts["name"].value,
+            "email": userAtts['email'].value,
+            "avatar": userAtts['avatar'].value,
+            "scmUserUrl": "https://github.com/" + userAtts["name"].value,
+            "register": userAtts["register"].value,
+            "firstCommit": userAtts["firstCommit"].value,
+            "lastCommit": userAtts["lastCommit"].value,
+            "repositories": []
+        };
+    }
+    return theUser;
+};
 
 exports.userExist = function (uid, callback) {
     callback(uid in usersById);
@@ -199,5 +248,13 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
         var resultRepo = parseRepositoryInfo(e);
         console.log('-->repository: ' + JSON.stringify(resultRepo));
         returnCallback(resultRepo);
+    });
+};
+
+exports.getUserInfo = function getUserInfo(uid, returnCallback) {
+    getUser(uid, function(e) {
+        var resultUser = parseUserInfo(e);
+        console.log('-->user: ' + JSON.stringify(resultUser));
+        returnCallback(resultUser);
     });
 };
