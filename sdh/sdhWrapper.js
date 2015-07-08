@@ -167,7 +167,6 @@ exports.getAvailableMetrics = function getAvailableMetrics(callback) {
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
     getRepository(rid, function(e) {
         var resultRepo = parseRepositoryInfo(e);
-        console.log('-->repository: ' + JSON.stringify(resultRepo));
         returnCallback(resultRepo);
     });
 };
@@ -175,7 +174,6 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
 exports.getUserInfo = function getUserInfo(uid, returnCallback) {
     getUser(uid, function(e) {
         var resultUser = parseUserInfo(e);
-        console.log('-->user: ' + JSON.stringify(resultUser));
         returnCallback(resultUser);
     });
 };
