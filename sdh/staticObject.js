@@ -40,6 +40,7 @@ var parseRepoList = function parseRepoList(data) {
     var resF = {'repositoryList': []};
     var res = resF.repositoryList;
     var rbyid = {};
+    var ridbyuri = {};
     var id;
     for (var key in data.results) {
         var attrArray = data.results[key];
@@ -66,16 +67,18 @@ var parseRepoList = function parseRepoList(data) {
         };
         id = newAt.repositoryid;
         rbyid[id] = key;
+        ridbyuri[key] = id;
         res.push(newAt);
     }
-    console.log("repoUriById" + JSON.stringify(rbyid));
     GLOBAL.repoUriById = rbyid;
+    GLOBAL.repoIdByUri = ridbyuri;
     return resF;
 };
 
 var parseUserList = function parseUserList(data) {
     var resF = {'userList': []};
     var res = resF.userList;
+    var ubyid = {};
     for (var key in data.results) {
         var attrArray = data.results[key];
         var attrObject = {};
@@ -92,7 +95,9 @@ var parseUserList = function parseUserList(data) {
             "avatar": attrObject["http://xmlns.com/foaf/0.1/img"]
         };
         res.push(newAt);
+        ubyid[newAt.userid] = key;
     }
+    GLOBAL.userUriById = ubyid;
     return resF;
 };
 
@@ -145,8 +150,16 @@ var parseUserTree = function parseUserTree (e) {
         }
         console.log("re: " + JSON.stringify(re));
         console.log("ubru: " + JSON.stringify(ubru));
-        console.log("rbuu: " + JSON.stringify(rbuu));
         GLOBAL.usersByRepoUri = ubru;
+        for (var repUri in usersByRepoUri) {
+            var userList = usersByRepoUri[repUri];
+            for (var usuri in usersByRepoUri[repUri]) {
+                if (!(usuri in rbuu)) {
+                    rbuu[usuri] = [];
+                }
+                rbuu[usuri].push(repUri);
+            }
+        }
         GLOBAL.reposByUserUri = rbuu;
         return {
             "status": "OK",
