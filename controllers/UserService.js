@@ -32,18 +32,19 @@ exports.userInfo = function(uid, callback) {
     var _user;
     if (uid in usersById) {
         _user = underscore(usersById[uid]).clone();
-        var localRepos = repositories;
+        var localRepos = reposByUserUri[userUriById[uid]];
         var userRepos = [];
-        for(var i = 0; i < localRepos.length; i ++) {
-            if (localRepos[i].owner == uid) {
-                userRepos.push(localRepos[i]);
-            }
+        for(var key in localRepos) {
+            userRepos.push(repositoriesById[repoIdByUri[localRepos[key]]]);
         }
-        _user['repositories'] = underscore(userRepos).clone();
+        _user['rep'] = underscore(userRepos).clone();
     } else {
         console.log("--UID not found");
         callback(404);
         return;
     }
-    callback(_user);
+    sdhWrapper.getUserInfo(uid, function(e) {
+        e.repositories = _user['rep'];
+        callback(e);
+    });
 };

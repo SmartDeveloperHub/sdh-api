@@ -29,22 +29,22 @@ exports.allRepositoriesInfo = function(callback) {
 
 exports.repositoryInfo = function(rid, callback) {
 
-    var rep;
+    var _rep;
     if (rid in repositoriesById) {
-        rep = underscore(repositoriesById[rid]).clone();
+        _rep = underscore(repositoriesById[rid]).clone();
         var localUsers = usersByRepoUri[repoUriById[rid]];
         var repoUsers = [];
         for(var key in localUsers) {
             repoUsers.push(usersById[localUsers[key]]);
         }
-        rep['users'] = underscore(repoUsers).clone();
+        _rep['users'] = underscore(repoUsers).clone();
     } else {
         console.log("--RID not found");
         callback(404);
         return;
     }
     sdhWrapper.getRepositoryInfo(rid, function(e) {
-        e.users = rep['users'];
+        e.users = _rep['users'];
         callback(e);
     });
 };
