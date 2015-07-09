@@ -79,18 +79,11 @@ var parseUserList = function parseUserList(data) {
     var ubyid = {};
     for (var key in data.results) {
         var attrArray = data.results[key];
-        var attrObject = {};
-        for (var i = 0; i < attrArray.length; i ++) {
-            for (var k in attrArray[i]) {
-                attrObject[k] = attrArray[i][k];
-                break;
-            }
-        }
         var newAt = {
-            "userid": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#userId"],
-            "name": attrObject["http://xmlns.com/foaf/0.1/name"],
-            "email": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#mbox"],
-            "avatar": attrObject["http://xmlns.com/foaf/0.1/img"]
+            "userid": attrArray["userid"],
+            "name": attrArray["name"],
+            "email": attrArray["email"],
+            "avatar": attrArray["avatar"]
         };
         res.push(newAt);
         ubyid[newAt.userid] = key;
@@ -135,16 +128,13 @@ var parseUserTree = function parseUserTree (e) {
             if(typeof ubru[r[i].s.value] === 'undefined') {
                 ubru[r[i].s.value] = {};
             }
-            if (r[i].p.value == "http://www.smartdeveloperhub.org/vocabulary/scm#userId") {
-                // TODO value?? something usefull maybe better
-                ubru[r[i].s.value][r[i].d.value] = r[i].o.value;
-            }
-            if(typeof re[r[i].d.value] === 'undefined') {
-                re[r[i].d.value] = [];
-            }
-            var v = {};
-            v[r[i].p.value] = r[i].o.value;
-            re[r[i].d.value].push(v);
+            ubru[r[i].s.value][r[i].d.value] = r[i].u.value;
+            re[r[i].d.value] = {
+                "userid": r[i].u.value,
+                "name": r[i].n.value,
+                "email": r[i].m.value,
+                "avatar": r[i].h.value
+            };
         }
         GLOBAL.usersByRepoUri = ubru;
         for (var repUri in usersByRepoUri) {
@@ -192,8 +182,13 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
     //http://localhost:9001/fragment?gp={?s%20doap:developer%20?d.%20?d%20foaf:name%20?n} repos-users
     // Query to get user's information
     var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
-        'SELECT * WHERE { ?s doap:developer ?d . \ ' +
-        '?d ?p ?o \ ' +
+        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
+        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT ?s ?d ?u ?n ?m ?h WHERE { ?s doap:developer ?d . \ ' +
+        '?d foaf:img ?o . ?o foaf:depicts ?h . \ ' +
+        '?d foaf:name ?n . \ ' +
+        '?d scm:mbox ?m . \ ' +
+        '?d scm:userId ?u . \ ' +
         '}';
 
     var p = {
