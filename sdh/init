@@ -38,21 +38,33 @@ var tdbCallback = function tdbCallback() {
     // Get static Information. Users, repositories, organization...
     console.log("        * " + tbds.tbds.length + " TBDs");
     console.log("    #Getting basic information about Users, Repositories and Organization...");
-    var staticObject = require('./staticObject');
-    staticObject.preloadAll(staticDataCallback);
+    try {
+        var staticObject = require('./staticObject');
+        staticObject.preloadAll(staticDataCallback);
+    } catch (err) {
+        console.log("error getting Users and Reposiories");
+    }
 };
 
 var metricCallback = function metricCallback() {
     // Get Tbds
     console.log("        * " + metrics.metrics.length + " metrics");
     console.log("    #Getting available Time Based Data from Agora-Platform...");
-    sdhWrapper.getAvailableTbds(tdbCallback);
+    try {
+        sdhWrapper.setAvailableTbds(tdbCallback);
+    } catch (err) {
+        console.log("error getting TBDs");
+    }
 };
 
 var getInfo = function getInfo() {
     // Get Metrics, tbds, staic info... cascade
     console.log("    #Getting available metrics from Agora-Platform...");
-    sdhWrapper.getAvailableMetrics(metricCallback);
+    try {
+        sdhWrapper.setAvailableMetrics(metricCallback);
+    } catch (err) {
+        console.log("error getting metrics");
+    }
 }
 
 exports.update = function update(callback) {

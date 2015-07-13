@@ -74,7 +74,7 @@ try {
             loader.update(function() {
                 var now = moment();
                 var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
-                console.log("    -> API is updated!! " + now.format() + "--- ( " + loadTime + " ms )");
+                console.log("    -> API updated!! " + now.format() + "--- ( " + loadTime + " ms )");
             });
         },frec);
     };

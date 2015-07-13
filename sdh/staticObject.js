@@ -170,17 +170,18 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
             '?s scm:repositoryId ?i', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
             '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?de']
     };
-    var frag = sdhGate.get_fragment(p.patterns);
-    sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
-        returnCallback(parseRepoTree(e));
-    });
+    try {
+        var frag = sdhGate.get_fragment(p.patterns);
+        sdhGate.get_results_from_fragment(frag.fragment, q, function (e) {
+            returnCallback(parseRepoTree(e));
+        });
+    } catch (err) {
+        console.log("ERROR in getRepositoriesInfo: " + err);
+        returnCallback(err)
+    }
 };
 
 var getUsersInfo = function getUsersInfo(returnCallback) {
-    //http://localhost:9001/scm/users/10
-    //http://localhost:9001/types/scm:Person
-    //http://localhost:9001/fragment?gp={?s%20doap:developer%20?d.%20?d%20foaf:name%20?n} repos-users
-    // Query to get user's information
     var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
         'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
         'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
@@ -196,10 +197,15 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
         "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
                 '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
     };
-    var frag = sdhGate.get_fragment(p.patterns);
-    sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
-        returnCallback(parseUserTree(e));
-    });
+    try {
+        var frag = sdhGate.get_fragment(p.patterns);
+        sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
+            returnCallback(parseUserTree(e));
+        });
+    } catch (err) {
+        console.log("ERROR in getUsersInfo: " + err);
+        returnCallback(err)
+    }
 };
 
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
