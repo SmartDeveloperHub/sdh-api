@@ -22,6 +22,144 @@
 
 'use strict';
 
+var parseMetricTree = function parseMetricTree (e) {
+    //TODO
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        var ubru = {};
+        var rbuu = {};
+        // TODO
+        /*for (var i = 0; i < r.length; i++) {
+            if(typeof ubru[r[i].s.value] === 'undefined') {
+                ubru[r[i].s.value] = {};
+            }
+            ubru[r[i].s.value][r[i].d.value] = r[i].u.value;
+            re[r[i].d.value] = {
+                "userid": r[i].u.value,
+                "name": r[i].n.value,
+                "email": r[i].m.value,
+                "avatar": r[i].h.value
+            };
+        }
+        for (var repUri in usersByRepoUri) {
+            var userList = usersByRepoUri[repUri];
+            for (var usuri in usersByRepoUri[repUri]) {
+                if (!(usuri in rbuu)) {
+                    rbuu[usuri] = [];
+                }
+                rbuu[usuri].push(repUri);
+            }
+        }*/
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
+};
+
+var getMetricList = function getMetricList(returnCallback) {
+    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
+        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
+        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT ?s ?d ?u ?n ?m ?h WHERE { ?s doap:developer ?d . \ ' +
+        '?d foaf:img ?o . ?o foaf:depicts ?h . \ ' +
+        '?d foaf:name ?n . \ ' +
+        '?d scm:mbox ?m . \ ' +
+        '?d scm:userId ?u . \ ' +
+        '}';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
+                '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
+    };
+    try {
+        // TODO
+        returnCallback(require('./metrics.js'));
+        /*
+        var frag = sdhGate.get_fragment(p.patterns);
+        sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
+            returnCallback(parseMetricTree(e));
+        });*/
+    } catch (err) {
+        console.log("ERROR in getMetricsInfo: " + err);
+        returnCallback(err)
+    }
+};
+
+var parseTbdTree = function parseTbdTree (e) {
+    //TODO
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        var ubru = {};
+        var rbuu = {};
+        // TODO
+        /*for (var i = 0; i < r.length; i++) {
+            if(typeof ubru[r[i].s.value] === 'undefined') {
+                ubru[r[i].s.value] = {};
+            }
+            ubru[r[i].s.value][r[i].d.value] = r[i].u.value;
+            re[r[i].d.value] = {
+                "userid": r[i].u.value,
+                "name": r[i].n.value,
+                "email": r[i].m.value,
+                "avatar": r[i].h.value
+            };
+        }
+        for (var repUri in usersByRepoUri) {
+            var userList = usersByRepoUri[repUri];
+            for (var usuri in usersByRepoUri[repUri]) {
+                if (!(usuri in rbuu)) {
+                    rbuu[usuri] = [];
+                }
+                rbuu[usuri].push(repUri);
+            }
+        }*/
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
+};
+
+var getTbdList = function getTbdList(returnCallback) {
+    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
+        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
+        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT ?s ?d ?u ?n ?m ?h WHERE { ?s doap:developer ?d . \ ' +
+        '?d foaf:img ?o . ?o foaf:depicts ?h . \ ' +
+        '?d foaf:name ?n . \ ' +
+        '?d scm:mbox ?m . \ ' +
+        '?d scm:userId ?u . \ ' +
+        '}';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
+                '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
+    };
+    try {
+        // TODO
+        returnCallback(require('./tbds.js'));
+        /*
+        var frag = sdhGate.get_fragment(p.patterns);
+        sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
+            returnCallback(parseTbdTree(e));
+        });*/
+    } catch (err) {
+        console.log("ERROR in getMetricsInfo: " + err);
+        returnCallback(err)
+    }
+};
+
 var getRepository = function getRepository(rid, retCallback) {
     // Query to get repository's information
     var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
@@ -152,16 +290,19 @@ exports.repoExist = function (rid, callback) {
     callback(rid in repositoriesById);
 };
 
-exports.getAvailableTbds = function getAvailableTbds(callback) {
-    // TODO discover SDH platform metrics
-    GLOBAL.tbds = require('./tbds.js');
-    callback();
+exports.setAvailableTbds = function setAvailableTbds(callback) {
+    getTbdList(function(newTBDs) {
+        GLOBAL.tbds = newTBDs;
+        callback();
+    });
 };
 
-exports.getAvailableMetrics = function getAvailableMetrics(callback) {
-    // TODO discover SDH platform metrics
-    GLOBAL.metrics = require('./metrics.js');
-    callback();
+exports.setAvailableMetrics = function setAvailableMetrics(callback) {
+    getMetricList(function(newMetrics) {
+        GLOBAL.metrics = newMetrics;
+        callback();
+    });
+
 };
 
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
