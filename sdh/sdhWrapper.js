@@ -31,9 +31,9 @@ var parseMetricId = function parseMetricId(realId) {
     if (rriList.length === 3) {
         // simple param repo, user or org(by dafault. Not necesary)
         if (rriList[1] !== 'org') {
-            if (rriList[1] !== 'repo') {
+            if (rriList[1] === 'repo') {
                 params.push('rid');
-            } else if (rriList[1] !== 'user') {
+            } else if (rriList[1] === 'user') {
                 params.push('uid');
             } else {
                 console.error("Invalid metric Subject: " + rriList[1]);
@@ -75,9 +75,8 @@ var parseMetricTree = function parseMetricTree (e) {
         var re = [];
 
         var metById = {};
-        var metricIdByUri = {};
         GLOBAL.metricUriById = {};
-        var metObjectById = {};
+        var metObjectByRealId = {};
 
         var tbdById = {};
         var tbdIdByUri = {};
@@ -93,10 +92,12 @@ var parseMetricTree = function parseMetricTree (e) {
             // TODO TBDs included in metrics request
             if (parsedMetric.type === "metric") {
                 // METRIC
-                if (typeof metricIdByUri[r[i].e.value] === 'undefined') {
-                    metricIdByUri[r[i].e.value] = parsedMetric.id;
-                    metricUriById[parsedMetric.id] = r[i].e.value;
-                    metObjectById[parsedMetric.id] = parsedMetric;
+                if (typeof metricUriById[r[i].e.value] === 'undefined') {
+                    if (typeof metricUriById[parsedMetric.id]=== 'undefined') {
+                        metricUriById[parsedMetric.id] = {};
+                    }
+                    metricUriById[parsedMetric.id][parsedMetric.aggr] = r[i].e.value;
+                    metObjectByRealId[metricRealId] = parsedMetric;
                 }
                 // TODO global metrics but with aggr description.  Global desc?
                 var desc = "???"; // TODO
@@ -437,7 +438,17 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
 };
 
 exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
-    var http_path = metricUriById[mid];
+    if (typeof metricUriById[mid] !== "undefined") {
+        if (typeof metricUriById[mid][aggr] !== "undefined") {
+            var http_path = metricUriById[mid][aggr];
+        } else {
+            console.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available in Agora!");
+            callback(null);
+        }
+    } else {
+        console.error("Unexpected error getting metric. '" + mid + "' metric is not available in Agora!");
+        callback(null);
+    }
     var data = null;
     try {
         var qpObject = {};
@@ -458,13 +469,13 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             qpObject['accumulated'] = accumulated;
         }
         if(max !== null) {
-            qpObject['num'] = max;
+            qpObject['max'] = max;
         }
         qpObject['aggr'] = aggr;
 
         var req = request('GET', http_path, {
             "headers": {"Accept": "application/json"},
-            "qs": require('querystring').stringify(qpObject)
+            "qs": qpObject
         });
         if (req.statusCode === 200) {
             data = JSON.parse(req.getBody());
@@ -477,7 +488,5 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         console.log('--bad request!');
     }
     // Parse data... for example... get timestamp
-    callback({
-        'data': data
-    });
+    callback( data);
 };
