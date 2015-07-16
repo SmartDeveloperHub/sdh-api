@@ -147,7 +147,7 @@ var parseMetricTree = function parseMetricTree (e) {
                         "description": desc, // TODO common description???
                         "params": parsedMetric.params,
                         // Hardcoded optional attribute by the moment
-                        "optional": ['from', 'to', 'max', 'accumulated', 'aggr']
+                        "optional": ['from', 'to']
                     };
                 } else {
                     // Add new param or params
