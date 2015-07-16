@@ -77,6 +77,6 @@ module.exports.getMetric = function getMetric (req, res) {
             res.end();
         }
     };
-
+    console.log("getMetric: " + "(" + [mid, rid, uid, from, to, accumulated, max, aggr]);
     Metric.getMetric(mid, rid, uid, from, to, accumulated, max, aggr, callback);
 };

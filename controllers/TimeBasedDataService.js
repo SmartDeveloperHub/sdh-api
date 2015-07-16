@@ -52,14 +52,21 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
         to = to.getTime();
 
         var localcallback2 = function(thetbd) {
+            if (thetbd == null) {
+                callback(null);
+                return;
+            }
             var result = {
-                "values" : thetbd.data,
+                "values" : thetbd.result,
                 "interval" : {
-                    "from" : from,
-                    "to" : to
+                    "data_begin" : thetbd.context.data_begin,
+                    "data_end" : thetbd.context.data_end,
+                    "from" : thetbd.context.begin,
+                    "to" : thetbd.context.end
                 },
-                "info" : underscore(tbdById[tid]).clone(),
-                "timestamp" : thetbd.timestamp
+                "timestamp" : thetbd.context.timestamp,
+                "info" : underscore(tbdById[tid]).clone()
+
             };
             // Add resource static information inside info
             if (result.info.params.indexOf('uid') >= 0) {

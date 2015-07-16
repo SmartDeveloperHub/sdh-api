@@ -73,19 +73,23 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         }
 
         var localcallback2 = function(themetric) {
-            // TODO change this. the real metric result include this structure
+            if (typeof themetric == 'number') {
+                callback(themetric);
+                return;
+            }
             var result = {
                 "values" : themetric.result,
                 "interval" : {
+                    "data_begin" : themetric.context.data_begin,
+                    "data_end" : themetric.context.data_end,
                     "from" : themetric.context.begin,
                     "to" : themetric.context.end
                 },
                 "size" : themetric.context.size,
+                "max" : themetric.context.max,
                 "step" : themetric.context.step,
-                "info" : underscore(metricsById[mid]).clone(),
-                "timestamp" : themetric.context.timestamp // Falta
-
-                // num != size?
+                "timestamp" : themetric.context.timestamp,
+                "info" : underscore(metricsById[mid]).clone()
             };
             // Add resource static information inside info
             if (result.info.params.indexOf('uid') >= 0) {

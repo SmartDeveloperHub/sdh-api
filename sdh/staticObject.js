@@ -76,6 +76,7 @@ var parseUserList = function parseUserList(data) {
     var resF = {'userList': []};
     var res = resF.userList;
     var ubyid = {};
+    var uidbu = {};
     for (var key in data.results) {
         var attrArray = data.results[key];
         var newAt = {
@@ -86,8 +87,10 @@ var parseUserList = function parseUserList(data) {
         };
         res.push(newAt);
         ubyid[newAt.userid] = key;
+        uidbu[key] = newAt.userid;
     }
     GLOBAL.userUriById = ubyid;
+    GLOBAL.userIdByUri = uidbu;
     return resF;
 };
 
@@ -100,11 +103,9 @@ var parseRepoTree = function parseRepoTree (e) {
             if(typeof re[r[i].s.value] === 'undefined') {
                 re[r[i].s.value] = [];
             }
-            else{
-                var v = {};
-                v[r[i].p.value] = r[i].o.value;
-                re[r[i].s.value].push(v);
-            }
+            var v = {};
+            v[r[i].p.value] = r[i].o.value;
+            re[r[i].s.value].push(v);
         }
         return {
             "status": "OK",

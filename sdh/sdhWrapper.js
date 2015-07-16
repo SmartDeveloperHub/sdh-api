@@ -80,7 +80,7 @@ var parseMetricTree = function parseMetricTree (e) {
 
         var tbdById = {};
         var tbdIdByUri = {};
-        var tbdUriById = {};
+        GLOBAL.tbdUriById = {};
         var tbdObjectById = {};
 
         // TODO
@@ -400,23 +400,8 @@ exports.getUserInfo = function getUserInfo(uid, returnCallback) {
 };
 
 exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
-    //TODO Agora rules :)
-    var i;
-    var val = [];
-    // For test
-    if (tid == 'userrangedrepolist') {
-        for (i = 0; i < repositories.length; i ++) {
-            if (repositories[i].owner == uid) {
-                val.push(repositories[i]);
-            }
-        }
-    } else if (tid == 'reporangeduserlist') {
-        for (i = 0; i < repositories.length; i ++) {
-            if (repositories[i].repositoryid == rid) {
-                val.push(usersById[repositories[i].owner]);
-            }
-        }
-    } else if (tid == 'userprojectlanguagelines' || tid == 'projectlanguagelines' || tid == 'userlanguagelines') {
+    // FAKE tdbs:
+    if (tid == 'userprojectlanguagelines' || tid == 'projectlanguagelines' || tid == 'userlanguagelines') {
         // TODO
         val = {
             'C++':  parseInt(Math.random() * 10000),
@@ -427,14 +412,72 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
             'Cobol':  parseInt(Math.random() * 1000),
             'css':  parseInt(Math.random() * 10000)
         }
-    } else {
-        val = parseInt(Math.random() * 1000);
+        callback(val);
+        return;
     }
 
-    callback({
-        'data': val,
-        'timestamp': new Date()
-    });
+    // REAL tdbs
+    if (typeof tbdUriById[tid] !== "undefined") {
+        var http_path = tbdUriById[tid];
+    } else {
+        console.error("Unexpected error getting tbd. tid '" + tid + "' metric is not available in Agora!");
+        callback(null);
+        return;
+    }
+    var data = null;
+    try {
+        var qpObject = {};
+        // Query Params
+        if(rid !== undefined) {
+            qpObject['rid'] = rid;
+        }
+        if(uid !== undefined) {
+            qpObject['uid'] = uid;
+        }
+        if(from !== null) {
+            qpObject['from'] = from;
+        }
+        if(to !== null) {
+            qpObject['to'] = to;
+        }
+
+        var req = request('GET', http_path, {
+            "headers": {"Accept": "application/json"},
+            "qs": qpObject
+        });
+        if (req.statusCode === 200) {
+            data = JSON.parse(req.getBody());
+        }
+        else {
+            console.log('error ' + req.statusCode);
+        }
+    }
+    catch (err) {
+        console.log('--bad request!');
+    }
+    // Parse data... add user name, or something chuli piruli
+    // TODO TODO TODO!!!
+    var i;
+    var val = [];
+    // For test
+    if (tid == 'userrangedrepolist') {
+        for (i = 0; i < data.result.length; i ++) {
+            val.push(repositoriesById[data.result[i]]);
+        }
+    } else if (tid == 'reporangeduserlist') {
+        for (i = 0; i < data.result.length; i ++) {
+            val.push(usersById[data.result[i]]);
+        }
+    } else if (tid == 'orgrepositories') {
+        for (i = 0; i < data.result.length; i ++) {
+            val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
+        }
+    } else {
+        console.error("Error, This tdb ('" + tid + "') doesn't exist... Returning null");
+        val = null;
+    }
+    data.result = val;
+    callback(data);
 };
 
 exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
@@ -481,12 +524,12 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             data = JSON.parse(req.getBody());
         }
         else {
-            console.log('error ' + req.statusCode);
+            console.log('getMetricValue error ' + req.statusCode + ";  req-> " + http_path + "  QP: " + JSON.stringify(qpObject));
+            data = 500;
         }
     }
     catch (err) {
         console.log('--bad request!');
     }
-    // Parse data... for example... get timestamp
-    callback( data);
+    callback(data);
 };
