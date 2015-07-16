@@ -59,10 +59,10 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
             var result = {
                 "values" : thetbd.result,
                 "interval" : {
-                    "data_begin" : thetbd.context.data_begin,
-                    "data_end" : thetbd.context.data_end,
-                    "from" : thetbd.context.begin,
-                    "to" : thetbd.context.end
+                    "data_begin" : thetbd.context.data_begin * 1000,
+                    "data_end" : thetbd.context.data_end * 1000,
+                    "from" : thetbd.context.begin * 1000,
+                    "to" : thetbd.context.end * 1000
                 },
                 "timestamp" : thetbd.context.timestamp,
                 "info" : underscore(tbdById[tid]).clone()

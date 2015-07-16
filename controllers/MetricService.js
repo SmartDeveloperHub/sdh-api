@@ -80,10 +80,10 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
             var result = {
                 "values" : themetric.result,
                 "interval" : {
-                    "data_begin" : themetric.context.data_begin,
-                    "data_end" : themetric.context.data_end,
-                    "from" : themetric.context.begin,
-                    "to" : themetric.context.end
+                    "data_begin" : themetric.context.data_begin * 1000,
+                    "data_end" : themetric.context.data_end * 1000,
+                    "from" : themetric.context.begin * 1000,
+                    "to" : themetric.context.end * 1000
                 },
                 "size" : themetric.context.size,
                 "max" : themetric.context.max,
