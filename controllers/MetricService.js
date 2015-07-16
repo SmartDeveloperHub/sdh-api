@@ -24,7 +24,7 @@
 
 exports.metricList = function(callback) {
 
-    callback(metrics.metrics);
+    callback(metrics);
 };
 
 exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
@@ -42,14 +42,17 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
 
         // Date Range
         if (typeof from == 'undefined') {
-            from = defaultDateRange.from;
+            from = null;
+        } else {
+            // Dates in ms
+            from = from.getTime();
         }
         if (typeof to == 'undefined') {
-            to = defaultDateRange.to;
+            to = null;
+        } else {
+            // Dates in ms
+            to = to.getTime();
         }
-        // Dates in ms
-        from = from.getTime();
-        to = to.getTime();
 
         // max
         if (typeof max == 'undefined') {
@@ -70,15 +73,19 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         }
 
         var localcallback2 = function(themetric) {
+            // TODO change this. the real metric result include this structure
             var result = {
-                "values" : themetric.data,
+                "values" : themetric.data.result,
                 "interval" : {
-                    "from" : from,
-                    "to" : to
+                    "from" : themetric.data.context.begin,
+                    "to" : themetric.data.context.end
                 },
-                "step" : parseInt((parseInt(to) - parseInt(from))/ themetric.data.length),
+                "size" : themetric.data.context.size,
+                "step" : themetric.data.context.step,
                 "info" : underscore(metricsById[mid]).clone(),
-                "timestamp" : themetric.timestamp
+                "timestamp" : themetric.data.context.timestamp // Falta
+
+                // num != size?
             };
             // Add resource static information inside info
             if (result.info.params.indexOf('uid') >= 0) {

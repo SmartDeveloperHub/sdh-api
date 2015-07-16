@@ -29,7 +29,6 @@ var _defaultDateRange;
 // Local vars
 var _usersById;
 var _repositoriesById;
-var _metricsById;
 var _tbdById;
 var _staticInfoById;
 
@@ -226,17 +225,9 @@ module.exports.preloadAll = function preloadAll (callback) {
 
         _usersById = {};
         _repositoriesById = {};
-        _metricsById = {};
-        _tbdById = {};
         _staticInfoById = {};
 
         // Static data structures generation
-        for (var i = 0; i < metrics.metrics.length; i++) {
-            _metricsById[metrics.metrics[i].id] = metrics.metrics[i];
-        }
-        for (var i = 0; i < tbds.tbds.length; i++) {
-            _tbdById[tbds.tbds[i].id] = tbds.tbds[i];
-        }
         for (var i = 0; i < _users.userList.length; i++) {
             _usersById[_users.userList[i].userid] = _users.userList[i];
         }
@@ -244,12 +235,10 @@ module.exports.preloadAll = function preloadAll (callback) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
         // Make global all this methods for param validation
-        GLOBAL.metricsById = this.getMetricsById();
         GLOBAL.repositories = this.getRepositories();
         GLOBAL.users = this.getUsers();
         GLOBAL.usersById = this.getUsersById();
         GLOBAL.repositoriesById = this.getRepositoriesById();
-        GLOBAL.tbdById = this.getTbdById();
         GLOBAL.defaultDateRange = this.getDefaultDateRange();
         callback();
     }.bind(this);
@@ -278,17 +267,6 @@ module.exports.getUsersById = function getUsersById () {
 
   //TODO
   return _usersById;
-};
-
-module.exports.getMetricsById = function getMetricsById () {
-  //TODO
-  return _metricsById;
-};
-
-module.exports.getTbdById = function getTbdById () {
-
-  //TODO
-  return _tbdById;
 };
 
 module.exports.getDefaultDateRange = function getDefaultDateRange () {

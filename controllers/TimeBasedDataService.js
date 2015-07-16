@@ -24,7 +24,7 @@
 
 exports.timeBasedDataList = function(callback) {
 
-    callback(tbds.tbds);
+    callback(tbds);
 };
 
 exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {

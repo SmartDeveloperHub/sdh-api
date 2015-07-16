@@ -36,7 +36,7 @@ var staticDataCallback = function staticDataCallback() {
 
 var tdbCallback = function tdbCallback() {
     // Get static Information. Users, repositories, organization...
-    console.log("        * " + tbds.tbds.length + " TBDs");
+    console.log("        * " + tbds.length + " TBDs");
     console.log("    #Getting basic information about Users, Repositories and Organization...");
     try {
         var staticObject = require('./staticObject');
@@ -48,7 +48,7 @@ var tdbCallback = function tdbCallback() {
 
 var metricCallback = function metricCallback() {
     // Get Tbds
-    console.log("        * " + metrics.metrics.length + " metrics");
+    console.log("        * " + metrics.length + " metrics");
     console.log("    #Getting available Time Based Data from Agora-Platform...");
     try {
         sdhWrapper.setAvailableTbds(tdbCallback);
