@@ -25,9 +25,9 @@
 var fs = require('fs');
 
 exports.apiInfo = function() {
-
+    var aux = JSON.parse(fs.readFileSync('./api/swagger.json', 'utf8'));
     return {
-        "swaggerjson" : JSON.parse(fs.readFileSync('./api/swagger.json', 'utf8')),
-        "host" : "http://localhost:8080"
+        "swaggerjson" : aux,
+        "host" : aux.host
     };
 };
