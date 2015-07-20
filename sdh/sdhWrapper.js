@@ -302,9 +302,9 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
             "archived": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
             "public": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
             "owner": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
-            "creation": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"],
-            "firstCommit": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"],
-            "lastCommit": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"],
+            "creation": moment(repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"]).valueOf(),
+            "firstCommit": moment(repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"]).valueOf(),
+            "lastCommit": moment(repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"]).valueOf(),
             "scmlink": repoAtts["http://usefulinc.com/ns/doap#location"],
             "buildStatus": "OK",
             "buildDate": "OK",
@@ -353,9 +353,9 @@ var parseUserInfo = function parseUserInfo(data) {
             "email": userAtts['email'].value,
             "avatar": userAtts['avatar'].value,
             "scmUserUrl": "https://github.com/" + userAtts["name"].value,
-            "register": userAtts["register"].value,
-            "firstCommit": userAtts["firstCommit"].value,
-            "lastCommit": userAtts["lastCommit"].value,
+            "register": moment(userAtts["register"].value).valueOf(),
+            "firstCommit": moment(userAtts["firstCommit"].value).valueOf(),
+            "lastCommit": moment(userAtts["lastCommit"].value).valueOf(),
             "repositories": []
         };
     }
