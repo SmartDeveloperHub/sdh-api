@@ -167,7 +167,9 @@ var parseMetricTree = function parseMetricTree (e) {
         }
         // TODO GLOBALS metricsBy var
         GLOBAL.metricsById = metById;
+        console.log("Metrics: " + Object.keys(metricsById));
         GLOBAL.tbdById = tbdById;
+        console.log("TBDs: " + Object.keys(tbdById));
         for (var i in metById) {
             re.push(metById[i]);
         }
@@ -515,7 +517,9 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             qpObject['max'] = max;
         }
         qpObject['aggr'] = aggr;
-
+        var querystring = require("querystring");
+        var realPath =  http_path + '?' + querystring.stringify(qpObject);
+        console.log("GET--> " + realPath);
         var req = request('GET', http_path, {
             "headers": {"Accept": "application/json"},
             "qs": qpObject
@@ -524,7 +528,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             data = JSON.parse(req.getBody());
         }
         else {
-            console.log('getMetricValue error ' + req.statusCode + ";  req-> " + http_path + "  QP: " + JSON.stringify(qpObject));
+            console.warn(' :( Error ' + req.statusCode + ";  GET-> " + realPath);
             data = 500;
         }
     }
