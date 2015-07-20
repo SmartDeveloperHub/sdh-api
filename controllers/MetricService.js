@@ -73,7 +73,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         }
 
         var localcallback2 = function(themetric) {
-            if (typeof themetric == 'number') {
+            if (typeof themetric == 'number' || themetric == null) {
                 callback(themetric);
                 return;
             }
@@ -87,7 +87,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
                 },
                 "size" : themetric.context.size,
                 "max" : themetric.context.max,
-                "step" : themetric.context.step,
+                "step" : themetric.context.step * 1000,
                 "timestamp" : themetric.context.timestamp,
                 "info" : underscore(metricsById[mid]).clone()
             };
