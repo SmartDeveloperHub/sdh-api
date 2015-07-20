@@ -42,8 +42,8 @@ var parseMetricId = function parseMetricId(realId) {
         metricId = rriList[1] + rriList[rriList.length - 1];
     } else if (rriList.length === 4) {
         // multi param repo & user
-        params.push('uid');
-        params.push('rid');
+        params.push(rriList[1]);
+        params.push(rriList[2]);
         metricId = rriList[1] + rriList[2] + rriList[rriList.length - 1];
     } else {
         //throw new Error("Invalid metricID from Agora: " + realId);
@@ -53,7 +53,7 @@ var parseMetricId = function parseMetricId(realId) {
     if (aggr === "tbd") {
         return {
             "realId": realId,
-            "id" : metricId,
+            "id" : metricId+"tbd",
             "params" : params,
             "type": "tbd"
         };
@@ -460,15 +460,15 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     var i;
     var val = [];
     // For test
-    if (tid == 'userrangedrepolist') {
+    if (tid == 'userrepositoriestbd') {
         for (i = 0; i < data.result.length; i ++) {
             val.push(repositoriesById[data.result[i]]);
         }
-    } else if (tid == 'reporangeduserlist') {
+    } else if (tid == 'repodeveloperstbd') {
         for (i = 0; i < data.result.length; i ++) {
             val.push(usersById[data.result[i]]);
         }
-    } else if (tid == 'orgrepositories') {
+    } else if (tid == 'orgrepositoriestbd') {
         for (i = 0; i < data.result.length; i ++) {
             val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
         }
