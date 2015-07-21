@@ -519,7 +519,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
         var realPath =  http_path + '?' + querystring.stringify(qpObject);
-        console.log("GET--> " + realPath);
+        console.log("Metric GET--> " + realPath);
         var req = request('GET', http_path, {
             "headers": {"Accept": "application/json"},
             "qs": qpObject
@@ -528,7 +528,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             data = JSON.parse(req.getBody());
         }
         else {
-            console.warn(' :( Error ' + req.statusCode + ";  GET-> " + realPath);
+            console.warn('Metric :( Error ' + req.statusCode + ";  GET-> " + realPath);
             data = 500;
         }
     }
