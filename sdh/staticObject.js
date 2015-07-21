@@ -40,20 +40,20 @@ var parseRepoList = function parseRepoList(data) {
     var ridbyuri = {};
     var id;
     for (var key in data.results) {
-        var attrObject = data.results[key];
+        var attrObject = data.results[key][0];
         var tagList = [];
         if (typeof attrObject["tags"] === 'string') {
-            tagList = attrObject["tags"].split(',');
+            tagList = attrObject["tags"].value.split(',');
         }
         var newAt = {
-            "repositoryid": attrObject["id"],
-            "name": attrObject["name"],
+            "repositoryid": attrObject["id"].value,
+            "name": attrObject["name"].value,
             "description": "",
             "tags": tagList,
-            "avatar": attrObject["avatar"],
-            "archived": attrObject["isaarchived"],
-            "public": attrObject["ispublic"],
-            "owner": attrObject["owner"]
+            "avatar": attrObject["avatar"].value,
+            "archived": attrObject["isaarchived"].value,
+            "public": attrObject["ispublic"].value,
+            "owner": attrObject["owner"].value
         };
         id = newAt.repositoryid;
         rbyid[id] = key;
