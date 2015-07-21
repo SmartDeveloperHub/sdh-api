@@ -451,11 +451,16 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
             data = JSON.parse(req.getBody());
         }
         else {
-            console.log('error ' + req.statusCode);
+            console.warn('TDB :( Error ' + req.statusCode + ";  GET-> " + realPath);
+            data = req.statusCode;
+            callback(data);
+            return;
         }
     }
     catch (err) {
-        console.log('--bad request!');
+        console.error('-- Bad TBD --' + [tid, rid, uid, from, to]);
+        callback(500);
+        return;
     }
     // Parse data... add user name, or something chuli piruli
     // TODO TODO TODO!!!
@@ -476,7 +481,8 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         }
     } else {
         console.error("Error, This tdb ('" + tid + "') doesn't exist... Returning null");
-        val = null;
+        callback(402);
+        return;
     }
     data.result = val;
     callback(data);
