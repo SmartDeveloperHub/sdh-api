@@ -40,27 +40,20 @@ var parseRepoList = function parseRepoList(data) {
     var ridbyuri = {};
     var id;
     for (var key in data.results) {
-        var attrArray = data.results[key];
-        var attrObject = {};
-        for (var i = 0; i < attrArray.length; i ++) {
-            for (var k in attrArray[i]) {
-                attrObject[k] = attrArray[i][k];
-                break;
-            }
-        }
+        var attrObject = data.results[key];
         var tagList = [];
-        if (typeof attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
-            tagList = attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
+        if (typeof attrObject["tags"] === 'string') {
+            tagList = attrObject["tags"].split(',');
         }
         var newAt = {
-            "repositoryid": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
-            "name": attrObject["http://usefulinc.com/ns/doap#name"],
-            "description": attrObject["http://usefulinc.com/ns/doap#description"],
+            "repositoryid": attrObject["id"],
+            "name": attrObject["name"],
+            "description": "",
             "tags": tagList,
-            "avatar": attrObject["http://xmlns.com/foaf/0.1/#depiction"],
-            "archived": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
-            "public": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
-            "owner": attrObject["http://www.smartdeveloperhub.org/vocabulary/scm#owner"]
+            "avatar": attrObject["avatar"],
+            "archived": attrObject["isaarchived"],
+            "public": attrObject["ispublic"],
+            "owner": attrObject["owner"]
         };
         id = newAt.repositoryid;
         rbyid[id] = key;
@@ -101,11 +94,11 @@ var parseRepoTree = function parseRepoTree (e) {
         var re = {};
         for (var i = 0; i < r.length; i++) {
             if(typeof re[r[i].s.value] === 'undefined') {
-                re[r[i].s.value] = [];
+                re[r[i].s.value] = [r[i]];
             }
-            var v = {};
+            /*var v = {};
             v[r[i].p.value] = r[i].o.value;
-            re[r[i].s.value].push(v);
+            re[r[i].s.value].push(v);*/
         }
         return {
             "status": "OK",
@@ -159,16 +152,18 @@ var parseUserTree = function parseUserTree (e) {
 
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
     // Query to get repository's information
-    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-        'SELECT * WHERE { ?s a scm:Repository . \ ' +
-        '?s ?p ?o \ ' +
-        '}';
+    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
+        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
+        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+        'SELECT * WHERE { ?s doap:name ?name. ?s scm:repositoryId ?id. \ ' +
+                         '?s scm:isPublic ?ispublic. ?s foaf:depiction ?im. ?im foaf:depicts ?avatar . \ ' +
+                         '?s scm:isArchived ?isaarchived. ?s scm:owner ?owner. ?s scm:tags ?tags. }';
 
     var p = {
         "status": "OK",
-        "patterns": ['?s a scm:Repository', '?s doap:name ?n', '?s doap:description ?d',
+        "patterns": [ '?s doap:name ?n', '?s doap:description ?d',
             '?s scm:repositoryId ?i', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
-            '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?de']
+            '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?im', '?im foaf:depicts ?de']
     };
     try {
         var frag = sdhGate.get_fragment(p.patterns);
@@ -177,7 +172,7 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
         });
     } catch (err) {
         console.log("ERROR in getRepositoriesInfo: " + err);
-        returnCallback(err)
+        returnCallback(err);
     }
 };
 
