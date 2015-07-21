@@ -50,15 +50,16 @@ var parseMetricId = function parseMetricId(realId) {
         console.error("Invalid metricID from Agora: " + realId);
     }
     var aggr = rriList[0];
+    var endval;
     if (aggr === "tbd") {
-        return {
+        endval = {
             "realId": realId,
             "id" : metricId+"tbd",
             "params" : params,
             "type": "tbd"
         };
     } else {
-        return {
+        endval = {
             "realId": realId,
             "id" : metricId,
             "params" : params,
@@ -66,10 +67,10 @@ var parseMetricId = function parseMetricId(realId) {
             "type": "metric"
         };
     }
+    return endval;
 };
 
 var parseMetricTree = function parseMetricTree (e) {
-    //TODO
     if (e.status === 'OK') {
         var r = e.results;
         var re = [];
@@ -165,7 +166,35 @@ var parseMetricTree = function parseMetricTree (e) {
                 }
             }
         }
-        // TODO GLOBALS metricsBy var
+        // Add Fake metrics 4 Demo
+        metById["userspeed"] = {
+            "id" : "userspeed",
+            "path" : "/metrics/userspeed",
+            "description" : "User development speed skill value",
+            "params": ['uid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum']
+        };
+        metById["usercollaboration"] = {
+            "id" : "usercollaboration",
+            "path" : "/metrics/usercollaboration",
+            "description" : "User development collaboration skill value",
+            "params": ['uid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum']
+        };
+        metById["userquality"] = {
+            "id" : "userquality",
+            "path" : "/metrics/userquality",
+            "description" : "User development quality skill value",
+            "params": ['uid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum']
+        };
+        metricUriById["userspeed"] = {"sum": "progresiveRandom"};
+        metricUriById["usercollaboration"] = {"sum": "progresiveRandom"};
+        metricUriById["userquality"] = {"sum": "progresiveRandom"};
+
         GLOBAL.metricsById = metById;
         console.log("Metrics: " + Object.keys(metricsById));
         GLOBAL.tbdById = tbdById;
@@ -526,18 +555,40 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        var realPath =  http_path + '?' + querystring.stringify(qpObject);
-        console.log("Metric GET--> " + realPath);
-        var req = request('GET', http_path, {
-            "headers": {"Accept": "application/json"},
-            "qs": qpObject
-        });
-        if (req.statusCode === 200) {
-            data = JSON.parse(req.getBody());
-        }
-        else {
-            console.warn('Metric :( Error ' + req.statusCode + ";  GET-> " + realPath);
-            data = 500;
+        if (http_path !== "progresiveRandom" && http_path !== "pureRandom") { //TODO remove fakes
+            var realPath = http_path + '?' + querystring.stringify(qpObject);
+            console.log("Metric GET--> " + realPath);
+            var req = request('GET', http_path, {
+                "headers": {"Accept": "application/json"},
+                "qs": qpObject
+            });
+            if (req.statusCode === 200) {
+                data = JSON.parse(req.getBody());
+            }
+            else {
+                console.warn('Metric :( Error ' + req.statusCode + ";  GET-> " + realPath);
+                data = 500;
+            }
+        } else {
+            // TODO Fake metrics
+            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60];
+            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52];
+            if (http_path == "progresiveRandom") { // progresive random data
+                data = {
+                    "context": {
+                        "begin": "",
+                        "end": "",
+                        "data-begin": "",
+                        "data-end": "",
+                        "step": "",
+                        "max": "",
+                        "timestamp": new Date().getTime()
+                    },
+                    "result": dataList
+                };
+            } else { // pureRandom data
+
+            }
         }
     }
     catch (err) {
