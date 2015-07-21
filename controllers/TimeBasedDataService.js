@@ -52,8 +52,8 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
         to = to.getTime();
 
         var localcallback2 = function(thetbd) {
-            if (thetbd == null) {
-                callback(null);
+            if (typeof thetbd == 'number' || thetbd == null) {
+                callback(thetbd);
                 return;
             }
             var result = {
