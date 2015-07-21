@@ -42,8 +42,8 @@ var parseMetricId = function parseMetricId(realId) {
         metricId = rriList[1] + rriList[rriList.length - 1];
     } else if (rriList.length === 4) {
         // multi param repo & user
-        params.push(rriList[1]);
-        params.push(rriList[2]);
+        params.push('rid');
+        params.push('uid');
         metricId = rriList[1] + rriList[2] + rriList[rriList.length - 1];
     } else {
         //throw new Error("Invalid metricID from Agora: " + realId);
