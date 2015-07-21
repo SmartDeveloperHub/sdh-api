@@ -437,12 +437,14 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
             qpObject['uid'] = uid;
         }
         if(from !== null) {
-            qpObject['from'] = from;
+            qpObject['begin'] = from / 1000;
         }
         if(to !== null) {
-            qpObject['to'] = to;
+            qpObject['end'] = to / 1000;
         }
-
+        var querystring = require("querystring");
+        var realPath =  http_path + '?' + querystring.stringify(qpObject);
+        console.log("TDB GET--> " + realPath);
         var req = request('GET', http_path, {
             "headers": {"Accept": "application/json"},
             "qs": qpObject
@@ -511,10 +513,10 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             qpObject['uid'] = uid;
         }
         if(from !== null) {
-            qpObject['from'] = from;
+            qpObject['begin'] = from / 1000;
         }
         if(to !== null) {
-            qpObject['to'] = to;
+            qpObject['end'] = to / 1000;
         }
         if(accumulated !== null) {
             qpObject['accumulated'] = accumulated;
