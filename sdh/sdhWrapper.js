@@ -510,7 +510,13 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         for (i = 0; i < data.result.length; i ++) {
             val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
         }
-    } else {
+    } else if (tid == 'orgbuildtimetbd') {
+        val = [parseInt((data.result[0] / 3600)* 100) / 100];
+    } else if (tid == 'orgbrokentimetbd') {
+        val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
+    } else if (tid == 'orgtimetofixtbd') {
+        val = [parseInt((data.result[0] / 3600)* 100) / 100];
+    }else {
         console.error("Error, This tdb ('" + tid + "') doesn't exist... Returning null");
         callback(402);
         return;
@@ -555,7 +561,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "progresiveRandom" && http_path !== "pureRandom") { //TODO remove fakes
+        if (http_path !== "progresiveRandom" || http_path !== "pureRandom") { //TODO remove fakes
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
             var req = request('GET', http_path, {
@@ -573,21 +579,53 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             // TODO Fake metrics
             var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60];
             var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52];
+            var modifier = parseInt(Math.random() * 10);
+            var aux = [];
+            var aux2 = [];
+            for (var i = 0; i < dataListUp.length; i++) {
+                aux[i] = dataListUp[i] + modifier;
+                if (i == (dataListUp.length/2)) {
+                    modifier = parseInt(Math.random() * 10);
+                }
+            }
+            dataListUp = aux;
+
+            for (var i = 0; i < dataListDown.length; i++) {
+                aux2[i] = dataListDown[i] + modifier;
+                if (i == (dataListDown.length/2)) {
+                    modifier = parseInt(Math.random() * 10);
+                }
+            }
+            dataListDown = aux2;
+
             if (http_path == "progresiveRandom") { // progresive random data
                 data = {
                     "context": {
-                        "begin": "",
-                        "end": "",
-                        "data-begin": "",
-                        "data-end": "",
-                        "step": "",
-                        "max": "",
+                        "begin": from / 1000,
+                        "end": to / 1000,
+                        "data-begin": from / 1000,
+                        "data-end": to / 1000,
+                        "step": (to - from)/dataListUp.length,
+                        "max": max,
+                        "size": dataListUp.length,
                         "timestamp": new Date().getTime()
                     },
-                    "result": dataList
+                    "result": dataListUp
                 };
             } else { // pureRandom data
-
+                data = {
+                    "context": {
+                        "begin": from / 1000,
+                        "end": to / 1000,
+                        "data-begin": from / 1000,
+                        "data-end": to / 1000,
+                        "step": (to - from)/dataListUp.length,
+                        "max": max,
+                        "size": dataListDown.length,
+                        "timestamp": new Date().getTime()
+                    },
+                    "result": dataListDown
+                };
             }
         }
     }
