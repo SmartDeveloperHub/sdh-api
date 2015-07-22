@@ -563,7 +563,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "progresiveRandom" && http_path !== "pureRandom") { //TODO remove fakes
+        if (http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") { //TODO remove fakes
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
             var req = request('GET', http_path, {
@@ -578,61 +578,132 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
                 data = 500;
             }
         } else {
+            // we need from and to values...
+            var d;
+            var req = request('GET', "http://138.4.249.224/metrics/scm/total-user-commits",
+                {
+                    "headers": {"Accept": "application/json"},
+                    "qs": qpObject
+                }
+            );
+            if (req.statusCode === 200) {
+                d = JSON.parse(req.getBody());
+                var basic_from = d.context.data_begin;
+                var basic_to = d.context.data_end;
+                var basic_step = d.context.step;
+                var basic_size = d.context.size;
+                var timestamp = d.context.timestamp;
+            }
+            else {
+                console.warn('error getting user commits to get from/to dates and use it in fake metrics');
+            }
             // TODO Fake metrics
-            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60, 25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60];
-            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52, 80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52];
-            var modifier = parseInt(Math.random() * 10);
+            var dataList = [];
+            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
+            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
+            var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
+            var modifier = randomIntFromInterval(-10, 15);
             var aux = [];
-            var aux2 = [];
-            for (var i = 0; i < max; i++) {
-                var v = dataListUp[i] + modifier;
-                if (v > 100) {
-                    v = 97;
-                }
-                aux[i] = v;
-                modifier = parseInt(Math.random() * 10);
-            }
-            dataListUp = aux;
 
-            for (var i = 0; i < dataListDown.length; i++) {
-                var v = dataListUp[i] + modifier;
-                if (v > 100) {
-                    v = 97;
+            if (http_path == "progresiveRandom1") {
+                dataList = dataListUp;
+            } else if (http_path == "progresiveRandom2") {
+                dataList = dataListDown;
+            } else if (http_path == "progresiveRandom3") {
+                dataList = dataListmid;
+            }
+            if(max == 0) {
+                max = 40;
+            }
+            if (aggr == "avg") {
+                var pieceLen = dataList.length / basic_size;
+                for (var c = 0; c < basic_size; c ++) {
+                    var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
+                    aux[c] = [piece.reduce(function (a, b) {
+                        return a + b;
+                    }) / piece.length];
                 }
-                aux2[i] = v;
-                modifier = parseInt(Math.random() * 10);
+            } else {
+                for (var i = 0; i < basic_size; i++) {
+                    var v = dataList[i] + modifier;
+                    if (v > 99) {
+                        v = 97;
+                    }
+                    aux[i] = v;
+                    modifier = randomIntFromInterval(-10, 15);
+                }
             }
-            dataListDown = aux2;
+            data = {
+                "context": {
+                    "begin": basic_from * 1000,
+                    "end": basic_to * 1000,
+                    "data-begin": basic_from * 1000,
+                    "data-end": basic_to * 1000,
+                    "step": basic_step * 1000,
+                    "max": basic_step,
+                    "size": basic_size,
+                    "timestamp": timestamp
+                },
+                "result": aux
+            };
 
-            if (http_path == "progresiveRandom") { // progresive random data
-                data = {
-                    "context": {
-                        "begin": from / 1000,
-                        "end": to / 1000,
-                        "data-begin": from / 1000,
-                        "data-end": to / 1000,
-                        "step": (to - from)/dataListUp.length,
-                        "max": max,
-                        "size": dataListUp.length,
-                        "timestamp": new Date().getTime()
-                    },
-                    "result": dataListUp
-                };
-            } else { // pureRandom data
-                data = {
-                    "context": {
-                        "begin": from / 1000,
-                        "end": to / 1000,
-                        "data-begin": from / 1000,
-                        "data-end": to / 1000,
-                        "step": (to - from)/dataListUp.length,
-                        "max": max,
-                        "size": dataListDown.length,
-                        "timestamp": new Date().getTime()
-                    },
-                    "result": dataListDown
-                };
+
+ /*           if (http_path == "progresiveRandom1") {
+                dataList = dataListUp;
+                if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > basic_from) {
+                    var saltos = parseInt((from - basic_from) / basic_step);
+                    var cacho = parseInt(dataListUp.length / max);
+                    dataList = dataListUp.slice(saltos, (cacho*saltos) + max);
+                }
+
+            } else if (http_path == "progresiveRandom2") {
+                dataList = dataListDown;
+                if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > basic_from) {
+                    var saltos = parseInt((from - basic_from) / basic_step);
+                    var cacho = parseInt(dataListDown.length / max);
+                    dataList = dataListDown.slice(saltos, (cacho*saltos) + max);
+                }
+            } else if (http_path == "progresiveRandom3") {
+                dataList = dataListmid;
+                if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > basic_from) {
+                    var saltos = parseInt((from - basic_from) / basic_step);
+                    var cacho = parseInt(dataListmid.length / max);
+                    dataList = dataListmid.slice(saltos, (cacho*saltos) + max);
+                }
             }
+            if (aggr == "avg") {
+                var pieceLen = parseInt(dataList.length / max);
+                for (var c = 0; c < max; c ++) {
+                    var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
+                    aux[c] = [piece.reduce(function (a, b) {
+                        return a + b;
+                    }) / piece.length];
+                }
+            } else {
+                for (var i = 0; i < max; i++) {
+                    var v = dataList[i] + modifier;
+                    if (v > 100) {
+                        v = 97;
+                    }
+                    aux[i] = v;
+                    modifier = randomIntFromInterval(-10, 15);
+                }
+
+            }
+            data = {
+                "context": {
+                    "begin": from * 1000,
+                    "end": to * 1000,
+                    "data-begin": from * 1000,
+                    "data-end": to * 1000,
+                    "step": (to - from) / max,
+                    "max": max,
+                    "size": max,
+                    "timestamp": timestamp
+                },
+                "result": aux
+            };*/
+
         }
     }
     catch (err) {

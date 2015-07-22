@@ -27,7 +27,6 @@ exports.fakeUsersInfo = [
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
         "userid" : "u1",
-        "avatar" : "http://avatarURL",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -41,7 +40,7 @@ exports.fakeUsersInfo = [
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
         "userid" : "u2",
-        "avatar" : "http://avatarURL",
+        "avatar" : "",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -55,12 +54,12 @@ exports.fakeUsersInfo = [
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
         "userid" : "u3",
-        "avatar" : "http://avatarURL",
+        "avatar" : null,
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000,
-        "skype" : "http://skypeURL",
+        "skype" : null,
         "linkedin" : "http://linkedinURL",
         "twitter" : "http://twitterURL",
         "website" : "http://websiteURL",
@@ -71,18 +70,17 @@ exports.userList = [
     {
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
-        "userid" : "u1",
-        "avatar" : "http://avatarURL"
+        "userid" : "u1"
     },
     {
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
         "userid" : "u2",
-        "avatar" : "http://avatarURL"
+        "avatar" : ""
     },
     {
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
         "userid" : "u3",
-        "avatar" : "http://avatarURL"
+        "avatar" : null
     }];
