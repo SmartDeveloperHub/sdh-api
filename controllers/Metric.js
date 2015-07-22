@@ -59,12 +59,15 @@ module.exports.getMetric = function getMetric (req, res) {
     var max = req.swagger.params['max'].value;
     var aggr = req.swagger.params['aggr'].value;
 
+    console.log("getMetric: " + mid + " (" + [rid, uid, from, to, accumulated, max, aggr] + ")");
+
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
             if(typeof result == 'number') {
                 // specific error
+                console.error("Error in metric request: " + result);
                 res.statusCode = result;
                 res.end();
             } else {
@@ -77,6 +80,5 @@ module.exports.getMetric = function getMetric (req, res) {
             res.end();
         }
     };
-    console.log("getMetric: " + "(" + [mid, rid, uid, from, to, accumulated, max, aggr]);
     Metric.getMetric(mid, rid, uid, from, to, accumulated, max, aggr, callback);
 };

@@ -57,6 +57,9 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
+
+    console.log("getTBD: " + tid + " (" + [rid, uid, from, to] + ")");
+
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 

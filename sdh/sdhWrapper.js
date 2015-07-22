@@ -361,10 +361,12 @@ var getUser = function getUser(uid, retCallback) {
         }
         else {
             console.log('error ' + req.statusCode);
+            retCallback(req.statusCode);
         }
     }
     catch (err) {
         console.log('--bad request!');
+        retCallback(500);
     }
     var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
         'SELECT * WHERE {?s <http://xmlns.com/foaf/0.1/name> ?name. ?i <http://xmlns.com/foaf/0.1/depicts> ?avatar.' +
@@ -431,22 +433,6 @@ exports.getUserInfo = function getUserInfo(uid, returnCallback) {
 };
 
 exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
-    // FAKE tdbs:
-    if (tid == 'userprojectlanguagelines' || tid == 'projectlanguagelines' || tid == 'userlanguagelines') {
-        // TODO
-        val = {
-            'C++':  parseInt(Math.random() * 10000),
-            'JavaScript':  parseInt(Math.random() * 10000),
-            'Java':  parseInt(Math.random() * 10000),
-            'HTML':  parseInt(Math.random() * 1000),
-            'Python':  parseInt(Math.random() * 10000),
-            'Cobol':  parseInt(Math.random() * 1000),
-            'css':  parseInt(Math.random() * 10000)
-        }
-        callback(val);
-        return;
-    }
-
     // REAL tdbs
     if (typeof tbdUriById[tid] !== "undefined") {
         var http_path = tbdUriById[tid];
@@ -489,7 +475,9 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         }
     }
     catch (err) {
-        console.error('-- Bad TBD --' + [tid, rid, uid, from, to]);
+        console.error('-- ! Bad request in TBD (' + tid + ') : ' + err);
+        console.error('-- ! Params :' + [tid, rid, uid, from, to]);
+        console.error('-- ! Request: ' + http_path);
         callback(500);
         return;
     }
@@ -526,9 +514,10 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
 };
 
 exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
+    var http_path;
     if (typeof metricUriById[mid] !== "undefined") {
         if (typeof metricUriById[mid][aggr] !== "undefined") {
-            var http_path = metricUriById[mid][aggr];
+            http_path = metricUriById[mid][aggr];
         } else {
             console.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available in Agora!");
             callback(null);
@@ -561,7 +550,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "progresiveRandom" || http_path !== "pureRandom") { //TODO remove fakes
+        if (http_path !== "progresiveRandom" && http_path !== "pureRandom") { //TODO remove fakes
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
             var req = request('GET', http_path, {
@@ -577,24 +566,28 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             }
         } else {
             // TODO Fake metrics
-            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60];
-            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52];
+            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60, 25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 60];
+            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52, 80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 52];
             var modifier = parseInt(Math.random() * 10);
             var aux = [];
             var aux2 = [];
-            for (var i = 0; i < dataListUp.length; i++) {
-                aux[i] = dataListUp[i] + modifier;
-                if (i == (dataListUp.length/2)) {
-                    modifier = parseInt(Math.random() * 10);
+            for (var i = 0; i < max; i++) {
+                var v = dataListUp[i] + modifier;
+                if (v > 100) {
+                    v = 97;
                 }
+                aux[i] = v;
+                modifier = parseInt(Math.random() * 10);
             }
             dataListUp = aux;
 
             for (var i = 0; i < dataListDown.length; i++) {
-                aux2[i] = dataListDown[i] + modifier;
-                if (i == (dataListDown.length/2)) {
-                    modifier = parseInt(Math.random() * 10);
+                var v = dataListUp[i] + modifier;
+                if (v > 100) {
+                    v = 97;
                 }
+                aux2[i] = v;
+                modifier = parseInt(Math.random() * 10);
             }
             dataListDown = aux2;
 
@@ -630,7 +623,10 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
     }
     catch (err) {
-        console.log('--bad request!');
+        console.error('-- Bad request in Metric (' + mid + ') : ' + err);
+        console.error('-- ! Params :' + [mid, rid, uid, from, to, accumulated, max, aggr]);
+        console.error('-- request: ' + http_path);
+        callback(500);
     }
     callback(data);
 };

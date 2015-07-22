@@ -32,11 +32,11 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
     var tbdRequest = function tbdRequest () {
         // Normalize params
         if (!uidRequired && typeof uid !== 'undefined') {
-            console.log(tid + " time-based data does not require query param 'uid'");
+            console.warn(tid + " time-based data does not require query param 'uid'");
             uid = null;
         }
         if (!ridRequired && typeof rid !== 'undefined') {
-            console.log(tid + " time-based data does not require query param 'rid'");
+            console.warn(tid + " time-based data does not require query param 'rid'");
             rid = null;
         }
 
@@ -143,13 +143,13 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
     } else if (ridRequired) {
         // only rid required for this tbd
         if (typeof rid == 'undefined') {
-            console.log(tid + " time-based data require query param 'rid'");
+            console.error(tid + " time-based data require query param 'rid'");
             callback(400);
             return;
         } else {
             sdhWrapper.repoExist(rid, function(reExist) {
                 if (!reExist) {
-                    console.log("RID not found: " + rid);
+                    console.error("RID not found: " + rid);
                     callback(404);
                 } else {
                     // continue with the tbd

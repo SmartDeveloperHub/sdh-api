@@ -32,11 +32,11 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     var metricRequest = function metricRequest () {
         // Normalize params
         if (!uidRequired && typeof uid !== 'undefined') {
-            console.log(mid + " metric does not require query param 'uid'");
+            console.warn(mid + " metric does not require query param 'uid'");
             uid = null;
         }
         if (!ridRequired && typeof rid !== 'undefined') {
-            console.log(mid + " metric does not require query param 'rid'");
+            console.warn(mid + " metric does not require query param 'rid'");
             rid = null;
         }
 
@@ -58,7 +58,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         if (typeof max == 'undefined') {
             max = 0; //all available values in serie
         } else if (typeof max !== 'number' || max < 0) {
-            console.log("invalid query param 'max': " + max);
+            console.error("invalid query param 'max': " + max);
             callback(400);
             return;
         }
@@ -67,7 +67,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         if (typeof aggr == 'undefined') {
             aggr = null; //null aggr
         } else if (metricsById[mid].aggr.indexOf(aggr) < 0) {
-            console.log(mid + " metric does not accept '" + aggr + "' aggregator");
+            console.error(mid + " metric does not accept '" + aggr + "' aggregator");
             callback(400);
             return;
         }
@@ -169,13 +169,13 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
     } else if (ridRequired) {
         // only rid required for this metric
         if (typeof rid == 'undefined') {
-            console.log(mid + " metric require query param 'rid'");
+            console.error(mid + " metric require query param 'rid'");
             callback(400);
             return;
         } else {
             sdhWrapper.repoExist(rid, function(reExist) {
                 if (!reExist) {
-                    console.log("RID not found: " + rid);
+                    console.error("RID not found: " + rid);
                     callback(404);
                 } else {
                     // continue with the metric
