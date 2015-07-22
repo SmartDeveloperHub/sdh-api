@@ -22,6 +22,11 @@
 
 'use strict';
 
+var randomIntFromInterval = function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
 var parseMetricId = function parseMetricId(realId) {
     // realId model: aggr-*repo-*user-*org-metric
     var type;
