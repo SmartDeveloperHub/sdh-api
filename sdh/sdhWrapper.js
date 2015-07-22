@@ -107,12 +107,17 @@ var parseMetricTree = function parseMetricTree (e) {
                 }
                 // TODO global metrics but with aggr description.  Global desc?
                 var desc = "???"; // TODO
+                var title = parsedMetric.id;
                 if (r[i].desc) {
                     desc = r[i].desc.value;
+                }
+                if (r[i].t) {
+                    title = r[i].t.value;
                 }
                 if (metById[parsedMetric.id] === undefined) {
                     metById[parsedMetric.id] = {
                         'id': parsedMetric.id,
+                        'title': title,
                         "path": "/metrics/" + parsedMetric.id,
                         "description": desc, // TODO common description???
                         "params": parsedMetric.params,
@@ -143,12 +148,17 @@ var parseMetricTree = function parseMetricTree (e) {
                 }
                 // TODO global tbds.  Global desc?
                 var desc = "???"; // TODO
+                var title = parsedMetric.id;
                 if (r[i].desc) {
                     desc = r[i].desc.value;
+                }
+                if (r[i].t) {
+                    title = r[i].t.value;
                 }
                 if (tbdById[parsedMetric.id] === undefined) {
                     tbdById[parsedMetric.id] = {
                         'id': parsedMetric.id,
+                        'title': title,
                         "path": "/tbdata/" + parsedMetric.id,
                         "description": desc, // TODO common description???
                         "params": parsedMetric.params,
@@ -174,31 +184,34 @@ var parseMetricTree = function parseMetricTree (e) {
         // Add Fake metrics 4 Demo
         metById["userspeed"] = {
             "id" : "userspeed",
+            "title": "Speed",
             "path" : "/metrics/userspeed",
             "description" : "User development speed skill value",
             "params": ['uid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-            "aggr": ['sum']
+            "aggr": ['sum', 'avg']
         };
         metById["usercollaboration"] = {
             "id" : "usercollaboration",
+            "title": "Collaboration",
             "path" : "/metrics/usercollaboration",
             "description" : "User development collaboration skill value",
             "params": ['uid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-            "aggr": ['sum']
+            "aggr": ['sum', 'avg']
         };
         metById["userquality"] = {
             "id" : "userquality",
+            "title": "Quality",
             "path" : "/metrics/userquality",
             "description" : "User development quality skill value",
             "params": ['uid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-            "aggr": ['sum']
+            "aggr": ['sum', 'avg']
         };
-        metricUriById["userspeed"] = {"sum": "progresiveRandom"};
-        metricUriById["usercollaboration"] = {"sum": "progresiveRandom"};
-        metricUriById["userquality"] = {"sum": "progresiveRandom"};
+        metricUriById["userspeed"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["usercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
+        metricUriById["userquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
 
         GLOBAL.metricsById = metById;
         console.log("Metrics: " + Object.keys(metricsById));
@@ -220,18 +233,13 @@ var parseMetricTree = function parseMetricTree (e) {
 var getMetricList = function getMetricList(returnCallback) {
     var q = 'PREFIX metrics: <http://www.smartdeveloperhub.org/vocabulary/metrics#> \ ' +
             'PREFIX platform: <http://www.smartdeveloperhub.org/vocabulary/platform#> \ ' +
-        'SELECT ?e ?id WHERE { ?e metrics:supports ?m. ?m platform:identifier ?id}';
-    // a�adir al select: ?m platform:title ?title. ?m platform:description ?description
+        'SELECT ?e ?id ?t WHERE { ?e metrics:supports ?m. ?m platform:identifier ?id. ?m platform:title ?t}';
 
     var p = {
         "status": "OK",
-        "patterns": ['?e metrics:supports ?m', '?m platform:identifier ?id']
-        // TODO
-        // '?m platform:title ?title', '?m platform:description ?description' params, optionals, aggr
+        "patterns": ['?e metrics:supports ?m', '?m platform:identifier ?id', '?m platform:title ?t']
     };
     try {
-        // TODO
-        //returnCallback(require('./metrics.js'));
 
         var frag = sdhGate.get_fragment(p.patterns);
         sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
