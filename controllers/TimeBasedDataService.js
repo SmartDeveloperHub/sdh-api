@@ -40,13 +40,6 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
             rid = null;
         }
 
-        // Date Range
-        if (typeof from == 'undefined') {
-            from = defaultDateRange.from;
-        }
-        if (typeof to == 'undefined') {
-            to = defaultDateRange.to;
-        }
         // Dates in ms
         from = from.getTime();
         to = to.getTime();
