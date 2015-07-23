@@ -342,7 +342,7 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
             "name": repoAtts["http://usefulinc.com/ns/doap#name"],
             "description": repoAtts["http://usefulinc.com/ns/doap#description"],
             "tags": tagList,
-            "avatar": repositoriesById[repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"]], //TODO
+            "avatar": repositoriesById[repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"]].avatar, //TODO
             "archived": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
             "public": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
             "owner": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
