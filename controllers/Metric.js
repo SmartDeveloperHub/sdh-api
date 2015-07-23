@@ -38,6 +38,7 @@ module.exports.metricList = function metricList (req, res) {
             } else {
                 // success
                 res.setHeader('Content-Type', 'application/json');
+                res.setHeader('cache-control', 'public, max-age=60');
                 res.end(JSON.stringify(result || {}, null, 2));
             }
         } else {
@@ -73,6 +74,7 @@ module.exports.getMetric = function getMetric (req, res) {
             } else {
                 // success
                 res.setHeader('Content-Type', 'application/json');
+                res.setHeader('cache-control', 'public, max-age=60');
                 res.end(JSON.stringify(result || {}, null, 2));
             }
         } else {

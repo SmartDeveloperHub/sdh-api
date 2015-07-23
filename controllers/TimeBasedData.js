@@ -39,6 +39,7 @@ module.exports.timeBasedDataList = function timeBasedDataList (req, res, next) {
             } else {
                 // success
                 res.setHeader('Content-Type', 'application/json');
+                res.setHeader('cache-control', 'public, max-age=60');
                 res.end(JSON.stringify(result || {}, null, 2));
             }
         } else {
@@ -71,6 +72,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
             } else {
                 // success
                 res.setHeader('Content-Type', 'application/json');
+                res.setHeader('cache-control', 'public, max-age=60');
                 res.end(JSON.stringify(result || {}, null, 2));
             }
         } else {

@@ -38,6 +38,7 @@ module.exports.apiInfo = function apiInfo (req, res, next) {
         } else {
             // success
             res.setHeader('Content-Type', 'application/json');
+            res.setHeader('cache-control', 'public, max-age=60');
             res.end(JSON.stringify(result || {}, null, 2));
         }
     } else {
