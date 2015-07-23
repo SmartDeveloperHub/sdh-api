@@ -350,8 +350,8 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
             "firstCommit": moment(repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"]).valueOf(),
             "lastCommit": moment(repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"]).valueOf(),
             "scmlink": repoAtts["http://usefulinc.com/ns/doap#location"],
-            "buildStatus": "OK",
-            "buildDate": "OK",
+            "buildStatus": Math.random() >= 0.5, // Random Bool TODO
+            "buildDate": "OK", // TODO
             "users": []
         };
     }
