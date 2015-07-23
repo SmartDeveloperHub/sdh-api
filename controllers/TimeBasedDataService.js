@@ -41,8 +41,16 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
         }
 
         // Dates in ms
-        from = from.getTime();
-        to = to.getTime();
+        if (typeof from == 'object') {
+            from = from.getTime();
+        } else {
+            from = null;
+        }
+        if (typeof to == 'object') {
+            to = to.getTime();
+        } else {
+            to = null;
+        }
 
         var localcallback2 = function(thetbd) {
             if (typeof thetbd == 'number' || thetbd == null) {
