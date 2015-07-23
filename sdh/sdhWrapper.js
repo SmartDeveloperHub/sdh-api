@@ -511,16 +511,13 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         for (i = 0; i < data.result.length; i ++) {
             val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
         }
-    } else if (tid == 'orgbuildtimetbd') {
+    } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "orgtimetofixtbd") {
         val = [parseInt((data.result[0] / 3600)* 100) / 100];
-    } else if (tid == 'orgbrokentimetbd') {
+    } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
         val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
-    } else if (tid == 'orgtimetofixtbd') {
-        val = [parseInt((data.result[0] / 3600)* 100) / 100];
     }else {
-        console.error("Error, This tdb ('" + tid + "') doesn't exist... Returning null");
-        callback(402);
-        return;
+        console.warn("??Auto-tbd ('" + tid + "') doesn't exist... Returning... something ??");
+        val = data.result[0];
     }
     data.result = val;
     callback(data);
