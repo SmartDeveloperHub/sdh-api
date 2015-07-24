@@ -632,11 +632,11 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
             }
             data = {
                 "context": {
-                    "begin": basic_from * 1000,
-                    "end": basic_to * 1000,
-                    "data-begin": basic_from * 1000,
-                    "data-end": basic_to * 1000,
-                    "step": basic_step * 1000,
+                    "begin": basic_from,
+                    "end": basic_to,
+                    "data_begin": basic_from,
+                    "data_end": basic_to ,
+                    "step": basic_step,
                     "max": basic_step,
                     "size": basic_size,
                     "timestamp": timestamp
