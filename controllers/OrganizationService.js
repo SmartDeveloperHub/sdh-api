@@ -22,8 +22,14 @@
 
 'use strict';
 
+/**
+ * Get Information about the organization
+ * @param callback the callback to respond with the organization info
+ * @returns {Object}
+ */
 exports.orgInfo = function(callback) {
 
+    //TODO By the moment we are using Dummy organization for the demo
     callback({
         "organizationid" : "Organization DePalo 1",
         "shortdesc" : "Center Open Middleware Researches ",

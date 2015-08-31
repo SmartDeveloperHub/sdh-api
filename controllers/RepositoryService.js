@@ -22,13 +22,23 @@
 
 'use strict';
 
+/**
+ * Get Repository List
+ * @param callback Request
+ */
 exports.allRepositoriesInfo = function(callback) {
-
+    // Get repositories from global var
     callback(repositories);
 };
 
+/**
+ * Get the information from a specific repository
+ * @param callback To response with the repo information
+ * @param rid repository ID
+ */
 exports.repositoryInfo = function(rid, callback) {
 
+    // Check if repository ID is available
     var _rep;
     if (rid in repositoriesById) {
         _rep = underscore(repositoriesById[rid]).clone();

@@ -22,14 +22,24 @@
 
 'use strict';
 
+/**
+ * Get User List
+ * @param callback Request
+ */
 exports.allUsers = function(callback) {
-
+    // Get repositories from global var
     callback(users);
 };
 
+/**
+ * Get the information from a specific user
+ * @param callback To response with the repo information
+ * @param uid user ID
+ */
 exports.userInfo = function(uid, callback) {
 
     var _user;
+    // uid validation
     if (uid in usersById) {
         _user = underscore(usersById[uid]).clone();
         var localRepos = reposByUserUri[userUriById[uid]];
