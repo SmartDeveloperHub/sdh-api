@@ -22,13 +22,29 @@
 
 'use strict';
 
+/**
+ * Get available metrics list
+ */
 exports.timeBasedDataList = function(callback) {
-
+    // Return tbd list from global variable in the callback
     callback(tbds);
 };
 
+/**
+ * Obtain the result from a particular tbd. This method make the second validation for a specific metric using
+ * the description of each metric
+ * @param tid {Number} the Time Based Data ID
+ * @param rid {Number} repository ID
+ * @param uid {Number} user ID
+ * @param from {Date} date indicating the "from" limit for the request
+ * @param to {Date} date indicating the "to" limit for the request
+ * @param callback {Function} the callback to send the metric result to client
+ */
 exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
 
+    /**
+     *This method make the TBD request after logical validation
+     */
     var tbdRequest = function tbdRequest () {
         // Normalize params
         if (!uidRequired && typeof uid !== 'undefined') {
@@ -52,6 +68,10 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
             to = null;
         }
 
+        /**
+         * The main callback for this request
+         * @param result JSON with request result or a Number if error indicating the status code
+         */
         var localcallback2 = function(thetbd) {
             if (typeof thetbd == 'number' || thetbd == null) {
                 callback(thetbd);
@@ -81,6 +101,7 @@ exports.getTimeBasedData = function(tid, rid, uid, from, to, callback) {
         sdhWrapper.getTBDValue(tid, rid, uid, from, to, localcallback2);
     };
 
+    // Logical validation
     // check ids
     if (!(tid in tbdById)) {
         console.error("TID not found: " + tid);
