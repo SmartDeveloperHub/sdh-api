@@ -27,6 +27,10 @@ GLOBAL.sdhWrapper = require('./sdhWrapper');
 
 var theCallback;
 
+/**
+ * Get Static Data Callback. This method call theCallback after finishing
+ * to collect static data repositories and users. Last step in update process
+ */
 var staticDataCallback = function staticDataCallback() {
     console.log("        * " + users.length + " Users");
     console.log("        * " + repositories.length + " Repositories");
@@ -34,39 +38,57 @@ var staticDataCallback = function staticDataCallback() {
     theCallback();
 };
 
+/**
+ * Get tbd Callback. This method call staticDataCallback after finishing
+ * to collect TBDs info.
+ */
 var tdbCallback = function tdbCallback() {
     // Get static Information. Users, repositories, organization...
     console.log("        * " + tbds.length + " TBDs");
     console.log("    #Getting basic information about Users, Repositories and Organization...");
     try {
+        // Collect all static information and update global variables
         var staticObject = require('./staticObject');
         staticObject.preloadAll(staticDataCallback);
     } catch (err) {
-        console.log("error getting Users and Reposiories");
+        console.log("error getting Users and Repositories from SDH Platform");
     }
 };
 
+/**
+ * Get metric Callback. This method call tdbCallback after finishing
+ * to collect metrics info.
+ */
 var metricCallback = function metricCallback() {
     // Get Tbds
     console.log("        * " + metrics.length + " metrics");
-    console.log("    #Getting available Time Based Data from Agora-Platform...");
+    console.log("    #Getting available Time Based Data from SDH Platform...");
     try {
+        // Get all available TBDs from SDH Platform
         sdhWrapper.setAvailableTbds(tdbCallback);
     } catch (err) {
-        console.log("error getting TBDs");
+        console.log("error getting TBDs from SDH Platform");
     }
 };
 
+/**
+ * Init the static data update
+ */
 var getInfo = function getInfo() {
-    // Get Metrics, tbds, staic info... cascade
+    // Get Metrics, tbds, static info... cascade
     console.log("    #Getting available metrics from Agora-Platform...");
     try {
+        // Get all available metrics from SDH Platform
         sdhWrapper.setAvailableMetrics(metricCallback);
     } catch (err) {
-        console.log("error getting metrics");
+        console.log("error getting metrics from SDH Platform");
     }
-}
+};
 
+/**
+ * update Metrics, TBDs, Users, Repositories and Organization static data.
+ * @param callback the method to call after update all static global variables.
+ */
 exports.update = function update(callback) {
     theCallback = callback;
     getInfo();
