@@ -26,7 +26,7 @@ var fs = require('fs');
 
 /**
  * Get swagger JSON description
- * @returns {Onject}
+ * @returns {Object}
  */
 exports.apiInfo = function() {
     var aux = JSON.parse(fs.readFileSync('./api/swagger.json', 'utf8'));
