@@ -392,10 +392,6 @@
                 "swaggerjson": {
                     "type": "string",
                     "description": "Swagger json"
-                },
-                "host": {
-                    "type": "string",
-                    "description": "API host"
                 }
             }
         },
