@@ -26,8 +26,17 @@ var url = require('url');
 
 var Metric = require('./MetricService');
 
+/**
+ * Get an array of available metrics descriptions
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
 module.exports.metricList = function metricList (req, res) {
-
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         if(typeof result !== 'undefined') {
@@ -50,7 +59,14 @@ module.exports.metricList = function metricList (req, res) {
     Metric.metricList(callback);
 };
 
+/**
+ * Get the result from a particular metric
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
 module.exports.getMetric = function getMetric (req, res) {
+    // Collect all metric request params
     var mid = req.swagger.params['mid'].value;
     var rid = req.swagger.params['rid'].value;
     var uid = req.swagger.params['uid'].value;
@@ -60,8 +76,13 @@ module.exports.getMetric = function getMetric (req, res) {
     var max = req.swagger.params['max'].value;
     var aggr = req.swagger.params['aggr'].value;
 
+    // Control log
     console.log("getMetric: " + mid + " (" + [rid, uid, from, to, accumulated, max, aggr] + ")");
 
+    /**
+     * The main callback for this request
+     * @param result JSON with re request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 

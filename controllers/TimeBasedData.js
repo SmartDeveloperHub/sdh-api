@@ -26,8 +26,16 @@ var url = require('url');
 
 var TimeBasedData = require('./TimeBasedDataService');
 
-module.exports.timeBasedDataList = function timeBasedDataList (req, res, next) {
-
+/**
+ * Get Time Based Data List
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
+module.exports.timeBasedDataList = function timeBasedDataList (req, res) {
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -51,16 +59,27 @@ module.exports.timeBasedDataList = function timeBasedDataList (req, res, next) {
     TimeBasedData.timeBasedDataList(callback);
 };
 
-module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
-
+/**
+ * Get the result from a particular tbd
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
+module.exports.getTimeBasedData = function getTimeBasedData (req, res) {
+    // Collect all tbd request params
     var tid = req.swagger.params['tid'].value;
     var rid = req.swagger.params['rid'].value;
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
 
+    // Control log
     console.log("getTBD: " + tid + " (" + [rid, uid, from, to] + ")");
 
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -82,5 +101,4 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
     };
 
     TimeBasedData.getTimeBasedData(tid, rid, uid, from, to, callback);
-
 };

@@ -27,7 +27,11 @@ var url = require('url');
 var API = require('./APIService');
 
 /**
- * Get full API Swagger JSON description
+ * Get full API Swagger JSON description.
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ * @param next Pass control to the next handler
  */
 module.exports.apiInfo = function apiInfo (req, res, next) {
 
