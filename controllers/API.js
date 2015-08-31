@@ -26,6 +26,9 @@ var url = require('url');
 
 var API = require('./APIService');
 
+/**
+ * Get full API Swagger JSON description
+ */
 module.exports.apiInfo = function apiInfo (req, res, next) {
 
     var result = API.apiInfo();
