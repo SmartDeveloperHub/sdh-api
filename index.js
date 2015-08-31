@@ -57,6 +57,7 @@ catch (err) {
 }
 
 try {
+    // Server port
     var serverPort = 8080;
     // swaggerRouter configuration
     var options = {
@@ -83,6 +84,10 @@ try {
         },frec*1000);
     };
 
+    /**
+     * Launch API with Swagger. Auto-validation, link endpoints with controllers using
+     * swagger.json and generate an interactive documentation with Swagger-UI
+     */
     var launchSwaggerAPI = function() {
         // Initialize the Swagger middleware
         swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
