@@ -31,6 +31,13 @@ var _repositoriesById;
 var _tbdById;
 var _staticInfoById;
 
+/**
+ * Parse repository list to obtain easy access data structures
+ * @param data Object with the repository list
+ * @returns {Array} Contains objects with 'repositoryid' {Number}, 'name' {String},
+ * 'description' {String}, 'tags' {Array}, 'avatar' {Url}, 'archived' {Boolean},
+ * 'public' {Boolean} and 'owner' {Number}.
+ */
 var parseRepoList = function parseRepoList(data) {
 
     var resF = {'repositoryList': []};
@@ -64,6 +71,12 @@ var parseRepoList = function parseRepoList(data) {
     return resF;
 };
 
+/**
+ * Parse user list to obtain easy access data structures
+ * @param data Object with the user list
+ * @returns {Array} Contains objects with 'userid' {Number}, 'name' {String},
+ * 'email' {String} and 'avatar' {Url}.
+ */
 var parseUserList = function parseUserList(data) {
     var resF = {'userList': []};
     var res = resF.userList;
@@ -86,7 +99,11 @@ var parseUserList = function parseUserList(data) {
     return resF;
 };
 
-// Parse Repositories info
+/**
+ * Parse Repositories info and save all relevant information
+ * @param e Object with the Repositories tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
 var parseRepoTree = function parseRepoTree (e) {
     if (e.status === 'OK') {
         var r = e.results;
@@ -109,7 +126,11 @@ var parseRepoTree = function parseRepoTree (e) {
     }
 };
 
-// Parse Users info
+/**
+ * Parse Users info and save all relevant information
+ * @param e Object with the Users tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
 var parseUserTree = function parseUserTree (e) {
     if (e.status === 'OK') {
         var r = e.results;
@@ -128,6 +149,7 @@ var parseUserTree = function parseUserTree (e) {
                 "avatar": r[i].h.value
             };
         }
+        // update Global var usersByRepoUri
         GLOBAL.usersByRepoUri = ubru;
         for (var repUri in usersByRepoUri) {
             var userList = usersByRepoUri[repUri];
@@ -138,6 +160,7 @@ var parseUserTree = function parseUserTree (e) {
                 rbuu[usuri].push(repUri);
             }
         }
+        // update Global var reposByUserUri
         GLOBAL.reposByUserUri = rbuu;
         return {
             "status": "OK",
@@ -149,6 +172,10 @@ var parseUserTree = function parseUserTree (e) {
     }
 };
 
+/**
+ * Collect all repositories info from SDH Platform
+ * @param returnCallback
+ */
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
     // Query to get repository's information
     var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
@@ -175,6 +202,10 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
     }
 };
 
+/**
+ * Collect all users info from SDH Platform
+ * @param returnCallback
+ */
 var getUsersInfo = function getUsersInfo(returnCallback) {
     var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
         'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
@@ -202,7 +233,13 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
     }
 };
 
+/**
+ * Collect all repositories/users information from SDH Platform and generate
+ * accessible data structures to easy use from API controllers
+ * @param returnCallback
+ */
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
+    // Cascade. First step Repositories, second Users
     getRepositoriesInfo(function(e){
         var resultRepos = parseRepoList(e);
         getUsersInfo(function(e) {
@@ -212,6 +249,14 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     });
 };
 
+/**
+ * --PUBLIC METHODS--
+ */
+
+/**
+ * Get all static information from SDH Platform and update all Global variables
+ * @param callback
+ */
 module.exports.preloadAll = function preloadAll (callback) {
     var nextStep = function (usrs, reps) {
         _repositories = reps;
@@ -239,26 +284,38 @@ module.exports.preloadAll = function preloadAll (callback) {
     getStaticUsersRepos(nextStep);
 };
 
+/**
+ * Get the repositories list
+ * @return {Array}
+ */
 module.exports.getRepositories = function getRepositories () {
 
-  //TODO
   return _repositories.repositoryList;
 };
 
+/**
+ * Get the users list
+ * @return {Array}
+ */
 module.exports.getUsers = function getUsers () {
 
-  //TODO
   return _users.userList;
 };
 
+/**
+ * Get repositories by repo ID
+ * @return {Object}
+ */
 module.exports.getRepositoriesById = function getRepositoriesById () {
 
-  //TODO
   return _repositoriesById;
 };
 
+/**
+ * Get users by user ID
+ * @return {Object}
+ */
 module.exports.getUsersById = function getUsersById () {
 
-  //TODO
   return _usersById;
 };
