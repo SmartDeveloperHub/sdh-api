@@ -66,8 +66,12 @@ try {
     };
     var loader = require('./sdh/init');
 
+    /**
+     * Check for new metrics, tbds, users or repositories
+     * @param frec Number in seconds indicating the refresh rate
+     */
     var setRefreshRate = function setRefreshRate(frec) {
-        console.log("    > Setting sdh refresh rate in " + frec + 'ms');
+        console.log("    > Setting sdh refresh rate in " + frec + 's');
         setInterval( function() {
             console.log("    -> Checking for sdh changes");
             loadStartDate = moment();
@@ -76,7 +80,7 @@ try {
                 var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
                 console.log("    -> API updated!! " + now.format() + "--- ( " + loadTime + " ms )");
             });
-        },frec);
+        },frec*1000);
     };
 
     var launchSwaggerAPI = function() {
@@ -96,7 +100,7 @@ try {
 
             // Start the server
             http.createServer(app).listen(serverPort, function () {
-                setRefreshRate(600000);
+                setRefreshRate(600);
                 var now = moment();
                 loadStartDate = moment(loadStartDate);
                 var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
