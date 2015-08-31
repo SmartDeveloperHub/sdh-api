@@ -22,13 +22,32 @@
 
 'use strict';
 
+/**
+ * Get available metrics list
+ */
 exports.metricList = function(callback) {
-
+    // Return metric list from global variable in the callback
     callback(metrics);
 };
 
+/**
+ * Obtain the result from a particular metric. This method make the second validation for a specific metric using
+ * the description of each metric
+ * @param mid {Number} the metric ID
+ * @param rid {Number} repository ID
+ * @param uid {Number} user ID
+ * @param from {Date} date indicating the "from" limit for the request
+ * @param to {Date} date indicating the "to" limit for the request
+ * @param accumulated {Boolean} indicate if an accumulated data serie is required
+ * @param max {Number} max number of values in series result
+ * @param aggr {String} indicate an aggregation method (max, min, sum, avg)
+ * @param callback {Function} the callback to send the metric result to client
+ */
 exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
 
+    /**
+     *This method make the metric request after logical validation
+     */
     var metricRequest = function metricRequest () {
         // Normalize params
         if (!uidRequired && typeof uid !== 'undefined') {
@@ -104,6 +123,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
         sdhWrapper.getMetricValue(mid, rid, uid, from, to, accumulated, max, aggr, localcallback2);
     };
 
+    // Logical Validation
     var acum = 0;
 
     // check ids
