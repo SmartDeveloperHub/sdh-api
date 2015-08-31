@@ -22,11 +22,21 @@
 
 'use strict';
 
-var randomIntFromInterval = function randomIntFromInterval(min,max)
-{
+/**
+ * Generate random integer between two dates
+ * @param min {Number} First value
+ * @param max {Number} Last value
+ * @return {Number} Aleatory number between min and max
+ */
+var randomIntFromInterval = function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
-}
+};
 
+/**
+ * Parse MetricId to determinate aggregator, repo Id, user Id  and metric or tbd
+ * @param realId {String} The metric or tbd id from SDH-Platform
+ * @return {Object} with the next attributes: "realId", "id", "params" ,"type" and if is not a TBD "aggr"
+ */
 var parseMetricId = function parseMetricId(realId) {
     // realId model: aggr-*repo-*user-*org-metric
     var type;
@@ -75,6 +85,11 @@ var parseMetricId = function parseMetricId(realId) {
     return endval;
 };
 
+/**
+ * Parse Metric tree and save all relevant information
+ * @param e Object with the Users tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
 var parseMetricTree = function parseMetricTree (e) {
     if (e.status === 'OK') {
         var r = e.results;
@@ -230,6 +245,10 @@ var parseMetricTree = function parseMetricTree (e) {
     }
 };
 
+/**
+ * Get Metric List from SDH Platform
+ * @param returnCallback
+ */
 var getMetricList = function getMetricList(returnCallback) {
     var q = 'PREFIX metrics: <http://www.smartdeveloperhub.org/vocabulary/metrics#> \ ' +
             'PREFIX platform: <http://www.smartdeveloperhub.org/vocabulary/platform#> \ ' +
@@ -251,6 +270,10 @@ var getMetricList = function getMetricList(returnCallback) {
     }
 };
 
+/**
+ * Get Metric List from SDH Platform
+ * @param returnCallback
+ */
 var getTbdList = function getTbdList(returnCallback) {
     var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
         'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
@@ -284,6 +307,11 @@ var getTbdList = function getTbdList(returnCallback) {
     }
 };
 
+/**
+ * Get Specific Repository Information from SDH Platform
+ * @param rid {Number} repository ID
+ * @param retCallback
+ */
 var getRepository = function getRepository(rid, retCallback) {
     // Query to get repository's information
     var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
@@ -302,7 +330,11 @@ var getRepository = function getRepository(rid, retCallback) {
     sdhGate.get_results_from_fragment(frag.fragment, q, retCallback);
 };
 
-// Parse Repository info
+/**
+ * Parse Repository tree
+ * @param e Object with the Repository tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
 var parseRepoTree = function parseRepoTree (e) {
     if (e.status === 'OK') {
         var r = e.results;
@@ -324,6 +356,14 @@ var parseRepoTree = function parseRepoTree (e) {
     }
 };
 
+/**
+ * Parse Repository information
+ * @param data {Object} Repository tree.
+ * @returns {Object} With the next attributes:
+ * 'repositoryid' {Number}, 'name' {String}, 'description' {String}, 'tags' {Array}, 'avatar' {Url},
+ * 'archived' {Boolean}, 'public' {Boolean}, 'owner' {Number}, 'creation' {Date}, 'fistCommit' {Date},
+ * 'lastCommit' {Date}, 'scmlink' {Url}, 'buildStatus' {Number}, 'buildDate' {Date}, 'users' {Array}
+ */
 var parseRepositoryInfo = function parseRepositoryInfo(data) {
     var res = [];
     var parsedTree = parseRepoTree(data);
@@ -358,6 +398,11 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
     return theRep;
 };
 
+/**
+ * Get Specific User Information from SDH Platform
+ * @param uid {Number} User ID.
+ * @param retCallback
+ */
 var getUser = function getUser(uid, retCallback) {
     var http_path = userUriById[uid];
     var infoPack = null;
@@ -388,6 +433,13 @@ var getUser = function getUser(uid, retCallback) {
     sdhGate.get_results_from_fragment(infoPack.data, q, retCallback);
 };
 
+/**
+ * Parse User information
+ * @param data {Object} User tree.
+ * @returns {Object} With the next attributes:
+ * 'userid' {Number}, 'name' {String}, 'email' {String}, 'avatar' {Url}, 'register' {Date}, 'fistCommit' {Date},
+ * 'lastCommit' {Date}, 'scmUserUrl' {Url} and 'repositories' {Array}
+ */
 var parseUserInfo = function parseUserInfo(data) {
     var res = [];
     if (data.status === 'OK') {
@@ -408,14 +460,32 @@ var parseUserInfo = function parseUserInfo(data) {
     return theUser;
 };
 
+/**
+ * --PUBLIC METHODS--
+ */
+
+/**
+ * Check if specific user exist
+ * @param uid {Object} User Id.
+ * @param callback
+ */
 exports.userExist = function (uid, callback) {
     callback(uid in usersById);
 };
 
+/**
+ * Check if specific repository exist
+ * @param rid {Object} Repository Id.
+ * @param callback
+ */
 exports.repoExist = function (rid, callback) {
     callback(rid in repositoriesById);
 };
 
+/**
+ * Set Available TBDs
+ * @param callback
+ */
 exports.setAvailableTbds = function setAvailableTbds(callback) {
     getTbdList(function(newTBDs) {
         GLOBAL.tbds = newTBDs.results;
@@ -423,6 +493,10 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
     });
 };
 
+/**
+ * Set Available Metrics
+ * @param callback
+ */
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     getMetricList(function(newMetrics) {
         GLOBAL.metrics = newMetrics.results;
@@ -431,6 +505,11 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
 
 };
 
+/**
+ * Get specific repository information
+ * @param rid {Object} Repository Id.
+ * @param returnCallback
+ */
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
     getRepository(rid, function(e) {
         var resultRepo = parseRepositoryInfo(e);
@@ -438,6 +517,11 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
     });
 };
 
+/**
+ * Get specific user information
+ * @param uid {Object} User Id.
+ * @param returnCallback
+ */
 exports.getUserInfo = function getUserInfo(uid, returnCallback) {
     getUser(uid, function(e) {
         var resultUser = parseUserInfo(e);
@@ -445,6 +529,15 @@ exports.getUserInfo = function getUserInfo(uid, returnCallback) {
     });
 };
 
+/**
+ * Get specific TBD value using SDH Platform
+ * @param tid {Number} the Time Based Data ID
+ * @param rid {Number} repository ID
+ * @param uid {Number} user ID
+ * @param from {Date} date indicating the "from" limit for the request
+ * @param to {Date} date indicating the "to" limit for the request
+ * @param callback {Function} the callback to send the metric result to client
+ */
 exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     // REAL tdbs
     if (typeof tbdUriById[tid] !== "undefined") {
@@ -523,6 +616,18 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
     callback(data);
 };
 
+/**
+ * Get specific Metric value using SDH Platform
+ * @param mid {Number} the metric ID
+ * @param rid {Number} repository ID
+ * @param uid {Number} user ID
+ * @param from {Date} date indicating the "from" limit for the request
+ * @param to {Date} date indicating the "to" limit for the request
+ * @param accumulated {Boolean} indicate if an accumulated data serie is required
+ * @param max {Number} max number of values in series result
+ * @param aggr {String} indicate an aggregation method (max, min, sum, avg)
+ * @param callback {Function} the callback to send the metric result to client
+ */
 exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
     var http_path;
     if (typeof metricUriById[mid] !== "undefined") {
