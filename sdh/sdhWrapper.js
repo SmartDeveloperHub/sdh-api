@@ -749,63 +749,6 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
                 "result": aux
             };
 
-
- /*           if (http_path == "progresiveRandom1") {
-                dataList = dataListUp;
-                if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > basic_from) {
-                    var saltos = parseInt((from - basic_from) / basic_step);
-                    var cacho = parseInt(dataListUp.length / max);
-                    dataList = dataListUp.slice(saltos, (cacho*saltos) + max);
-                }
-
-            } else if (http_path == "progresiveRandom2") {
-                dataList = dataListDown;
-                if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > basic_from) {
-                    var saltos = parseInt((from - basic_from) / basic_step);
-                    var cacho = parseInt(dataListDown.length / max);
-                    dataList = dataListDown.slice(saltos, (cacho*saltos) + max);
-                }
-            } else if (http_path == "progresiveRandom3") {
-                dataList = dataListmid;
-                if (typeof from !== 'undefined' && typeof to !== 'undefined' && from > basic_from) {
-                    var saltos = parseInt((from - basic_from) / basic_step);
-                    var cacho = parseInt(dataListmid.length / max);
-                    dataList = dataListmid.slice(saltos, (cacho*saltos) + max);
-                }
-            }
-            if (aggr == "avg") {
-                var pieceLen = parseInt(dataList.length / max);
-                for (var c = 0; c < max; c ++) {
-                    var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
-                    aux[c] = [piece.reduce(function (a, b) {
-                        return a + b;
-                    }) / piece.length];
-                }
-            } else {
-                for (var i = 0; i < max; i++) {
-                    var v = dataList[i] + modifier;
-                    if (v > 100) {
-                        v = 97;
-                    }
-                    aux[i] = v;
-                    modifier = randomIntFromInterval(-10, 15);
-                }
-
-            }
-            data = {
-                "context": {
-                    "begin": from * 1000,
-                    "end": to * 1000,
-                    "data-begin": from * 1000,
-                    "data-end": to * 1000,
-                    "step": (to - from) / max,
-                    "max": max,
-                    "size": max,
-                    "timestamp": timestamp
-                },
-                "result": aux
-            };*/
-
         }
     }
     catch (err) {
