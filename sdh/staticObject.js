@@ -24,7 +24,6 @@
 
 var _repositories;
 var _users;
-var _defaultDateRange;
 
 // Local vars
 var _usersById;
@@ -217,7 +216,6 @@ module.exports.preloadAll = function preloadAll (callback) {
     var nextStep = function (usrs, reps) {
         _repositories = reps;
         _users = usrs;
-        _defaultDateRange = {'from': new Date("Thu Apr 1 2015"), 'to': new Date("Thu Apr 25 2015")};
 
         _usersById = {};
         _repositoriesById = {};
@@ -263,10 +261,4 @@ module.exports.getUsersById = function getUsersById () {
 
   //TODO
   return _usersById;
-};
-
-module.exports.getDefaultDateRange = function getDefaultDateRange () {
-
-  //TODO
-  return _defaultDateRange;
 };
