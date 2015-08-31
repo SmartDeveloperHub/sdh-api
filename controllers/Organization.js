@@ -26,7 +26,17 @@ var url = require('url');
 
 var Organization = require('./OrganizationService');
 
+/**
+ * Get Organization Information
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ * @param next Pass control to the next handler
+ */
 module.exports.orgInfo = function orgInfo (req, res, next) {
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 

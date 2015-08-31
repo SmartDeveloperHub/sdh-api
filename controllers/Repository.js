@@ -24,8 +24,16 @@
 
 var Repository = require('./RepositoryService');
 
+/**
+ * Get Repositories List
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
 module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res) {
-
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -49,10 +57,20 @@ module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res) {
     Repository.allRepositoriesInfo(callback);
 };
 
+/**
+ * Get the information from a specific repository
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
 module.exports.repositoryInfo = function repositoryInfo (req, res) {
-    
+    // Collect all repository request params
     var rid = req.swagger.params['rid'].value;
 
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 

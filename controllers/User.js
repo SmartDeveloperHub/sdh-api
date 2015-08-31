@@ -24,8 +24,16 @@
 
 var User = require('./UserService');
 
-module.exports.allUsers = function allUsers (req, res, next) {
-
+/**
+ * Get Users List
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
+module.exports.allUsers = function allUsers (req, res) {
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -49,10 +57,20 @@ module.exports.allUsers = function allUsers (req, res, next) {
     User.allUsers(callback);
 };
 
-module.exports.userInfo = function userInfo (req, res, next) {
-
+/**
+ * Get the information from a specific user
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
+module.exports.userInfo = function userInfo (req, res) {
+    // Collect all repository request params
     var uid = req.swagger.params['uid'].value;
 
+    /**
+     * The main callback for this request
+     * @param result JSON with request result or a Number if error indicating the status code
+     */
     var callback = function(result) {
         res.setHeader('Access-Control-Allow-Origin', '*');
 
