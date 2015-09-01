@@ -1,9 +1,15 @@
-Clone me and...
+Installation
 
-npm install
+1. <npm install sdh-api>
+   [https://www.npmjs.com/package/sdh-api]
 
-node index.js
+2. Or clone sdh-api from this repository and then:
+   <npm install>
 
-try it in localhost:8080
 
-If you want to change the port, you need to replace '8080' with your own port in /api/swagger.json and index.html files.
+Launch sdh-api:
+
+   node index.js
+
+   try it in localhost:8080
+   If you want to change the port, you need to replace '8080' with your own port in /api/swagger.json and index.html files.
