@@ -278,7 +278,6 @@ module.exports.preloadAll = function preloadAll (callback) {
         GLOBAL.users = this.getUsers();
         GLOBAL.usersById = this.getUsersById();
         GLOBAL.repositoriesById = this.getRepositoriesById();
-        GLOBAL.defaultDateRange = this.getDefaultDateRange();
         callback();
     }.bind(this);
     getStaticUsersRepos(nextStep);
