@@ -84,6 +84,12 @@ try {
         },frec*1000);
     };
 
+    // Initializice session support
+    require("./sessions").initialize();
+
+    // Initialize authentication (needs session support)
+    require("./authentication").initialize();
+
     /**
      * Launch API with Swagger. Auto-validation, link endpoints with controllers using
      * swagger.json and generate an interactive documentation with Swagger-UI
