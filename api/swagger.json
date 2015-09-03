@@ -23,6 +23,10 @@
     ],
     "tags": [
         {
+            "name": "Auth",
+            "description": "Operations about authorization"
+        },
+        {
             "name": "API",
             "description": "Operations about API"
         },
@@ -52,6 +56,71 @@
         }
     ],
     "paths": {
+        "/auth/login/":{
+            "post": {
+                "x-swagger-router-controller": "Auth",
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "API JSON Definition",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "User name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "User password",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "description": "Token to use inside an 'Authentication: Bearer <token>' header"
+                                },
+                                "user": {
+                                    "type": "object",
+                                    "description": "Ldap user information"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication error"
+                    }
+                }
+            }
+        },
+        "/auth/check/":{
+            "get": {
+                "x-swagger-router-controller": "Auth",
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "API JSON Definition",
+                "operationId": "check",
+                "parameters": [ ],
+                "responses": {
+                    "200": {
+                        "description": "Authentication information is correct"
+                    },
+                    "401": {
+                        "description": "Authentication error"
+                    }
+                }
+            }
+        },
         "/api/": {
             "get": {
                 "x-swagger-router-controller": "API",

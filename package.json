@@ -33,6 +33,10 @@
     "moment": "^2.10.3",
     "swagger-tools": "^0.8.7",
     "sync-request": "^2.0.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "passport": "*",
+    "passport-ldapauth": "*",
+    "passport-http-bearer": "*",
+    "node-uuid": "*"
   }
 }
