@@ -191,10 +191,14 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
             '?s scm:repositoryId ?i', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
             '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?im', '?im foaf:depicts ?de']
     };
+    var frag;
     try {
-        var frag = sdhGate.get_fragment(p.patterns);
-        sdhGate.get_results_from_fragment(frag.fragment, q, function (e) {
-            returnCallback(parseRepoTree(e));
+        sdhGate.get_fragment(p.patterns, function(f) {
+            // TODO control error
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, function(e) {
+                returnCallback(parseRepoTree(e));
+            });
         });
     } catch (err) {
         console.log("ERROR in getRepositoriesInfo: " + err);
@@ -222,10 +226,14 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
         "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
                 '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
     };
+    var frag;
     try {
-        var frag = sdhGate.get_fragment(p.patterns);
-        sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
-            returnCallback(parseUserTree(e));
+        sdhGate.get_fragment(p.patterns, function(f) {
+            // TODO control error
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, function(e) {
+                returnCallback(parseUserTree(e));
+            });
         });
     } catch (err) {
         console.log("ERROR in getUsersInfo: " + err);

@@ -258,11 +258,14 @@ var getMetricList = function getMetricList(returnCallback) {
         "status": "OK",
         "patterns": ['?e metrics:supports ?m', '?m platform:identifier ?id', '?m platform:title ?t']
     };
+    var frag;
     try {
-
-        var frag = sdhGate.get_fragment(p.patterns);
-        sdhGate.get_results_from_fragment(frag.fragment, q, function(e) {
-            returnCallback(parseMetricTree(e));
+        sdhGate.get_fragment(p.patterns, function(f) {
+            // TODO control error
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, function(e) {
+                returnCallback(parseMetricTree(e));
+            });
         });
     } catch (err) {
         console.log("ERROR in getMetricsInfo: " + err);
@@ -326,8 +329,12 @@ var getRepository = function getRepository(rid, retCallback) {
             '?s scm:owner ?o', '?s scm:tags ?ta', '?s scm:createdOn ?co', '?s scm:lastCommit ?lc',
             '?s scm:firstCommit ?fc', '?s foaf:depiction ?de']
     };
-    var frag = sdhGate.get_fragment(p.patterns);
-    sdhGate.get_results_from_fragment(frag.fragment, q, retCallback);
+    var frag;
+    sdhGate.get_fragment(p.patterns, function(f) {
+        // TODO control error
+        frag = f.fragment;
+        sdhGate.get_results_from_fragment(frag, q, retCallback);
+    });
 };
 
 /**
@@ -405,10 +412,37 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
  */
 var getUser = function getUser(uid, retCallback) {
     var http_path = userUriById[uid];
-    var infoPack = null;
     // Here we use the user uri to get the information wanted (We can use a fragment request too)
     try {
-        var req = request('GET', http_path, {
+        var options = {
+          url: http_path,
+          headers: {
+            "Accept": "text/turtle"
+          }
+        };
+        request(options, function (error, response, body) {
+            if (error) {
+                // TODO
+                retCallback(response.statusCode);
+            } else {
+                if (response.statusCode == 200) {
+                    var res = {
+                        "status": "OK",
+                        "fragment": body.toString('utf-8')
+                    };
+                    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
+                        'SELECT * WHERE {?s <http://xmlns.com/foaf/0.1/name> ?name. ?i <http://xmlns.com/foaf/0.1/depicts> ?avatar.' +
+                        '?s scm:firstCommit ?firstCommit. ?s scm:lastCommit ?lastCommit. ?s scm:mbox ?email.' +
+                        '?s scm:signUpDate ?register. ?s scm:signUpDate ?register. ?s scm:userId ?userid.}';
+                    sdhGate.get_results_from_fragment(res.fragment, q, retCallback);
+                } else {
+                    // TODO
+                    retCallback(response.statusCode);
+                }
+            }
+        });
+
+        /*var req = request('GET', http_path, {
             "headers": {"Accept": "text/turtle"}
         });
         if (req.statusCode === 200) {
@@ -420,17 +454,12 @@ var getUser = function getUser(uid, retCallback) {
         else {
             console.log('error ' + req.statusCode);
             retCallback(req.statusCode);
-        }
+        }*/
     }
     catch (err) {
         console.log('--bad request!');
         retCallback(500);
     }
-    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-        'SELECT * WHERE {?s <http://xmlns.com/foaf/0.1/name> ?name. ?i <http://xmlns.com/foaf/0.1/depicts> ?avatar.' +
-        '?s scm:firstCommit ?firstCommit. ?s scm:lastCommit ?lastCommit. ?s scm:mbox ?email.' +
-        '?s scm:signUpDate ?register. ?s scm:signUpDate ?register. ?s scm:userId ?userid.}';
-    sdhGate.get_results_from_fragment(infoPack.data, q, retCallback);
 };
 
 /**
@@ -523,10 +552,14 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
  * @param returnCallback
  */
 exports.getUserInfo = function getUserInfo(uid, returnCallback) {
+    console.log("..sdhWrapper.getUserInfo " + uid + "start");
     getUser(uid, function(e) {
+        console.log("...sdhWrapper.getUserInfo-Callback getUser " + uid + "start");
         var resultUser = parseUserInfo(e);
         returnCallback(resultUser);
+        console.log("...sdhWrapper.getUserInfo-Callback getUser " + uid + "end");
     });
+    console.log("..sdhWrapper.getUserInfo " + uid + "end");
 };
 
 /**
@@ -566,7 +599,58 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         var querystring = require("querystring");
         var realPath =  http_path + '?' + querystring.stringify(qpObject);
         console.log("TDB GET--> " + realPath);
-        var req = request('GET', http_path, {
+
+        var options = {
+            url: http_path,
+            headers: {
+                "Accept": "application/json",
+            },
+            qs: qpObject
+        };
+        request(options, function (error, response, body) {
+            if (error) {
+                // TODO
+                retCallback(response.statusCode);
+            } else {
+                if (response.statusCode == 200) {
+                    data = JSON.parse(body);
+                    // Parse data... add user name, or something chuli piruli
+                    // TODO TODO TODO!!!
+                    var i;
+                    var val = [];
+                    // For test
+                    if (tid == 'userrepositoriestbd') {
+                        for (i = 0; i < data.result.length; i ++) {
+                            val.push(repositoriesById[data.result[i]]);
+                        }
+                    } else if (tid == 'repodeveloperstbd') {
+                        for (i = 0; i < data.result.length; i ++) {
+                            val.push(usersById[data.result[i]]);
+                        }
+                    } else if (tid == 'orgrepositoriestbd') {
+                        for (i = 0; i < data.result.length; i ++) {
+                            val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
+                        }
+                    } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "orgtimetofixtbd") {
+                        val = [parseInt((data.result[0] / 3600)* 100) / 100];
+                    } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
+                        val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
+                    }else {
+                        console.warn("??Auto-tbd ('" + tid + "') doesn't exist... Returning... something ??");
+                        val = data.result[0];
+                    }
+                    data.result = val;
+                    callback(data);
+                } else {
+                    // TODO
+                    console.warn('TDB :( Error ' + response.statusCode + ";  GET-> " + realPath);
+                    data = response.statusCode;
+                    callback(data);
+                }
+            }
+        });
+
+        /*var req = request('GET', http_path, {
             "headers": {"Accept": "application/json"},
             "qs": qpObject
         });
@@ -578,7 +662,7 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
             data = req.statusCode;
             callback(data);
             return;
-        }
+        }*/
     }
     catch (err) {
         console.error('-- ! Bad request in TBD (' + tid + ') : ' + err);
@@ -587,33 +671,6 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         callback(500);
         return;
     }
-    // Parse data... add user name, or something chuli piruli
-    // TODO TODO TODO!!!
-    var i;
-    var val = [];
-    // For test
-    if (tid == 'userrepositoriestbd') {
-        for (i = 0; i < data.result.length; i ++) {
-            val.push(repositoriesById[data.result[i]]);
-        }
-    } else if (tid == 'repodeveloperstbd') {
-        for (i = 0; i < data.result.length; i ++) {
-            val.push(usersById[data.result[i]]);
-        }
-    } else if (tid == 'orgrepositoriestbd') {
-        for (i = 0; i < data.result.length; i ++) {
-            val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
-        }
-    } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "orgtimetofixtbd") {
-        val = [parseInt((data.result[0] / 3600)* 100) / 100];
-    } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
-        val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
-    }else {
-        console.warn("??Auto-tbd ('" + tid + "') doesn't exist... Returning... something ??");
-        val = data.result[0];
-    }
-    data.result = val;
-    callback(data);
 };
 
 /**
@@ -665,90 +722,120 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") { //TODO remove fakes
+        if (http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+            // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
-            var req = request('GET', http_path, {
-                "headers": {"Accept": "application/json"},
-                "qs": qpObject
+
+            var options = {
+                url: http_path,
+                headers: {
+                    "Accept": "application/json",
+                },
+                qs: qpObject
+            };
+            request(options, function (error, response, body) {
+                if (error) {
+                    // TODO
+                    callback(response.statusCode);
+                } else {
+                    if (response.statusCode == 200) {
+                        data = JSON.parse(body);
+                    } else {
+                        console.warn('Metric :( Error ' + response.statusCode + ";  GET-> " + realPath);
+                        data = response.statusCode;
+                    }
+                    callback(data);
+                }
             });
-            if (req.statusCode === 200) {
-                data = JSON.parse(req.getBody());
-            }
-            else {
-                console.warn('Metric :( Error ' + req.statusCode + ";  GET-> " + realPath);
-                data = 500;
-            }
         } else {
+            // Fake metric
             // we need from and to values...
             var d;
-            var req = request('GET', "http://138.4.249.224/metrics/scm/total-user-commits",
-                {
-                    "headers": {"Accept": "application/json"},
-                    "qs": qpObject
-                }
-            );
-            if (req.statusCode === 200) {
-                d = JSON.parse(req.getBody());
-                var basic_from = d.context.data_begin;
-                var basic_to = d.context.data_end;
-                var basic_step = d.context.step;
-                var basic_size = d.context.size;
-                var timestamp = d.context.timestamp;
-            }
-            else {
-                console.warn('error getting user commits to get from/to dates and use it in fake metrics');
-            }
-            // TODO Fake metrics
-            var dataList = [];
-            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
-            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
-            var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
-            var modifier = randomIntFromInterval(-10, 15);
-            var aux = [];
+            var auxurl = "http://138.4.249.224:9001/metrics/scm/total-commits";
 
-            if (http_path == "progresiveRandom1") {
-                dataList = dataListUp;
-            } else if (http_path == "progresiveRandom2") {
-                dataList = dataListDown;
-            } else if (http_path == "progresiveRandom3") {
-                dataList = dataListmid;
+            if (qpObject.uid) {
+                auxurl = "http://138.4.249.224/metrics/scm/total-user-commits";
+            } else if (qpObject.rid) {
+                auxurl = "http://138.4.249.224/metrics/scm/total-repo-commits";
             }
-            if(max == 0) {
-                max = 40;
+            if (qpObject.uid && qpObject.rid) {
+                auxurl = "http://138.4.249.224/metrics/scm/total-repo-user-commits";
             }
-            if (aggr == "avg") {
-                var pieceLen = dataList.length / basic_size;
-                for (var c = 0; c < basic_size; c ++) {
-                    var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
-                    aux[c] = [piece.reduce(function (a, b) {
-                        return a + b;
-                    }) / piece.length];
-                }
-            } else {
-                for (var i = 0; i < basic_size; i++) {
-                    var v = dataList[i] + modifier;
-                    if (v > 99) {
-                        v = 97;
-                    }
-                    aux[i] = v;
-                    modifier = randomIntFromInterval(-10, 15);
-                }
-            }
-            data = {
-                "context": {
-                    "begin": basic_from,
-                    "end": basic_to,
-                    "data_begin": basic_from,
-                    "data_end": basic_to ,
-                    "step": basic_step,
-                    "max": basic_step,
-                    "size": basic_size,
-                    "timestamp": timestamp
+            var options = {
+                url: auxurl,
+                headers: {
+                    "Accept": "application/json",
                 },
-                "result": aux
+                qs: qpObject
             };
+            request(options, function (error, response, body) {
 
+                if (response.statusCode === 200) {
+                    d = JSON.parse(body);
+                    var basic_from = d.context.data_begin;
+                    var basic_to = d.context.data_end;
+                    var basic_step = d.context.step;
+                    var basic_size = d.context.size;
+                    var timestamp = d.context.timestamp;
+
+                    // TODO Fake metrics
+                    var dataList = [];
+                    var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
+                    var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
+                    var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
+                    var modifier = randomIntFromInterval(-10, 15);
+                    var aux = [];
+
+                    if (http_path == "progresiveRandom1") {
+                        dataList = dataListUp;
+                    } else if (http_path == "progresiveRandom2") {
+                        dataList = dataListDown;
+                    } else if (http_path == "progresiveRandom3") {
+                        dataList = dataListmid;
+                    }
+                    if(max == 0) {
+                        max = 40;
+                    }
+                    if (aggr == "avg") {
+                        var pieceLen = dataList.length / basic_size;
+                        for (var c = 0; c < basic_size; c ++) {
+                            var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
+                            aux[c] = [piece.reduce(function (a, b) {
+                                return a + b;
+                            }) / piece.length];
+                        }
+                    } else {
+                        for (var i = 0; i < basic_size; i++) {
+                            var v = dataList[i] + modifier;
+                            if (v > 99) {
+                                v = 97;
+                            }
+                            aux[i] = v;
+                            modifier = randomIntFromInterval(-10, 15);
+                        }
+                    }
+                    data = {
+                        "context": {
+                            "begin": basic_from,
+                            "end": basic_to,
+                            "data_begin": basic_from,
+                            "data_end": basic_to ,
+                            "step": basic_step,
+                            "max": basic_step,
+                            "size": basic_size,
+                            "timestamp": timestamp
+                        },
+                        "result": aux
+                    };
+
+                }
+                else {
+                    console.warn('error getting user commits to get from/to dates and use it in fake metrics');
+                    data = response.statusCode;
+                }
+                callback(data);
+            });
         }
     }
     catch (err) {
@@ -757,5 +844,4 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         console.error('-- request: ' + http_path);
         callback(500);
     }
-    callback(data);
 };
