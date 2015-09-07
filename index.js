@@ -44,6 +44,9 @@
 
     console.log("... Loading Modules...");
     try {
+        // Set Config params
+        require('./sdhconfig');
+        // APP
         var app = require('connect')();
         GLOBAL.http = require('http');
         var swaggerTools = require('swagger-tools');
@@ -64,13 +67,11 @@
     }
     // init server
     try {
-        // Server port
-        var serverPort = 8080;
         // swaggerRouter configuration
         var options = {
             swaggerUi: '/swagger.json',
             controllers: './controllers',
-            useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
+            useStubs: false // Conditionally turn on stubs (mock mode)
         };
         var loader = require('./sdh/init');
 
@@ -115,17 +116,20 @@
 
                 // Serve the Swagger documents and Swagger UI
                 app.use(middleware.swaggerUi());
-
+                // Take local IP in SERVICE_URL is null
+                if (SERVICE_URL == null) {
+                    SERVICE_URL = "http://localhost";
+                }
                 // Start the server
-                http.createServer(app).listen(serverPort, function () {
-                    setRefreshRate(600);
+                http.createServer(app).listen(SERVER_PORT, function () {
+                    setRefreshRate(REFRESH_RATE);
                     var now = moment();
                     loadStartDate = moment(loadStartDate);
                     var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
                     console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
                     console.log('');
-                    console.log('SDH-API is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-                    console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', serverPort);
+                    console.log('SDH-API is listening on port %d (http://localhost:%d)', SERVER_PORT, SERVER_PORT);
+                    console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SERVER_PORT);
                 });
 
                 // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
@@ -150,14 +154,14 @@
 //} else {
     // forks
     // Start the server
-   /* http.createServer(app).listen(serverPort, function () {
-        setRefreshRate(600);
+   /* http.createServer(app).listen(SERVER_PORT, function () {
+        setRefreshRate(REFRESH_RATE);
         var now = moment();
         loadStartDate = moment(loadStartDate);
         var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
         console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
         console.log('');
-        console.log('SDH-API is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-        console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', serverPort);
+        console.log('SDH-API is listening on port %d (http://localhost:%d)', SERVER_PORT, SERVER_PORT);
+        console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SERVER_PORT);
     });*/
 //}

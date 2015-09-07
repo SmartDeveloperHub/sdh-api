@@ -22,11 +22,6 @@
 
 'use strict';
 
-// CONFIGURATION PARAMETERS
-var SESSION_DURATION = 3600 * 1000; //1 hour in ms
-var SESSION_GARBAGE_COLLECTOR = 120 * 1000; //2 minutes in ms
-
-
 // PRIVATE METHODS
 var hasExpired = function hasExpired(session) {
     return session['info']['lastAccess'] + SESSION_DURATION < Date.now();

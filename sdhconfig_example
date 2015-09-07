@@ -22,42 +22,18 @@
 
 'use strict';
 
-exports.initialize = function initialize() {
+// SDH API GENERAL CONFIG
+GLOBAL.SERVICE_URL = null; // null is localhost
+GLOBAL.SERVER_PORT = 8080;
+GLOBAL.REFRESH_RATE = 600; //In Seconds
 
-    GLOBAL.passport = require('passport');
-    var LdapStrategy = require('passport-ldapauth');
-    var BearerStrategy = require('passport-http-bearer');
-    var Sessions = require('./sessions');
-
-    //Initialize passport
-    GLOBAL.passport.use(new LdapStrategy({
-        server: {
-            url: SESSION_INFO.url,
-            bindDn: SESSION_INFO.bindDn,
-            bindCredentials: SESSION_INFO.bindCredentials,
-            searchBase: SESSION_INFO.searchBase,
-            searchFilter: SESSION_INFO.searchFilter
-        }
-    }));
-
-    GLOBAL.passport.use(new BearerStrategy(
-        function(token, done) {
-
-            //Search the session in the sessions map
-            var sessionData = Sessions.getSessionData(token, true);
-
-            if(sessionData != null) {
-
-                //Update the last access to this session
-                Sessions.touch(token);
-
-                //Return the session data
-                return done(null, sessionData);
-
-            } else {
-                return done(null, false);
-            }
-        }
-    ));
-
+// SESSION CONFIG
+GLOBAL.SESSION_INFO = {
+    url: 'ldap://demo.smartdeveloperhub.org',
+    bindDn: 'cn=admin,dc=ldap,dc=smartdeveloperhub,dc=org',
+    bindCredentials: 'thecomrules',
+    searchBase: 'cn=users,dc=ldap,dc=smartdeveloperhub,dc=org',
+    searchFilter: '(uid={{username}})'
 };
+GLOBAL.SESSION_DURATION = 3600 * 1000; //1 hour in ms
+GLOBAL.SESSION_GARBAGE_COLLECTOR = 120 * 1000; //2 minutes in ms
