@@ -98,6 +98,11 @@
         // Initialize authentication (needs session support)
         require("./authentication").initialize();
 
+        app.use(function(req, res, next){
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            next();
+        });
+
         /**
          * Launch API with Swagger. Auto-validation, link endpoints with controllers using
          * swagger.json and generate an interactive documentation with Swagger-UI

@@ -38,7 +38,7 @@ module.exports.metricList = function metricList (req, res) {
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
+
         if(typeof result !== 'undefined') {
             if(typeof result == 'number') {
                 // specific error
@@ -84,7 +84,6 @@ module.exports.getMetric = function getMetric (req, res) {
      * @param result JSON with re request result or a Number if error indicating the status code
      */
     var callback = function(result) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
             if(typeof result == 'number') {
