@@ -64,6 +64,23 @@ var getSessionData = function getSessionData(token, checkExpiration) {
     return session == null ? null : session['data'];
 };
 
+//Get the authentication token of the given request
+var getToken = function(req) {
+    if (req.headers && req.headers.authorization) {
+        var parts = req.headers.authorization.split(' ');
+        if (parts.length == 2) {
+            var scheme = parts[0]
+                , credentials = parts[1];
+
+            if (/^Bearer$/i.test(scheme)) {
+                return credentials;
+            }
+        }
+    }
+
+    return null;
+};
+
 var initialize = function initialize() {
 
     //Create a lobal variable to store sessions
@@ -85,5 +102,6 @@ exports.deleteSession = deleteSession;
 exports.touch = touch;
 exports.getSessionInfo = getSessionInfo;
 exports.getSessionData = getSessionData;
+exports.getToken = getToken;
 exports.initialize = initialize;
 

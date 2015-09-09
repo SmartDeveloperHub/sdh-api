@@ -121,6 +121,25 @@
                 }
             }
         },
+        "/auth/logout/":{
+            "post": {
+                "x-swagger-router-controller": "Auth",
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "API JSON Definition",
+                "operationId": "logout",
+                "parameters": [ ],
+                "responses": {
+                    "200": {
+                        "description": "User was logged out"
+                    },
+                    "401": {
+                        "description": "Authentication error"
+                    }
+                }
+            }
+        },
         "/api/": {
             "get": {
                 "x-swagger-router-controller": "API",

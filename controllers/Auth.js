@@ -58,3 +58,22 @@ module.exports.check = function check (req, res, next) {
     });
 
 };
+
+module.exports.logout = function logout(req, res, next) {
+
+    passport.authenticate('bearer', {session: false})(req, res, function() {
+
+        var Sessions = require('../sessions');
+
+        //Remove the session
+        var token = Sessions.getToken(req);
+        var session = Sessions.getSession(token);
+        if(session != null) {
+            Sessions.deleteSession(token);
+        }
+
+        res.statusCode = 200;
+        res.end();
+    });
+
+};
