@@ -108,8 +108,9 @@
                 //if you need special headers
                 res.setHeader('Access-Control-Allow-Headers', 'x-requested-with, authentication');
                 res.end();
+            } else {
+                next();
             }
-            next();
         });
 
         /**
