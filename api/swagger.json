@@ -13,6 +13,13 @@
         "email": "carlos.blanco@centeropenmiddleware.com"
         }
     },
+    "securityDefinitions": {
+        "api_key" : {
+            "name": "Authorization",
+            "type": "apiKey",
+            "in": "header"
+        }
+    },
     "produces": [
         "application/json"
     ],
@@ -108,6 +115,11 @@
                 "tags": [
                     "Auth"
                 ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ],
                 "summary": "API JSON Definition",
                 "operationId": "check",
                 "parameters": [ ],
@@ -126,6 +138,11 @@
                 "x-swagger-router-controller": "Auth",
                 "tags": [
                     "Auth"
+                ],
+                "security": [
+                    {
+                        "api_key": []
+                    }
                 ],
                 "summary": "API JSON Definition",
                 "operationId": "logout",

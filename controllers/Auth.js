@@ -51,11 +51,11 @@ module.exports.login = function login (req, res, next) {
 
 module.exports.check = function check (req, res, next) {
 
-    passport.authenticate('bearer', {session: false})(req, res, function() {
+    //passport.authenticate('bearer', {session: false})(req, res, function() {
 
         res.statusCode = 200;
         res.end();
-    });
+    //});
 
 };
 

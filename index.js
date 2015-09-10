@@ -123,6 +123,14 @@
                 // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
                 app.use(middleware.swaggerMetadata());
 
+                app.use(middleware.swaggerSecurity({
+                            api_key: function (req, authOrSecDef, scopesOrApiKey, callback) {
+                                console.log("Entra en 2");
+                                passport.authenticate('bearer', {session: false})(req, null, callback); //Todo res shoul not be null
+                            }
+                        }));
+
+
                 // Validate Swagger requests
                 app.use(middleware.swaggerValidator());
 
@@ -131,6 +139,7 @@
 
                 // Serve the Swagger documents and Swagger UI
                 app.use(middleware.swaggerUi());
+
                 // Take local IP in SERVICE_URL is null
                 if (SERVICE_URL == null) {
                     SERVICE_URL = "http://localhost";
