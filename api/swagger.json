@@ -35,6 +35,10 @@
             "description": "Operations about Organization"
         },
         {
+            "name": "Project",
+            "description": "Operations about Projects"
+        },
+        {
             "name": "Repository",
             "description": "Operations about Repositories"
         },
@@ -158,7 +162,7 @@
                 }
             }
         },
-        "/": {
+        "/organization": {
             "get": {
                 "x-swagger-router-controller": "Organization",
                 "tags": [
@@ -172,6 +176,57 @@
                         "schema": {
                             "$ref": "#/definitions/organizationinfo"
                         }
+                    }
+                }
+            }
+        },
+        "/project/": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Projects info list",
+                "operationId": "allProjectsInfo",
+                "responses": {
+                    "200": {
+                        "description": "Project list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/project"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{pid}": {
+            "get": {
+                "x-swagger-router-controller": "Project",
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Project description",
+                "operationId": "projectInfo",
+                "parameters": [
+                    {
+                        "name": "pid",
+                        "in": "path",
+                        "description": "Project id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project info.",
+                        "schema": {
+                            "$ref": "#/definitions/projectinfo"
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found"
                     }
                 }
             }
@@ -496,6 +551,112 @@
                 "shortdesc": {
                     "type": "string",
                     "description": "Organization short description"
+                }
+            }
+        },
+        "project": {
+            "properties": {
+                "projectid": {
+                    "type": "string",
+                    "description": "Unique Project identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The Project name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The Project description"
+                },
+                "tags" : {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                      "type": "string"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Project avatar URL"
+                },
+                "repositories" : {
+                    "type": "array",
+                    "description": "Project repositories",
+                    "items": {
+                        "$ref": "#/definitions/repository"
+                    }
+                },
+                "usersbyrole" : {
+                    "type": "object",
+                    "description": "Project users by role"
+                }
+            }
+        },
+        "projectinfo": {
+            "properties": {
+                "projectid": {
+                    "type": "string",
+                    "description": "Unique Project identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The Project name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The Project description"
+                },
+                "firstCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "First commit date"
+                },
+                "lastCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Last commit date"
+                },
+                "scmlink": {
+                    "type": "string",
+                    "description": "SCM URL"
+                },
+                "creation": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The Project creation date"
+                },
+                "tags" : {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Project avatar URL"
+                },
+                "owner" : {
+                    "type": "string",
+                    "description": "Project Owner"
+                },
+                "users": {
+                    "type": "array",
+                    "description": "all Project users",
+                    "items": {
+                        "$ref": "#/definitions/user"
+                    }
+                },
+                "repositories" : {
+                    "type": "array",
+                    "description": "Project repositories",
+                    "items": {
+                        "$ref": "#/definitions/repository"
+                    }
+                },
+                "usersbyrole" : {
+                    "type": "object",
+                    "description": "Project users by role"
                 }
             }
         },

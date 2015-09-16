@@ -23,40 +23,38 @@
 'use strict';
 
 /**
- * Get User List
+ * Get Project List
  * @param callback Request
  */
-exports.allUsers = function(callback) {
-    // Get repositories from global var
-    callback(users);
+exports.allProjectsInfo = function(callback) {
+    // Get Projects from global var
+    callback(projects);
 };
 
 /**
- * Get the information from a specific user
- * @param callback To response with the repo information
- * @param uid user ID
+ * Get the information from a specific Project
+ * @param callback To response with the project information
+ * @param pid Project ID
  */
-exports.userInfo = function(uid, callback) {
+exports.projectInfo = function(pid, callback) {
 
-    var _user;
-    // uid validation
-    if (uid in usersById) {
-        _user = underscore(usersById[uid]).clone();
-        var localRepos = reposByUserUri[userUriById[uid]];
-        var userRepos = [];
-        for(var key in localRepos) {
-            userRepos.push(repositoriesById[repoIdByUri[localRepos[key]]]);
+    // Check if Project ID is available
+    var _proj;
+    if (rid in projectsById) {
+        _proj = underscore(projectsById[pid]).clone();
+        var localUsers = usersByProjectUri[projectUriById[pid]];
+        var projectUsers = [];
+        for(var key in localUsers) {
+            projectUsers.push(usersById[localUsers[key]]);
         }
-        _user['rep'] = underscore(userRepos).clone();
-        // TODO return roles: {pid: [roliId], ...}  rolesByProject
-        // TODO return positions: {oid: [positionId], ...}  positionsByOrganization
+        _proj['users'] = underscore(projectUsers).clone();
     } else {
-        console.log("--UID not found");
+        console.log("--RID not found");
         callback(404);
         return;
     }
-    sdhWrapper.getUserInfo(uid, function(e) {
-        e.repositories = _user['rep'];
+    sdhWrapper.getProjectInfo(rid, function(e) {
+        e.users = _proj['users'];
         callback(e);
     });
 };
