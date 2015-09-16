@@ -51,7 +51,7 @@ var tdbCallback = function tdbCallback() {
         var staticObject = require('./staticObject');
         staticObject.preloadAll(staticDataCallback);
     } catch (err) {
-        console.log("error getting Users and Repositories from SDH Platform");
+        console.log("error getting Users and Repositories from SDH Platform: " + err);
     }
 };
 
@@ -67,7 +67,7 @@ var metricCallback = function metricCallback() {
         // Get all available TBDs from SDH Platform
         sdhWrapper.setAvailableTbds(tdbCallback);
     } catch (err) {
-        console.log("error getting TBDs from SDH Platform");
+        console.log("error getting TBDs from SDH Platform: " + err);
     }
 };
 
@@ -81,7 +81,7 @@ var getInfo = function getInfo() {
         // Get all available metrics from SDH Platform
         sdhWrapper.setAvailableMetrics(metricCallback);
     } catch (err) {
-        console.log("error getting metrics from SDH Platform");
+        console.log("error getting metrics from SDH Platform: " + err);
     }
 };
 
