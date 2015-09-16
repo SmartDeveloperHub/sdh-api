@@ -46,6 +46,9 @@
     try {
         // Set Config params
         require('./sdhconfig');
+        if (DUMMYDATA) {
+            console.warn("**  !!Attention!! This API is configurated to provide dummy information. If you want to connect to the real SDH-platform, change the DUMMYDATA flag in sdhconfig file");
+        }
         // APP
         var app = require('connect')();
         GLOBAL.http = require('http');

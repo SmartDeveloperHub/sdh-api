@@ -37,7 +37,19 @@ exports.fakeRepositoriesInfo = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Repository BETA",
@@ -53,7 +65,19 @@ exports.fakeRepositoriesInfo = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u2'
+        "owner" : 'u2',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Repository TETA",
@@ -69,7 +93,25 @@ exports.fakeRepositoriesInfo = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u3'
+        "owner" : 'u3',
+        "users" : [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2",
+                "avatar" : ""
+            },
+            {
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "u3",
+                "avatar" : null
+            }]
     },
     {
         "name" : "Repository GAMMA",
@@ -85,7 +127,19 @@ exports.fakeRepositoriesInfo = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Repository DELTA",
@@ -101,7 +155,19 @@ exports.fakeRepositoriesInfo = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Repository EPSILON",
@@ -117,7 +183,19 @@ exports.fakeRepositoriesInfo = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u3'
+        "owner" : 'u3',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "BigBang-Repo",
@@ -133,7 +211,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name": "Monkey-repo",
@@ -149,7 +239,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Bunny-repo",
@@ -165,7 +267,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Mouse-repo",
@@ -181,7 +295,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Dog-repo",
@@ -197,7 +323,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Cat-repo",
@@ -213,7 +351,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Fly-repo",
@@ -229,7 +379,19 @@ exports.fakeRepositoriesInfo = [
         "scmlink" : "http://gitlabRepositoryURL",
         "creation" : 1273010400000,
         "buildstatus" : 0,
-        "builddate" : 1432591200000
+        "builddate" : 1432591200000,
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     }
 ];
 
@@ -242,7 +404,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "BETA jang",
@@ -252,7 +426,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u2'
+        "owner" : 'u2',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "TETA log",
@@ -262,7 +448,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u2'
+        "owner" : 'u2',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "GAMMA rep",
@@ -272,7 +470,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "DELTA red",
@@ -282,7 +492,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "EPSILON blue",
@@ -292,7 +514,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "BigBang-Repo",
@@ -302,7 +536,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name": "Monkey-repo",
@@ -312,7 +558,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived": true,
         "public": true,
-        "owner": 'u1'
+        "owner": 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Bunny-repo",
@@ -322,7 +580,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u2'
+        "owner" : 'u2',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Mouse-repo",
@@ -332,7 +602,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u3'
+        "owner" : 'u3',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Dog-repo",
@@ -342,7 +624,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Cat-repo",
@@ -352,7 +646,19 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u2'
+        "owner" : 'u2',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     },
     {
         "name" : "Fly-repo",
@@ -362,6 +668,18 @@ exports.repositoryList = [
         "avatar": "http://repositoryAvatarURL",
         "archived" : true,
         "public" : true,
-        "owner" : 'u1'
+        "owner" : 'u1',
+        "users": [
+            {
+                "name" : "Jos\u00e9 Mart\u00ednez",
+                "email" : "pepe@organization.com",
+                "userid" : "u1"
+            },
+            {
+                "name" : "Dolores Garc\u00eda",
+                "email" : "lola@organization.com",
+                "userid" : "u2"
+            }
+        ]
     }
 ];

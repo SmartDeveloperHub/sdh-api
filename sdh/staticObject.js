@@ -247,6 +247,12 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
  * @param returnCallback
  */
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
+    if (DUMMYDATA) {
+        var theUsers = require("./fakeUsersInfo");
+        var theRepos = require("./fakeRepositoriesInfo");
+        returnCallback(theUsers, theRepos);
+        return;
+    }
     // Cascade. First step Repositories, second Users
     getRepositoriesInfo(function(e){
         var resultRepos = parseRepoList(e);

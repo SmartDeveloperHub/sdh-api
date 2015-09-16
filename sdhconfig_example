@@ -26,6 +26,7 @@
 GLOBAL.SERVICE_URL = null; // null is localhost
 GLOBAL.SERVER_PORT = 8080;
 GLOBAL.REFRESH_RATE = 600; //In Seconds
+GLOBAL.DUMMYDATA = false; // Provide Dummy data. SDH-platform disconnection
 
 // SESSION CONFIG
 GLOBAL.SESSION_INFO = {

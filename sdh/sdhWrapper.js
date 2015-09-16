@@ -516,10 +516,14 @@ exports.repoExist = function (rid, callback) {
  * @param callback
  */
 exports.setAvailableTbds = function setAvailableTbds(callback) {
-    getTbdList(function(newTBDs) {
-        GLOBAL.tbds = newTBDs.results;
-        callback();
-    });
+    if (DUMMYDATA) {
+        GLOBAL.tbds = require('./tbds').tbds;
+    } else {
+        getTbdList(function(newTBDs) {
+            GLOBAL.tbds = newTBDs.results;
+        });
+    }
+    callback();
 };
 
 /**
@@ -527,11 +531,14 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
  * @param callback
  */
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
-    getMetricList(function(newMetrics) {
-        GLOBAL.metrics = newMetrics.results;
-        callback();
-    });
-
+    if (DUMMYDATA) {
+        GLOBAL.metrics = require('./metrics').metrics;
+    } else {
+        getMetricList(function (newMetrics) {
+            GLOBAL.metrics = newMetrics.results;
+        });
+    }
+    callback();
 };
 
 /**
