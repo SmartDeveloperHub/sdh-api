@@ -22,14 +22,50 @@
 
 'use strict';
 
+var _projects;
 var _repositories;
 var _users;
 
 // Local vars
 var _usersById;
 var _repositoriesById;
-var _tbdById;
-var _staticInfoById;
+var _projectsById;
+
+/**
+ * Parse project list to obtain easy access data structures
+ * @param data Object with the project list
+ * @returns {Array} Contains objects with 'projectid' {Number}, 'name' {String},
+ * 'description' {String}, 'tags' {Array}, 'avatar' {Url}.
+ */
+var parseProjectList = function parseProjectList(data) {
+    //TODO
+    var resF = {'projectList': []};
+    var res = resF.projectList;
+    var rbyid = {};
+    var ridbyuri = {};
+    var id;
+    for (var key in data.results) {
+        var attrObject = data.results[key][0];
+        var tagList = [];
+        if (typeof attrObject["tags"] === 'string') {
+            tagList = attrObject["tags"].value.split(',');
+        }
+        var newAt = {
+            "projectid": attrObject["id"].value,
+            "name": attrObject["name"].value,
+            "description": "",
+            "tags": tagList,
+            "avatar": attrObject["avatar"].value
+        };
+        id = newAt.projectid;
+        rbyid[id] = key;
+        ridbyuri[key] = id;
+        res.push(newAt);
+    }
+    GLOBAL.projectUriById = rbyid;
+    GLOBAL.projectIdByUri = ridbyuri;
+    return resF;
+};
 
 /**
  * Parse repository list to obtain easy access data structures
@@ -97,6 +133,31 @@ var parseUserList = function parseUserList(data) {
     GLOBAL.userUriById = ubyid;
     GLOBAL.userIdByUri = uidbu;
     return resF;
+};
+
+/**
+ * Parse Projects info and save all relevant information
+ * @param e Object with the Projects tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
+var parseProjectTree = function parseProjectTree (e) {
+    // TODO
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        for (var i = 0; i < r.length; i++) {
+            if(typeof re[r[i].s.value] === 'undefined') {
+                re[r[i].s.value] = [r[i]];
+            }
+        }
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
 };
 
 /**
@@ -169,6 +230,32 @@ var parseUserTree = function parseUserTree (e) {
     }
     else {
         return e;
+    }
+};
+/**
+ * Collect all projects info from SDH Platform
+ * @param returnCallback
+ */
+var getProjectsInfo = function getProjectsInfo(returnCallback) {
+    // Query to get projects's information
+    var q = '';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['']
+    };
+    var frag;
+    try {
+        sdhGate.get_fragment(p.patterns, function(f) {
+            // TODO control error
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, function(e) {
+                returnCallback(parseProjectTree(e));
+            });
+        });
+    } catch (err) {
+        console.log("ERROR in getProjectsInfo: " + err);
+        returnCallback(err);
     }
 };
 
@@ -248,17 +335,21 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
  */
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     if (DUMMYDATA) {
+        var theProjects = require("./fakeProjectsInfo");
         var theUsers = require("./fakeUsersInfo");
         var theRepos = require("./fakeRepositoriesInfo");
-        returnCallback(theUsers, theRepos);
+        returnCallback(theProjects, theRepos, theUsers);
         return;
     }
     // Cascade. First step Repositories, second Users
-    getRepositoriesInfo(function(e){
-        var resultRepos = parseRepoList(e);
-        getUsersInfo(function(e) {
-            var resultUsers = parseUserList(e);
-            returnCallback(resultUsers, resultRepos);
+    getProjectsInfo(function(e){
+        var resultProjects = parseProjectList(e);
+        getRepositoriesInfo(function(e){
+            var resultRepos = parseRepoList(e);
+            getUsersInfo(function(e) {
+                var resultUsers = parseUserList(e);
+                returnCallback(resultProjects, resultRepos, resultUsers);
+            });
         });
     });
 };
@@ -272,13 +363,14 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
  * @param callback
  */
 module.exports.preloadAll = function preloadAll (callback) {
-    var nextStep = function (usrs, reps) {
+    var nextStep = function (proj, reps, usrs) {
+        _projects = proj;
         _repositories = reps;
         _users = usrs;
 
         _usersById = {};
         _repositoriesById = {};
-        _staticInfoById = {};
+        _projectsById = {};
 
         // Static data structures generation
         for (var i = 0; i < _users.userList.length; i++) {
@@ -287,14 +379,28 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < _repositories.repositoryList.length; i++) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
+        for (var i = 0; i < _projects.projectsList.length; i++) {
+            _projectsById[_projects.projectsList[i].projectid] = _projects.projectsList[i];
+        }
         // Make global all this methods for param validation
+        GLOBAL.projects = this.getProjects();
         GLOBAL.repositories = this.getRepositories();
         GLOBAL.users = this.getUsers();
+        GLOBAL.projectsById = this.projectsById();
         GLOBAL.usersById = this.getUsersById();
         GLOBAL.repositoriesById = this.getRepositoriesById();
         callback();
     }.bind(this);
     getStaticUsersRepos(nextStep);
+};
+
+/**
+ * Get the projects list
+ * @return {Array}
+ */
+module.exports.getProjects = function getProjects () {
+
+  return _projects.projectList;
 };
 
 /**
@@ -313,6 +419,15 @@ module.exports.getRepositories = function getRepositories () {
 module.exports.getUsers = function getUsers () {
 
   return _users.userList;
+};
+
+/**
+ * Get Projects by ID
+ * @return {Object}
+ */
+module.exports.getProjectsById = function getProjectsById () {
+
+  return _projectsById;
 };
 
 /**
