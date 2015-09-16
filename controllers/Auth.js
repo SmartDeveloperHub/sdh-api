@@ -43,11 +43,22 @@ module.exports.login = function login (req, res, next) {
             },
             data: req.user
         };
-
+        // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
+        req.user["positions"] = {
+            1: [randomIntFromInterval(1,10)]
+        }
+        req.user["roles"] = {
+            1: [randomIntFromInterval(1,10), randomIntFromInterval(1,10)],
+            101: [randomIntFromInterval(1,10)]
+        }
         res.statusCode = 200;
         res.end(JSON.stringify({token: token, user: req.user}));
     });
 };
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
 
 module.exports.check = function check (req, res, next) {
 
