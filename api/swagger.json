@@ -578,17 +578,6 @@
                 "avatar": {
                     "type": "string",
                     "description": "Project avatar URL"
-                },
-                "repositories" : {
-                    "type": "array",
-                    "description": "Project repositories",
-                    "items": {
-                        "$ref": "#/definitions/repository"
-                    }
-                },
-                "usersbyrole" : {
-                    "type": "object",
-                    "description": "Project users by role"
                 }
             }
         },
@@ -640,13 +629,6 @@
                     "type": "string",
                     "description": "Project Owner"
                 },
-                "users": {
-                    "type": "array",
-                    "description": "all Project users",
-                    "items": {
-                        "$ref": "#/definitions/user"
-                    }
-                },
                 "repositories" : {
                     "type": "array",
                     "description": "Project repositories",
@@ -654,7 +636,7 @@
                         "$ref": "#/definitions/repository"
                     }
                 },
-                "usersbyrole" : {
+                "users" : {
                     "type": "object",
                     "description": "Project users by role"
                 }
@@ -665,6 +647,10 @@
                 "repositoryid": {
                     "type": "string",
                     "description": "Unique Repository identifier"
+                },
+                "projectid": {
+                    "type": "string",
+                    "description": "Unique Project identifier"
                 },
                 "name": {
                     "type": "string",
@@ -704,6 +690,10 @@
                 "repositoryid": {
                     "type": "string",
                     "description": "Unique Repository identifier"
+                },
+                "projectid": {
+                    "type": "string",
+                    "description": "Unique Project identifier"
                 },
                 "name": {
                     "type": "string",
@@ -764,12 +754,9 @@
                     "type": "string",
                     "description": "Repository Owner"
                 },
-                "users": {
-                    "type": "array",
-                    "description": "all Repository users",
-                    "items": {
-                        "$ref": "#/definitions/user"
-                    }
+                "users" : {
+                    "type": "object",
+                    "description": "Project users by role"
                 }
             }
         },
@@ -830,12 +817,13 @@
                     "format": "date",
                     "description": "User last commit date"
                 },
-                "repositories": {
-                    "type": "array",
-                    "description": "All user Repositories",
-                    "items": {
-                        "$ref": "#/definitions/repository"
-                    }
+                "roles": {
+                    "type": "object",
+                    "description": "All user Roles by Project"
+                },
+                "positions": {
+                    "type": "object",
+                    "description": "All user Positions by Organization"
                 }
             }
         },
