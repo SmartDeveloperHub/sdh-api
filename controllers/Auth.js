@@ -35,24 +35,33 @@ module.exports.login = function login (req, res, next) {
 
     passport.authenticate('ldapauth', {session: false})(req, res, function() {
 
-        //Create a new session
-        var token = uuid.v4();
-        GLOBAL.SESSIONS[token] = {
-            info: {
-                lastAccess: Date.now()
-            },
-            data: req.user
-        };
-        // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
-        req.user["positions"] = {
-            1: [randomIntFromInterval(1,10)]
+        if(req.user != null) {
+
+            //Create a new session
+            var token = uuid.v4();
+            GLOBAL.SESSIONS[token] = {
+                info: {
+                    lastAccess: Date.now()
+                },
+                data: req.user
+            };
+            // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
+            req.user["positions"] = {
+                1: [randomIntFromInterval(1,10)]
+            };
+            req.user["roles"] = {
+                1: [randomIntFromInterval(1,10), randomIntFromInterval(1,10)],
+                101: [randomIntFromInterval(1,10)]
+            };
+            res.statusCode = 200;
+            res.end(JSON.stringify({token: token, user: req.user}));
+
+        } else {
+            res.statusCode = 401;
+            res.end();
         }
-        req.user["roles"] = {
-            1: [randomIntFromInterval(1,10), randomIntFromInterval(1,10)],
-            101: [randomIntFromInterval(1,10)]
-        }
-        res.statusCode = 200;
-        res.end(JSON.stringify({token: token, user: req.user}));
+
+
     });
 };
 
