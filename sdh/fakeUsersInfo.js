@@ -26,7 +26,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
-        "userid" : "u1",
+        "userid" : "1",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -34,12 +34,12 @@ exports.fakeUsersInfo = [
         "skype" : "http://skypeURL",
         "linkedin" : "http://linkedinURL",
         "twitter" : "http://twitterURL",
-        "website" : "http://websiteURL",
+        "website" : "http://websiteURL"
     },
     {
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
-        "userid" : "u2",
+        "userid" : "2",
         "avatar" : "",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
@@ -48,12 +48,12 @@ exports.fakeUsersInfo = [
         "skype" : "http://skypeURL",
         "linkedin" : "http://linkedinURL",
         "twitter" : "http://twitterURL",
-        "website" : "http://websiteURL",
+        "website" : "http://websiteURL"
     },
     {
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
-        "userid" : "u3",
+        "userid" : "3",
         "avatar" : null,
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
@@ -62,7 +62,7 @@ exports.fakeUsersInfo = [
         "skype" : null,
         "linkedin" : "http://linkedinURL",
         "twitter" : "http://twitterURL",
-        "website" : "http://websiteURL",
+        "website" : "http://websiteURL"
     }
 ];
 
@@ -70,17 +70,19 @@ exports.userList = [
     {
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
-        "userid" : "u1"
+        "userid" : "1",
+        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
-        "userid" : "u2",
-        "avatar" : ""
+        "userid" : "2",
+        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
-        "userid" : "u3",
-        "avatar" : null
-    }];
+        "userid" : "3",
+        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+    }
+];
