@@ -32,11 +32,9 @@ var uuid = require('node-uuid');
  * @param next Pass control to the next handler
  */
 module.exports.login = function login (req, res, next) {
-
+    console.log("Trying to login in SDH-API");
     passport.authenticate('ldapauth', {session: false})(req, res, function() {
-
         if(req.user != null) {
-
             //Create a new session
             var token = uuid.v4();
             GLOBAL.SESSIONS[token] = {
@@ -53,14 +51,14 @@ module.exports.login = function login (req, res, next) {
                 1: [randomIntFromInterval(1,10), randomIntFromInterval(1,10)],
                 101: [randomIntFromInterval(1,10)]
             };
+            console.log(JSON.stringify({token: token, user: req.user}));
             res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({token: token, user: req.user}));
-
         } else {
             res.statusCode = 401;
             res.end();
         }
-
 
     });
 };
@@ -83,6 +81,7 @@ module.exports.logout = function logout(req, res, next) {
 
     passport.authenticate('bearer', {session: false})(req, res, function() {
 
+        // TODO make sessions global if necessary
         var Sessions = require('../sessions');
 
         //Remove the session
