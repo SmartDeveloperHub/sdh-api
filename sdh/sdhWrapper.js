@@ -109,7 +109,9 @@ var parseMetricTree = function parseMetricTree (e) {
             // Now parse this metric and obtain specific param or params and aggregator.
             var metricRealId = r[i].id.value;
             var parsedMetric = parseMetricId(metricRealId);
-            console.log("test -> " + JSON.stringify(parsedMetric));
+            console.log("----->")
+            console.log(JSON.stringify(r[i]));
+            console.log("...parsed: " + JSON.stringify(parsedMetric));
             // TODO TBDs included in metrics request
             if (parsedMetric.type === "metric") {
                 // METRIC
@@ -518,12 +520,14 @@ exports.repoExist = function (rid, callback) {
 exports.setAvailableTbds = function setAvailableTbds(callback) {
     if (DUMMYDATA) {
         GLOBAL.tbds = require('./tbds').tbds;
+        callback();
     } else {
         getTbdList(function(newTBDs) {
             GLOBAL.tbds = newTBDs.results;
+            callback();
         });
     }
-    callback();
+
 };
 
 /**
@@ -533,12 +537,13 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     if (DUMMYDATA) {
         GLOBAL.metrics = require('./metrics').metrics;
+        callback();
     } else {
         getMetricList(function (newMetrics) {
             GLOBAL.metrics = newMetrics.results;
+            callback();
         });
     }
-    callback();
 };
 
 /**
@@ -603,10 +608,11 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         if(to !== null) {
             qpObject['end'] = to / 1000;
         }
+
         var querystring = require("querystring");
         var realPath =  http_path + '?' + querystring.stringify(qpObject);
         console.log("TDB GET--> " + realPath);
-
+        // TODO Fix problem with getTBDValue tbd withouth dates
         var options = {
             url: http_path,
             headers: {
@@ -638,7 +644,7 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
                         for (i = 0; i < data.result.length; i ++) {
                             val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
                         }
-                    } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "orgtimetofixtbd") {
+                    } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "getTBDValue") {
                         val = [parseInt((data.result[0] / 3600)* 100) / 100];
                     } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
                         val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
@@ -650,9 +656,8 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
                     callback(data);
                 } else {
                     // TODO
-                    console.warn('TDB :( Error ' + response.statusCode + ";  GET-> " + realPath);
-                    data = response.statusCode;
-                    callback(data);
+                    console.warn('TDB Error ' + response.statusCode + ";  GET-> " + realPath);
+                    callback(response.statusCode);
                 }
             }
         });
@@ -749,7 +754,7 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
                     if (response.statusCode == 200) {
                         data = JSON.parse(body);
                     } else {
-                        console.warn('Metric :( Error ' + response.statusCode + ";  GET-> " + realPath);
+                        console.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
                         data = response.statusCode;
                     }
                     callback(data);
