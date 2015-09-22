@@ -40,8 +40,9 @@ exports.projectInfo = function(pid, callback) {
 
     // Check if Project ID is available
     var _proj;
-    if (rid in projectsById) {
+    if (pid in projectsById) {
         _proj = underscore(projectsById[pid]).clone();
+        // TODO users and repositories
         var localUsers = usersByProjectUri[projectUriById[pid]];
         var projectUsers = [];
         for(var key in localUsers) {
@@ -49,11 +50,11 @@ exports.projectInfo = function(pid, callback) {
         }
         _proj['users'] = underscore(projectUsers).clone();
     } else {
-        console.log("--RID not found");
+        console.log("--PID not found");
         callback(404);
         return;
     }
-    sdhWrapper.getProjectInfo(rid, function(e) {
+    sdhWrapper.getProjectInfo(pid, function(e) {
         e.users = _proj['users'];
         callback(e);
     });

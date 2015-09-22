@@ -65,7 +65,7 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res) {
  */
 module.exports.projectInfo = function projectInfo (req, res) {
     // Collect all repository request params
-    var rid = req.swagger.params['rid'].value;
+    var pid = req.swagger.params['pid'].value;
 
     /**
      * The main callback for this request
@@ -91,5 +91,5 @@ module.exports.projectInfo = function projectInfo (req, res) {
         }
     };
 
-    Project.projectInfo(rid, callback);
+    Project.projectInfo(pid, callback);
 };
