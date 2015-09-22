@@ -26,7 +26,7 @@ exports.fakeProjectsInfo = [
     {
         "name" : "SDH-Test1",
         "description" : "A project",
-        "repositoryid" : "1",
+        "projectid" : "1",
         "lastcommit" : 1431208800000,
         "firstcommit": 1273010400000,
         "scmlink" : "http://gitlabProjectURL",
@@ -95,7 +95,7 @@ exports.fakeProjectsInfo = [
     {
         "name" : "SDH-Test2",
         "description" : "A project",
-        "repositoryid" : "2",
+        "projectid" : "2",
         "lastcommit" : 1431208800000,
         "firstcommit": 1273010400000,
         "scmlink" : "http://gitlabProjectURL",
@@ -164,7 +164,7 @@ exports.fakeProjectsInfo = [
     {
         "name" : "SDH-Test3",
         "description" : "A project",
-        "repositoryid" : "3",
+        "projectid" : "3",
         "lastcommit" : 1431208800000,
         "firstcommit": 1273010400000,
         "scmlink" : "http://gitlabProjectURL",
@@ -229,5 +229,29 @@ exports.fakeProjectsInfo = [
                 "userid" : "2"
             }
         ]
+    }
+];
+
+exports.projectList = [
+    {
+        "name" : "SDH-Test1",
+        "description" : "A project",
+        "projectid" : "1",
+        "tags" :['SDH','jordi','dark'],
+        "avatar": "http://ProjectAvatarURL"
+    },
+    {
+        "name" : "SDH-Test2",
+        "description" : "A project",
+        "projectid" : "2",
+        "tags" :['SDH','jordi','dark'],
+        "avatar": "http://ProjectAvatarURL"
+    },
+    {
+        "name" : "SDH-Test3",
+        "description" : "A project",
+        "projectid" : "3",
+        "tags" :['SDH','jordi','dark'],
+        "avatar": "http://ProjectAvatarURL"
     }
 ];
