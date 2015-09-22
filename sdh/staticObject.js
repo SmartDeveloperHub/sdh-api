@@ -246,13 +246,15 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
     };
     var frag;
     try {
-        sdhGate.get_fragment(p.patterns, function(f) {
+        /*sdhGate.get_fragment(p.patterns, function(f) {
             // TODO control error
             frag = f.fragment;
             sdhGate.get_results_from_fragment(frag, q, function(e) {
                 returnCallback(parseProjectTree(e));
             });
-        });
+        });*/
+        console.log("TODO we need projects!!!");
+        returnCallback(null);
     } catch (err) {
         console.log("ERROR in getProjectsInfo: " + err);
         returnCallback(err);
@@ -343,7 +345,8 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     }
     // Cascade. First step Repositories, second Users
     getProjectsInfo(function(e){
-        var resultProjects = parseProjectList(e);
+        //var resultProjects = parseProjectList(e);
+        var resultProjects = require("./fakeProjectsInfo");
         getRepositoriesInfo(function(e){
             var resultRepos = parseRepoList(e);
             getUsersInfo(function(e) {
@@ -379,14 +382,14 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < _repositories.repositoryList.length; i++) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
-        for (var i = 0; i < _projects.projectsList.length; i++) {
-            _projectsById[_projects.projectsList[i].projectid] = _projects.projectsList[i];
+        for (var i = 0; i < _projects.projectList.length; i++) {
+            _projectsById[_projects.projectList[i].projectid] = _projects.projectList[i];
         }
         // Make global all this methods for param validation
         GLOBAL.projects = this.getProjects();
         GLOBAL.repositories = this.getRepositories();
         GLOBAL.users = this.getUsers();
-        GLOBAL.projectsById = this.projectsById();
+        GLOBAL.projectsById = this.getProjectsById();
         GLOBAL.usersById = this.getUsersById();
         GLOBAL.repositoriesById = this.getRepositoriesById();
         callback();
