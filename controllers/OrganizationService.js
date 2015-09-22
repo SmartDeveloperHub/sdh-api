@@ -32,7 +32,8 @@ exports.orgInfo = function(callback) {
     //TODO By the moment we are using Dummy organization for the demo
     callback({
         "organizationid" : "Organization DePalo 1",
-        "shortdesc" : "Center Open Middleware Researches ",
-        "longdesc" : "Esta es la descripción larga de la organizacion y es muy útil para describirla"
+        "description" : "Center Open Middleware Researches ",
+        "purpose" : "Esta es la descripción larga de la organizacion y es muy útil para describirla",
+        "clasification": "ALM"
     });
 };
