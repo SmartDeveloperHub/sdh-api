@@ -559,6 +559,42 @@ exports.repoExist = function (rid, callback) {
 };
 
 /**
+ * Check if specific user exist
+ * @param uid {Object} User Id.
+ * @param callback
+ */
+exports.sync_userExist = function (uid) {
+    return (uid in usersById);
+};
+
+/**
+ * Check if specific repository exist
+ * @param rid {Object} Repository Id.
+ * @param callback
+ */
+exports.sync_repoExist = function (rid) {
+    return (rid in repositoriesById);
+};
+
+/**
+ * Check if specific project exist
+ * @param uid {Object} User Id.
+ * @param callback
+ */
+exports.sync_projectExist = function (uid) {
+    return (uid in projectsById);
+};
+
+/**
+ * Check if specific product exist
+ * @param rid {Object} Repository Id.
+ * @param callback
+ */
+exports.sync_productExist = function (rid) {
+    return (rid in productsById);
+};
+
+/**
  * Set Available TBDs
  * @param callback
  */

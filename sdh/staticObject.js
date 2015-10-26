@@ -25,11 +25,13 @@
 var _projects;
 var _repositories;
 var _users;
+var _products;
 
 // Local vars
 var _usersById;
 var _repositoriesById;
 var _projectsById;
+var _productsById;
 
 /**
  * Parse project list to obtain easy access data structures
@@ -340,7 +342,18 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
         var theProjects = require("./fakeProjectsInfo");
         var theUsers = require("./fakeUsersInfo");
         var theRepos = require("./fakeRepositoriesInfo");
-        returnCallback(theProjects, theRepos, theUsers);
+        var theProducts = require("./fakeProductsInfo");
+        GLOBAL.usersByProjectUri = {};
+        GLOBAL.usersByRepoUri = {};
+        GLOBAL.projectUriById = {};
+        GLOBAL.projectIdByUri = {};
+        GLOBAL.usersByRepoUri = {};
+        GLOBAL.userUriById = {};
+        GLOBAL.userIdByUri = {};
+        GLOBAL.repoUriById = {};
+        GLOBAL.repoIdByUri = {};
+        GLOBAL.reposByUserUri = {};
+        returnCallback(theProducts, theProjects, theRepos, theUsers);
         return;
     }
     // Cascade. First step Repositories, second Users
@@ -366,14 +379,16 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
  * @param callback
  */
 module.exports.preloadAll = function preloadAll (callback) {
-    var nextStep = function (proj, reps, usrs) {
+    var nextStep = function (prod, proj, reps, usrs) {
         _projects = proj;
         _repositories = reps;
         _users = usrs;
+        _products = prod;
 
         _usersById = {};
         _repositoriesById = {};
         _projectsById = {};
+        _productsById = {};
 
         // Static data structures generation
         for (var i = 0; i < _users.userList.length; i++) {
@@ -385,11 +400,15 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < _projects.projectList.length; i++) {
             _projectsById[_projects.projectList[i].projectid] = _projects.projectList[i];
         }
+        for (var i = 0; i < _products.productList.length; i++) {
+            _productsById[_products.productList[i].productid] = _products.productList[i];
+        }
         // Make global all this methods for param validation
         GLOBAL.projects = this.getProjects();
         GLOBAL.repositories = this.getRepositories();
         GLOBAL.users = this.getUsers();
         GLOBAL.projectsById = this.getProjectsById();
+        GLOBAL.productsById = this.getProductsById();
         GLOBAL.usersById = this.getUsersById();
         GLOBAL.repositoriesById = this.getRepositoriesById();
         callback();
@@ -431,6 +450,15 @@ module.exports.getUsers = function getUsers () {
 module.exports.getProjectsById = function getProjectsById () {
 
   return _projectsById;
+};
+
+/**
+ * Get Products by ID
+ * @return {Object}
+ */
+module.exports.getProductsById = function getProductsById () {
+
+  return _productsById;
 };
 
 /**

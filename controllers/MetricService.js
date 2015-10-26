@@ -123,91 +123,57 @@ exports.getMetric = function(mid, rid, uid, pid, prid, from, to, accumulated, ma
         sdhWrapper.getMetricValue(mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, localcallback2);
     };
 
-    // Logical Validation
-    var acum = 0;
-
     // check ids
     if (!(mid in metricsById)) {
         console.error("MID not found: " + mid);
         callback(404);
         return;
     }
-
     var uidRequired = metricsById[mid].params.indexOf('uid') >= 0;
     var ridRequired = metricsById[mid].params.indexOf('rid') >= 0;
+    var pidRequired = metricsById[mid].params.indexOf('pid') >= 0;
+    var pridRequired = metricsById[mid].params.indexOf('prid') >= 0;
 
-    if (uidRequired && ridRequired) {
-        // uid and rid required for this metric
-        if (typeof uid == 'undefined') {
-            console.error(mid + " metric require query param 'uid'");
-            callback(400);
-            return;
-        }
-        if (typeof rid == 'undefined') {
-            console.error(mid + " metric require query param 'rid'");
-            callback(400);
-            return;
-        }
-        sdhWrapper.userExist(uid, function(usExist) {
-            if (!usExist) {
-                console.error("UID not found: " + uid);
-                callback(404);
-            } else {
-                sdhWrapper.repoExist(rid, function(reExist) {
-                    if (!reExist) {
-                        console.error("RID not found: " + rid);
-                        callback(404);
-                    } else {
-                        // continue with the metric
-                        metricRequest();
-                    }
-                    return;
-                });
-            }
-            return;
-        });
+    if (uidRequired && typeof uid == 'undefined') {
+        console.error(mid + " metric require query param 'uid'");
+        callback(400);
         return;
-    } else if (uidRequired) {
-        // only uid required for this metric
-        if (typeof uid == 'undefined') {
-            console.error(mid + " metric require query param 'uid'");
-            callback(400);
-            return;
-        } else {
-            sdhWrapper.userExist(uid, function(usExist) {
-                if (!usExist) {
-                    console.error("UID not found: " + uid);
-                    callback(404);
-                } else {
-                    // continue with the metric
-                    metricRequest();
-                }
-                return;
-            });
-        }
-        return;
-    } else if (ridRequired) {
-        // only rid required for this metric
-        if (typeof rid == 'undefined') {
-            console.error(mid + " metric require query param 'rid'");
-            callback(400);
-            return;
-        } else {
-            sdhWrapper.repoExist(rid, function(reExist) {
-                if (!reExist) {
-                    console.error("RID not found: " + rid);
-                    callback(404);
-                } else {
-                    // continue with the metric
-                    metricRequest();
-                }
-                return;
-            });
-            
-        }
-        return;
-    } else {
-        // no one id is required
-        metricRequest();
     }
+    if (ridRequired && typeof rid == 'undefined') {
+        console.error(mid + " metric require query param 'rid'");
+        callback(400);
+        return;
+    }
+    if (pidRequired && typeof pid == 'undefined') {
+        console.error(mid + " metric require query param 'pid'");
+        callback(400);
+        return;
+    }
+    if (pridRequired && typeof prid == 'undefined') {
+        console.error(mid + " metric require query param 'prid'");
+        callback(400);
+        return;
+    }
+    if (!sdhWrapper.sync_userExist(uid)) {
+        console.error("UID not found: " + uid);
+        callback(404);
+        return;
+    }
+    if (!sdhWrapper.sync_repoExist(rid)) {
+        console.error("RID not found: " + rid);
+        callback(404);
+        return;
+    }
+    if (!sdhWrapper.sync_projectExist(pid)) {
+        console.error("PID not found: " + uid);
+        callback(404);
+        return;
+    }
+    if (!sdhWrapper.sync_productExist(prid)) {
+        console.error("PRID not found: " + rid);
+        callback(404);
+        return;
+    }
+    // All OK
+    metricRequest();
 };
