@@ -44,7 +44,7 @@ var parseMetricId = function parseMetricId(realId) {
     var params = [];
     var metricId;
     if (rriList.length === 3) {
-        // simple param repo, user or org(by dafault. Not necesary)
+        // simple param repo, user or org(by default. Not necesary)
         if (rriList[1] !== 'org') {
             if (rriList[1] === 'repo') {
                 params.push('rid');
@@ -229,6 +229,51 @@ var parseMetricTree = function parseMetricTree (e) {
         metricUriById["userspeed"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
         metricUriById["usercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
         metricUriById["userquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
+
+        metById["orgproducts"] = {
+            "id" : "orgproducts",
+            "title": "Products",
+            "path" : "/metrics/products",
+            "description" : "Number of Products",
+            "params": [],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metById["prodprojects"] = {
+            "id" : "prodprojects",
+            "title": "Product Projects",
+            "path" : "/metrics/prodprojects",
+            "description" : "Number of Products",
+            "params": ['prid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metById["produsers"] = {
+            "id" : "produsers",
+            "title": "Product Users",
+            "path" : "/metrics/produsers",
+            "description" : "Number of Products",
+            "params": ['prid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metById["projrepositories"] = {
+            "id" : "projrepositories",
+            "title": "Project Repositories",
+            "path" : "/metrics/projrepositories",
+            "description" : "Number of Products",
+            "params": ['pid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metricUriById["orgproducts"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["prodprojects"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
+        metricUriById["produsers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
 
         GLOBAL.metricsById = metById;
         console.log("Metrics: " + Object.keys(metricsById));
@@ -690,6 +735,8 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
  * @param mid {Number} the metric ID
  * @param rid {Number} repository ID
  * @param uid {Number} user ID
+ * @param pid {Number} project ID
+ * @param prid {Number} product ID
  * @param from {Date} date indicating the "from" limit for the request
  * @param to {Date} date indicating the "to" limit for the request
  * @param accumulated {Boolean} indicate if an accumulated data serie is required
@@ -697,7 +744,7 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
  * @param aggr {String} indicate an aggregation method (max, min, sum, avg)
  * @param callback {Function} the callback to send the metric result to client
  */
-exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, aggr, callback) {
+exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback) {
     var http_path;
     if (typeof metricUriById[mid] !== "undefined") {
         if (typeof metricUriById[mid][aggr] !== "undefined") {
@@ -719,6 +766,12 @@ exports.getMetricValue = function (mid, rid, uid, from, to, accumulated, max, ag
         }
         if(uid !== undefined) {
             qpObject['uid'] = uid;
+        }
+        if(pid !== undefined) {
+            qpObject['pid'] = pid;
+        }
+        if(prid !== undefined) {
+            qpObject['prid'] = prid;
         }
         if(from !== null) {
             qpObject['begin'] = from / 1000;
