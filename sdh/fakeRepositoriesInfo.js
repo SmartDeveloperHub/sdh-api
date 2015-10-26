@@ -40,14 +40,34 @@ exports.fakeRepositoriesInfo = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Noah Thomas",
+                "email" : "noaht@organization.com",
+                "userid" : "10",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Elizabeth William",
+                "email" : "elwil@organization.com",
+                "userid" : "11",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Ashley Capri",
+                "email" : "capri@organization.com",
+                "userid" : "12",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Carrie Ann Baker",
+                "email" : "cbaker@organization.com",
+                "userid" : "13",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Alicia Romero",
+                "email" : "alirom@organization.com",
+                "userid" : "14",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -68,14 +88,22 @@ exports.fakeRepositoriesInfo = [
         "owner" : '2',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Noah Thomas",
+                "email" : "noaht@organization.com",
+                "userid" : "10",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Philip Jones",
+                "email" : "pjones@organization.com",
+                "userid" : "15",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Geena Blanco",
+                "email" : "geenablanco@organization.com",
+                "userid" : "16",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -96,22 +124,36 @@ exports.fakeRepositoriesInfo = [
         "owner" : '3',
         "users" : [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Elizabeth William",
+                "email" : "elwil@organization.com",
+                "userid" : "11",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2",
-                "avatar" : ""
+                "name" : "Ashley Capri",
+                "email" : "capri@organization.com",
+                "userid" : "12",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Jordi Fern\u00e1ndez",
-                "email" : "jordi@organization.com",
-                "userid" : "3",
-                "avatar" : null
-            }]
+                "name" : "Alicia Romero",
+                "email" : "alirom@organization.com",
+                "userid" : "14",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Philip Jones",
+                "email" : "pjones@organization.com",
+                "userid" : "15",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Geena Blanco",
+                "email" : "geenablanco@organization.com",
+                "userid" : "16",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            }
+        ]
     },
     {
         "name" : "Repository GAMMA",
@@ -130,14 +172,10 @@ exports.fakeRepositoriesInfo = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Carrie Ann Baker",
+                "email" : "cbaker@organization.com",
+                "userid" : "13",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -158,14 +196,16 @@ exports.fakeRepositoriesInfo = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Noah Thomas",
+                "email" : "noaht@organization.com",
+                "userid" : "10",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Geena Blanco",
+                "email" : "geenablanco@organization.com",
+                "userid" : "16",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -186,14 +226,10 @@ exports.fakeRepositoriesInfo = [
         "owner" : '3',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Elizabeth William",
+                "email" : "elwil@organization.com",
+                "userid" : "11",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -214,14 +250,16 @@ exports.fakeRepositoriesInfo = [
         "builddate" : 1432591200000,
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Omar Graham",
+                "email" : "omar@organization.com",
+                "userid" : "17",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Daniel Red",
+                "email" : "redme@organization.com",
+                "userid" : "18",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -270,14 +308,10 @@ exports.fakeRepositoriesInfo = [
         "builddate" : 1432591200000,
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "3",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -298,14 +332,16 @@ exports.fakeRepositoriesInfo = [
         "builddate" : 1432591200000,
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "2",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "3",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -328,12 +364,20 @@ exports.fakeRepositoriesInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1"
+                "userid" : "1",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "2",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "3",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -354,14 +398,22 @@ exports.fakeRepositoriesInfo = [
         "builddate" : 1432591200000,
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Lucy Bacon",
+                "email" : "lubacon@organization.com",
+                "userid" : "6",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Oliver Bogart",
+                "email" : "oli@organization.com",
+                "userid" : "7",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Perry Drake",
+                "email" : "perry@organization.com",
+                "userid" : "8",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -382,18 +434,36 @@ exports.fakeRepositoriesInfo = [
         "builddate" : 1432591200000,
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Michael Frost",
+                "email" : "mfrost@organization.com",
+                "userid" : "4",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Violet Hamilton",
+                "email" : "hamilton@organization.com",
+                "userid" : "5",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Elizabeth Moss",
+                "email" : "elimos@organization.com",
+                "userid" : "5",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     }
 ];
+
+
+
+
+
+
+
+
+
+
 
 exports.repositoryList = [
     {
@@ -407,14 +477,34 @@ exports.repositoryList = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Noah Thomas",
+                "email" : "noaht@organization.com",
+                "userid" : "10",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Elizabeth William",
+                "email" : "elwil@organization.com",
+                "userid" : "11",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Ashley Capri",
+                "email" : "capri@organization.com",
+                "userid" : "12",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Carrie Ann Baker",
+                "email" : "cbaker@organization.com",
+                "userid" : "13",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Alicia Romero",
+                "email" : "alirom@organization.com",
+                "userid" : "14",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -429,14 +519,22 @@ exports.repositoryList = [
         "owner" : '2',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Noah Thomas",
+                "email" : "noaht@organization.com",
+                "userid" : "10",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Philip Jones",
+                "email" : "pjones@organization.com",
+                "userid" : "15",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Geena Blanco",
+                "email" : "geenablanco@organization.com",
+                "userid" : "16",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -451,14 +549,34 @@ exports.repositoryList = [
         "owner" : '2',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Elizabeth William",
+                "email" : "elwil@organization.com",
+                "userid" : "11",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Ashley Capri",
+                "email" : "capri@organization.com",
+                "userid" : "12",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Alicia Romero",
+                "email" : "alirom@organization.com",
+                "userid" : "14",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Philip Jones",
+                "email" : "pjones@organization.com",
+                "userid" : "15",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Geena Blanco",
+                "email" : "geenablanco@organization.com",
+                "userid" : "16",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -473,14 +591,10 @@ exports.repositoryList = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Carrie Ann Baker",
+                "email" : "cbaker@organization.com",
+                "userid" : "13",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -495,14 +609,16 @@ exports.repositoryList = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Noah Thomas",
+                "email" : "noaht@organization.com",
+                "userid" : "10",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Geena Blanco",
+                "email" : "geenablanco@organization.com",
+                "userid" : "16",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -517,14 +633,10 @@ exports.repositoryList = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Elizabeth William",
+                "email" : "elwil@organization.com",
+                "userid" : "11",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -539,14 +651,16 @@ exports.repositoryList = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Omar Graham",
+                "email" : "omar@organization.com",
+                "userid" : "17",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Daniel Red",
+                "email" : "redme@organization.com",
+                "userid" : "18",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -583,14 +697,10 @@ exports.repositoryList = [
         "owner" : '2',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "3",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -605,14 +715,16 @@ exports.repositoryList = [
         "owner" : '3',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
-            },
-            {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "2",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "3",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -629,12 +741,20 @@ exports.repositoryList = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1"
+                "userid" : "1",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "2",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Jordi Fern\u00e1ndez",
+                "email" : "jordi@organization.com",
+                "userid" : "3",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -649,14 +769,22 @@ exports.repositoryList = [
         "owner" : '2',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Lucy Bacon",
+                "email" : "lubacon@organization.com",
+                "userid" : "6",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Oliver Bogart",
+                "email" : "oli@organization.com",
+                "userid" : "7",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Perry Drake",
+                "email" : "perry@organization.com",
+                "userid" : "8",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     },
@@ -671,14 +799,22 @@ exports.repositoryList = [
         "owner" : '1',
         "users": [
             {
-                "name" : "Jos\u00e9 Mart\u00ednez",
-                "email" : "pepe@organization.com",
-                "userid" : "1"
+                "name" : "Michael Frost",
+                "email" : "mfrost@organization.com",
+                "userid" : "4",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             },
             {
-                "name" : "Dolores Garc\u00eda",
-                "email" : "lola@organization.com",
-                "userid" : "2"
+                "name" : "Violet Hamilton",
+                "email" : "hamilton@organization.com",
+                "userid" : "5",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+            },
+            {
+                "name" : "Elizabeth Moss",
+                "email" : "elimos@organization.com",
+                "userid" : "5",
+                "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
             }
         ]
     }
