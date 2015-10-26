@@ -69,6 +69,8 @@ module.exports.getMetric = function getMetric (req, res) {
     // Collect all metric request params
     var mid = req.swagger.params['mid'].value;
     var rid = req.swagger.params['rid'].value;
+    var pid = req.swagger.params['pid'].value;
+    var prid = req.swagger.params['prid'].value;
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
@@ -102,5 +104,5 @@ module.exports.getMetric = function getMetric (req, res) {
             res.end();
         }
     };
-    Metric.getMetric(mid, rid, uid, from, to, accumulated, max, aggr, callback);
+    Metric.getMetric(mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback);
 };

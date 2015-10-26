@@ -43,7 +43,7 @@ exports.metricList = function(callback) {
  * @param aggr {String} indicate an aggregation method (max, min, sum, avg)
  * @param callback {Function} the callback to send the metric result to client
  */
-exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, callback) {
+exports.getMetric = function(mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback) {
 
     /**
      *This method make the metric request after logical validation
@@ -120,7 +120,7 @@ exports.getMetric = function(mid, rid, uid, from, to, accumulated, max, aggr, ca
             callback(result);
         };
 
-        sdhWrapper.getMetricValue(mid, rid, uid, from, to, accumulated, max, aggr, localcallback2);
+        sdhWrapper.getMetricValue(mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, localcallback2);
     };
 
     // Logical Validation

@@ -35,6 +35,10 @@
             "description": "Operations about Organization"
         },
         {
+            "name": "Product",
+            "description": "Operations about Products"
+        },
+        {
             "name": "Project",
             "description": "Operations about Projects"
         },
@@ -176,6 +180,57 @@
                         "schema": {
                             "$ref": "#/definitions/organizationinfo"
                         }
+                    }
+                }
+            }
+        },
+        "/product/": {
+            "get": {
+                "x-swagger-router-controller": "Product",
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Products info list",
+                "operationId": "allProductsInfo",
+                "responses": {
+                    "200": {
+                        "description": "Product list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/product"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{prid}": {
+            "get": {
+                "x-swagger-router-controller": "Product",
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Product description",
+                "operationId": "productInfo",
+                "parameters": [
+                    {
+                        "name": "prid",
+                        "in": "path",
+                        "description": "Product id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product info.",
+                        "schema": {
+                            "$ref": "#/definitions/productinfo"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
                     }
                 }
             }
@@ -402,6 +457,20 @@
                         "type": "string"
                     },
                     {
+                        "name": "pid",
+                        "in": "query",
+                        "description": "Project id",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "prid",
+                        "in": "query",
+                        "description": "Product id",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "uid",
                         "in": "query",
                         "description": "User id",
@@ -551,6 +620,94 @@
                 "shortdesc": {
                     "type": "string",
                     "description": "Organization short description"
+                }
+            }
+        },
+        "product": {
+            "properties": {
+                "productid": {
+                    "type": "string",
+                    "description": "Unique Product identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The Product name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The Product description"
+                },
+                "tags" : {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                      "type": "string"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Product avatar URL"
+                }
+            }
+        },
+        "productinfo": {
+            "properties": {
+                "productid": {
+                    "type": "string",
+                    "description": "Unique Product identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The Product name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The Product description"
+                },
+                "firstCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "First commit date"
+                },
+                "lastCommit": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Last commit date"
+                },
+                "scmlink": {
+                    "type": "string",
+                    "description": "SCM URL"
+                },
+                "creation": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The Product creation date"
+                },
+                "tags" : {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Product avatar URL"
+                },
+                "owner" : {
+                    "type": "string",
+                    "description": "Product Owner"
+                },
+                "projects" : {
+                    "type": "array",
+                    "description": "Product projects",
+                    "items": {
+                        "$ref": "#/definitions/project"
+                    }
+                },
+                "users" : {
+                    "type": "object",
+                    "description": "Product users by position"
                 }
             }
         },
