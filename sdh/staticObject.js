@@ -358,13 +358,15 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     }
     // Cascade. First step Repositories, second Users
     getProjectsInfo(function(e){
+        //var resultProjects = parseProductList(e);
+        var resultProducts = require("./fakeProductsInfo");
         //var resultProjects = parseProjectList(e);
         var resultProjects = require("./fakeProjectsInfo");
         getRepositoriesInfo(function(e){
             var resultRepos = parseRepoList(e);
             getUsersInfo(function(e) {
                 var resultUsers = parseUserList(e);
-                returnCallback(resultProjects, resultRepos, resultUsers);
+                returnCallback(resultProducts, resultProjects, resultRepos, resultUsers);
             });
         });
     });
