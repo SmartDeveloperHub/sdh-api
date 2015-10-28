@@ -109,7 +109,7 @@ var parseMetricTree = function parseMetricTree (e) {
             // Now parse this metric and obtain specific param or params and aggregator.
             var metricRealId = r[i].id.value;
             var parsedMetric = parseMetricId(metricRealId);
-            console.log("----->")
+            console.log("----->");
             console.log(JSON.stringify(r[i]));
             console.log("...parsed: " + JSON.stringify(parsedMetric));
             // TODO TBDs included in metrics request
@@ -618,6 +618,10 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     if (DUMMYDATA) {
         GLOBAL.metrics = require('./metrics').metrics;
+        GLOBAL.metricsById = {};
+        for (var i=0; i< metrics.length; i++) {
+            metricsById[metrics[i].id] = metrics[i];
+        }
         callback();
     } else {
         getMetricList(function (newMetrics) {
@@ -782,16 +786,20 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
  */
 exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback) {
     var http_path;
-    if (typeof metricUriById[mid] !== "undefined") {
-        if (typeof metricUriById[mid][aggr] !== "undefined") {
-            http_path = metricUriById[mid][aggr];
+    if (DUMMYDATA) {
+        http_path = "progresiveRandom" + randomIntFromInterval(1,3);
+    } else {
+        if (typeof metricUriById[mid] !== "undefined") {
+            if (typeof metricUriById[mid][aggr] !== "undefined") {
+                http_path = metricUriById[mid][aggr];
+            } else {
+                console.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available in Agora!");
+                callback(null);
+            }
         } else {
-            console.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available in Agora!");
+            console.error("Unexpected error getting metric. '" + mid + "' metric is not available in Agora!");
             callback(null);
         }
-    } else {
-        console.error("Unexpected error getting metric. '" + mid + "' metric is not available in Agora!");
-        callback(null);
     }
     var data = null;
     try {
@@ -882,9 +890,9 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
 
                     // TODO Fake metrics
                     var dataList = [];
-                    var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
-                    var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
-                    var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
+                    var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
+                    var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78, 80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
+                    var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
                     var modifier = randomIntFromInterval(-10, 15);
                     var aux = [];
 
@@ -900,6 +908,9 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                     }
                     if (aggr == "avg") {
                         var pieceLen = dataList.length / basic_size;
+                        if (pieceLen < 1) {
+                            pieceLen = 1;
+                        }
                         for (var c = 0; c < basic_size; c ++) {
                             var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
                             aux[c] = [piece.reduce(function (a, b) {
