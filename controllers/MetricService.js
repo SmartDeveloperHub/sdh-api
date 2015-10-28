@@ -154,23 +154,23 @@ exports.getMetric = function(mid, rid, uid, pid, prid, from, to, accumulated, ma
         callback(400);
         return;
     }
-    if (!sdhWrapper.sync_userExist(uid)) {
+    if (uidRequired && !sdhWrapper.sync_userExist(uid)) {
         console.error("UID not found: " + uid);
         callback(404);
         return;
     }
-    if (!sdhWrapper.sync_repoExist(rid)) {
+    if (ridRequired && !sdhWrapper.sync_repoExist(rid)) {
         console.error("RID not found: " + rid);
         callback(404);
         return;
     }
-    if (!sdhWrapper.sync_projectExist(pid)) {
-        console.error("PID not found: " + uid);
+    if (pidRequired && !sdhWrapper.sync_projectExist(pid)) {
+        console.error("PID not found: " + pid);
         callback(404);
         return;
     }
-    if (!sdhWrapper.sync_productExist(prid)) {
-        console.error("PRID not found: " + rid);
+    if (pridRequired && !sdhWrapper.sync_productExist(prid)) {
+        console.error("PRID not found: " + prid);
         callback(404);
         return;
     }
