@@ -28,7 +28,7 @@ exports.fakeProductsInfo = [
         "description" : "A product",
         "productid" : "1",
         "tags" :['SDH','green'],
-        "avatar": "http://ProjectAvatarURL",
+        "avatar": "assets/images/CytoChartDemo/rp1.png",
         "projects": [
 
         ]
@@ -38,7 +38,7 @@ exports.fakeProductsInfo = [
         "description" : "A product",
         "productid" : "2",
         "tags" :['SDH','red'],
-        "avatar": "http://ProjectAvatarURL",
+        "avatar": "assets/images/CytoChartDemo/bp2.png",
         "projects": [
 
         ]
@@ -48,7 +48,7 @@ exports.fakeProductsInfo = [
         "description" : "A product",
         "productid" : "3",
         "tags" :['SDH','blue'],
-        "avatar": "http://ProjectAvatarURL",
+        "avatar": "assets/images/CytoChartDemo/gp3.png",
         "projects": [
 
         ]
@@ -58,14 +58,27 @@ exports.fakeProductsInfo = [
         "description" : "A product",
         "productid" : "4",
         "tags" :['SDH','4'],
-        "avatar": "http://ProjectAvatarURL"
+        "avatar": "assets/images/CytoChartDemo/rp4.png",
+        "projects": [
+
+        ]
     },
     {
         "name" : "Product 5",
         "description" : "A product",
         "productid" : "5",
         "tags" :['SDH','5'],
-        "avatar": "http://ProjectAvatarURL",
+        "avatar": "assets/images/CytoChartDemo/rp5.gng",
+        "projects": [
+
+        ]
+    },
+    {
+        "name" : "Product 6",
+        "description" : "A product",
+        "productid" : "6",
+        "tags" :['SDH','6'],
+        "avatar": "assets/images/CytoChartDemo/bp6.gng",
         "projects": [
 
         ]
@@ -78,34 +91,41 @@ exports.productList = [
         "description" : "A product",
         "productid" : "1",
         "tags" :['SDH','1'],
-        "avatar": "http://ProjectAvatarURL"
+        "avatar": "assets/images/CytoChartDemo/rp1.png"
     },
     {
         "name" : "Product 2",
         "description" : "A product",
         "productid" : "2",
         "tags" :['SDH','2'],
-        "avatar": "http://ProjectAvatarURL"
+        "avatar": "assets/images/CytoChartDemo/bp2.png"
     },
     {
         "name" : "Product 3",
         "description" : "A product",
         "productid" : "3",
         "tags" :['SDH', "3"],
-        "avatar": "http://ProjectAvatarURL"
+        "avatar": "assets/images/CytoChartDemo/gp3.png"
     },
     {
         "name" : "Product 4",
         "description" : "A product",
         "productid" : "4",
         "tags" :['SDH','4'],
-        "avatar": "http://ProjectAvatarURL"
+        "avatar": "assets/images/CytoChartDemo/rp4.png"
     },
     {
         "name" : "Product 5",
         "description" : "A product",
         "productid" : "5",
         "tags" :['SDH','5'],
-        "avatar": "http://ProjectAvatarURL"
+        "avatar": "assets/images/CytoChartDemo/rp5.gng"
+    },
+    {
+        "name" : "Product 6",
+        "description" : "A product",
+        "productid" : "6",
+        "tags" :['SDH','6'],
+        "avatar": "assets/images/CytoChartDemo/bp6.gng",
     }
 ];
