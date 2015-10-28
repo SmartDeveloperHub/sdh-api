@@ -52,6 +52,23 @@ exports.fakeProductsInfo = [
         "projects": [
 
         ]
+    },
+    {
+        "name" : "Product 4",
+        "description" : "A product",
+        "productid" : "4",
+        "tags" :['SDH','4'],
+        "avatar": "http://ProjectAvatarURL"
+    },
+    {
+        "name" : "Product 5",
+        "description" : "A product",
+        "productid" : "5",
+        "tags" :['SDH','5'],
+        "avatar": "http://ProjectAvatarURL",
+        "projects": [
+
+        ]
     }
 ];
 
@@ -60,21 +77,35 @@ exports.productList = [
         "name" : "Product 1",
         "description" : "A product",
         "productid" : "1",
-        "tags" :['SDH','jordi','dark'],
+        "tags" :['SDH','1'],
         "avatar": "http://ProjectAvatarURL"
     },
     {
         "name" : "Product 2",
         "description" : "A product",
         "productid" : "2",
-        "tags" :['SDH','jordi','dark'],
+        "tags" :['SDH','2'],
         "avatar": "http://ProjectAvatarURL"
     },
     {
         "name" : "Product 3",
         "description" : "A product",
         "productid" : "3",
-        "tags" :['SDH','jordi','dark'],
+        "tags" :['SDH', "3"],
+        "avatar": "http://ProjectAvatarURL"
+    },
+    {
+        "name" : "Product 4",
+        "description" : "A product",
+        "productid" : "4",
+        "tags" :['SDH','4'],
+        "avatar": "http://ProjectAvatarURL"
+    },
+    {
+        "name" : "Product 5",
+        "description" : "A product",
+        "productid" : "5",
+        "tags" :['SDH','5'],
         "avatar": "http://ProjectAvatarURL"
     }
 ];
