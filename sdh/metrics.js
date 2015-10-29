@@ -322,7 +322,7 @@ exports.metrics = [
     {
         "id" : "reporeleasestatus",
         "title": "Project users",
-        "path" : "/metrics/productreleasestatus",
+        "path" : "/metrics/reporeleasestatus",
         "description" : "Product releases status [0..1]",
         "params": ['rid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
