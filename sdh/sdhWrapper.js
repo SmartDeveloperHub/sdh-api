@@ -941,7 +941,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                         }
                     }
                     // Random float
-                    if (http_path = "float") {
+                    if (http_path == "float") {
                         aux = [];
                         for (var g = 0; g < max; g++) {
                             aux.push(randomFloatFromInterval(0,1));
