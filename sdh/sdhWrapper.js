@@ -33,6 +33,16 @@ var randomIntFromInterval = function randomIntFromInterval(min,max) {
 };
 
 /**
+ * Generate random integer between two dates
+ * @param min {Number} First value
+ * @param max {Number} Last value
+ * @return {Number} Aleatory number between min and max
+ */
+var randomFloatFromInterval = function randomFloatFromInterval(min,max) {
+    return Math.random() * (max - min) + min;
+};
+
+/**
  * Parse MetricId to determinate aggregator, repo Id, user Id  and metric or tbd
  * @param realId {String} The metric or tbd id from SDH-Platform
  * @return {Object} with the next attributes: "realId", "id", "params" ,"type" and if is not a TBD "aggr"
@@ -788,6 +798,9 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
     var http_path;
     if (DUMMYDATA) {
         http_path = "progresiveRandom" + randomIntFromInterval(1,3);
+        if (mid == 'productreleasestatus') {
+            http_path = "float";
+        }
     } else {
         if (typeof metricUriById[mid] !== "undefined") {
             if (typeof metricUriById[mid][aggr] !== "undefined") {
@@ -831,7 +844,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (http_path !== "float" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
@@ -925,6 +938,13 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                             }
                             aux[i] = v;
                             modifier = randomIntFromInterval(-10, 15);
+                        }
+                    }
+                    // Random float
+                    if (http_path = "float") {
+                        aux = [];
+                        for (var g = 0; g < max; g++) {
+                            aux.push(randomFloatFromInterval(0,1));
                         }
                     }
                     data = {
