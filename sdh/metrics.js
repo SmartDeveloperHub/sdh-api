@@ -320,11 +320,11 @@ exports.metrics = [
     },
     /* millestone 2 demo */
     {
-        "id" : "productreleasestatus",
+        "id" : "reporeleasestatus",
         "title": "Project users",
         "path" : "/metrics/productreleasestatus",
         "description" : "Product releases status [0..1]",
-        "params": ['prid'],
+        "params": ['rid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     }
