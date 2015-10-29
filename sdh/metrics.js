@@ -317,5 +317,15 @@ exports.metrics = [
         "params": ['pid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
+    },
+    /* millestone 2 demo */
+    {
+        "id" : "productreleasestatus",
+        "title": "Project users",
+        "path" : "/metrics/productreleasestatus",
+        "description" : "Product releases status [0..1]",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
     }
 ];
