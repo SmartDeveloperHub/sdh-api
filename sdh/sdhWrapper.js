@@ -798,8 +798,9 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
     var http_path;
     if (DUMMYDATA) {
         http_path = "progresiveRandom" + randomIntFromInterval(1,3);
-        if (mid == 'productreleasestatus') {
-            http_path = "float";
+        if (mid == 'reporeleasestatus') {
+            //http_path = "float"; //simply random float number serie
+            http_path = "floatProg"; //progresive random float number serie
         }
     } else {
         if (typeof metricUriById[mid] !== "undefined") {
@@ -844,7 +845,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
         qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "float" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
@@ -946,6 +947,28 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                         for (var g = 0; g < max; g++) {
                             aux.push(randomFloatFromInterval(0,1));
                         }
+                    }
+                    // Progresive Random float
+                    if (http_path == "floatProg") {
+                        var values = [0];
+                        var changeDiff = 0.08;
+                        var change = changeDiff;
+                        for(var i = 1; i < max; i++) {
+
+                            if(change === 0 && Math.random() > 0.95) {
+                                if(values[i-1] === 0) {
+                                    change = changeDiff;
+                                } else {
+                                    change = -changeDiff;
+                                }
+                            }
+
+                            values[i] = Math.max(0, Math.min(values[i-1] + change, 1));
+                            if(values[i] === 0 || values[i] === 1) {
+                                change = 0;
+                            }
+                        }
+                        aux = values;
                     }
                     data = {
                         "context": {
