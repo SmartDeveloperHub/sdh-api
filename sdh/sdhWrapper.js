@@ -387,11 +387,19 @@ var getRepository = function getRepository(rid, retCallback) {
             '?s scm:firstCommit ?fc', '?s foaf:depiction ?de']
     };
     var frag;
-    sdhGate.get_fragment(p.patterns, function(f) {
-        // TODO control error
-        frag = f.fragment;
-        sdhGate.get_results_from_fragment(frag, q, retCallback);
-    });
+    try {
+        sdhGate.get_fragment(p.patterns, function(f) {
+            // TODO control error
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, retCallback);
+        });
+    } catch (err) {
+        console.log("ERROR in : sdhWrapper.getRepository " + err);
+        retCallback({
+            "status": "ERROR",
+            "results": err
+        });
+    }
 };
 
 /**
