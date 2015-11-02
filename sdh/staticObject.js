@@ -272,6 +272,7 @@ var parseUserTree = function parseUserTree (e) {
         return e;
     }
 };
+
 /**
  * Collect all projects info from SDH Platform
  * @param returnCallback
@@ -293,7 +294,36 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
                 returnCallback(parseProjectTree(e));
             });
         });*/
-        console.log("TODO we need projects!!!");
+        console.log("!! No real projects for staticObject.getProjectsInfo");
+        returnCallback(null);
+    } catch (err) {
+        console.log("ERROR in getProjectsInfo: " + err);
+        returnCallback(err);
+    }
+};
+
+/**
+ * Collect all products info from SDH Platform
+ * @param returnCallback
+ */
+var getProductsInfo = function getProductsInfo(returnCallback) {
+    // Query to get products's information
+    var q = '';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['']
+    };
+    var frag;
+    try {
+        /*sdhGate.get_fragment(p.patterns, function(f) {
+            // TODO control error
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, function(e) {
+                returnCallback(parseProjectTree(e));
+            });
+        });*/
+        console.log("!! No real Products for staticObject.getProductsInfo");
         returnCallback(null);
     } catch (err) {
         console.log("ERROR in getProjectsInfo: " + err);
