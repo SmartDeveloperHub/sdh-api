@@ -133,6 +133,24 @@ exports.metrics = [
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
+    {
+        "id" : "userproducts",
+        "title": "User products",
+        "path" : "/metrics/userproducts",
+        "description" : "Total user products",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "userusers",
+        "title": "User Users",
+        "path" : "/metrics/userusers",
+        "description" : "Total users under other user (director or product manager)",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
     // Repository Metrics
     {
         "id" : "repocommits",
