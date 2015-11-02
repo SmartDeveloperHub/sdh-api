@@ -22,6 +22,7 @@
 
 'use strict';
 
+var _organizations;
 var _projects;
 var _repositories;
 var _users;
@@ -32,6 +33,7 @@ var _usersById;
 var _repositoriesById;
 var _projectsById;
 var _productsById;
+var _organizationsById;
 
 /**
  * Parse project list to obtain easy access data structures
@@ -339,34 +341,44 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
  */
 var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
     if (DUMMYDATA) {
+        var theOrganizations = require("./fakeOrganizationsInfo");
         var theProjects = require("./fakeProjectsInfo");
         var theUsers = require("./fakeUsersInfo");
         var theRepos = require("./fakeRepositoriesInfo");
         var theProducts = require("./fakeProductsInfo");
         GLOBAL.usersByProjectUri = {};
+        GLOBAL.usersByProductUri = {};
         GLOBAL.usersByRepoUri = {};
         GLOBAL.projectUriById = {};
         GLOBAL.projectIdByUri = {};
+        GLOBAL.productUriById = {};
+        GLOBAL.productIdByUri = {};
         GLOBAL.usersByRepoUri = {};
         GLOBAL.userUriById = {};
         GLOBAL.userIdByUri = {};
         GLOBAL.repoUriById = {};
         GLOBAL.repoIdByUri = {};
         GLOBAL.reposByUserUri = {};
-        returnCallback(theProducts, theProjects, theRepos, theUsers);
+        returnCallback(theOrganizations, theProducts, theProjects, theRepos, theUsers);
         return;
     }
-    // Cascade. First step Repositories, second Users
-    getProjectsInfo(function(e){
-        //var resultProjects = parseProductList(e);
-        var resultProducts = require("./fakeProductsInfo");
-        //var resultProjects = parseProjectList(e);
-        var resultProjects = require("./fakeProjectsInfo");
-        getRepositoriesInfo(function(e){
-            var resultRepos = parseRepoList(e);
-            getUsersInfo(function(e) {
-                var resultUsers = parseUserList(e);
-                returnCallback(resultProducts, resultProjects, resultRepos, resultUsers);
+    // Cascade. First Organization, products, projects, repos and users
+    getOrganizationInfo(function(e) {
+        //var resultOrganizations = parseOrganizationList(e);
+        var resultOrganizations = require("./fakeOrganizationsInfo");
+        getProductsInfo(function (e) {
+            //var resultProjducts = parseProductList(e);
+            var resultProducts = require("./fakeProductsInfo");
+            getProjectsInfo(function (e) {
+                //var resultProjects = parseProjectList(e);
+                var resultProjects = require("./fakeProjectsInfo");
+                getRepositoriesInfo(function (e) {
+                    var resultRepos = parseRepoList(e);
+                    getUsersInfo(function (e) {
+                        var resultUsers = parseUserList(e);
+                        returnCallback(resultOrganizations, resultProducts, resultProjects, resultRepos, resultUsers);
+                    });
+                });
             });
         });
     });
