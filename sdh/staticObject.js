@@ -401,11 +401,12 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
 };
 
 /**
- * Collect all repositories/users information from SDH Platform and generate
- * accessible data structures to easy use from API controllers
+ * Collect all organization/products/projects/repositories/users
+ * information from SDH Platform and generate accessible data
+ * structures to easy use from API controllers
  * @param returnCallback
  */
-var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
+var getStaticStructures = function getStaticStructures(returnCallback) {
     if (DUMMYDATA) {
         var theOrganizations = require("./fakeOrganizationsInfo");
         var theProjects = require("./fakeProjectsInfo");
@@ -459,7 +460,8 @@ var getStaticUsersRepos = function getStaticUsersRepos(returnCallback) {
  * @param callback
  */
 module.exports.preloadAll = function preloadAll (callback) {
-    var nextStep = function (prod, proj, reps, usrs) {
+    var nextStep = function (orgs, prod, proj, reps, usrs) {
+        _organizations = orgs;
         _projects = proj;
         _repositories = reps;
         _users = usrs;
@@ -469,6 +471,7 @@ module.exports.preloadAll = function preloadAll (callback) {
         _repositoriesById = {};
         _projectsById = {};
         _productsById = {};
+        _organizationsById = {};
 
         // Static data structures generation
         for (var i = 0; i < _users.userList.length; i++) {
@@ -483,17 +486,41 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < _products.productList.length; i++) {
             _productsById[_products.productList[i].productid] = _products.productList[i];
         }
+        for (var i = 0; i < _organizations.organizationsList.length; i++) {
+            _organizationsById[_organizations.organizationsList[i].organizationid] = _organizations.organizationsList[i];
+        }
         // Make global all this methods for param validation
+        GLOBAL.organizations = this.getOrganizations();
+        GLOBAL.products = this.getProducts();
         GLOBAL.projects = this.getProjects();
         GLOBAL.repositories = this.getRepositories();
         GLOBAL.users = this.getUsers();
-        GLOBAL.projectsById = this.getProjectsById();
+        GLOBAL.organizationsById = this.getOrganizationsById();
         GLOBAL.productsById = this.getProductsById();
+        GLOBAL.projectsById = this.getProjectsById();
         GLOBAL.usersById = this.getUsersById();
         GLOBAL.repositoriesById = this.getRepositoriesById();
         callback();
     }.bind(this);
-    getStaticUsersRepos(nextStep);
+    getStaticStructures(nextStep);
+};
+
+/**
+ * Get the organizations list
+ * @return {Array}
+ */
+module.exports.getOrganizations = function getOrganizations () {
+
+  return _organizations.organizationsList;
+};
+
+/**
+ * Get the products list
+ * @return {Array}
+ */
+module.exports.getProducts = function getProducts () {
+
+  return _products.productList;
 };
 
 /**
@@ -524,12 +551,12 @@ module.exports.getUsers = function getUsers () {
 };
 
 /**
- * Get Projects by ID
- * @return {Object}
+ * Get the organizations list
+ * @return {Array}
  */
-module.exports.getProjectsById = function getProjectsById () {
+module.exports.getOrganizationsById = function getOrganizationsById () {
 
-  return _projectsById;
+  return _organizationsById;
 };
 
 /**
@@ -539,6 +566,15 @@ module.exports.getProjectsById = function getProjectsById () {
 module.exports.getProductsById = function getProductsById () {
 
   return _productsById;
+};
+
+/**
+ * Get Projects by ID
+ * @return {Object}
+ */
+module.exports.getProjectsById = function getProjectsById () {
+
+  return _projectsById;
 };
 
 /**
