@@ -108,7 +108,7 @@ exports.fakeRepositoriesInfo = [
         ]
     },
     {
-        "name" : "TETA log",
+        "name" : "THETA log",
         "description" : "A repository",
         "repositoryid" : "3",
         "lastcommit" : 1430431200000,
@@ -534,7 +534,7 @@ exports.repositoryList = [
         ]
     },
     {
-        "name" : "TETA log",
+        "name" : "THETA log",
         "description" : "A repository",
         "repositoryid" : "3",
         "tags" :['web','blue','bad'],
