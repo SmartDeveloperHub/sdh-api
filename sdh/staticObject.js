@@ -72,6 +72,42 @@ var parseProjectList = function parseProjectList(data) {
 };
 
 /**
+ * Parse product list to obtain easy access data structures
+ * @param data Object with the project list
+ * @returns {Array} Contains objects with 'productid' {Number}, 'name' {String},
+ * 'description' {String}, 'tags' {Array}, 'avatar' {Url}.
+ */
+var parseProductList = function parseProductList(data) {
+    //TODO
+    var resF = {'productList': []};
+    var res = resF.productList;
+    var rbyid = {};
+    var ridbyuri = {};
+    var id;
+    for (var key in data.results) {
+        var attrObject = data.results[key][0];
+        var tagList = [];
+        if (typeof attrObject["tags"] === 'string') {
+            tagList = attrObject["tags"].value.split(',');
+        }
+        var newAt = {
+            "productid": attrObject["id"].value,
+            "name": attrObject["name"].value,
+            "description": "",
+            "tags": tagList,
+            "avatar": attrObject["avatar"].value
+        };
+        id = newAt.productid;
+        rbyid[id] = key;
+        ridbyuri[key] = id;
+        res.push(newAt);
+    }
+    GLOBAL.productUriById = rbyid;
+    GLOBAL.productIdByUri = ridbyuri;
+    return resF;
+};
+
+/**
  * Parse repository list to obtain easy access data structures
  * @param data Object with the repository list
  * @returns {Array} Contains objects with 'repositoryid' {Number}, 'name' {String},
