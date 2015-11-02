@@ -792,10 +792,17 @@ exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
  * @param returnCallback
  */
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
-    getRepository(rid, function(e) {
-        var resultRepo = parseRepositoryInfo(e);
-        returnCallback(resultRepo);
-    });
+    if (DUMMYDATA) {
+        returnCallback(repositoriesById[rid]);
+    } else {
+        getRepository(rid, function (e) {
+            var resultRepo = e;
+            if (e.status == 'OK') {
+                resultRepo = parseRepositoryInfo(e);
+            }
+            returnCallback(resultRepo);
+        });
+    }
 };
 
 /**
@@ -804,14 +811,14 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
  * @param returnCallback
  */
 exports.getUserInfo = function getUserInfo(uid, returnCallback) {
-    console.log("..sdhWrapper.getUserInfo " + uid + "start");
-    getUser(uid, function(e) {
-        console.log("...sdhWrapper.getUserInfo-Callback getUser " + uid + "start");
-        var resultUser = parseUserInfo(e);
-        returnCallback(resultUser);
-        console.log("...sdhWrapper.getUserInfo-Callback getUser " + uid + "end");
-    });
-    console.log("..sdhWrapper.getUserInfo " + uid + "end");
+    if (DUMMYDATA) {
+        returnCallback(usersById[uid]);
+    }else {
+        getUser(uid, function (e) {
+            var resultUser = parseUserInfo(e);
+            returnCallback(resultUser);
+        });
+    }
 };
 
 /**
