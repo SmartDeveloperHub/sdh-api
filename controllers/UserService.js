@@ -56,7 +56,9 @@ exports.userInfo = function(uid, callback) {
         return;
     }
     sdhWrapper.getUserInfo(uid, function(e) {
-        e.repositories = _user['rep'];
+        if (e) {
+            e.repositories = _user['rep'];
+        }
         callback(e);
     });
 };

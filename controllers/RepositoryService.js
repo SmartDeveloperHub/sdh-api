@@ -54,7 +54,9 @@ exports.repositoryInfo = function(rid, callback) {
         return;
     }
     sdhWrapper.getRepositoryInfo(rid, function(e) {
-        e.users = _rep['users'];
+        if (e) {
+            e.users = _rep['users'];
+        }
         callback(e);
     });
 };

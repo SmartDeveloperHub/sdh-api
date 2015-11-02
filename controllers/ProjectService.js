@@ -55,7 +55,9 @@ exports.projectInfo = function(pid, callback) {
         return;
     }
     sdhWrapper.getProjectInfo(pid, function(e) {
-        e.users = _proj['users'];
+        if (e) {
+            e.users = _proj['users'];
+        }
         callback(e);
     });
 };
