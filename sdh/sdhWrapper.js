@@ -467,6 +467,109 @@ var parseProductInfo = function parseProductInfo(data) {
     }
     return theProduct;
 };
+
+/**
+ * Get Specific Project Information from SDH Platform
+ * @param pid {Number} project ID
+ * @param retCallback
+ */
+var getProject = function getProject(pid, retCallback) {
+    // Query to get project's information
+    var q = '';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['']
+    };
+    var frag;
+
+    try {
+        // TODO
+        /*sdhGate.get_fragment(p.patterns, function(f) {
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, retCallback);
+        });*/
+        console.log("no real product for sdhWrapper.getProjectInfo " + pid);
+        retCallback({
+            "status": "NOIMPLEMENTED",
+            "results": null
+        });
+    } catch (err) {
+        console.log("ERROR in : sdhWrapper.getProject " + err);
+        retCallback({
+            "status": "ERROR",
+            "results": err
+        });
+    }
+};
+
+/**
+ * Parse Project tree
+ * @param e Object with the Project tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
+var parseProjectTree = function parseProjectTree (e) {
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        for (var i = 0; i < r.length; i++) {
+            /*if(typeof re[r[i].s.value] === 'undefined') {
+                re[r[i].s.value] = {};
+            }
+            var v = {};
+            re[r[i].s.value][r[i].p.value] = r[i].o.value;*/
+        }
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
+};
+
+/**
+ * Parse Project information
+ * @param data {Object} Project tree.
+ * @returns {Object} With the next attributes:
+ * 'TODO' {todoType},
+ */
+var parseProjectInfo = function parseProjectInfo(data) {
+    var res = [];
+    var parsedTree = parseProjectTree(data);
+    if (parsedTree.status === 'OK') {
+        for (var key in parsedTree.results) {
+            var ProjectUri = key;
+            var ProjectAtts = parsedTree.results[key];
+            break;
+        }
+        var tagList = [];
+        if (typeof ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
+            tagList = ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
+        }
+        var theProject = {
+            "repositoryid": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/--#projectId"],
+            "name": ProjectAtts["http://usefulinc.com/ns/doap#name"],
+            "description": ProjectAtts["http://usefulinc.com/ns/doap#description"],
+            "tags": tagList,
+            "avatar": repositoriesById[ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/--#projectId"]].avatar, //TODO
+            "archived": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
+            "public": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
+            "owner": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
+            "creation": moment(ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"]).valueOf(),
+            "firstCommit": moment(ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"]).valueOf(),
+            "lastCommit": moment(ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"]).valueOf(),
+            "scmlink": ProjectAtts["http://usefulinc.com/ns/doap#location"],
+            "buildStatus": Math.random() >= 0.5, // Random Bool TODO
+            "buildDate": "OK", // TODO
+            "users": []
+        };
+    }
+    return theProject;
+};
+
+/**
  * Get Specific Repository Information from SDH Platform
  * @param rid {Number} repository ID
  * @param retCallback
