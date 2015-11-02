@@ -368,6 +368,105 @@ var getTbdList = function getTbdList(returnCallback) {
 };
 
 /**
+ * Get Specific Product Information from SDH Platform
+ * @param prid {Number} product ID
+ * @param retCallback
+ */
+var getProduct = function getProduct(prid, retCallback) {
+    // Query to get products's information
+    var q = '';
+
+    var p = {
+        "status": "OK",
+        "patterns": ['']
+    };
+    var frag;
+
+    try {
+        // TODO
+        /*sdhGate.get_fragment(p.patterns, function(f) {
+            frag = f.fragment;
+            sdhGate.get_results_from_fragment(frag, q, retCallback);
+        });*/
+        console.log("no real product for sdhWrapper.getProductInfo " + prid);
+        retCallback({
+            "status": "NOIMPLEMENTED",
+            "results": null
+        });
+    } catch (err) {
+        console.log("ERROR in : sdhWrapper.getProduct " + err);
+        retCallback({
+            "status": "ERROR",
+            "results": err
+        });
+    }
+};
+
+/**
+ * Parse Product tree
+ * @param e Object with the Product tree
+ * @returns {Object} Contains 'status' {string} and 'results' {Object}.
+ */
+var parseProductTree = function parseProductTree (e) {
+    if (e.status === 'OK') {
+        var r = e.results;
+        var re = {};
+        for (var i = 0; i < r.length; i++) {
+            /*if(typeof re[r[i].s.value] === 'undefined') {
+                re[r[i].s.value] = {};
+            }
+            var v = {};
+            re[r[i].s.value][r[i].p.value] = r[i].o.value;*/
+        }
+        return {
+            "status": "OK",
+            "results": re
+        };
+    }
+    else {
+        return e;
+    }
+};
+
+/**
+ * Parse Product information
+ * @param data {Object} Product tree.
+ * @returns {Object} With the next attributes:
+ * 'TODO' {todoType},
+ */
+var parseProductInfo = function parseProductInfo(data) {
+    var res = [];
+    var parsedTree = parseProductTree(data);
+    if (parsedTree.status === 'OK') {
+        for (var key in parsedTree.results) {
+            var productUri = key;
+            var productAtts = parsedTree.results[key];
+            break;
+        }
+        var tagList = [];
+        if (typeof productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
+            tagList = productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
+        }
+        var theProduct = {
+            "repositoryid": productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"],
+            "name": productAtts["http://usefulinc.com/ns/doap#name"],
+            "description": productAtts["http://usefulinc.com/ns/doap#description"],
+            "tags": tagList,
+            "avatar": repositoriesById[productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"]].avatar, //TODO
+            "archived": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
+            "public": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
+            "owner": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
+            "creation": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"]).valueOf(),
+            "firstCommit": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"]).valueOf(),
+            "lastCommit": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"]).valueOf(),
+            "scmlink": productAtts["http://usefulinc.com/ns/doap#location"],
+            "buildStatus": Math.random() >= 0.5, // Random Bool TODO
+            "buildDate": "OK", // TODO
+            "users": []
+        };
+    }
+    return theProduct;
+};
  * Get Specific Repository Information from SDH Platform
  * @param rid {Number} repository ID
  * @param retCallback
@@ -645,6 +744,44 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
         getMetricList(function (newMetrics) {
             GLOBAL.metrics = newMetrics.results;
             callback();
+        });
+    }
+};
+
+/**
+ * Get specific product information
+ * @param prid {Object} Product Id.
+ * @param returnCallback
+ */
+exports.getProductInfo = function getProductInfo(prid, returnCallback) {
+    if (DUMMYDATA) {
+        returnCallback(productsById[prid]);
+    } else {
+        getProduct(prid, function (e) {
+            var resultProduct = e;
+            if (e.status == 'OK') {
+                resultProduct = parseProductInfo(e);
+            }
+            returnCallback(resultProduct);
+        });
+    }
+};
+
+/**
+ * Get specific project information
+ * @param pid {Object} Project Id.
+ * @param returnCallback
+ */
+exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
+    if (DUMMYDATA) {
+        returnCallback(projectsById[pid]);
+    } else {
+        getProject(pid, function (e) {
+            var resultProject = e;
+            if (e.status == 'OK') {
+                resultProject = parseProjectInfo(e);
+            }
+            returnCallback(resultProject);
         });
     }
 };
