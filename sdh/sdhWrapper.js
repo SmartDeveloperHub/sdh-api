@@ -1090,7 +1090,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             qpObject['begin'] = from / 1000;
         }
         if(to !== null) {
-            qpObject['end'] = to / 1000;
+            qpObject['end'] = to / 1000 + 86399;
         }
         if(accumulated !== null) {
             qpObject['accumulated'] = accumulated;
