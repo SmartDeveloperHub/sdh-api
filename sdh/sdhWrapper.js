@@ -1123,11 +1123,13 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                         console.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
                         data = response.statusCode;
                     }
+                    console.log('real metric: ' + mid);
                     callback(data);
                 }
             });
         } else {
             // Fake metric
+            console.log('this metric is not real: ' + mid);
             // we need from and to values...
             var d;
             var auxurl = "http://138.4.249.224:9001/metrics/scm/total-commits";
@@ -1147,105 +1149,95 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                 },
                 qs: qpObject
             };
-            request(options, function (error, response, body) {
 
-                if (response.statusCode === 200) {
-                    d = JSON.parse(body);
-                    var basic_from = d.context.data_begin;
-                    var basic_to = d.context.data_end;
-                    var basic_step = d.context.step;
-                    var basic_size = d.context.size;
-                    var timestamp = d.context.timestamp;
+            // TODO Fake metrics
+            var dataList = [];
+            var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
+            var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78, 80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
+            var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
+            var modifier = randomIntFromInterval(-10, 15);
+            var aux = [];
 
-                    // TODO Fake metrics
-                    var dataList = [];
-                    var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
-                    var dataListDown = [80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78, 80, 70, 76, 73, 71, 68, 67, 67, 70, 65, 67, 70, 76, 73, 71, 68, 67, 67, 70, 65, 60, 58, 57, 60, 66, 69, 70, 75, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 77, 78, 79, 79, 76, 70, 69, 70, 72, 74, 76, 78, 75, 74, 75, 76, 80, 84, 89, 86, 82, 81, 79, 78, 77, 74, 75, 74, 77, 78];
-                    var dataListmid = [65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70, 65, 60, 58, 57, 54, 57, 60, 50, 40, 35, 40, 40, 43, 45, 47, 49, 51, 54, 57, 60, 62, 62, 63, 64, 65, 66 ,67, 68, 69, 70, 72, 75, 79, 80, 72, 71, 70, 71, 72, 73, 74, 75, 77, 75, 73, 75, 72, 73, 74, 70, 70, 70, 67, 67, 66, 62, 63, 64, 65, 66 ,67, 68, 69, 72, 75, 79, 75, 75, 75, 72, 70];
-                    var modifier = randomIntFromInterval(-10, 15);
-                    var aux = [];
+            if (http_path == "progresiveRandom1") {
+                dataList = dataListUp;
+            } else if (http_path == "progresiveRandom2") {
+                dataList = dataListDown;
+            } else if (http_path == "progresiveRandom3") {
+                dataList = dataListmid;
+            }
+            if(max == 0) {
+                max = 40;
+            }
+            var basic_from = 1432936800;
+            var basic_to = 1446678000;
+            var basic_step = (basic_to - basic_from) / max;
+            var basic_size = max;
+            var timestamp = new Date().getTime();
 
-                    if (http_path == "progresiveRandom1") {
-                        dataList = dataListUp;
-                    } else if (http_path == "progresiveRandom2") {
-                        dataList = dataListDown;
-                    } else if (http_path == "progresiveRandom3") {
-                        dataList = dataListmid;
-                    }
-                    if(max == 0) {
-                        max = 40;
-                    }
-                    if (aggr == "avg") {
-                        var pieceLen = dataList.length / basic_size;
-                        if (pieceLen < 1) {
-                            pieceLen = 1;
-                        }
-                        for (var c = 0; c < basic_size; c ++) {
-                            var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
-                            aux[c] = [piece.reduce(function (a, b) {
-                                return a + b;
-                            }) / piece.length];
-                        }
-                    } else {
-                        for (var i = 0; i < basic_size; i++) {
-                            var v = dataList[i] + modifier;
-                            if (v > 99) {
-                                v = 97;
-                            }
-                            aux[i] = v;
-                            modifier = randomIntFromInterval(-10, 15);
-                        }
-                    }
-                    // Random float
-                    if (http_path == "float") {
-                        aux = [];
-                        for (var g = 0; g < max; g++) {
-                            aux.push(randomFloatFromInterval(0,1));
-                        }
-                    }
-                    // Progresive Random float
-                    if (http_path == "floatProg") {
-                        var values = [0];
-                        var changeDiff = 0.30;
-                        var change = changeDiff;
-                        for(var i = 1; i < max; i++) {
-
-                            if(change === 0 && Math.random() > 0.75) {
-                                if(values[i-1] === 0) {
-                                    change = changeDiff;
-                                } else {
-                                    change = -changeDiff;
-                                }
-                            }
-
-                            values[i] = Math.max(0, Math.min(values[i-1] + change, 1));
-                            if(values[i] === 0 || values[i] === 1) {
-                                change = 0;
-                            }
-                        }
-                        aux = values;
-                    }
-                    data = {
-                        "context": {
-                            "begin": basic_from,
-                            "end": basic_to,
-                            "data_begin": basic_from,
-                            "data_end": basic_to ,
-                            "step": basic_step,
-                            "max": basic_step,
-                            "size": basic_size,
-                            "timestamp": timestamp
-                        },
-                        "result": aux
-                    };
-
+            if (aggr == "avg") {
+                var pieceLen = dataList.length / basic_size;
+                if (pieceLen < 1) {
+                    pieceLen = 1;
                 }
-                else {
-                    console.warn('error getting user commits to get from/to dates and use it in fake metrics');
-                    data = response.statusCode;
+                for (var c = 0; c < basic_size; c ++) {
+                    var piece = dataList.slice(c*pieceLen, c*pieceLen + pieceLen);
+                    aux[c] = [piece.reduce(function (a, b) {
+                        return a + b;
+                    }) / piece.length];
                 }
-                callback(data);
-            });
+            } else {
+                for (var i = 0; i < basic_size; i++) {
+                    var v = dataList[i] + modifier;
+                    if (v > 99) {
+                        v = 97;
+                    }
+                    aux[i] = v;
+                    modifier = randomIntFromInterval(-10, 15);
+                }
+            }
+            // Random float
+            if (http_path == "float") {
+                aux = [];
+                for (var g = 0; g < max; g++) {
+                    aux.push(randomFloatFromInterval(0,1));
+                }
+            }
+            // Progresive Random float
+            if (http_path == "floatProg") {
+                var values = [0];
+                var changeDiff = 0.30;
+                var change = changeDiff;
+                for(var i = 1; i < max; i++) {
+
+                    if(change === 0 && Math.random() > 0.75) {
+                        if(values[i-1] === 0) {
+                            change = changeDiff;
+                        } else {
+                            change = -changeDiff;
+                        }
+                    }
+
+                    values[i] = Math.max(0, Math.min(values[i-1] + change, 1));
+                    if(values[i] === 0 || values[i] === 1) {
+                        change = 0;
+                    }
+                }
+                aux = values;
+            }
+            data = {
+                "context": {
+                    "begin": basic_from,
+                    "end": basic_to,
+                    "data_begin": basic_from,
+                    "data_end": basic_to ,
+                    "step": basic_step,
+                    "max": basic_step,
+                    "size": basic_size,
+                    "timestamp": timestamp
+                },
+                "result": aux
+            };
+            callback(data);
         }
     }
     catch (err) {
