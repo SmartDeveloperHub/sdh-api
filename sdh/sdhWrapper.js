@@ -1168,8 +1168,15 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             if(max == 0) {
                 max = 40;
             }
-            var basic_from = 1432936800;
-            var basic_to = 1446678000;
+            var basic_from = 1432936800000;
+            var basic_to = new Date().getTime();
+            if(from !== null) {
+                basic_from = from;
+            }
+            if(to !== null) {
+                basic_to = to + 86399;
+            }
+
             var basic_step = (basic_to - basic_from) / max;
             var basic_size = max;
             var timestamp = new Date().getTime();
@@ -1226,12 +1233,12 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             }
             data = {
                 "context": {
-                    "begin": basic_from,
-                    "end": basic_to,
-                    "data_begin": basic_from,
-                    "data_end": basic_to ,
-                    "step": basic_step,
-                    "max": basic_step,
+                    "begin": basic_from / 1000,
+                    "end": basic_to / 1000,
+                    "data_begin": basic_from / 1000,
+                    "data_end": basic_to / 1000,
+                    "step": basic_step / 1000,
+                    "max": max,
                     "size": basic_size,
                     "timestamp": timestamp
                 },
