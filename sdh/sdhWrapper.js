@@ -1053,7 +1053,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
     var http_path;
     if (DUMMYDATA) {
         http_path = "progresiveRandom" + randomIntFromInterval(1,3);
-        if (mid == 'reporeleasestatus') {
+        if (mid == 'reporeleasestatus' || mid == 'productreleasestatus' || mid == 'projectreleasestatus') {
             //http_path = "float"; //simply random float number serie
             http_path = "floatProg"; //progresive random float number serie
         }

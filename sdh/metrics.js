@@ -339,10 +339,127 @@ exports.metrics = [
     /* millestone 2 demo */
     {
         "id" : "reporeleasestatus",
-        "title": "Project users",
+        "title": "Repository releases status",
         "path" : "/metrics/reporeleasestatus",
-        "description" : "Product releases status [0..1]",
+        "description" : "Repository releases status [0..1]",
         "params": ['rid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productreleasestatus",
+        "title": "Product releases status",
+        "path" : "/metrics/productreleasestatus",
+        "description" : "Product releases status [0..1]",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "projectreleasestatus",
+        "title": "Project releases status",
+        "path" : "/metrics/projectreleasestatus",
+        "description" : "Project releases status [0..1]",
+        "params": ['pid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productactivity",
+        "title": "Product activity",
+        "path" : "/metrics/productactivity",
+        "description" : "Product activity",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productcost",
+        "title": "Product cost",
+        "path" : "/metrics/productcost",
+        "description" : "Product cost",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productmembers",
+        "title": "Product members",
+        "path" : "/metrics/productmembers",
+        "description" : "Product members",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "producthealth",
+        "title": "Product health",
+        "path" : "/metrics/producthealth",
+        "description" : "Product health",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productquality",
+        "title": "Product quality",
+        "path" : "/metrics/productquality",
+        "description" : "Product quality",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "producttimetomarket",
+        "title": "Product time to market",
+        "path" : "/metrics/producttimetomarket",
+        "description" : "Product time to market",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productreleases",
+        "title": "Product releases",
+        "path" : "/metrics/productreleases",
+        "description" : "Product releases",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "directormanagers",
+        "title": "director Managers",
+        "path" : "/metrics/directormanagers",
+        "description" : "director Managers",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "directormanagers",
+        "title": "director managers",
+        "path" : "/metrics/directormanagers",
+        "description" : "director managers",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+        {
+        "id" : "directorarchitects",
+        "title": "Director architects",
+        "path" : "/metrics/directorarchitects",
+        "description" : "Director architects",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "directordevelopers",
+        "title": "Director developers",
+        "path" : "/metrics/directordevelopers",
+        "description" : "Director developers",
+        "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     }
