@@ -184,7 +184,7 @@
                 }
             }
         },
-        "/product/": {
+        "/products/": {
             "get": {
                 "x-swagger-router-controller": "Product",
                 "tags": [
@@ -205,7 +205,7 @@
                 }
             }
         },
-        "/product/{prid}": {
+        "/products/{prid}": {
             "get": {
                 "x-swagger-router-controller": "Product",
                 "tags": [
@@ -235,7 +235,7 @@
                 }
             }
         },
-        "/project/": {
+        "/projects/": {
             "get": {
                 "x-swagger-router-controller": "Project",
                 "tags": [
@@ -256,7 +256,7 @@
                 }
             }
         },
-        "/project/{pid}": {
+        "/projects/{pid}": {
             "get": {
                 "x-swagger-router-controller": "Project",
                 "tags": [
