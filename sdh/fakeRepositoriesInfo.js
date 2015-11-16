@@ -466,7 +466,7 @@ exports.repositoryList = [
         "description" : "A repository",
         "repositoryid" : "1",
         "tags" :['framework','hack','dark'],
-        "avatar": "http://www.limecreativelabs.com/wp-content/uploads/et_temp/maven-para-android-16746_200x200.png",
+        "avatar": "http://www.limecreativelabs.com/wp-content/uploads/et_temp/google-analytics-app-android-9025_200x200.png",
         "archived" : true,
         "public" : true,
         "owner" : '1',
