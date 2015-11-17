@@ -26,7 +26,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
-        "userid" : "1",
+        "userid" : "1001",
         "avatar": "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
@@ -36,7 +36,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
-        "userid" : "2",
+        "userid" : "1002",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
@@ -46,7 +46,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
-        "userid" : "3",
+        "userid" : "1003",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
@@ -56,7 +56,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Michael Frost",
         "email" : "mfrost@organization.com",
-        "userid" : "4",
+        "userid" : "1004",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -65,7 +65,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Violet Hamilton",
         "email" : "hamilton@organization.com",
-        "userid" : "5",
+        "userid" : "1005",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -74,7 +74,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Elizabeth Moss",
         "email" : "elimos@organization.com",
-        "userid" : "6",
+        "userid" : "1006",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -83,7 +83,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Lucy Bacon",
         "email" : "lubacon@organization.com",
-        "userid" : "7",
+        "userid" : "1007",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -92,7 +92,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Oliver Bogart",
         "email" : "oli@organization.com",
-        "userid" : "8",
+        "userid" : "1008",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -101,7 +101,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Perry Drake",
         "email" : "perry@organization.com",
-        "userid" : "9",
+        "userid" : "1009",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -110,7 +110,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Noah Thomas",
         "email" : "noaht@organization.com",
-        "userid" : "10",
+        "userid" : "1010",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -119,7 +119,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Elizabeth William",
         "email" : "elwil@organization.com",
-        "userid" : "11",
+        "userid" : "1011",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -128,7 +128,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Ashley Capri",
         "email" : "capri@organization.com",
-        "userid" : "12",
+        "userid" : "1012",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -137,7 +137,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Carrie Ann Baker",
         "email" : "cbaker@organization.com",
-        "userid" : "13",
+        "userid" : "1013",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -146,7 +146,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Alicia Romero",
         "email" : "alirom@organization.com",
-        "userid" : "14",
+        "userid" : "1014",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -155,7 +155,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Philip Jones",
         "email" : "pjones@organization.com",
-        "userid" : "15",
+        "userid" : "1015",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -164,7 +164,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Geena Blanco",
         "email" : "geenablanco@organization.com",
-        "userid" : "16",
+        "userid" : "1016",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -173,7 +173,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Omar Graham",
         "email" : "omar@organization.com",
-        "userid" : "17",
+        "userid" : "1017",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -182,7 +182,7 @@ exports.fakeUsersInfo = [
     {
         "name" : "Daniel Red",
         "email" : "redme@organization.com",
-        "userid" : "18",
+        "userid" : "1018",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -194,109 +194,109 @@ exports.userList = [
     {
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
-        "userid" : "1",
+        "userid" : "1001",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
-        "userid" : "2",
+        "userid" : "1002",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
-        "userid" : "3",
+        "userid" : "1003",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Michael Frost",
         "email" : "mfrost@organization.com",
-        "userid" : "4",
+        "userid" : "1004",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Violet Hamilton",
         "email" : "hamilton@organization.com",
-        "userid" : "5",
+        "userid" : "1005",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Elizabeth Moss",
         "email" : "elimos@organization.com",
-        "userid" : "6",
+        "userid" : "1006",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Lucy Bacon",
         "email" : "lubacon@organization.com",
-        "userid" : "7",
+        "userid" : "1007",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Oliver Bogart",
         "email" : "oli@organization.com",
-        "userid" : "8",
+        "userid" : "1008",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Perry Drake",
         "email" : "perry@organization.com",
-        "userid" : "9",
+        "userid" : "1009",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Noah Thomas",
         "email" : "noaht@organization.com",
-        "userid" : "10",
+        "userid" : "1010",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Elizabeth William",
         "email" : "elwil@organization.com",
-        "userid" : "11",
+        "userid" : "1011",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Ashley Capri",
         "email" : "capri@organization.com",
-        "userid" : "12",
+        "userid" : "1012",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Carrie Ann Baker",
         "email" : "cbaker@organization.com",
-        "userid" : "13",
+        "userid" : "1013",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Alicia Romero",
         "email" : "alirom@organization.com",
-        "userid" : "14",
+        "userid" : "1014",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Philip Jones",
         "email" : "pjones@organization.com",
-        "userid" : "15",
+        "userid" : "1015",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Geena Blanco",
         "email" : "geenablanco@organization.com",
-        "userid" : "16",
+        "userid" : "1016",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Omar Graham",
         "email" : "omar@organization.com",
-        "userid" : "17",
+        "userid" : "1017",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     },
     {
         "name" : "Daniel Red",
         "email" : "redme@organization.com",
-        "userid" : "18",
+        "userid" : "1018",
         "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
     }
 ];
