@@ -374,11 +374,11 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
-        "id" : "userproductactivity",
-        "title": "User product activity",
-        "path" : "/metrics/userproductactivity",
-        "description" : "User product activity",
-        "params": ['prid'],
+        "id" : "userproductsactivity",
+        "title": "User products activity",
+        "path" : "/metrics/userproductsactivity",
+        "description" : "User products activity",
+        "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -410,11 +410,11 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
-        "id" : "userproducthealth",
-        "title": "User poduct health",
-        "path" : "/metrics/userproducthealth",
-        "description" : "User poduct health",
-        "params": ['uid', 'prid'],
+        "id" : "userproductshealth",
+        "title": "User products health",
+        "path" : "/metrics/userproductshealth",
+        "description" : "User products health",
+        "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -428,11 +428,11 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
-        "id" : "userproductquality",
+        "id" : "userproductsquality",
         "title": "User products quality",
-        "path" : "/metrics/userproductquality",
+        "path" : "/metrics/userproductsquality",
         "description" : "User products quality",
-        "params": ['uid', 'prid'],
+        "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -446,11 +446,11 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
-        "id" : "userproducttimetomarket",
+        "id" : "userproductstimetomarket",
         "title": "User Products time to market",
-        "path" : "/metrics/userproducttimetomarket",
+        "path" : "/metrics/userproductstimetomarket",
         "description" : "User Products time to market",
-        "params": ['uid', 'prid'],
+        "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -473,11 +473,11 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
-        "id" : "userproductpopularity",
-        "title": "User product pularity",
-        "path" : "/metrics/userproductpopularity",
-        "description" : "User product pularity",
-        "params": ['uid', 'prid'],
+        "id" : "userproductspopularity",
+        "title": "User products pularity",
+        "path" : "/metrics/userproductspopularity",
+        "description" : "User products pularity",
+        "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
