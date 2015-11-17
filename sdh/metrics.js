@@ -499,7 +499,7 @@ exports.metrics = [
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
-        {
+    {
         "id" : "directorarchitects",
         "title": "Director architects",
         "path" : "/metrics/directorarchitects",

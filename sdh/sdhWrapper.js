@@ -1211,7 +1211,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             }
             // Progresive Random float
             if (http_path == "floatProg") {
-                var values = [0];
+                var values = [randomFloatFromInterval(0,1)];
                 var changeDiff = 0.30;
                 var change = changeDiff;
                 for(var i = 1; i < max; i++) {
