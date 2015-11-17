@@ -374,6 +374,15 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
+        "id" : "userproductactivity",
+        "title": "User product activity",
+        "path" : "/metrics/userproductactivity",
+        "description" : "User product activity",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
         "id" : "productcost",
         "title": "Product cost",
         "path" : "/metrics/productcost",
@@ -401,11 +410,29 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
+        "id" : "userproducthealth",
+        "title": "User poduct health",
+        "path" : "/metrics/userproducthealth",
+        "description" : "User poduct health",
+        "params": ['uid', 'prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
         "id" : "productquality",
         "title": "Product quality",
         "path" : "/metrics/productquality",
         "description" : "Product quality",
         "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "userproductquality",
+        "title": "User products quality",
+        "path" : "/metrics/userproductquality",
+        "description" : "User products quality",
+        "params": ['uid', 'prid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -419,11 +446,38 @@ exports.metrics = [
         "aggr": ['sum', 'avg']
     },
     {
+        "id" : "userproducttimetomarket",
+        "title": "User Products time to market",
+        "path" : "/metrics/userproducttimetomarket",
+        "description" : "User Products time to market",
+        "params": ['uid', 'prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
         "id" : "productreleases",
         "title": "Product releases",
         "path" : "/metrics/productreleases",
         "description" : "Product releases",
         "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "productpopularity",
+        "title": "Product pularity",
+        "path" : "/metrics/productpopularity",
+        "description" : "Product pularity",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "userproductpopularity",
+        "title": "User product pularity",
+        "path" : "/metrics/userproductpopularity",
+        "description" : "User product pularity",
+        "params": ['uid', 'prid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
