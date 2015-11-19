@@ -543,5 +543,41 @@ exports.metrics = [
         "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "projectstakeholders",
+        "title": "Stakeholders",
+        "path" : "/metrics/projectstakeholders",
+        "description" : "Total Project Stakeholders",
+        "params": ['pid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "projectdevelopers",
+        "title": "Software Developers",
+        "path" : "/metrics/projectdevelopers",
+        "description" : "Total Project Software Developers",
+        "params": ['pid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "projectmanagers",
+        "title": "Software Managers",
+        "path" : "/metrics/projectmanagers",
+        "description" : "Total Project Software Managers",
+        "params": ['pid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "projectarchitects",
+        "title": "Software Architects",
+        "path" : "/metrics/projectarchitects",
+        "description" : "Total Project Software Architects",
+        "params": ['pid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
     }
 ];
