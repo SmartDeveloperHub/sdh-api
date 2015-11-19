@@ -483,15 +483,6 @@ exports.metrics = [
     },
     {
         "id" : "directormanagers",
-        "title": "director Managers",
-        "path" : "/metrics/directormanagers",
-        "description" : "director Managers",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    },
-    {
-        "id" : "directormanagers",
         "title": "director managers",
         "path" : "/metrics/directormanagers",
         "description" : "director managers",
@@ -513,6 +504,42 @@ exports.metrics = [
         "title": "Director developers",
         "path" : "/metrics/directordevelopers",
         "description" : "Director developers",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "managerstakeholders",
+        "title": "Stakeholders",
+        "path" : "/metrics/managerstakeholders",
+        "description" : "Total Manager Stakeholders",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "managerdevelopers",
+        "title": "Software Developers",
+        "path" : "/metrics/managerdevelopers",
+        "description" : "Total Manager Software Developers",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "managermanagers",
+        "title": "Software Managers",
+        "path" : "/metrics/managermanagers",
+        "description" : "Total Manager Software Managers",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum', 'avg']
+    },
+    {
+        "id" : "managerarchitects",
+        "title": "Software Architects",
+        "path" : "/metrics/managerarchitects",
+        "description" : "Total Manager Software Architects",
         "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
