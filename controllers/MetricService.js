@@ -117,6 +117,12 @@ exports.getMetric = function(mid, rid, uid, pid, prid, from, to, accumulated, ma
             if (result.info.params.indexOf('rid') >= 0) {
                 result.info['rid'] = underscore(repositoriesById[rid]).clone();
             }
+            if (result.info.params.indexOf('pid') >= 0) {
+                result.info['pid'] = underscore(projectsById[pid]).clone();
+            }
+            if (result.info.params.indexOf('prid') >= 0) {
+                result.info['prid'] = underscore(productsById[prid]).clone();
+            }
             callback(result);
         };
 
