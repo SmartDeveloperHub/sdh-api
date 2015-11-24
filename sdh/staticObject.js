@@ -442,19 +442,6 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
         var theUsers = require("./fakeUsersInfo");
         var theRepos = require("./fakeRepositoriesInfo");
         var theProducts = require("./fakeProductsInfo");
-        GLOBAL.usersByProjectUri = {};
-        GLOBAL.usersByProductUri = {};
-        GLOBAL.usersByRepoUri = {};
-        GLOBAL.projectUriById = {};
-        GLOBAL.projectIdByUri = {};
-        GLOBAL.productUriById = {};
-        GLOBAL.productIdByUri = {};
-        GLOBAL.usersByRepoUri = {};
-        GLOBAL.userUriById = {};
-        GLOBAL.userIdByUri = {};
-        GLOBAL.repoUriById = {};
-        GLOBAL.repoIdByUri = {};
-        GLOBAL.reposByUserUri = {};
         returnCallback(theOrganizations, theProducts, theProjects, theRepos, theUsers);
         return;
     }
@@ -518,6 +505,23 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < _organizations.organizationsList.length; i++) {
             _organizationsById[_organizations.organizationsList[i].organizationid] = _organizations.organizationsList[i];
         }
+
+        // Global relations not necesary
+        GLOBAL.usersByProjectUri = {};
+        GLOBAL.usersByProductUri = {};
+        GLOBAL.usersByRepoUri = {};
+        GLOBAL.projectUriById = {};
+        GLOBAL.projectIdByUri = {};
+        GLOBAL.productUriById = {};
+        GLOBAL.productIdByUri = {};
+        GLOBAL.usersByRepoUri = {};
+        GLOBAL.userUriById = {};
+        GLOBAL.userIdByUri = {};
+        GLOBAL.repoUriById = {};
+        GLOBAL.repoIdByUri = {};
+        GLOBAL.reposByUserUri = {};
+
+
         // Make global all this methods for param validation
         GLOBAL.organizations = this.getOrganizations();
         GLOBAL.products = this.getProducts();
