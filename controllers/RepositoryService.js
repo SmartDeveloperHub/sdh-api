@@ -37,26 +37,14 @@ exports.allRepositoriesInfo = function(callback) {
  * @param rid repository ID
  */
 exports.repositoryInfo = function(rid, callback) {
-
     // Check if repository ID is available
     var _rep;
     if (rid in repositoriesById) {
-        _rep = underscore(repositoriesById[rid]).clone();
-        var localUsers = usersByRepoUri[repoUriById[rid]];
-        var repoUsers = [];
-        for(var key in localUsers) {
-            repoUsers.push(usersById[localUsers[key]]);
-        }
-        _rep['users'] = underscore(repoUsers).clone();
+        sdhWrapper.getRepositoryInfo(rid, callback);
     } else {
         console.log("--RID not found");
         callback(404);
         return;
     }
-    sdhWrapper.getRepositoryInfo(rid, function(e) {
-        if (e) {
-            e.users = _rep['users'];
-        }
-        callback(e);
-    });
+    sdhWrapper.getRepositoryInfo(rid, callback);
 };

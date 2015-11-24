@@ -41,23 +41,10 @@ exports.productInfo = function(prid, callback) {
     // Check if Product ID is available
     var _prod;
     if (prid in productsById) {
-        _prod = underscore(productsById[prid]).clone();
-        // TODO users and repositories
-        var localUsers = usersByProductUri[productUriById[prid]];
-        var productUsers = [];
-        for(var key in localUsers) {
-            productUsers.push(usersById[localUsers[key]]);
-        }
-        _prod['users'] = underscore(productUsers).clone();
+        sdhWrapper.getProductInfo(prid, callback)
     } else {
         console.log("--PRID not found");
         callback(404);
         return;
-    }
-    sdhWrapper.getProductInfo(prid, function(e) {
-        if (e) {
-            e.users = _prod['users'];
-        }
-        callback(e);
-    });
+    };
 };

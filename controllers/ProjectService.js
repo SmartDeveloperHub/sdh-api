@@ -41,23 +41,10 @@ exports.projectInfo = function(pid, callback) {
     // Check if Project ID is available
     var _proj;
     if (pid in projectsById) {
-        _proj = underscore(projectsById[pid]).clone();
-        // TODO users and repositories
-        var localUsers = usersByProjectUri[projectUriById[pid]];
-        var projectUsers = [];
-        for(var key in localUsers) {
-            projectUsers.push(usersById[localUsers[key]]);
-        }
-        _proj['users'] = underscore(projectUsers).clone();
+        sdhWrapper.getProjectInfo(pid, callback);
     } else {
         console.log("--PID not found");
         callback(404);
         return;
     }
-    sdhWrapper.getProjectInfo(pid, function(e) {
-        if (e) {
-            e.users = _proj['users'];
-        }
-        callback(e);
-    });
 };

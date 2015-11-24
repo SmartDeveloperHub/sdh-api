@@ -41,24 +41,10 @@ exports.userInfo = function(uid, callback) {
     var _user;
     // uid validation
     if (uid in usersById) {
-        _user = underscore(usersById[uid]).clone();
-        var localRepos = reposByUserUri[userUriById[uid]];
-        var userRepos = [];
-        for(var key in localRepos) {
-            userRepos.push(repositoriesById[repoIdByUri[localRepos[key]]]);
-        }
-        _user['rep'] = underscore(userRepos).clone();
-        // TODO return roles: {pid: [roliId], ...}  rolesByProject
-        // TODO return positions: {oid: [positionId], ...}  positionsByOrganization
+        sdhWrapper.getUserInfo(uid, callback);
     } else {
         console.log("--UID not found");
         callback(404);
         return;
     }
-    sdhWrapper.getUserInfo(uid, function(e) {
-        if (e) {
-            e.repositories = _user['rep'];
-        }
-        callback(e);
-    });
 };
