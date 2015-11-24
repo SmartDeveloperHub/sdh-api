@@ -24,6 +24,7 @@
 
 // SDH platform
 GLOBAL.sdhWrapper = require('./sdhWrapper');
+GLOBAL.sdhTools = require('./sdhTools');
 
 var theCallback;
 
