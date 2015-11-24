@@ -387,31 +387,27 @@ var getProductsInfo = function getProductsInfo(returnCallback) {
     }
 };
 
-/**
- * Collect all products info from SDH Platform
+/** TODO organization or organizations?
+ * Collect ORGANIZATION info from SDH Platform
  * @param returnCallback
  */
 var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
-    // Query to get organization's information
-    var q = '';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['']
-    };
-    var frag;
     try {
-        /*sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, function(e) {
-                returnCallback(parseProjectTree(e));
-            });
-        });*/
-        console.log("!! No real Products for staticObject.getOrganizationInfo");
-        returnCallback(null);
+        var orgTriples = [
+            '?org doap:name ?name',
+            '?org doap:description ?description',
+            '?org scm:organizationId ?organizationid',
+            '?org scm:tags ?tags',
+            '?org foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar'
+        ];
+        var parsedTrip = parseTriples(orgTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            returnCallback({organizationsList: result});
+        });
     } catch (err) {
-        console.log("ERROR in getOrganizationInfo: " + err);
+        console.log("ERROR in getRepositoriesInfo: " + err);
         returnCallback(err);
     }
 };
