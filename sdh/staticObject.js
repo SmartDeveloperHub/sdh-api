@@ -417,28 +417,22 @@ var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
  * @param returnCallback
  */
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
-    // Query to get repository's information
-    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
-        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
-        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-        'SELECT * WHERE { ?s doap:name ?name. ?s scm:repositoryId ?id. \ ' +
-                         '?s scm:isPublic ?ispublic. ?s foaf:depiction ?im. ?im foaf:depicts ?avatar . \ ' +
-                         '?s scm:isArchived ?isaarchived. ?s scm:owner ?owner. ?s scm:tags ?tags. }';
-
-    var p = {
-        "status": "OK",
-        "patterns": [ '?s doap:name ?n', '?s doap:description ?d',
-            '?s scm:repositoryId ?i', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
-            '?s scm:owner ?o', '?s scm:tags ?ta', '?s foaf:depiction ?im', '?im foaf:depicts ?de']
-    };
-    var frag;
     try {
-        sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, function(e) {
-                returnCallback(parseRepoTree(e));
-            });
+        var repoTriples = [
+            '?repo doap:name ?name',
+            '?repo doap:description ?description',
+            '?repo scm:repositoryId ?repositoryId',
+            '?repo scm:tags ?tags',
+            '?repo foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar',
+            '?repo scm:isPublic ?isPublic',
+            '?repo scm:isArchived ?isArchived',
+            '?repo scm:owner ?owner'
+        ];
+        var parsedTrip = parseTriples(repoTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            returnCallback({repositoryList: result});
         });
     } catch (err) {
         console.log("ERROR in getRepositoriesInfo: " + err);
