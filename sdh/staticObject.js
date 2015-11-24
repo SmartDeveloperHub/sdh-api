@@ -513,12 +513,14 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
  */
 module.exports.preloadAll = function preloadAll (callback) {
     var nextStep = function (orgs, prod, proj, reps, usrs) {
+        // Local basics
         _organizations = orgs;
         _projects = proj;
         _repositories = reps;
         _users = usrs;
         _products = prod;
 
+        // Basic entities by ID
         _usersById = {};
         _repositoriesById = {};
         _projectsById = {};
@@ -526,9 +528,22 @@ module.exports.preloadAll = function preloadAll (callback) {
         _organizationsById = {};
 
         // Static data structures generation
+        var userAuxL = [];
         for (var i = 0; i < _users.userList.length; i++) {
-            _usersById[_users.userList[i].userid] = _users.userList[i];
+            // Accumulate all user emails
+            if (_users.userList[i].userid in _usersById) {
+                // Change existing User... add new email
+                userAuxL[userAuxL.indexOf(_users.userList[i])].email.push(_users.userList[i].email);
+                _usersById[_users.userList[i].userid].email.push(_users.userList[i].email);
+            } else {
+                var newUser = underscore(_users.userList[i]).clone();
+                newUser.email = [newUser.email];
+                userAuxL.push(newUser);
+                _usersById[_users.userList[i].userid] = newUser;
+            }
         }
+        _users.userList = userAuxL;
+
         for (var i = 0; i < _repositories.repositoryList.length; i++) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
