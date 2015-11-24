@@ -445,33 +445,23 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
  * @param returnCallback
  */
 var getUsersInfo = function getUsersInfo(returnCallback) {
-    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
-        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
-        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-        'SELECT ?s ?d ?u ?n ?m ?h WHERE { ?s doap:developer ?d . \ ' +
-        '?d foaf:img ?o . ?o foaf:depicts ?h . \ ' +
-        '?d foaf:name ?n . \ ' +
-        '?d scm:mbox ?m . \ ' +
-        '?d scm:userId ?u . \ ' +
-        '}';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
-                '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
-    };
-    var frag;
     try {
-        sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, function(e) {
-                returnCallback(parseUserTree(e));
-            });
+        var repoTriples = [
+            '?_s doap:developer ?uri',
+            '?uri foaf:name ?name',
+            '?uri scm:userId ?userid',
+            '?uri scm:mbox ?email',
+            '?uri foaf:img ?_i',
+            '?_i foaf:depicts ?avatar'
+        ];
+        var parsedTrip = parseTriples(repoTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            returnCallback({userList: result});
         });
     } catch (err) {
         console.log("ERROR in getUsersInfo: " + err);
-        returnCallback(err)
+        returnCallback(err);
     }
 };
 
