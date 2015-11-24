@@ -39,6 +39,9 @@
     "passport-http-bearer": "*",
     "node-uuid": "*",
     "cluster":"*",
-    "request": "*"
+    "request": "*",
+    "amqplib": "*",
+    "n3": "*",
+    "uuid4": "*"
   }
 }

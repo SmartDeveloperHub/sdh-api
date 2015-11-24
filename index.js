@@ -62,6 +62,15 @@
         // global moment.js
         GLOBAL.moment = require('moment');
         GLOBAL.underscore = require('underscore');
+        // Rabbitmq
+        GLOBAL.amqp = require('amqplib/callback_api');
+        // n3
+        GLOBAL.N3 = require('n3');
+        //fs
+        GLOBAL.fs = require('fs');
+        // UUID
+        GLOBAL.uuid = require('uuid4');
+        GLOBAL.agentId = uuid(); // uuid 4
     }
     catch (err) {
         console.error("Error loading dependencies: " + err);
