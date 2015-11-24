@@ -367,26 +367,22 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
  * @param returnCallback
  */
 var getProductsInfo = function getProductsInfo(returnCallback) {
-    // Query to get products's information
-    var q = '';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['']
-    };
-    var frag;
     try {
-        /*sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, function(e) {
-                returnCallback(parseProjectTree(e));
-            });
-        });*/
-        console.log("!! No real Products for staticObject.getProductsInfo");
-        returnCallback(null);
+        var prodTriples = [
+            '?product doap:name ?name',
+            '?product doap:description ?description',
+            '?product scm:productId ?productId',
+            '?product scm:tags ?tags',
+            '?product foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar'
+        ];
+        var parsedTrip = parseTriples(prodTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            returnCallback(result);
+        });
     } catch (err) {
-        console.log("ERROR in getProjectsInfo: " + err);
+        console.log("ERROR in getProductsInfo: " + err);
         returnCallback(err);
     }
 };
