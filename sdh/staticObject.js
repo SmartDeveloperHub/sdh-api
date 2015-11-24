@@ -326,28 +326,40 @@ var parseTriples = function parseTriples (triplesList) {
  * @param returnCallback
  */
 var getProjectsInfo = function getProjectsInfo(returnCallback) {
-    // Query to get projects's information
-    var q = '';
 
-    var p = {
-        "status": "OK",
-        "patterns": ['']
-    };
-    var frag;
-    try {
-        /*sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, function(e) {
-                returnCallback(parseProjectTree(e));
-            });
-        });*/
-        console.log("!! No real projects for staticObject.getProjectsInfo");
-        returnCallback(null);
-    } catch (err) {
-        console.log("ERROR in getProjectsInfo: " + err);
-        returnCallback(err);
-    }
+    var projectTriples = [
+        '?proj doap:name ?name',
+        '?proj doap:description ?description',
+        '?proj scm:projectId ?projectid',
+        '?proj scm:tags ?tags',
+        '?proj foaf:depiction ?_im',
+        '?_im foaf:depicts ?image'
+    ];
+    /*var projectTriples = [
+        '?s scm:repositoryId ?i'
+    ];*/
+    /*var projectTriples = [
+        '?_s doap:developer ?member',
+        '?member foaf:name ?name'
+    ];*/
+
+    /*var projectTriples = [
+        '?repo doap:name "jenkins"',
+        '?repo doap:description ?description',
+        '?repo scm:repositoryId ?id',
+        '?repo scm:tags ?tags',
+        '?repo doap:developer ?dev',
+        '?repo foaf:depiction ?_im',
+        '?_im foaf:depicts ?image'
+    ];*/
+    // var projectTriples = ['?repo doap:name "jenkins"',
+    //    '?repo doap:developer ?dev'
+    //];
+    var parsedTrip = parseTriples(projectTriples);
+
+    sdhTools.getfromSDH(parsedTrip, function(result) {
+        returnCallback(result);
+    });
 };
 
 /**
