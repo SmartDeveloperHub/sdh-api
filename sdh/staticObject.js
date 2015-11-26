@@ -147,13 +147,13 @@ var parseRepoList = function parseRepoList(data) {
     return resF;
 };
 
-/**
+/** TODO REMOVE ... new parser created
  * Parse user list to obtain easy access data structures
  * @param data Object with the user list
  * @returns {Array} Contains objects with 'userid' {Number}, 'name' {String},
  * 'email' {String} and 'avatar' {Url}.
  */
-var parseUserList = function parseUserList(data) {
+/*var parseUserList = function parseUserList(data) {
     var resF = {'userList': []};
     var res = resF.userList;
     var ubyid = {};
@@ -173,7 +173,7 @@ var parseUserList = function parseUserList(data) {
     GLOBAL.userUriById = ubyid;
     GLOBAL.userIdByUri = uidbu;
     return resF;
-};
+};*/
 
 /**
  * Parse Projects info and save all relevant information
@@ -273,54 +273,6 @@ var parseUserTree = function parseUserTree (e) {
     }
 };
 
-var parseTriples = function parseTriples (triplesList) {
-    var newElement = function newElement(subject, predicate, object) {
-        /*if (typeof object == 'string') {
-            object = "'" + object + "'";
-        }*/
-        return {
-            subject: subject,
-            predicate: predicate,
-            object: object
-        };
-    };
-    var c = 1;
-    var subjects = {};
-    var nodes = [];
-    var sub1;
-    var sub2;
-
-    for (var i = 0; i < triplesList.length; i++) {
-        var t = triplesList[i].split(' ');
-        if (!(t[0] in subjects)) {
-            if (t[0].indexOf('?') === 0) {
-                sub1 = '_:n' + c;
-                c++;
-            } else {
-                sub1 = t[0];
-            }
-            // new
-            nodes.push(newElement(sub1, 'rdf:type', 'curator:Variable'));
-            nodes.push(newElement(sub1, 'curator:label', JSON.stringify(t[0])));
-            subjects[t[0]] = sub1;
-        }
-        if (!(t[2] in subjects)) {
-            if (t[2].indexOf('?') === 0) {
-                sub2 = '_:n' + c;
-                c++;
-            } else {
-                sub2 = t[2];
-            }
-            // new
-            nodes.push(newElement(sub2, 'rdf:type', 'curator:Variable'));
-            nodes.push(newElement(sub2, 'curator:label', JSON.stringify(t[2])));
-            subjects[t[2]] = sub2;
-        }
-        nodes.push(newElement(subjects[t[0]], t[1], subjects[t[2]]));
-    }
-    return nodes;
-};
-
 /**
  * Collect all projects info from SDH Platform
  * @param returnCallback
@@ -328,34 +280,14 @@ var parseTriples = function parseTriples (triplesList) {
 var getProjectsInfo = function getProjectsInfo(returnCallback) {
 
     var projectTriples = [
-        '?proj doap:name ?name',
-        '?proj doap:description ?description',
-        '?proj scm:projectId ?projectid',
-        '?proj scm:tags ?tags',
-        '?proj foaf:depiction ?_im',
-        '?_im foaf:depicts ?image'
+        '?_o org:hasProject ?_p',
+        '?_p org:id ?projectid',
+        '?_p doap:name ?name',
+        '?_p foaf:depiction ?_im',
+        '?_im foaf:depicts ?avatar'
     ];
-    /*var projectTriples = [
-        '?s scm:repositoryId ?i'
-    ];*/
-    /*var projectTriples = [
-        '?_s doap:developer ?member',
-        '?member foaf:name ?name'
-    ];*/
 
-    /*var projectTriples = [
-        '?repo doap:name "jenkins"',
-        '?repo doap:description ?description',
-        '?repo scm:repositoryId ?id',
-        '?repo scm:tags ?tags',
-        '?repo doap:developer ?dev',
-        '?repo foaf:depiction ?_im',
-        '?_im foaf:depicts ?image'
-    ];*/
-    // var projectTriples = ['?repo doap:name "jenkins"',
-    //    '?repo doap:developer ?dev'
-    //];
-    var parsedTrip = parseTriples(projectTriples);
+    var parsedTrip = sdhTools.parseTriples(projectTriples);
 
     sdhTools.getfromSDH(parsedTrip, function(result) {
         returnCallback(result);
@@ -369,14 +301,13 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
 var getProductsInfo = function getProductsInfo(returnCallback) {
     try {
         var prodTriples = [
-            '?product doap:name ?name',
-            '?product doap:description ?description',
-            '?product scm:productId ?productId',
-            '?product scm:tags ?tags',
-            '?product foaf:depiction ?_im',
+            '?_o org:hasProduc ?_p',
+            '?_p scm:id ?productid',
+            '?_p org:prefLabel ?name',
+            '?_p foaf:depiction ?_im',
             '?_im foaf:depicts ?avatar'
         ];
-        var parsedTrip = parseTriples(prodTriples);
+        var parsedTrip = sdhTools.parseTriples(prodTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             returnCallback(result);
@@ -393,19 +324,18 @@ var getProductsInfo = function getProductsInfo(returnCallback) {
  */
 var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
     try {
-        var orgTriples = [
-            '?org doap:name ?name',
-            '?org doap:description ?description',
-            '?org scm:organizationId ?organizationid',
-            '?org scm:tags ?tags',
-            '?org foaf:depiction ?_im',
+        /*var orgTriples = [
+            '?_org doap:name ?name',
+            '?_org scm:organizationId ?organizationid',
+            '?_org foaf:depiction ?_im',
             '?_im foaf:depicts ?avatar'
         ];
-        var parsedTrip = parseTriples(orgTriples);
+        var parsedTrip = sdhTools.parseTriples(orgTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             returnCallback({organizationsList: result});
-        });
+        });*/
+        returnCallback({organizationsList: []});
     } catch (err) {
         console.log("ERROR in getRepositoriesInfo: " + err);
         returnCallback(err);
@@ -419,17 +349,16 @@ var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
     try {
         var repoTriples = [
-            '?repo doap:name ?name',
-            '?repo doap:description ?description',
-            '?repo scm:repositoryId ?repositoryId',
-            '?repo scm:tags ?tags',
-            '?repo foaf:depiction ?_im',
-            '?_im foaf:depicts ?avatar',
-            '?repo scm:isPublic ?isPublic',
-            '?repo scm:isArchived ?isArchived',
-            '?repo scm:owner ?owner'
+            '?_h scm:hasRepository ?_r',
+            '?_r doap:name ?name',
+            '?_r scm:repositoryId ?repositoryid',
+            '?_r scm:createdOn ?createdon',
+            '?_r scm:isArchived ?isarchived',
+            '?_r scm:isPublic ?ispublic',
+            '?_r foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar'
         ];
-        var parsedTrip = parseTriples(repoTriples);
+        var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             returnCallback({repositoryList: result});
@@ -447,14 +376,16 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
 var getUsersInfo = function getUsersInfo(returnCallback) {
     try {
         var repoTriples = [
-            '?_s doap:developer ?uri',
-            '?uri foaf:name ?name',
-            '?uri scm:userId ?userid',
-            '?uri scm:mbox ?email',
-            '?uri foaf:img ?_i',
-            '?_i foaf:depicts ?avatar'
+            '?_ms org:member ?_m',
+            '?_ms org:position ?_mp',
+            '?_mp rdfs:label ?position', // positionsByOrg
+            '?_m org:id ?userid',
+            '?_m foaf:mbox ?email',
+            '?_m foaf:name ?name',
+            '?_m foaf:img ?_im',
+            '?_im foaf:depicts ?avatar'
         ];
-        var parsedTrip = parseTriples(repoTriples);
+        var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             returnCallback({userList: result});
@@ -482,25 +413,76 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
         return;
     }
     // Cascade. First Organization, products, projects, repos and users
-    getOrganizationInfo(function(e) {
+    //getOrganizationInfo(function(e) {
         //var resultOrganizations = parseOrganizationList(e);
         var resultOrganizations = require("./fakeOrganizationsInfo");
-        getProductsInfo(function (e) {
-            //var resultProjducts = parseProductList(e);
+        //getProductsInfo(function (e) {
             var resultProducts = require("./fakeProductsInfo");
-            getProjectsInfo(function (e) {
-                //var resultProjects = parseProjectList(e);
+            //getProjectsInfo(function (e) {
                 var resultProjects = require("./fakeProjectsInfo");
-                getRepositoriesInfo(function (e) {
-                    var resultRepos = parseRepoList(e);
-                    getUsersInfo(function (e) {
-                        var resultUsers = parseUserList(e);
-                        returnCallback(resultOrganizations, resultProducts, resultProjects, resultRepos, resultUsers);
+                getRepositoriesInfo(function (reposResult) {
+                    //console.log(reposResult);
+                    getUsersInfo(function (usersResult) {
+                        //console.log(usersResult);
+                        returnCallback(resultOrganizations, resultProducts, resultProjects, reposResult, usersResult);
                     });
                 });
-            });
-        });
-    });
+            //});
+        //});
+    //});
+};
+
+var removeRepeatedItems = function removeRepeatedItems(theList) {
+    var newL = [];
+    var indexObject = {};
+    for (var i = 0; i < theList.length; i++) {
+        var newKey = JSON.stringify(theList[i]);
+        if (indexObject[newKey] == undefined){
+            indexObject[newKey] = theList[i];
+        } else {
+            //Nothing
+        }
+    }
+    for (var key in indexObject){
+        newL.push(indexObject[key]);
+    }
+    return newL;
+};
+
+var parseUserList = function parseUserList(uList) {
+    var __usersById = {};
+    for (var i = 0; i < uList.length; i++) {
+        // Accumulate all user emails
+        if (uList[i].userid in __usersById) {
+            // Change existing User... add new email
+            __usersById[uList[i].userid].email.push(uList[i].email);
+        } else {
+            var newUser = underscore(uList[i]).clone();
+            var posLevel;
+            switch (newUser.position) {
+                 case 'Director' :
+                    posLevel = 1;
+                    break;
+                case "Product Manager" :
+                    posLevel = 2;
+                    break;
+                case "Architect" :
+                    posLevel = 3;
+                    break;
+                case "Developer" :
+                    posLevel = 4;
+                    break;
+                default:
+                    posLevel = 5;
+            };
+
+            newUser.email = [newUser.email];
+            // By the moment we only have 1 organization :S
+            newUser.position = {1: posLevel};
+            __usersById[uList[i].userid] = newUser;
+        }
+    }
+    return __usersById;
 };
 
 /**
@@ -527,51 +509,49 @@ module.exports.preloadAll = function preloadAll (callback) {
         _productsById = {};
         _organizationsById = {};
 
-        // Static data structures generation
-        var userAuxL = [];
-        for (var i = 0; i < _users.userList.length; i++) {
-            // Accumulate all user emails
-            if (_users.userList[i].userid in _usersById) {
-                // Change existing User... add new email
-                userAuxL[userAuxL.indexOf(_users.userList[i])].email.push(_users.userList[i].email);
-                _usersById[_users.userList[i].userid].email.push(_users.userList[i].email);
-            } else {
-                var newUser = underscore(_users.userList[i]).clone();
-                newUser.email = [newUser.email];
-                userAuxL.push(newUser);
-                _usersById[_users.userList[i].userid] = newUser;
-            }
+        // Static data structures generation for users
+        _users.userList = removeRepeatedItems(usrs.userList);
+        console.log("~~~~~Users length: " + usrs.userList.length);
+        // modification for user email lists
+        _usersById = parseUserList(usrs.userList);
+        // Create new user List
+        _users.userList = [];
+        for (var key in _usersById) {
+            _users.userList.push(_usersById[key]);
         }
-        _users.userList = userAuxL;
+        console.log("~~~~~Users after parse (" + _users.userList.length + "): ");
+        //console.log(_users);
+        console.log(JSON.stringify(_users));
 
+        // Static data structures generation for repos
+        _repositories.repositoryList = removeRepeatedItems(reps.repositoryList);
         for (var i = 0; i < _repositories.repositoryList.length; i++) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
+        console.log("~~~~~Repositories after parse (" + _repositories.repositoryList.length + "): ");
+        console.log(_repositories);
+
+        // Static data structures generation for projects
+        _projects.projectList = removeRepeatedItems(proj.projectList);
         for (var i = 0; i < _projects.projectList.length; i++) {
             _projectsById[_projects.projectList[i].projectid] = _projects.projectList[i];
         }
+        console.log("~~~~~Projects after parse (" + _projects.projectList.length + "): ");
+        console.log(_projects);
+        // Static data structures generation for products
+        //_products.productList = removeRepeatedItems(prod.productList);
         for (var i = 0; i < _products.productList.length; i++) {
             _productsById[_products.productList[i].productid] = _products.productList[i];
         }
+        console.log("~~~~~Products after parse (" + _products.productList.length + "): ");
+        console.log(_products);
+        // Static data structures generation for organizations
+        //_organizations.organizationsList = removeRepeatedItems(orgs.organizationsList);
         for (var i = 0; i < _organizations.organizationsList.length; i++) {
             _organizationsById[_organizations.organizationsList[i].organizationid] = _organizations.organizationsList[i];
         }
-
-        // Global relations not necesary
-        GLOBAL.usersByProjectUri = {};
-        GLOBAL.usersByProductUri = {};
-        GLOBAL.usersByRepoUri = {};
-        GLOBAL.projectUriById = {};
-        GLOBAL.projectIdByUri = {};
-        GLOBAL.productUriById = {};
-        GLOBAL.productIdByUri = {};
-        GLOBAL.usersByRepoUri = {};
-        GLOBAL.userUriById = {};
-        GLOBAL.userIdByUri = {};
-        GLOBAL.repoUriById = {};
-        GLOBAL.repoIdByUri = {};
-        GLOBAL.reposByUserUri = {};
-
+        console.log("~~~~~Organizations after parse (" + _organizations.organizationsList.length + "): ");
+        console.log(_organizations);
 
         // Make global all this methods for param validation
         GLOBAL.organizations = this.getOrganizations();
