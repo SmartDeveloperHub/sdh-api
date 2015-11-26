@@ -69,14 +69,62 @@ var sendAfterWrite = function sendAfterWrite(result, ch) {
     //ch.assertExchange(EXCHANGE, 'topic', {durable: false});
     ch.publish(EXCHANGE, ROUTINGKEY, new Buffer(result));
     console.log(" [x] Sent " + ROUTINGKEY);
-    //console.log(result);
+    console.log(result);
     return;
+};
+
+module.exports.parseTriples = function parseTriples (triplesList) {
+    var newElement = function newElement(subject, predicate, object) {
+        /*if (typeof object == 'string') {
+            object = "'" + object + "'";
+        }*/
+        return {
+            subject: subject,
+            predicate: predicate,
+            object: object
+        };
+    };
+    var c = 1;
+    var subjects = {};
+    var nodes = [];
+    var sub1;
+    var sub2;
+
+    for (var i = 0; i < triplesList.length; i++) {
+        var t = triplesList[i].split(' ');
+        if (!(t[0] in subjects)) {
+            if (t[0].indexOf('?') === 0) {
+                sub1 = '_:n' + c;
+                c++;
+            } else {
+                sub1 = t[0];
+            }
+            // new
+            nodes.push(newElement(sub1, 'rdf:type', 'curator:Variable'));
+            nodes.push(newElement(sub1, 'curator:label', JSON.stringify(t[0])));
+            subjects[t[0]] = sub1;
+        }
+        if (!(t[2] in subjects)) {
+            if (t[2].indexOf('?') === 0) {
+                sub2 = '_:n' + c;
+                c++;
+            } else {
+                sub2 = t[2];
+            }
+            // new
+            nodes.push(newElement(sub2, 'rdf:type', 'curator:Variable'));
+            nodes.push(newElement(sub2, 'curator:label', JSON.stringify(t[2])));
+            subjects[t[2]] = sub2;
+        }
+        nodes.push(newElement(subjects[t[0]], t[1], subjects[t[2]]));
+    }
+    return nodes;
 };
 
 module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
     try {
         if (!bNodes.length) {
-            console.log('Bad Nodes parameter. N3 blank Nodes Array expected');
+            console.log('Bad bNodes parameter. N3 Node Array expected');
         }
         // generate Agent ID for each request
         var agentId = uuid();
