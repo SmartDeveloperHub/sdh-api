@@ -302,30 +302,153 @@ var parseMetricTree = function parseMetricTree (e) {
     }
 };
 
+var getDemoMetrics = function getDemoMetrics() {
+        // Add Fake metrics 4 Demo
+        metById["userspeed"] = {
+            "id" : "userspeed",
+            "title": "Speed",
+            "path" : "/metrics/userspeed",
+            "description" : "User development speed skill value",
+            "params": ['uid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+        metricUriById["userspeed"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+
+        metById["usercollaboration"] = {
+            "id" : "usercollaboration",
+            "title": "Collaboration",
+            "path" : "/metrics/usercollaboration",
+            "description" : "User development collaboration skill value",
+            "params": ['uid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+        metricUriById["usercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
+
+        metById["userquality"] = {
+            "id" : "userquality",
+            "title": "Quality",
+            "path" : "/metrics/userquality",
+            "description" : "User development quality skill value",
+            "params": ['uid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+        metricUriById["userquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
+
+        metById["orgproducts"] = {
+            "id" : "orgproducts",
+            "title": "Products",
+            "path" : "/metrics/products",
+            "description" : "Number of Products",
+            "params": [],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metById["prodprojects"] = {
+            "id" : "prodprojects",
+            "title": "Product Projects",
+            "path" : "/metrics/prodprojects",
+            "description" : "Number of Products",
+            "params": ['prid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metById["produsers"] = {
+            "id" : "produsers",
+            "title": "Product Users",
+            "path" : "/metrics/produsers",
+            "description" : "Number of Products",
+            "params": ['prid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metById["projrepositories"] = {
+            "id" : "projrepositories",
+            "title": "Project Repositories",
+            "path" : "/metrics/projrepositories",
+            "description" : "Number of Products",
+            "params": ['pid'],
+            "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+            "aggr": ['sum', 'avg']
+        };
+
+        metricUriById["orgproducts"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["prodprojects"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
+        metricUriById["produsers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
+
+        return metById; // TODO array
+        /*GLOBAL.metricsById = metById;
+        console.log("Metrics: " + Object.keys(metricsById));
+        GLOBAL.tbdById = tbdById;
+        console.log("TBDs: " + Object.keys(tbdById));
+        for (var i in metById) {
+            re.push(metById[i]);
+        }*/
+};
+
+/**
+ * Parse MetricList to determinate aggregators
+ * @param realId {String} The metric or tbd id from SDH-Platform
+ * @return {Object} with the next attributes: "realId", "id", "params" ,"type" and if is not a TBD "aggr"
+ */
+var normalizeMetricList = function normalizeMetricList(mList) {
+    // realId model: aggr-metric
+    var newList;
+    for (var i = 0; i < mList.length; i ++) {
+        var theMetric = mList[i].id.split('-');
+        var agg = theMetric[0];
+        var id = '';
+        for (var d = 1; d < theMetric.length; d++) {
+            id += theMetric[d];
+        }
+        if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
+            console.log('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ". " + mList[i]);
+        }
+        if (id in metricsById) {
+            // New Aggregator for this metric
+            metricsById[id]['aggr'].push(agg);
+        } else {
+            // New metric
+            metricsById[id] = mList[i];
+            metricsById[id]['aggr'] = [agg];
+            newList.push(metricsById[id]);
+        }
+        // DEMO
+        var fakeMetList = getDemoMetrics();
+    }
+    return newList.concat(fakeMetList);
+};
+
 /**
  * Get Metric List from SDH Platform
  * @param returnCallback
  */
 var getMetricList = function getMetricList(returnCallback) {
-    var q = 'PREFIX metrics: <http://www.smartdeveloperhub.org/vocabulary/metrics#> \ ' +
-            'PREFIX platform: <http://www.smartdeveloperhub.org/vocabulary/platform#> \ ' +
-        'SELECT ?e ?id ?t WHERE { ?e metrics:supports ?m. ?m platform:identifier ?id. ?m platform:title ?t}';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['?e metrics:supports ?m', '?m platform:identifier ?id', '?m platform:title ?t']
-    };
-    var frag;
     try {
-        sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, function(e) {
-                returnCallback(parseMetricTree(e));
-            });
-        });
+        //TODO
+        returnCallback({metricList: require('./metrics').metrics});
+        /*var metricTriples = [
+            '?path metrics:supports ?_vd',
+            '?_vd platform:identifier ?id',
+            '?_vd platform:title ?title',
+            '?_vd platform:supports ?_vs',
+            '?_vd platform:hasParameter ?_sp',
+            '?_vd platform:targetType ?targetType'
+        ];
+        var parsedTrip = sdhTools.parseTriples(metricTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            var nResult = normalizeMetricList (result);
+            returnCallback({metricList: nResult});
+        });*/
     } catch (err) {
-        console.log("ERROR in getMetricsInfo: " + err);
+        console.log("ERROR in getMetricList: " + err);
         returnCallback(err);
     }
 };
@@ -335,32 +458,22 @@ var getMetricList = function getMetricList(returnCallback) {
  * @param returnCallback
  */
 var getTbdList = function getTbdList(returnCallback) {
-    var q = 'PREFIX doap: <http://usefulinc.com/ns/doap#> \ ' +
-        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \ ' +
-        'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-        'SELECT ?s ?d ?u ?n ?m ?h WHERE { ?s doap:developer ?d . \ ' +
-        '?d foaf:img ?o . ?o foaf:depicts ?h . \ ' +
-        '?d foaf:name ?n . \ ' +
-        '?d scm:mbox ?m . \ ' +
-        '?d scm:userId ?u . \ ' +
-        '}';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['?s doap:developer ?d', '?d foaf:name ?na',
-                '?d scm:userId ?id', '?d scm:mbox ?m', '?d foaf:img ?i', '?i foaf:depicts ?im']
-    };
     try {
-        // TODO
-        //returnCallback(require('./tbds.js'))
-        var re = [];
-        for (var i in tbdById) {
-            re.push(tbdById[i]);
-        }
-        returnCallback({
-            "status": "OK",
-            "results": re
-        });
+        //TODO
+        returnCallback({viewList: require('./tbds').tbds});
+        /*var viewTriples = [
+            '?path views:supports ?_vd',
+            '?_vd platform:identifier ?id',
+            '?_vd platform:title ?title',
+            '?_vd platform:supports ?_vs',
+            '?_vd platform:hasParameter ?_sp',
+            '?_vd platform:targetType ?targetType'
+        ];
+        var parsedTrip = sdhTools.parseTriples(repoTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            returnCallback({viewList: result});
+        });*/
     } catch (err) {
         console.log("ERROR in getTbdList: " + err);
         returnCallback(err);
@@ -383,7 +496,7 @@ var getProduct = function getProduct(prid, retCallback) {
     var frag;
 
     try {
-        // TODO
+        // TODO chage to sdhTools
         /*sdhGate.get_fragment(p.patterns, function(f) {
             frag = f.fragment;
             sdhGate.get_results_from_fragment(frag, q, retCallback);
@@ -484,7 +597,7 @@ var getProject = function getProject(pid, retCallback) {
     var frag;
 
     try {
-        // TODO
+        // TODO chage to sdhTools
         /*sdhGate.get_fragment(p.patterns, function(f) {
             frag = f.fragment;
             sdhGate.get_results_from_fragment(frag, q, retCallback);
@@ -590,6 +703,7 @@ var getRepository = function getRepository(rid, retCallback) {
     };
     var frag;
     try {
+        // TODO chage to sdhTools
         sdhGate.get_fragment(p.patterns, function(f) {
             // TODO control error
             frag = f.fragment;
@@ -693,6 +807,7 @@ var getUser = function getUser(uid, retCallback) {
                 retCallback(response.statusCode);
             } else {
                 if (response.statusCode == 200) {
+                    // TODO chage to sdhTools
                     var res = {
                         "status": "OK",
                         "fragment": body.toString('utf-8')
@@ -824,7 +939,7 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
         callback();
     } else {
         getTbdList(function(newTBDs) {
-            GLOBAL.tbds = newTBDs.results;
+            GLOBAL.tbds = newTBDs.viewList;
             callback();
         });
     }
@@ -839,13 +954,14 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     if (DUMMYDATA) {
         GLOBAL.metrics = require('./metrics').metrics;
         GLOBAL.metricsById = {};
+        GLOBAL.metricUriById = {};
         for (var i=0; i< metrics.length; i++) {
             metricsById[metrics[i].id] = metrics[i];
         }
         callback();
     } else {
         getMetricList(function (newMetrics) {
-            GLOBAL.metrics = newMetrics.results;
+            GLOBAL.metrics = newMetrics.metricList;
             callback();
         });
     }
