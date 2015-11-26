@@ -38,3 +38,9 @@ GLOBAL.SESSION_INFO = {
 };
 GLOBAL.SESSION_DURATION = 3600 * 1000; //1 hour in ms
 GLOBAL.SESSION_GARBAGE_COLLECTOR = 120 * 1000; //2 minutes in ms
+
+// RABBITMQ CONFIG
+GLOBAL.RABBITHOST = "amqp://<yourRabbitHost>";
+GLOBAL.RABBITPORT = 5672 //Rabbit Port
+GLOBAL.EXCHANGE = "sdh"; // Rabbit Exchange tag
+GLOBAL.ROUTINGKEY = "curator.request.query"; // Rabbit Routing Key
