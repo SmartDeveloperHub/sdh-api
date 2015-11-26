@@ -1,6 +1,6 @@
 ##-- DECLARATION -------------------------------------------------------------##
 
-##-- @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
@@ -9,6 +9,7 @@
 @prefix amqp:    <http://www.smartdeveloperhub.org/vocabulary/amqp#> .
 @prefix types:   <http://www.smartdeveloperhub.org/vocabulary/types#> .
 
+@prefix org:     <http://www.smartdeveloperhub.org/vocabulary/organization#> .
 @prefix ci:      <http://www.smartdeveloperhub.org/vocabulary/ci#> .
 @prefix scm:     <http://www.smartdeveloperhub.org/vocabulary/scm#> .
 
