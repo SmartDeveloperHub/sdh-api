@@ -961,10 +961,10 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
  * @param callback
  */
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
+    GLOBAL.metricsById = {};
+    GLOBAL.metricUriById = {};
     if (DUMMYDATA) {
         GLOBAL.metrics = require('./metrics').metrics;
-        GLOBAL.metricsById = {};
-        GLOBAL.metricUriById = {};
         for (var i=0; i< metrics.length; i++) {
             metricsById[metrics[i].id] = metrics[i];
         }
@@ -972,6 +972,9 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     } else {
         getMetricList(function (newMetrics) {
             GLOBAL.metrics = newMetrics.metricList;
+            for (var i=0; i< metrics.length; i++) {
+                metricsById[metrics[i].id] = metrics[i];
+            }
             callback();
         });
     }
@@ -1181,7 +1184,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
  */
 exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback) {
     var http_path;
-    if (DUMMYDATA) {
+    if (DUMMYDATA || DUMMYMETRICS) {
         http_path = "progresiveRandom" + randomIntFromInterval(1,3);
         if (mid == 'reporeleasestatus' || mid == 'productreleasestatus' || mid == 'projectreleasestatus') {
             //http_path = "float"; //simply random float number serie
