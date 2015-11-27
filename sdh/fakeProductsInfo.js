@@ -68,7 +68,7 @@ exports.fakeProductsInfo = [
         "description" : "A product",
         "productid" : "5",
         "tags" :['SDH','5'],
-        "avatar": "assets/images/CytoChartDemo/rp5.gng",
+        "avatar": "assets/images/CytoChartDemo/rp5.png",
         "projects": [
 
         ]
@@ -78,7 +78,7 @@ exports.fakeProductsInfo = [
         "description" : "A product",
         "productid" : "6",
         "tags" :['SDH','6'],
-        "avatar": "assets/images/CytoChartDemo/bp6.gng",
+        "avatar": "assets/images/CytoChartDemo/bp6.png",
         "projects": [
 
         ]
@@ -119,13 +119,13 @@ exports.productList = [
         "description" : "A product",
         "productid" : "5",
         "tags" :['SDH','5'],
-        "avatar": "assets/images/CytoChartDemo/rp5.gng"
+        "avatar": "assets/images/CytoChartDemo/rp5.png"
     },
     {
         "name" : "Product 6",
         "description" : "A product",
         "productid" : "6",
         "tags" :['SDH','6'],
-        "avatar": "assets/images/CytoChartDemo/bp6.gng",
+        "avatar": "assets/images/CytoChartDemo/bp6.png",
     }
 ];
