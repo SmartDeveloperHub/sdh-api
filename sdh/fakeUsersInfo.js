@@ -198,7 +198,7 @@ exports.userList = [
         "avatar" : "https://avatars1.githubusercontent.com/u/196068?v=3&s=460"
     },
     {
-        "name" : "Fernando Serena Acedo",
+        "name" : "Fernando Serena",
         "email" : "lola@organization.com",
         "userid" : "1002",
         "avatar" : "https://avatars2.githubusercontent.com/u/2788595?v=3&s=460"
@@ -222,25 +222,25 @@ exports.userList = [
         "avatar" : "https://avatars3.githubusercontent.com/u/1067341?v=3&s=400"
     },
     {
-        "name" : "Asuncion Gomez Perez",
+        "name" : "Asuncion Gomez",
         "email" : "elimos@organization.com",
         "userid" : "1006",
         "avatar" : "https://pbs.twimg.com/profile_images/1554448422/asun_oeg_400x400.png"
     },
     {
-        "name" : "Alejandro F. Carrera",
+        "name" : "Alejandro Fernandez",
         "email" : "lubacon@organization.com",
         "userid" : "1007",
         "avatar" : "https://avatars0.githubusercontent.com/u/2384152?v=3&s=460"
     },
     {
-        "name" : "Andres Garcia Silva",
+        "name" : "Andres Garcia",
         "email" : "oli@organization.com",
         "userid" : "1008",
         "avatar" : "https://avatars1.githubusercontent.com/u/5235697?v=3&s=460"
     },
     {
-        "name" : "Miguel Esteban Gutierrez",
+        "name" : "Miguel Esteban",
         "email" : "perry@organization.com",
         "userid" : "1009",
         "avatar" : "https://avatars2.githubusercontent.com/u/6214757?v=3&s=460"
@@ -252,7 +252,7 @@ exports.userList = [
         "avatar" : "https://image.freepik.com/iconos-gratis/avatar-mujer_318-81274.jpg"
     },
     {
-        "name" : "Ruben de Dios Barbero",
+        "name" : "Ruben de Dios",
         "email" : "elwil@organization.com",
         "userid" : "1011",
         "avatar" : "https://image.freepik.com/iconos-gratis/hombre-avatar-oscuro_318-9118.jpg"
