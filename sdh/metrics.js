@@ -483,7 +483,7 @@ exports.metrics = [
     },
     {
         "id" : "directormanagers",
-        "title": "director managers",
+        "title": "Director managers",
         "path" : "/metrics/directormanagers",
         "description" : "director managers",
         "params": ['uid'],
