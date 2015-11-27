@@ -934,12 +934,22 @@ exports.sync_productExist = function (rid) {
  * @param callback
  */
 exports.setAvailableTbds = function setAvailableTbds(callback) {
+    GLOBAL.tbdById = {};
+    GLOBAL.tbdUriById = {};
     if (DUMMYDATA) {
         GLOBAL.tbds = require('./tbds').tbds;
+        for (var i=0; i< tbds.length; i++) {
+            tbdById[tbds[i].id] = tbds[i];
+            tbdUriById[tbds[i].id] = tbds[i].path;
+        }
         callback();
     } else {
         getTbdList(function(newTBDs) {
             GLOBAL.tbds = newTBDs.viewList;
+            for (var i=0; i< tbds.length; i++) {
+                tbdById[tbds[i].id] = tbds[i];
+                tbdUriById[tbds[i].id] = tbds[i].path;
+            }
             callback();
         });
     }
@@ -1049,7 +1059,7 @@ exports.getUserInfo = function getUserInfo(uid, returnCallback) {
  * @param to {Date} date indicating the "to" limit for the request
  * @param callback {Function} the callback to send the metric result to client
  */
-exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
+exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
     // REAL tdbs
     if (typeof tbdUriById[tid] !== "undefined") {
         var http_path = tbdUriById[tid];
@@ -1067,6 +1077,12 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         }
         if(uid !== undefined) {
             qpObject['uid'] = uid;
+        }
+        if(pid !== undefined) {
+            qpObject['pid'] = pid;
+        }
+        if(prid !== undefined) {
+            qpObject['prid'] = prid;
         }
         if(from !== null) {
             qpObject['begin'] = from / 1000;
@@ -1088,13 +1104,11 @@ exports.getTBDValue = function (tid, rid, uid, from, to, callback) {
         };
         request(options, function (error, response, body) {
             if (error) {
-                // TODO
-                retCallback(response.statusCode);
+                console.log(error);
+                callback(404);
             } else {
                 if (response.statusCode == 200) {
                     data = JSON.parse(body);
-                    // Parse data... add user name, or something chuli piruli
-                    // TODO TODO TODO!!!
                     var i;
                     var val = [];
                     // For test
