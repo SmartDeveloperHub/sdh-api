@@ -290,7 +290,7 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
     var parsedTrip = sdhTools.parseTriples(projectTriples);
 
     sdhTools.getfromSDH(parsedTrip, function(result) {
-        returnCallback(result);
+        returnCallback({projectList: result});
     });
 };
 
@@ -301,16 +301,16 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
 var getProductsInfo = function getProductsInfo(returnCallback) {
     try {
         var prodTriples = [
-            '?_o org:hasProduc ?_p',
-            '?_p scm:id ?productid',
-            '?_p org:prefLabel ?name',
+            '?_o org:hasProduct ?_p',
+            '?_p org:id ?productid',
+            '?_p skos:prefLabel ?name',
             '?_p foaf:depiction ?_im',
             '?_im foaf:depicts ?avatar'
         ];
         var parsedTrip = sdhTools.parseTriples(prodTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
-            returnCallback(result);
+            returnCallback({productList: result});
         });
     } catch (err) {
         console.log("ERROR in getProductsInfo: " + err);
@@ -416,10 +416,10 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
     //getOrganizationInfo(function(e) {
         //var resultOrganizations = parseOrganizationList(e);
         var resultOrganizations = require("./fakeOrganizationsInfo");
-        //getProductsInfo(function (e) {
-            var resultProducts = require("./fakeProductsInfo");
-            //getProjectsInfo(function (e) {
-                var resultProjects = require("./fakeProjectsInfo");
+        getProductsInfo(function (resultProducts) {
+            //var resultProducts = require("./fakeProductsInfo");
+            getProjectsInfo(function (resultProjects) {
+                //var resultProjects = require("./fakeProjectsInfo");
                 getRepositoriesInfo(function (reposResult) {
                     //console.log(reposResult);
                     getUsersInfo(function (usersResult) {
@@ -427,8 +427,8 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
                         returnCallback(resultOrganizations, resultProducts, resultProjects, reposResult, usersResult);
                     });
                 });
-            //});
-        //});
+            });
+        });
     //});
 };
 
@@ -477,8 +477,9 @@ var parseUserList = function parseUserList(uList) {
             };
 
             newUser.email = [newUser.email];
+            newUser.position = undefined;
             // By the moment we only have 1 organization :S
-            newUser.position = {1: posLevel};
+            newUser.positionsByOrgId = {1: [posLevel]};
             __usersById[uList[i].userid] = newUser;
         }
     }
@@ -489,7 +490,7 @@ var addPositions = function addPositions(mById) {
     for (var key in mById) {
         // TODO Hardcoding positions for DEMO
         //mById[key]['positionsByOrgId'] = {1:"director"};
-        mById[key]['positionsByOrgId'] = {1:1};
+        mById[key]['positionsByOrgId'] = {1:[1]};
     }
     return mById;
 };
@@ -523,8 +524,6 @@ module.exports.preloadAll = function preloadAll (callback) {
         console.log("~~~~~Users length: " + usrs.userList.length);
         // modification for user email lists
         _usersById = parseUserList(usrs.userList);
-        // Add Positions By organization TODO only 4 demo
-        _usersById = addPositions(_usersById);
         // Create new user List
         _users.userList = [];
         for (var key in _usersById) {
@@ -539,11 +538,11 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var i = 0; i < _repositories.repositoryList.length; i++) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
-        console.log("~~~~~Repositories after parse (" + _repositories.repositoryList.length + "): ");
+        //console.log("~~~~~Repositories after parse (" + _repositories.repositoryList.length + "): ");
         console.log(_repositories);
 
         // Static data structures generation for projects
-        _projects.projectList = removeRepeatedItems(proj.projectList);
+        //_projects.projectList = removeRepeatedItems(proj.projectList);
         for (var i = 0; i < _projects.projectList.length; i++) {
             _projectsById[_projects.projectList[i].projectid] = _projects.projectList[i];
         }

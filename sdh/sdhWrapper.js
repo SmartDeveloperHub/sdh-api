@@ -1211,7 +1211,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             qpObject['uid'] = uid;
         }
         if(pid !== undefined) {
-            qpObject['pid'] = pid;
+            qpObject['pjid'] = pid;
         }
         if(prid !== undefined) {
             qpObject['prid'] = prid;
