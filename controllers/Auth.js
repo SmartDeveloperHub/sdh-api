@@ -45,7 +45,7 @@ module.exports.login = function login (req, res, next) {
             };
 
             // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
-            req.user["positionsByOrg"] = usersById['uidNumber'].positionsByOrg;
+            req.user["positionsByOrg"] = usersById[req.user.uidNumber].positionsByOrg;
 
             /*req.user["positionsByOrg"] = {
                 1: randomIntFromInterval(1,4)

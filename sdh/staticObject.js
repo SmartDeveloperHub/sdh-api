@@ -485,6 +485,15 @@ var parseUserList = function parseUserList(uList) {
     return __usersById;
 };
 
+var addPositions = function addPositions(mById) {
+    for (var key in mById) {
+        // TODO Hardcoding positions for DEMO
+        //mById[key]['positionsByOrgId'] = {1:"director"};
+        mById[key]['positionsByOrgId'] = {1:1};
+    }
+    return mById;
+};
+
 /**
  * --PUBLIC METHODS--
  */
@@ -514,6 +523,8 @@ module.exports.preloadAll = function preloadAll (callback) {
         console.log("~~~~~Users length: " + usrs.userList.length);
         // modification for user email lists
         _usersById = parseUserList(usrs.userList);
+        // Add Positions By organization TODO only 4 demo
+        _usersById = addPositions(_usersById);
         // Create new user List
         _users.userList = [];
         for (var key in _usersById) {
