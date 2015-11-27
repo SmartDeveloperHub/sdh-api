@@ -330,7 +330,7 @@ exports.metrics = [
     {
         "id" : "projusers",
         "title": "Project users",
-        "path" : "/metrics/produsers",
+        "path" : "/metrics/projusers",
         "description" : "Number of users in a project",
         "params": ['pid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
