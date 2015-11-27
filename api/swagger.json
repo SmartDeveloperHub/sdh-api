@@ -561,6 +561,20 @@
                         "type": "string"
                     },
                     {
+                        "name": "pid",
+                        "in": "query",
+                        "description": "Project id",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "prid",
+                        "in": "query",
+                        "description": "Product id",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "uid",
                         "in": "query",
                         "description": "User id",

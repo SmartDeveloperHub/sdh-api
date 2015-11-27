@@ -69,6 +69,8 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res) {
     // Collect all tbd request params
     var tid = req.swagger.params['tid'].value;
     var rid = req.swagger.params['rid'].value;
+    var pid = req.swagger.params['pid'].value;
+    var prid = req.swagger.params['prid'].value;
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
@@ -100,5 +102,5 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res) {
         }
     };
 
-    TimeBasedData.getTimeBasedData(tid, rid, uid, from, to, callback);
+    TimeBasedData.getTimeBasedData(tid, rid, uid, pid, prid, from, to, callback);
 };
