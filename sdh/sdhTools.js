@@ -64,12 +64,11 @@ var getNewTtl = function getNewTtl(triples, prefixes, bNodes, callback) {
 
 var sendAfterWrite = function sendAfterWrite(result, ch) {
     // TODO ERROR control
-    console.log("---------- new request ---------");
     // Send file
     //ch.assertExchange(EXCHANGE, 'topic', {durable: false});
     ch.publish(EXCHANGE, ROUTINGKEY, new Buffer(result));
-    console.log(" [x] Sent " + ROUTINGKEY);
-    console.log(result);
+    //console.log(" [x] Sent " + ROUTINGKEY);
+    //console.log(result);
     return;
 };
 
@@ -125,6 +124,8 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
     try {
         if (!bNodes.length) {
             console.log('Bad bNodes parameter. N3 Node Array expected');
+            callback(null);
+            return -1;
         }
         // generate Agent ID for each request
         var agentId = uuid();
@@ -147,7 +148,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                 ch.assertQueue('', {durable: false, autoDelete: true, exclusive: false}, function (err, q) {
                     ch.bindQueue(q.queue, EXCHANGE, qName);
                     ch.consume(q.queue, function (msg) {
-                        console.log(" [x Accept] %s", msg.fields.routingKey);
+                        //console.log(" [x Accept] %s", msg.fields.routingKey);
                         // Parse msg
                         var parser = N3.Parser();
                         var isOk = false;
@@ -184,7 +185,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                     var finalResponse = [];
                     ch.consume(q.queue, function (msg) {
                         if (msg.properties.headers.state == 'end') {
-                            console.log(" [x Data] %s:  '%s'", msg.fields.routingKey, JSON.stringify(finalResponse));
+                            //console.log(" [x Data] %s: ", msg.fields.routingKey);
                             console.log('...Connection close...');
                             conn.close();
                             callback(finalResponse);
