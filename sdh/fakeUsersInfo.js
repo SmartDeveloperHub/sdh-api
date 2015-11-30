@@ -27,7 +27,7 @@ exports.fakeUsersInfo = [
         "name" : "Jos\u00e9 Mart\u00ednez",
         "email" : "pepe@organization.com",
         "userid" : "1001",
-        "avatar": "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar": "https://avatars1.githubusercontent.com/u/196068?v=3&s=460",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -37,7 +37,7 @@ exports.fakeUsersInfo = [
         "name" : "Dolores Garc\u00eda",
         "email" : "lola@organization.com",
         "userid" : "1002",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://avatars2.githubusercontent.com/u/2788595?v=3&s=460",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -47,7 +47,7 @@ exports.fakeUsersInfo = [
         "name" : "Jordi Fern\u00e1ndez",
         "email" : "jordi@organization.com",
         "userid" : "1003",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://avatars0.githubusercontent.com/u/3510628?v=3&s=460",
         "scmuserurl" : "http://scmuserURL",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
@@ -57,7 +57,7 @@ exports.fakeUsersInfo = [
         "name" : "Michael Frost",
         "email" : "mfrost@organization.com",
         "userid" : "1004",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://avatars3.githubusercontent.com/u/1067341?v=3&s=400",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -66,7 +66,7 @@ exports.fakeUsersInfo = [
         "name" : "Violet Hamilton",
         "email" : "hamilton@organization.com",
         "userid" : "1005",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://pbs.twimg.com/profile_images/1554448422/asun_oeg_400x400.png",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -75,7 +75,7 @@ exports.fakeUsersInfo = [
         "name" : "Elizabeth Moss",
         "email" : "elimos@organization.com",
         "userid" : "1006",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://avatars0.githubusercontent.com/u/2384152?v=3&s=460",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -84,7 +84,7 @@ exports.fakeUsersInfo = [
         "name" : "Lucy Bacon",
         "email" : "lubacon@organization.com",
         "userid" : "1007",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://avatars1.githubusercontent.com/u/5235697?v=3&s=460",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -93,7 +93,7 @@ exports.fakeUsersInfo = [
         "name" : "Oliver Bogart",
         "email" : "oli@organization.com",
         "userid" : "1008",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://avatars2.githubusercontent.com/u/6214757?v=3&s=460",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -102,7 +102,7 @@ exports.fakeUsersInfo = [
         "name" : "Perry Drake",
         "email" : "perry@organization.com",
         "userid" : "1009",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://image.freepik.com/iconos-gratis/avatar-mujer_318-81274.jpg",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -111,7 +111,7 @@ exports.fakeUsersInfo = [
         "name" : "Noah Thomas",
         "email" : "noaht@organization.com",
         "userid" : "1010",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png",
+        "avatar" : "https://image.freepik.com/iconos-gratis/hombre-avatar-oscuro_318-9118.jpg",
         "register" : 1306360800000,
         "lastcommit" : 1432591200000,
         "firstcommit": 1306360800000
@@ -192,70 +192,70 @@ exports.fakeUsersInfo = [
 
 exports.userList = [
     {
-        "name" : "Jos\u00e9 Mart\u00ednez",
+        "name" : "Alejandro Vera",
         "email" : "pepe@organization.com",
         "userid" : "1001",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars1.githubusercontent.com/u/196068?v=3&s=460"
     },
     {
-        "name" : "Dolores Garc\u00eda",
+        "name" : "Fernando Serena",
         "email" : "lola@organization.com",
         "userid" : "1002",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars2.githubusercontent.com/u/2788595?v=3&s=460"
     },
     {
-        "name" : "Jordi Fern\u00e1ndez",
+        "name" : "Carlos Blanco",
         "email" : "jordi@organization.com",
         "userid" : "1003",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars0.githubusercontent.com/u/3510628?v=3&s=460"
     },
     {
-        "name" : "Michael Frost",
+        "name" : "Francisco Javier Soriano",
         "email" : "mfrost@organization.com",
         "userid" : "1004",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://pbs.twimg.com/profile_images/1652209779/Foto_Jefe_Estudios.jpg"
     },
     {
-        "name" : "Violet Hamilton",
+        "name" : "Oscar Corcho",
         "email" : "hamilton@organization.com",
         "userid" : "1005",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars3.githubusercontent.com/u/1067341?v=3&s=400"
     },
     {
-        "name" : "Elizabeth Moss",
+        "name" : "Asuncion Gomez",
         "email" : "elimos@organization.com",
         "userid" : "1006",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://pbs.twimg.com/profile_images/1554448422/asun_oeg_400x400.png"
     },
     {
-        "name" : "Lucy Bacon",
+        "name" : "Alejandro Fernandez",
         "email" : "lubacon@organization.com",
         "userid" : "1007",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars0.githubusercontent.com/u/2384152?v=3&s=460"
     },
     {
-        "name" : "Oliver Bogart",
+        "name" : "Andres Garcia",
         "email" : "oli@organization.com",
         "userid" : "1008",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars1.githubusercontent.com/u/5235697?v=3&s=460"
     },
     {
-        "name" : "Perry Drake",
+        "name" : "Miguel Esteban",
         "email" : "perry@organization.com",
         "userid" : "1009",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://avatars2.githubusercontent.com/u/6214757?v=3&s=460"
     },
     {
-        "name" : "Noah Thomas",
+        "name" : "Maria Jose Gonzalez",
         "email" : "noaht@organization.com",
         "userid" : "1010",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://image.freepik.com/iconos-gratis/avatar-mujer_318-81274.jpg"
     },
     {
-        "name" : "Elizabeth William",
+        "name" : "Ruben de Dios",
         "email" : "elwil@organization.com",
         "userid" : "1011",
-        "avatar" : "http://img11.deviantart.net/11f0/i/2008/172/7/1/spore_dock_icon___svg_by_lopagof.png"
+        "avatar" : "https://image.freepik.com/iconos-gratis/hombre-avatar-oscuro_318-9118.jpg"
     },
     {
         "name" : "Ashley Capri",
