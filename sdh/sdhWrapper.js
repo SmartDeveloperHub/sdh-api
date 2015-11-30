@@ -460,20 +460,19 @@ var getMetricList = function getMetricList(returnCallback) {
 var getTbdList = function getTbdList(returnCallback) {
     try {
         //TODO
-        returnCallback({viewList: require('./tbds').tbds});
-        /*var viewTriples = [
+        //returnCallback({viewList: require('./tbds').tbds});
+        var viewTriples = [
             '?path views:supports ?_vd',
             '?_vd platform:identifier ?id',
             '?_vd platform:title ?title',
-            '?_vd platform:supports ?_vs',
             '?_vd platform:hasParameter ?_sp',
             '?_vd platform:targetType ?targetType'
         ];
-        var parsedTrip = sdhTools.parseTriples(repoTriples);
+        var parsedTrip = sdhTools.parseTriples(viewTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             returnCallback({viewList: result});
-        });*/
+        });
     } catch (err) {
         console.log("ERROR in getTbdList: " + err);
         returnCallback(err);
