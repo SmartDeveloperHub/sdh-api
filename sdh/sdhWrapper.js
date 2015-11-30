@@ -390,6 +390,19 @@ var getDemoMetrics = function getDemoMetrics() {
         for (var i in metById) {
             re.push(metById[i]);
         }*/
+var getParamId = function getParamId (uri) {
+    switch (uri) {
+        case "http://www.smartdeveloperhub.org/vocabulary/scm#Repository":
+            return 'rid';
+        case "http://www.smartdeveloperhub.org/vocabulary/organization#Project":
+            return 'pjid';
+        case "http://www.smartdeveloperhub.org/vocabulary/organization#Product":
+            return 'prid';
+        case "http://www.smartdeveloperhub.org/vocabulary/organization#Person":
+            return 'uid';
+        default:
+            return null;
+    }
 };
 
 /**
@@ -399,10 +412,12 @@ var getDemoMetrics = function getDemoMetrics() {
  */
 var normalizeMetricList = function normalizeMetricList(mList) {
     // realId model: aggr-metric
-    var newList;
+    var newList = [];
+    metricsById = getDemoMetrics();
     for (var i = 0; i < mList.length; i ++) {
         var theMetric = mList[i].id.split('-');
         var agg = theMetric[0];
+        var param = getParamId(mList[i].targetType);
         var id = '';
         for (var d = 1; d < theMetric.length; d++) {
             id += theMetric[d];
@@ -412,17 +427,32 @@ var normalizeMetricList = function normalizeMetricList(mList) {
         }
         if (id in metricsById) {
             // New Aggregator for this metric
-            metricsById[id]['aggr'].push(agg);
+            if (metricsById[id]['aggr'].indexOf(agg) == -1) {
+                metricsById[id]['aggr'].push(agg);
+            }
+            if(metricsById[id]['params'].indexOf(param) == -1) {
+                metricsById[id]['params'].push(param);
+            }
         } else {
             // New metric
             metricsById[id] = mList[i];
-            metricsById[id]['aggr'] = [agg];
-            newList.push(metricsById[id]);
+            metricsById[id] = {
+                "id" : id,
+                "title": mList[i].title,
+                "path" : "/metrics/" + id ,
+                "description" : mList[i].description,
+                "params": [param],
+                "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+                "aggr": [agg]
+            };
+            metricUriById[id]= {};
+            metricUriById[id][agg] = mList[i].path;
         }
-        // DEMO
-        var fakeMetList = getDemoMetrics();
     }
-    return newList.concat(fakeMetList);
+    for (var metid in metricsById) {
+        newList.push(metricsById[metid]);
+    }
+    return newList;
 };
 
 /**
@@ -432,21 +462,21 @@ var normalizeMetricList = function normalizeMetricList(mList) {
 var getMetricList = function getMetricList(returnCallback) {
     try {
         //TODO
-        returnCallback({metricList: require('./metrics').metrics});
-        /*var metricTriples = [
+        //returnCallback({metricList: require('./metrics').metrics});
+        var metricTriples = [
             '?path metrics:supports ?_vd',
             '?_vd platform:identifier ?id',
-            '?_vd platform:title ?title',
-            '?_vd platform:supports ?_vs',
-            '?_vd platform:hasParameter ?_sp',
-            '?_vd platform:targetType ?targetType'
+            //'?_vd platform:title ?title',
+            '?_vd platform:hasSignature ?_vs',
+            '?_vs platform:hasParameter ?_sp',
+            '?_sp platform:targetType ?targetType'
         ];
         var parsedTrip = sdhTools.parseTriples(metricTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             var nResult = normalizeMetricList (result);
             returnCallback({metricList: nResult});
-        });*/
+        });
     } catch (err) {
         console.log("ERROR in getMetricList: " + err);
         returnCallback(err);
