@@ -521,7 +521,6 @@ module.exports.preloadAll = function preloadAll (callback) {
 
         // Static data structures generation for users
         _users.userList = removeRepeatedItems(usrs.userList);
-        console.log("~~~~~Users length: " + usrs.userList.length);
         // modification for user email lists
         _usersById = parseUserList(usrs.userList);
         // Create new user List
@@ -529,39 +528,34 @@ module.exports.preloadAll = function preloadAll (callback) {
         for (var key in _usersById) {
             _users.userList.push(_usersById[key]);
         }
-        console.log("~~~~~Users after parse (" + _users.userList.length + "): ");
         //console.log(_users);
-        console.log(JSON.stringify(_users));
+        //console.log(JSON.stringify(_users));
 
         // Static data structures generation for repos
         _repositories.repositoryList = removeRepeatedItems(reps.repositoryList);
         for (var i = 0; i < _repositories.repositoryList.length; i++) {
             _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
         }
-        //console.log("~~~~~Repositories after parse (" + _repositories.repositoryList.length + "): ");
-        console.log(_repositories);
+        //console.log(_repositories);
 
         // Static data structures generation for projects
         //_projects.projectList = removeRepeatedItems(proj.projectList);
         for (var i = 0; i < _projects.projectList.length; i++) {
             _projectsById[_projects.projectList[i].projectid] = _projects.projectList[i];
         }
-        console.log("~~~~~Projects after parse (" + _projects.projectList.length + "): ");
-        console.log(_projects);
+        //console.log(_projects);
         // Static data structures generation for products
         //_products.productList = removeRepeatedItems(prod.productList);
         for (var i = 0; i < _products.productList.length; i++) {
             _productsById[_products.productList[i].productid] = _products.productList[i];
         }
-        console.log("~~~~~Products after parse (" + _products.productList.length + "): ");
-        console.log(_products);
+        //console.log(_products);
         // Static data structures generation for organizations
         //_organizations.organizationsList = removeRepeatedItems(orgs.organizationsList);
         for (var i = 0; i < _organizations.organizationsList.length; i++) {
             _organizationsById[_organizations.organizationsList[i].organizationid] = _organizations.organizationsList[i];
         }
-        console.log("~~~~~Organizations after parse (" + _organizations.organizationsList.length + "): ");
-        console.log(_organizations);
+        //console.log(_organizations);
 
         // Make global all this methods for param validation
         GLOBAL.organizations = this.getOrganizations();
