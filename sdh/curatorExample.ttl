@@ -6,6 +6,10 @@
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
+@prefix platform: <http://www.smartdeveloperhub.org/vocabulary/platform#> .
+@prefix metrics: <http://www.smartdeveloperhub.org/vocabulary/metrics#> .
+@prefix views: <http://www.smartdeveloperhub.org/vocabulary/views#> .
+
 @prefix curator: <http://www.smartdeveloperhub.org/vocabulary/curator#> .
 @prefix amqp:    <http://www.smartdeveloperhub.org/vocabulary/amqp#> .
 @prefix types:   <http://www.smartdeveloperhub.org/vocabulary/types#> .
