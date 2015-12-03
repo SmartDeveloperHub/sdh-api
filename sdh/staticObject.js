@@ -35,6 +35,12 @@ var _projectsById;
 var _productsById;
 var _organizationsById;
 
+var _usersByURI = {};
+var _repositoriesByURI = {};
+var _projectsByURI = {};
+var _productsByURI = {};
+var _organizationsByURI = {};
+
 /**
  * Parse project list to obtain easy access data structures
  * @param data Object with the project list
@@ -290,6 +296,9 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
     var parsedTrip = sdhTools.parseTriples(projectTriples);
 
     sdhTools.getfromSDH(parsedTrip, function(result) {
+        if (result == null) {
+            result = [];
+        }
         returnCallback({projectList: result});
     });
 };
@@ -310,6 +319,9 @@ var getProductsInfo = function getProductsInfo(returnCallback) {
         var parsedTrip = sdhTools.parseTriples(prodTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            }
             returnCallback({productList: result});
         });
     } catch (err) {
@@ -333,6 +345,9 @@ var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
         var parsedTrip = sdhTools.parseTriples(orgTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            }
             returnCallback({organizationsList: result});
         });*/
         returnCallback({organizationsList: []});
@@ -361,6 +376,9 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            }
             returnCallback({repositoryList: result});
         });
     } catch (err) {
@@ -376,18 +394,22 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
 var getUsersInfo = function getUsersInfo(returnCallback) {
     try {
         var repoTriples = [
-            '?_ms org:member ?_m',
+            '?_ms org:member ?URI',
             '?_ms org:position ?_mp',
             '?_mp rdfs:label ?position', // positionsByOrg
-            '?_m org:id ?userid',
-            '?_m foaf:mbox ?email',
-            '?_m foaf:name ?name',
-            '?_m foaf:img ?_im',
+            '?URI org:id ?id',
+            '?URI foaf:mbox ?email',
+            '?URI foaf:name ?name',
+            '?URI foaf:nick ?nick',
+            '?URI foaf:img ?_im',
             '?_im foaf:depicts ?avatar'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            }
             returnCallback({userList: result});
         });
     } catch (err) {
@@ -435,55 +457,65 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
 var removeRepeatedItems = function removeRepeatedItems(theList) {
     var newL = [];
     var indexObject = {};
-    for (var i = 0; i < theList.length; i++) {
-        var newKey = JSON.stringify(theList[i]);
-        if (indexObject[newKey] == undefined){
-            indexObject[newKey] = theList[i];
-        } else {
-            //Nothing
+    if (theList !== null) {
+        for (var i = 0; i < theList.length; i++) {
+            var newKey = JSON.stringify(theList[i]);
+            if (indexObject[newKey] == undefined) {
+                indexObject[newKey] = theList[i];
+            } else {
+                //Nothing
+            }
         }
-    }
-    for (var key in indexObject){
-        newL.push(indexObject[key]);
+        for (var key in indexObject) {
+            newL.push(indexObject[key]);
+        }
     }
     return newL;
 };
 
 var parseUserList = function parseUserList(uList) {
     var __usersById = {};
+    var __usersByURI = {};
     for (var i = 0; i < uList.length; i++) {
         // Accumulate all user emails
-        if (uList[i].userid in __usersById) {
+        if (uList[i].id in __usersById) {
             // Change existing User... add new email
-            __usersById[uList[i].userid].email.push(uList[i].email);
+            __usersById[uList[i].id].email.push(uList[i].email);
+            __usersByURI[uList[i].URI] = __usersById[uList[i].id];
         } else {
-            var newUser = underscore(uList[i]).clone();
+            //var newUser = underscore(uList[i]).clone();
             var posLevel;
-            switch (newUser.position) {
-                 case 'Director' :
+            switch (uList[i].position) {
+                 case 'Directors' :
                     posLevel = 1;
                     break;
-                case "Product Manager" :
+                case "ProductManagers" :
                     posLevel = 2;
                     break;
-                case "Architect" :
+                case "Architects" :
                     posLevel = 3;
                     break;
-                case "Developer" :
+                case "Developers" :
                     posLevel = 4;
                     break;
                 default:
                     posLevel = 5;
+                    break;
             };
 
-            newUser.email = [newUser.email];
-            newUser.position = undefined;
-            // By the moment we only have 1 organization :S
-            newUser.positionsByOrgId = {1: [posLevel]};
-            __usersById[uList[i].userid] = newUser;
+            var newUser = {
+                userid: uList[i].id,
+                name: uList[i].name,
+                nick: uList[i].nick,
+                avatar: uList[i].avatar,
+                email: [uList[i].email],
+                positionsByOrgId: {1: [posLevel]}//TODO  By the moment we only have 1 organization :S
+            };
+            __usersById[uList[i].id] = newUser;
+            __usersByURI[uList[i].URI] = newUser;
         }
     }
-    return __usersById;
+    return {'byId': __usersById, byURI: __usersByURI};
 };
 
 var addPositions = function addPositions(mById) {
@@ -519,17 +551,24 @@ module.exports.preloadAll = function preloadAll (callback) {
         _productsById = {};
         _organizationsById = {};
 
+        // Basic entities by URI
+        _usersByURI = {};
+        _repositoriesByURI = {};
+        _projectsByURI = {};
+        _productsByURI = {};
+        _organizationsByURI = {};
+
         // Static data structures generation for users
         _users.userList = removeRepeatedItems(usrs.userList);
         // modification for user email lists
-        _usersById = parseUserList(usrs.userList);
+        var parsedUsers = parseUserList(usrs.userList);
+        _usersById = parsedUsers.byId;
+        _usersByURI = parsedUsers.byURI;
         // Create new user List
         _users.userList = [];
         for (var key in _usersById) {
             _users.userList.push(_usersById[key]);
         }
-        //console.log(_users);
-        //console.log(JSON.stringify(_users));
 
         // Static data structures generation for repos
         _repositories.repositoryList = removeRepeatedItems(reps.repositoryList);
