@@ -55,13 +55,13 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
             console.warn(tid + " view does not require query param 'rid'");
             rid = null;
         }
-        if (!pidRequired && typeof uid !== 'undefined') {
+        if (!pidRequired && typeof pid !== 'undefined') {
             console.warn(tid + " view does not require query param 'pid'");
-            uid = null;
+            pid = null;
         }
-        if (!pridRequired && typeof rid !== 'undefined') {
+        if (!pridRequired && typeof prid !== 'undefined') {
             console.warn(tid + " view does not require query param 'prid'");
-            rid = null;
+            prid = null;
         }
 
         // Dates in ms

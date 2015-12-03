@@ -58,13 +58,13 @@ exports.getMetric = function(mid, rid, uid, pid, prid, from, to, accumulated, ma
             console.warn(mid + " metric does not require query param 'rid'");
             rid = null;
         }
-        if (!pidRequired && typeof uid !== 'undefined') {
+        if (!pidRequired && typeof pid !== 'undefined') {
             console.warn(mid + " metric does not require query param 'pid'");
-            uid = null;
+            pid = null;
         }
-        if (!pridRequired && typeof rid !== 'undefined') {
+        if (!pridRequired && typeof prid !== 'undefined') {
             console.warn(mid + " metric does not require query param 'prid'");
-            rid = null;
+            prid = null;
         }
 
         // Date Range
