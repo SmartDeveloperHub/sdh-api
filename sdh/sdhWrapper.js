@@ -408,48 +408,103 @@ var getParamId = function getParamId (uri) {
     }
 };
 
+var getTargetById = function getTargetById(uri) {
+    switch (uri) {
+        case "http://www.smartdeveloperhub.org/vocabulary/scm#Repository":
+            return repositoriesByURI;
+        case "http://www.smartdeveloperhub.org/vocabulary/organization#Project":
+            return projectsByURI;
+        case "http://www.smartdeveloperhub.org/vocabulary/organization#Product":
+            return productsByURI;
+        case "http://www.smartdeveloperhub.org/vocabulary/organization#Person":
+            return usersByURI;
+        default:
+            return {};
+    }
+};
+
 /**
- * Parse MetricList to determinate aggregators
- * @param realId {String} The metric or tbd id from SDH-Platform
- * @return {Object} with the next attributes: "realId", "id", "params" ,"type" and if is not a TBD "aggr"
+ * Normalize View List to adjust params and paths
+ * @param vList {String} The views list
+ * @return {Object} with the next attributes: "id", "params", "path", "description" and "optional"
+ */
+var normalizeViewList = function normalizeViewList(vList) {
+    var newList = [];
+    tbdById = getDemoViews();
+    if (vList !== null) {
+        for (var i = 0; i < vList.length; i++) {
+            var param = getParamId(vList[i].paramTargetType);
+            var id = vList[i].id;
+            if (id in tbdById) {
+                if (tbdById[id]['params'].indexOf(param) == -1) {
+                    tbdById[id]['params'].push(param);
+                }
+            } else {
+                // New view
+                tbdById[id] = vList[i];
+                tbdById[id] = {
+                    "id": id,
+                    "path": "/metrics/" + id,
+                    "description": vList[i].description,
+                    "params": [param],
+                    "optional": ['from', 'to', 'max', 'accumulated']
+                };
+                tbdUriById[id] = vList[i].path;
+                tbdTargetByURI[vList[i].path] = getTargetById(vList[i].targetType);
+            }
+        }
+    }
+    for (var viewid in tbdById) {
+        newList.push(tbdById[viewid]);
+    }
+    return newList;
+};
+
+/**
+ * Normalize MetricList to determinate aggregators
+ * @param mList {String} The metric list
+ * @return {Object} with the next attributes: "id", "params" ,"title", "path", "aggr", and "optional"
  */
 var normalizeMetricList = function normalizeMetricList(mList) {
     // realId model: aggr-metric
     var newList = [];
     metricsById = getDemoMetrics();
-    for (var i = 0; i < mList.length; i ++) {
-        var theMetric = mList[i].id.split('-');
-        var agg = theMetric[0];
-        var param = getParamId(mList[i].targetType);
-        var id = '';
-        for (var d = 1; d < theMetric.length; d++) {
-            id += theMetric[d];
-        }
-        if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
-            console.log('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ". " + mList[i]);
-        }
-        if (id in metricsById) {
-            // New Aggregator for this metric
-            if (metricsById[id]['aggr'].indexOf(agg) == -1) {
-                metricsById[id]['aggr'].push(agg);
+    if(mList !== null) {
+        for (var i = 0; i < mList.length; i++) {
+            var theMetric = mList[i].id.split('-');
+            var agg = theMetric[0];
+            var param = getParamId(mList[i].targetType);
+            var id = '';
+            for (var d = 1; d < theMetric.length; d++) {
+                id += theMetric[d];
             }
-            if(metricsById[id]['params'].indexOf(param) == -1) {
-                metricsById[id]['params'].push(param);
+            if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
+                console.log('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ". " + mList[i]);
             }
-        } else {
-            // New metric
-            metricsById[id] = mList[i];
-            metricsById[id] = {
-                "id" : id,
-                "title": mList[i].title,
-                "path" : "/metrics/" + id ,
-                "description" : mList[i].description,
-                "params": [param],
-                "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-                "aggr": [agg]
-            };
-            metricUriById[id]= {};
-            metricUriById[id][agg] = mList[i].path;
+            if (id in metricsById) {
+                // New Aggregator for this metric
+                if (metricsById[id]['aggr'].indexOf(agg) == -1) {
+                    metricsById[id]['aggr'].push(agg);
+                    metricUriById[id][agg] = mList[i].path;
+                }
+                if (metricsById[id]['params'].indexOf(param) == -1) {
+                    metricsById[id]['params'].push(param);
+                }
+            } else {
+                // New metric
+                metricsById[id] = mList[i];
+                metricsById[id] = {
+                    "id": id,
+                    "title": mList[i].title,
+                    "path": "/metrics/" + id,
+                    "description": mList[i].description,
+                    "params": [param],
+                    "optional": ['from', 'to', 'max', 'accumulated', 'aggr'],
+                    "aggr": [agg]
+                };
+                metricUriById[id] = {};
+                metricUriById[id][agg] = mList[i].path;
+            }
         }
     }
     for (var metid in metricsById) {
