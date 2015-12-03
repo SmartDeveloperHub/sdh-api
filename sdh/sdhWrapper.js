@@ -537,6 +537,7 @@ var getMetricList = function getMetricList(returnCallback) {
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             var nResult = normalizeMetricList (result);
+            console.log(nResult);
             returnCallback({metricList: nResult});
         });
     } catch (err) {
@@ -556,14 +557,17 @@ var getTbdList = function getTbdList(returnCallback) {
         var viewTriples = [
             '?path views:supports ?_vd',
             '?_vd platform:identifier ?id',
-            '?_vd platform:title ?title',
-            '?_vd platform:hasParameter ?_sp',
-            '?_vd platform:targetType ?targetType'
+            '?_vd platform:hasSignature ?_vs',
+            //'?_vd views:target ?targetType',
+            '?_vs platform:hasParameter ?_sp',
+            '?_sp platform:targetType ?paramTargetType'
         ];
         var parsedTrip = sdhTools.parseTriples(viewTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
-            returnCallback({viewList: result});
+            var nResult = normalizeViewList (result);
+            console.log(nResult);
+            returnCallback({viewList: nResult});
         });
     } catch (err) {
         console.log("ERROR in getTbdList: " + err);
@@ -886,48 +890,7 @@ var getUser = function getUser(uid, retCallback) {
     var http_path = userUriById[uid];
     // Here we use the user uri to get the information wanted (We can use a fragment request too)
     try {
-        var options = {
-          url: http_path,
-          headers: {
-            "Accept": "text/turtle"
-          }
-        };
-        request(options, function (error, response, body) {
-            if (error) {
-                // TODO
-                retCallback(response.statusCode);
-            } else {
-                if (response.statusCode == 200) {
-                    // TODO chage to sdhTools
-                    var res = {
-                        "status": "OK",
-                        "fragment": body.toString('utf-8')
-                    };
-                    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-                        'SELECT * WHERE {?s <http://xmlns.com/foaf/0.1/name> ?name. ?i <http://xmlns.com/foaf/0.1/depicts> ?avatar.' +
-                        '?s scm:firstCommit ?firstCommit. ?s scm:lastCommit ?lastCommit. ?s scm:mbox ?email.' +
-                        '?s scm:signUpDate ?register. ?s scm:signUpDate ?register. ?s scm:userId ?userid.}';
-                    sdhGate.get_results_from_fragment(res.fragment, q, retCallback);
-                } else {
-                    // TODO
-                    retCallback(response.statusCode);
-                }
-            }
-        });
 
-        /*var req = request('GET', http_path, {
-            "headers": {"Accept": "text/turtle"}
-        });
-        if (req.statusCode === 200) {
-            infoPack = {
-                "status": "OK",
-                "data": req.getBody().toString('utf-8')
-            };
-        }
-        else {
-            console.log('error ' + req.statusCode);
-            retCallback(req.statusCode);
-        }*/
     }
     catch (err) {
         console.log('--bad request!');
@@ -1027,6 +990,7 @@ exports.sync_productExist = function (rid) {
 exports.setAvailableTbds = function setAvailableTbds(callback) {
     GLOBAL.tbdById = {};
     GLOBAL.tbdUriById = {};
+    GLOBAL.tbdTargetByURI = {};
     if (DUMMYDATA) {
         GLOBAL.tbds = require('./tbds').tbds;
         for (var i=0; i< tbds.length; i++) {
@@ -1037,10 +1001,10 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
     } else {
         getTbdList(function(newTBDs) {
             GLOBAL.tbds = newTBDs.viewList;
-            for (var i=0; i< tbds.length; i++) {
+            /*for (var i=0; i< tbds.length; i++) {
                 tbdById[tbds[i].id] = tbds[i];
                 tbdUriById[tbds[i].id] = tbds[i].path;
-            }
+            }*/
             callback();
         });
     }
@@ -1063,9 +1027,6 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     } else {
         getMetricList(function (newMetrics) {
             GLOBAL.metrics = newMetrics.metricList;
-            for (var i=0; i< metrics.length; i++) {
-                metricsById[metrics[i].id] = metrics[i];
-            }
             callback();
         });
     }
@@ -1223,8 +1184,11 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                     } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
                         val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
                     }else {
-                        console.warn("??Auto-tbd ('" + tid + "') doesn't exist... Returning... something ??");
-                        val = data.result[0];
+                        // TODO this must be the only method to construct the views
+                        val = data.result;
+                        for (i = 0; i < data.result.length; i ++) {
+                            val.push(tbdTargetByURI[data.result[i].uri]);
+                        }
                     }
                     data.result = val;
                     callback(data);
@@ -1322,7 +1286,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         if(max !== null) {
             qpObject['max'] = max;
         }
-        qpObject['aggr'] = aggr;
+        //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
         if (http_path !== "floatProg" && http_path !== "float" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
