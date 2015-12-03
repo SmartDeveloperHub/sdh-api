@@ -209,36 +209,36 @@ var parseMetricTree = function parseMetricTree (e) {
             }
         }
         // Add Fake metrics 4 Demo
-        metById["userspeed"] = {
-            "id" : "userspeed",
+        metById["memberspeed"] = {
+            "id" : "memberspeed",
             "title": "Speed",
-            "path" : "/metrics/userspeed",
-            "description" : "User development speed skill value",
+            "path" : "/metrics/memberspeed",
+            "description" : "Member development speed skill value",
             "params": ['uid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
             "aggr": ['sum', 'avg']
         };
-        metById["usercollaboration"] = {
-            "id" : "usercollaboration",
+        metById["membercollaboration"] = {
+            "id" : "membercollaboration",
             "title": "Collaboration",
-            "path" : "/metrics/usercollaboration",
-            "description" : "User development collaboration skill value",
+            "path" : "/metrics/membercollaboration",
+            "description" : "Member development collaboration skill value",
             "params": ['uid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
             "aggr": ['sum', 'avg']
         };
-        metById["userquality"] = {
-            "id" : "userquality",
+        metById["memberquality"] = {
+            "id" : "memberquality",
             "title": "Quality",
-            "path" : "/metrics/userquality",
-            "description" : "User development quality skill value",
+            "path" : "/metrics/memberquality",
+            "description" : "Member development quality skill value",
             "params": ['uid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
             "aggr": ['sum', 'avg']
         };
-        metricUriById["userspeed"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
-        metricUriById["usercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
-        metricUriById["userquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
+        metricUriById["memberspeed"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["membercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
+        metricUriById["memberquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
 
         metById["orgproducts"] = {
             "id" : "orgproducts",
@@ -260,10 +260,10 @@ var parseMetricTree = function parseMetricTree (e) {
             "aggr": ['sum', 'avg']
         };
 
-        metById["produsers"] = {
-            "id" : "produsers",
+        metById["prodmembers"] = {
+            "id" : "prodmembers",
             "title": "Product Users",
-            "path" : "/metrics/produsers",
+            "path" : "/metrics/prodmembers",
             "description" : "Number of Products",
             "params": ['prid'],
             "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
@@ -282,7 +282,7 @@ var parseMetricTree = function parseMetricTree (e) {
 
         metricUriById["orgproducts"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
         metricUriById["prodprojects"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
-        metricUriById["produsers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+        metricUriById["prodmembers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
         metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
 
         GLOBAL.metricsById = metById;
@@ -301,42 +301,46 @@ var parseMetricTree = function parseMetricTree (e) {
         return e;
     }
 };
+var getDemoViews = function getDemoViews() {
+    return {};
+};
 
 var getDemoMetrics = function getDemoMetrics() {
     // Add Fake metrics 4 Demo
     var metById = {};
-    metById["userspeed"] = {
-        "id" : "userspeed",
-        "title": "Speed",
-        "path" : "/metrics/userspeed",
-        "description" : "User development speed skill value",
-        "params": ['uid'],
+
+    metById["orgcommits"] = {
+        "id" : "orgcommits",
+        "title": 'Organization commits',
+        "path" : "/metrics/orgcommits",
+        "description" : "Organization commits",
+        "params": [],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     };
-    metricUriById["userspeed"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+    metricUriById["orgcommits"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
 
-    metById["usercollaboration"] = {
-        "id" : "usercollaboration",
+    metById["membercollaboration"] = {
+        "id" : "membercollaboration",
         "title": "Collaboration",
-        "path" : "/metrics/usercollaboration",
-        "description" : "User development collaboration skill value",
+        "path" : "/metrics/membercollaboration",
+        "description" : "Member development collaboration skill value",
         "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     };
-    metricUriById["usercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
+    metricUriById["membercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
 
-    metById["userquality"] = {
-        "id" : "userquality",
+    metById["memberquality"] = {
+        "id" : "memberquality",
         "title": "Quality",
-        "path" : "/metrics/userquality",
-        "description" : "User development quality skill value",
+        "path" : "/metrics/memberquality",
+        "description" : "Member development quality skill value",
         "params": ['uid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     };
-    metricUriById["userquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
+    metricUriById["memberquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
 
     metById["orgproducts"] = {
         "id" : "orgproducts",
@@ -358,10 +362,10 @@ var getDemoMetrics = function getDemoMetrics() {
         "aggr": ['sum', 'avg']
     };
 
-    metById["produsers"] = {
-        "id" : "produsers",
-        "title": "Product Users",
-        "path" : "/metrics/produsers",
+    metById["prodmembers"] = {
+        "id" : "prodmembers",
+        "title": "Product Member",
+        "path" : "/metrics/prodmembers",
         "description" : "Number of Products",
         "params": ['prid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
@@ -380,7 +384,7 @@ var getDemoMetrics = function getDemoMetrics() {
 
     metricUriById["orgproducts"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
     metricUriById["prodprojects"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
-    metricUriById["produsers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
+    metricUriById["prodmembers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
     metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
 
     return metById; // TODO array
