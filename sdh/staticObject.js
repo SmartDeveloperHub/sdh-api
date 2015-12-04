@@ -286,19 +286,16 @@ var parseUserTree = function parseUserTree (e) {
 var getProjectsInfo = function getProjectsInfo(returnCallback) {
 
     var projectTriples = [
-        '?_o org:hasProject ?_p',
-        '?_p org:id ?projectid',
-        '?_p doap:name ?name',
-        '?_p foaf:depiction ?_im',
+        '?_o org:hasProject ?URI',
+        '?URI org:id ?id',
+        '?URI doap:name ?name',
+        '?URI foaf:depiction ?_im',
         '?_im foaf:depicts ?avatar'
     ];
 
     var parsedTrip = sdhTools.parseTriples(projectTriples);
 
     sdhTools.getfromSDH(parsedTrip, function(result) {
-        if (result == null) {
-            result = [];
-        }
         returnCallback({projectList: result});
     });
 };
@@ -310,10 +307,10 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
 var getProductsInfo = function getProductsInfo(returnCallback) {
     try {
         var prodTriples = [
-            '?_o org:hasProduct ?_p',
-            '?_p org:id ?productid',
-            '?_p skos:prefLabel ?name',
-            '?_p foaf:depiction ?_im',
+            '?_o org:hasProduct ?URI',
+            '?URI org:id ?id',
+            '?URI skos:prefLabel ?name',
+            '?URI foaf:depiction ?_im',
             '?_im foaf:depicts ?avatar'
         ];
         var parsedTrip = sdhTools.parseTriples(prodTriples);
@@ -348,9 +345,9 @@ var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
             if (result == null) {
                 result = [];
             }
-            returnCallback({organizationsList: result});
+            returnCallback({organizationList: result});
         });*/
-        returnCallback({organizationsList: []});
+        returnCallback({organizationList: []});
     } catch (err) {
         console.log("ERROR in getRepositoriesInfo: " + err);
         returnCallback(err);
@@ -364,21 +361,18 @@ var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
 var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
     try {
         var repoTriples = [
-            '?_h scm:hasRepository ?_r',
-            '?_r doap:name ?name',
-            '?_r scm:repositoryId ?repositoryid',
-            '?_r scm:createdOn ?createdon',
-            '?_r scm:isArchived ?isarchived',
-            '?_r scm:isPublic ?ispublic',
-            '?_r foaf:depiction ?_im',
+            '?_h scm:hasRepository ?URI',
+            '?URI doap:name ?name',
+            '?URI scm:repositoryId ?repositoryid',
+            '?URI scm:createdOn ?createdon',
+            '?URI scm:isArchived ?isarchived',
+            '?URI scm:isPublic ?ispublic',
+            '?URI foaf:depiction ?_im',
             '?_im foaf:depicts ?avatar'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
-            if (result == null) {
-                result = [];
-            }
             returnCallback({repositoryList: result});
         });
     } catch (err) {
@@ -473,7 +467,8 @@ var removeRepeatedItems = function removeRepeatedItems(theList) {
     return newL;
 };
 
-var parseUserList = function parseUserList(uList) {
+var normalizeUserList = function normalizeUserList(uList) {
+    uList = removeRepeatedItems(uList);
     var __usersById = {};
     var __usersByURI = {};
     for (var i = 0; i < uList.length; i++) {
@@ -515,16 +510,105 @@ var parseUserList = function parseUserList(uList) {
             __usersByURI[uList[i].URI] = newUser;
         }
     }
-    return {'byId': __usersById, byURI: __usersByURI};
+    var laux = [];
+    for (var key in __usersById) {
+        laux.push(__usersById[key]);
+    }
+    return {'byId': __usersById, byURI: __usersByURI, list: laux};
 };
 
-var addPositions = function addPositions(mById) {
-    for (var key in mById) {
-        // TODO Hardcoding positions for DEMO
-        //mById[key]['positionsByOrgId'] = {1:"director"};
-        mById[key]['positionsByOrgId'] = {1:[1]};
+/**
+ * normalize repositories list
+ * @param rlist repository array
+ */
+var normalizeRepoList = function normalizeRepoList(rlist) {
+    var newList = [];
+    rlist = removeRepeatedItems(rlist);
+    var __repositoriesById = {};
+    var __repositoriesByURI = {};
+    if(rlist !== null) {
+        for (var i = 0; i < rlist.length; i++) {
+            var newUser = {
+                repositoryid: rlist[i].id,
+                name: rlist[i].name,
+                ispublick: rlist[i].ispublick,
+                isarchived: rlist[i].isarchived,
+                avatar: rlist[i].avatar,
+                createdon: rlist[i].createdon
+            };
+            __repositoriesById[rlist[i].id] = newUser;
+            __repositoriesByURI[rlist[i].URI] = newUser;
+            newList.push(newUser);
+        }
     }
-    return mById;
+    return {byId: __repositoriesById, byURI: __repositoriesByURI, list: newList};
+};
+
+/**
+ * normalize repositories list
+ * @param rlist repository array
+ */
+var normalizeProductList = function normalizeProductList(plist) {
+    var newList = [];
+    plist = removeRepeatedItems(plist);
+    var __productsById = {};
+    var __productsByURI = {};
+    if(plist !== null) {
+        for (var i = 0; i < plist.length; i++) {
+            var newProduct = {
+                productid: plist[i].id,
+                name: plist[i].name,
+                avatar: plist[i].avatar
+            };
+            __productsById[plist[i].id] = newProduct;
+            __productsByURI[plist[i].URI] = newProduct;
+            newList.push(newProduct);
+        }
+    }
+    return {byId: __productsById, byURI: __productsByURI, list: newList};
+};
+
+var normalizeProjectList = function normalizeProjectList(plist) {
+    var newList = [];
+    plist = removeRepeatedItems(plist);
+    var __projectsById = {};
+    var __projectsByURI = {};
+    if(plist !== null) {
+        for (var i = 0; i < plist.length; i++) {
+            var newProject = {
+                projectid: plist[i].id,
+                name: plist[i].name,
+                avatar: plist[i].avatar
+            };
+            __projectsById[plist[i].id] = newProject;
+            __projectsByURI[plist[i].URI] = newProject;
+            newList.push(newProject);
+        }
+    }
+    return {byId: __projectsById, byURI: __projectsByURI, list: newList};
+};
+
+var normalizeOrganizationList = function normalizeOrganizationList(olist) {
+    var newList = [];
+    olist = removeRepeatedItems(olist);
+    var __organizationsById = {};
+    var __organizationsByURI = {};
+    if(olist !== null) {
+        for (var i = 0; i < olist.length; i++) {
+            var newOrg = {
+                organizationid: olist[i].id,
+                title: olist[i].title,
+                description: olist[i].description,
+                purpose: olist[i].purpose,
+                clasification: olist[i].clasification,
+                avatar: olist[i].avatar
+            };
+            __organizationsById[olist[i].id] = newOrg;
+            __organizationsByURI[olist[i].URI] = newOrg;
+            newList.push(newOrg);
+        }
+    }
+    return {byId: __organizationsById, byURI: __organizationsByURI, list: newList};
 };
 
 /**
@@ -559,42 +643,39 @@ module.exports.preloadAll = function preloadAll (callback) {
         _organizationsByURI = {};
 
         // Static data structures generation for users
-        _users.userList = removeRepeatedItems(usrs.userList);
-        // modification for user email lists
-        var parsedUsers = parseUserList(usrs.userList);
+        var parsedUsers = normalizeUserList(usrs.userList);
+        _users.userList = parsedUsers.list;
         _usersById = parsedUsers.byId;
         _usersByURI = parsedUsers.byURI;
-        // Create new user List
-        _users.userList = [];
-        for (var key in _usersById) {
-            _users.userList.push(_usersById[key]);
-        }
+        //console.log(_users);
 
         // Static data structures generation for repos
-        _repositories.repositoryList = removeRepeatedItems(reps.repositoryList);
-        for (var i = 0; i < _repositories.repositoryList.length; i++) {
-            _repositoriesById[_repositories.repositoryList[i].repositoryid] = _repositories.repositoryList[i];
-        }
+        var parsedRepos = normalizeRepoList(reps.repositoryList);
+        _repositories.repositoryList = parsedRepos.list;
+        _repositoriesById = parsedRepos.byId;
+        _repositoriesByURI = parsedRepos.byURI;
         //console.log(_repositories);
 
-        // Static data structures generation for projects
-        //_projects.projectList = removeRepeatedItems(proj.projectList);
-        for (var i = 0; i < _projects.projectList.length; i++) {
-            _projectsById[_projects.projectList[i].projectid] = _projects.projectList[i];
-        }
-        //console.log(_projects);
         // Static data structures generation for products
-        //_products.productList = removeRepeatedItems(prod.productList);
-        for (var i = 0; i < _products.productList.length; i++) {
-            _productsById[_products.productList[i].productid] = _products.productList[i];
-        }
+        var parsedProducts = normalizeProductList(prod.productList);
+        _products.productList = parsedProducts.list;
+        _productsById = parsedProducts.byId;
+        _productsByURI = parsedProducts.byURI;
         //console.log(_products);
+
+        // Static data structures generation for projects
+        var parsedProjects = normalizeProjectList(proj.projectList);
+        _projects.projectList = parsedProjects.list;
+        _projectsById = parsedProjects.byId;
+        _projectsByURI = parsedProjects.byURI;
+        //console.log(_projects);
+
         // Static data structures generation for organizations
-        //_organizations.organizationsList = removeRepeatedItems(orgs.organizationsList);
-        for (var i = 0; i < _organizations.organizationsList.length; i++) {
-            _organizationsById[_organizations.organizationsList[i].organizationid] = _organizations.organizationsList[i];
-        }
-        //console.log(_organizations);
+        var parsedOrgs = normalizeOrganizationList(orgs.organizationList);
+        _organizations.organizationList = parsedOrgs.list;
+        _organizationsById = parsedOrgs.byId;
+        _organizationsByURI = parsedOrgs.byURI;
+        console.log(_organizations);
 
         // Make global all this methods for param validation
         GLOBAL.organizations = this.getOrganizations();
@@ -618,7 +699,7 @@ module.exports.preloadAll = function preloadAll (callback) {
  */
 module.exports.getOrganizations = function getOrganizations () {
 
-  return _organizations.organizationsList;
+  return _organizations.organizationList;
 };
 
 /**
