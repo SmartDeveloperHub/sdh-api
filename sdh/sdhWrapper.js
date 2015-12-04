@@ -537,7 +537,7 @@ var getMetricList = function getMetricList(returnCallback) {
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             var nResult = normalizeMetricList (result);
-            console.log(nResult);
+            //console.log(nResult);
             returnCallback({metricList: nResult});
         });
     } catch (err) {
@@ -566,7 +566,7 @@ var getTbdList = function getTbdList(returnCallback) {
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
             var nResult = normalizeViewList (result);
-            console.log(nResult);
+            //console.log(nResult);
             returnCallback({viewList: nResult});
         });
     } catch (err) {
@@ -1032,7 +1032,7 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     }
 };
 
-/**
+/** TODO
  * Get specific product information
  * @param prid {Object} Product Id.
  * @param returnCallback
@@ -1051,7 +1051,7 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
     }
 };
 
-/**
+/** TODO
  * Get specific project information
  * @param pid {Object} Project Id.
  * @param returnCallback
@@ -1070,7 +1070,7 @@ exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
     }
 };
 
-/**
+/** TODO
  * Get specific repository information
  * @param rid {Object} Repository Id.
  * @param returnCallback
@@ -1089,7 +1089,7 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
     }
 };
 
-/**
+/** TODO
  * Get specific user information
  * @param uid {Object} User Id.
  * @param returnCallback
@@ -1166,7 +1166,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                     data = JSON.parse(body);
                     var i;
                     var val = [];
-                    // For test
+                    // For test TODO remove all else ifs
                     if (tid == 'userrepositoriestbd') {
                         for (i = 0; i < data.result.length; i ++) {
                             val.push(repositoriesById[data.result[i]]);
