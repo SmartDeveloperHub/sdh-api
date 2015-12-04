@@ -33,8 +33,10 @@ var theCallback;
  * to collect static data repositories and users. Last step in update process
  */
 var staticDataCallback = function staticDataCallback() {
-    console.log("        * " + users.length + " Users");
+    console.log("        * " + products.length + " Products");
+    console.log("        * " + projects.length + " Projects");
     console.log("        * " + repositories.length + " Repositories");
+    console.log("        * " + users.length + " Users");
     // End
     theCallback();
 };
