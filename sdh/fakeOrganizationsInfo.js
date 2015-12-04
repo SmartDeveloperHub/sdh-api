@@ -24,7 +24,7 @@
 
 exports.fakeOrganizationsInfo = [
     {
-        "organizationid": 1,
+        "id": 1,
         "title" : "Organization DePalo 1",
         "description" : "Center Open Middleware Researches ",
         "purpose" : "This description explains the purpose of this organization",
@@ -32,17 +32,19 @@ exports.fakeOrganizationsInfo = [
         "tags" :['SDH','org'],
         "avatar": "assets/images/CytoChartDemo/rp1.png",
         "Products": [
-        ]
+        ],
+        "URI": "htp://orgdepalo.com"
     }
 ];
 
-exports.organizationsList = [
+exports.organizationList = [
     {
-        "organizationid": 1,
+        "id": 1,
         "title" : "Organization DePalo 1",
         "description" : "Center Open Middleware Researches ",
         "purpose" : "This description explains the purpose of this organization",
         "clasification": "ALM",
-        "avatar": "assets/images/CytoChartDemo/rp1.png"
+        "avatar": "assets/images/CytoChartDemo/rp1.png",
+        "URI": "htp://orgdepalo.com"
     }
 ];
