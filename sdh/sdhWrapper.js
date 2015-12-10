@@ -448,8 +448,9 @@ var normalizeViewList = function normalizeViewList(vList) {
                 tbdById[id] = vList[i];
                 tbdById[id] = {
                     "id": id,
-                    "path": "/metrics/" + id,
+                    "path": "/tbdata/" + id,
                     "description": vList[i].description,
+                    //"title": vList[i].title,
                     "params": [param],
                     "optional": ['from', 'to', 'max', 'accumulated']
                 };
