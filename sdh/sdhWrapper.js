@@ -532,7 +532,7 @@ var getMetricList = function getMetricList(returnCallback) {
         var metricTriples = [
             '?path metrics:supports ?_vd',
             '?_vd platform:identifier ?id',
-            //'?_vd platform:title ?title',
+            '?_vd platform:title ?title',
             '?_vd platform:hasSignature ?_vs',
             '?_vs platform:hasParameter ?_sp',
             '?_sp platform:targetType ?targetType'
@@ -561,8 +561,9 @@ var getTbdList = function getTbdList(returnCallback) {
         var viewTriples = [
             '?path views:supports ?_vd',
             '?_vd platform:identifier ?id',
+            //'?_vd platform:title ?title',
             '?_vd platform:hasSignature ?_vs',
-            //'?_vd views:target ?targetType',
+            '?_vd views:target ?targetType',
             '?_vs platform:hasParameter ?_sp',
             '?_sp platform:targetType ?paramTargetType'
         ];
