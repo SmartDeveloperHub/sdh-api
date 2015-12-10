@@ -57,8 +57,6 @@
         GLOBAL.request = require('request');
         // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
         var swaggerDoc = require('./api/swagger.json');
-        // global agora-fragment-js as sdhGate
-        GLOBAL.sdhGate = require("agora-fragment-js");
         // global moment.js
         GLOBAL.moment = require('moment');
         GLOBAL.underscore = require('underscore');
