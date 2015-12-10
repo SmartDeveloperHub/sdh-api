@@ -586,26 +586,28 @@ var getTbdList = function getTbdList(returnCallback) {
  * @param retCallback
  */
 var getProduct = function getProduct(prid, retCallback) {
-    // Query to get products's information
-    var q = '';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['']
-    };
-    var frag;
-
     try {
-        // TODO chage to sdhTools
-        /*sdhGate.get_fragment(p.patterns, function(f) {
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, retCallback);
-        });*/
-        console.log("no real product for sdhWrapper.getProductInfo " + prid);
+        var productTriples = [
+            '?_o org:hasProduct ?URI',
+            '?URI org:id "' + prid + '"',
+            '?URI skos:prefLabel ?name',
+            '?URI foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar'
+        ];
+        var parsedTrip = sdhTools.parseTriples(productTriples);
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            } else {
+                result[0]['productid'] = prid;
+            }
+            retCallback(result[0]);
+        });
+        /*console.log("no real product for sdhWrapper.getProductInfo " + prid);
         retCallback({
             "status": "NOIMPLEMENTED",
             "results": null
-        });
+        });*/
     } catch (err) {
         console.log("ERROR in : sdhWrapper.getProduct " + err);
         retCallback({
