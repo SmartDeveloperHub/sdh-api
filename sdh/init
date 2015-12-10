@@ -26,6 +26,22 @@
 GLOBAL.sdhWrapper = require('./sdhWrapper');
 GLOBAL.sdhTools = require('./sdhTools');
 
+// GLOBALs
+GLOBAL.organizations = null;
+GLOBAL.products = null;
+GLOBAL.projects = null;
+GLOBAL.repositories = null;
+GLOBAL.users = null;
+GLOBAL.organizationsById = null;
+GLOBAL.productsById = null;
+GLOBAL.projectsById = null;
+GLOBAL.usersById = null;
+GLOBAL.repositoriesById = null;
+GLOBAL.usersByURI = null;
+GLOBAL.productsByURI = null;
+GLOBAL.projectsByURI = null;
+GLOBAL.repositoriesByURI = null;
+
 var theCallback;
 
 /**
@@ -47,7 +63,7 @@ var staticDataCallback = function staticDataCallback() {
  */
 var tdbCallback = function tdbCallback() {
     // Get static Information. Users, repositories, organization...
-    console.log("        * " + tbds.length + " TBDs");
+    console.log("        * " + tbds.length + " Views");
     console.log("    #Getting basic information about Users, Repositories and Organization...");
     try {
         // Collect all static information and update global variables
