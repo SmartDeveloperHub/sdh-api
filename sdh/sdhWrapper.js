@@ -481,6 +481,9 @@ var normalizeMetricList = function normalizeMetricList(mList) {
             var param = getParamId(mList[i].targetType);
             var id = '';
             for (var d = 1; d < theMetric.length; d++) {
+                if (d > 1) {
+                    id += '-';
+                }
                 id += theMetric[d];
             }
             if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
