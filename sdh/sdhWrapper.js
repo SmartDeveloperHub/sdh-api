@@ -540,8 +540,21 @@ var getMetricList = function getMetricList(returnCallback) {
         var parsedTrip = sdhTools.parseTriples(metricTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
+            // TODO Fix problem with metrics without params
+            var metricTriples2 = [
+                '?path metrics:supports ?_vd',
+                '?_vd platform:identifier ?id',
+                '?_vd platform:title ?title'
+            ];
+            var parsedTrip2 = sdhTools.parseTriples(metricTriples2);
+            sdhTools.getfromSDH(parsedTrip2, function(result2) {
+                console.log("result2: " + JSON.stringify(result2));
+                var nResult2 = normalizeMetricList (result2);
+                console.log("nResult2: " + JSON.stringify(nResult2));
+            });
+            console.log("result: " + JSON.stringify(result));
             var nResult = normalizeMetricList (result);
-            //console.log(nResult);
+            console.log("nResult: " + JSON.stringify(nResult));
             returnCallback({metricList: nResult});
         });
     } catch (err) {
@@ -650,37 +663,24 @@ var parseProductTree = function parseProductTree (e) {
  * 'TODO' {todoType},
  */
 var parseProductInfo = function parseProductInfo(data) {
-    var res = [];
-    var parsedTree = parseProductTree(data);
-    if (parsedTree.status === 'OK') {
-        for (var key in parsedTree.results) {
-            var productUri = key;
-            var productAtts = parsedTree.results[key];
-            break;
-        }
-        var tagList = [];
-        if (typeof productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
-            tagList = productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
-        }
-        var theProduct = {
-            "repositoryid": productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"],
-            "name": productAtts["http://usefulinc.com/ns/doap#name"],
-            "description": productAtts["http://usefulinc.com/ns/doap#description"],
-            "tags": tagList,
-            "avatar": repositoriesById[productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"]].avatar, //TODO
-            "archived": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
-            "public": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
-            "owner": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
-            "creation": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"]).valueOf(),
-            "firstCommit": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"]).valueOf(),
-            "lastCommit": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"]).valueOf(),
-            "scmlink": productAtts["http://usefulinc.com/ns/doap#location"],
-            "buildStatus": Math.random() >= 0.5, // Random Bool TODO
-            "buildDate": "OK", // TODO
-            "users": []
-        };
-    }
-    return theProduct;
+    /*var theProduct = {
+        "repositoryid": productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"],
+        "name": productAtts["http://usefulinc.com/ns/doap#name"],
+        "description": productAtts["http://usefulinc.com/ns/doap#description"],
+        "tags": tagList,
+        "avatar": repositoriesById[productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"]].avatar, //TODO
+        "archived": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isArchived"],
+        "public": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#isPublic"],
+        "owner": productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#owner"],
+        "creation": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#createdOn"]).valueOf(),
+        "firstCommit": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#firstCommit"]).valueOf(),
+        "lastCommit": moment(productAtts["http://www.smartdeveloperhub.org/vocabulary/scm#lastCommit"]).valueOf(),
+        "scmlink": productAtts["http://usefulinc.com/ns/doap#location"],
+        "buildStatus": Math.random() >= 0.5, // Random Bool TODO
+        "buildDate": "OK", // TODO
+        "users": []
+    };*/
+    return data;
 };
 
 /**
@@ -750,19 +750,7 @@ var parseProjectTree = function parseProjectTree (e) {
  * 'TODO' {todoType},
  */
 var parseProjectInfo = function parseProjectInfo(data) {
-    var res = [];
-    var parsedTree = parseProjectTree(data);
-    if (parsedTree.status === 'OK') {
-        for (var key in parsedTree.results) {
-            var ProjectUri = key;
-            var ProjectAtts = parsedTree.results[key];
-            break;
-        }
-        var tagList = [];
-        if (typeof ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
-            tagList = ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
-        }
-        var theProject = {
+       /* var theProject = {
             "repositoryid": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/--#projectId"],
             "name": ProjectAtts["http://usefulinc.com/ns/doap#name"],
             "description": ProjectAtts["http://usefulinc.com/ns/doap#description"],
@@ -778,9 +766,8 @@ var parseProjectInfo = function parseProjectInfo(data) {
             "buildStatus": Math.random() >= 0.5, // Random Bool TODO
             "buildDate": "OK", // TODO
             "users": []
-        };
-    }
-    return theProject;
+        };*/
+    return data;
 };
 
 /**
@@ -853,19 +840,7 @@ var parseRepoTree = function parseRepoTree (e) {
  * 'lastCommit' {Date}, 'scmlink' {Url}, 'buildStatus' {Number}, 'buildDate' {Date}, 'users' {Array}
  */
 var parseRepositoryInfo = function parseRepositoryInfo(data) {
-    var res = [];
-    var parsedTree = parseRepoTree(data);
-    if (parsedTree.status === 'OK') {
-        for (var key in parsedTree.results) {
-            var repoUri = key;
-            var repoAtts = parsedTree.results[key];
-            break;
-        }
-        var tagList = [];
-        if (typeof repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"] === 'string') {
-            tagList = repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#tags"].split(',');
-        }
-        var theRep = {
+        /*var theRep = {
             "repositoryid": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
             "name": repoAtts["http://usefulinc.com/ns/doap#name"],
             "description": repoAtts["http://usefulinc.com/ns/doap#description"],
@@ -881,9 +856,8 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
             "buildStatus": Math.random() >= 0.5, // Random Bool TODO
             "buildDate": "OK", // TODO
             "users": []
-        };
-    }
-    return theRep;
+        };*/
+    return data;
 };
 
 /**
@@ -930,11 +904,7 @@ var getUser = function getUser(uid, retCallback) {
  * 'lastCommit' {Date}, 'scmUserUrl' {Url} and 'repositories' {Array}
  */
 var parseUserInfo = function parseUserInfo(data) {
-    var res = [];
-    if (data.status === 'OK') {
-        var userAtts = data.results[0];
-
-        var theUser = {
+        /*var theUser = {
             "userid": userAtts["userid"].value,
             "name": userAtts["name"].value,
             "email": userAtts['email'].value,
@@ -944,9 +914,8 @@ var parseUserInfo = function parseUserInfo(data) {
             "firstCommit": moment(userAtts["firstCommit"].value).valueOf(),
             "lastCommit": moment(userAtts["lastCommit"].value).valueOf(),
             "repositories": []
-        };
-    }
-    return theUser;
+        };*/
+    return data;
 };
 
 /**
@@ -1066,10 +1035,7 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
         returnCallback(productsById[prid]);
     } else {
         getProduct(prid, function (e) {
-            var resultProduct = e;
-            if (e.status == 'OK') {
-                resultProduct = parseProductInfo(e);
-            }
+            var resultProduct = parseProductInfo(e);
             returnCallback(resultProduct);
         });
     }
@@ -1085,10 +1051,7 @@ exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
         returnCallback(projectsById[pid]);
     } else {
         getProject(pid, function (e) {
-            var resultProject = e;
-            if (e.status == 'OK') {
-                resultProject = parseProjectInfo(e);
-            }
+            var resultProject = parseProjectInfo(e);
             returnCallback(resultProject);
         });
     }
@@ -1104,10 +1067,7 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
         returnCallback(repositoriesById[rid]);
     } else {
         getRepository(rid, function (e) {
-            var resultRepo = e;
-            if (e.status == 'OK') {
-                resultRepo = parseRepositoryInfo(e);
-            }
+            var resultRepo = parseRepositoryInfo(e);
             returnCallback(resultRepo);
         });
     }
