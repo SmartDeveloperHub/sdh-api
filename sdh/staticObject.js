@@ -125,7 +125,7 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
         var repoTriples = [
             '?_h scm:hasRepository ?URI',
             '?URI doap:name ?name',
-            '?URI scm:repositoryId ?repositoryid',
+            '?URI scm:repositoryId ?id',
             '?URI scm:createdOn ?createdon',
             '?URI scm:isArchived ?isarchived',
             '?URI scm:isPublic ?ispublic',
