@@ -892,10 +892,29 @@ var parseRepositoryInfo = function parseRepositoryInfo(data) {
  * @param retCallback
  */
 var getUser = function getUser(uid, retCallback) {
-    var http_path = userUriById[uid];
     // Here we use the user uri to get the information wanted (We can use a fragment request too)
     try {
+        var repoTriples = [
+            '?_ms org:member ?URI',
+            '?_ms org:position ?_mp',
+            '?_mp rdfs:label ?position', // positionsByOrg
+            '?URI org:id "' + uid + '"',
+            '?URI foaf:mbox ?email',
+            '?URI foaf:name ?name',
+            '?URI foaf:nick ?nick',
+            '?URI foaf:img ?_im',
+            '?_im foaf:depicts ?avatar'
+        ];
+        var parsedTrip = sdhTools.parseTriples(repoTriples);
 
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            } else {
+                result[0]['userid'] = uid;
+            }
+            retCallback(result[0]);
+        });
     }
     catch (err) {
         console.log('--bad request!');
