@@ -47,12 +47,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1"
+                        "userid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "2"
+                        "userid" : "1002"
                     }
                 ]
             },
@@ -69,12 +69,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1"
+                        "userid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "2"
+                        "userid" : "1002"
                     }
                 ]
             }
@@ -83,12 +83,12 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1"
+                "userid" : "1001"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "1002"
             }
         ]
     },
@@ -116,12 +116,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1"
+                        "userid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "2"
+                        "userid" : "1002"
                     }
                 ]
             },
@@ -138,12 +138,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1"
+                        "userid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "2"
+                        "userid" : "1002"
                     }
                 ]
             }
@@ -152,12 +152,12 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1"
+                "userid" : "1001"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "1002"
             }
         ]
     },
@@ -185,12 +185,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1"
+                        "userid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "2"
+                        "userid" : "1002"
                     }
                 ]
             },
@@ -207,12 +207,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1"
+                        "userid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "2"
+                        "userid" : "1002"
                     }
                 ]
             }
@@ -221,12 +221,12 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1"
+                "userid" : "1001"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "2"
+                "userid" : "1002"
             }
         ]
     }
