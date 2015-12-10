@@ -62,15 +62,6 @@ var getNewTtl = function getNewTtl(triples, prefixes, bNodes, callback) {
     writer.end(callback);
 };
 
-var sendAfterWrite = function sendAfterWrite(result, ch) {
-    // TODO ERROR control
-    // Send file
-    //ch.assertExchange(EXCHANGE, 'topic', {durable: false});
-    ch.publish(EXCHANGE, ROUTINGKEY, new Buffer(result));
-    //console.log(" [x] Sent " + ROUTINGKEY);
-    //console.log(result);
-    return;
-};
 
 module.exports.parseTriples = function parseTriples (triplesList) {
     var newElement = function newElement(subject, predicate, object) {
@@ -118,6 +109,16 @@ module.exports.parseTriples = function parseTriples (triplesList) {
         nodes.push(newElement(subjects[t[0]], t[1], subjects[t[2]]));
     }
     return nodes;
+};
+
+var sendAfterWrite = function sendAfterWrite(result, ch) {
+    // TODO ERROR control
+    // Send file
+    //ch.assertExchange(EXCHANGE, 'topic', {durable: false});
+    ch.publish(EXCHANGE, ROUTINGKEY, new Buffer(result));
+    //console.log(" [x] Sent " + ROUTINGKEY);
+    //console.log(result);
+    return;
 };
 
 module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
