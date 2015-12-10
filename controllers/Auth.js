@@ -34,7 +34,9 @@ var uuid = require('node-uuid');
 module.exports.login = function login (req, res, next) {
     console.log("Trying to login in SDH-API");
     passport.authenticate('ldapauth', {session: false})(req, res, function() {
+        console.log("... LDAP ...");
         if(req.user != null) {
+            console.log("LDAP credentials validation");
             //Create a new session
             var token = uuid.v4();
             GLOBAL.SESSIONS[token] = {
@@ -44,22 +46,22 @@ module.exports.login = function login (req, res, next) {
                 data: req.user
             };
 
+            var thePos;
             // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
-            req.user["positions"] = usersById[req.user.uidNumber].positionsByOrgId;
-            console.log("positions: " + usersById[req.user.uidNumber].positionsByOrgId);
-
-            /*req.user["positionsByOrg"] = {
-                1: randomIntFromInterval(1,4)
-            };
-            req.user["rolesByProj"] = {
-                2: randomIntFromInterval(1,4),
-                101: randomIntFromInterval(1,4)
-            };*/
+            if (usersById[req.user.uidNumber] == undefined) {
+                thePos = {1:[69]};
+            }
+            else {
+                thePos = usersById[req.user.uidNumber].positionsByOrgId;
+            }
+            req.user["positions"] = thePos;
+            console.log("positions: " + thePos);
             console.log(JSON.stringify({token: token, user: req.user}));
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({token: token, user: req.user}));
         } else {
+            console.log("Login Error. User '" + req.body.username + '"');
             res.statusCode = 401;
             res.end();
         }
