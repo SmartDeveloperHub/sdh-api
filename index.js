@@ -170,7 +170,10 @@
                 }*/
             });
         };
-
+        process.on('uncaughtException', function (err) {
+            console.error(err.stack);
+            console.log("...not exiting...");
+        });
         loader.update(launchSwaggerAPI);
     }
     catch (err) {
