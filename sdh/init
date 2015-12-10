@@ -80,7 +80,13 @@ var tdbCallback = function tdbCallback() {
  */
 var metricCallback = function metricCallback() {
     // Get Tbds
-    console.log("        * " + metrics.length + " metrics");
+    var realMet = 0;
+    for (var k in metricUriById) {
+        for (var kk in metricUriById[k]) {
+            realMet++;
+        }
+    }
+    console.log("        * " + metrics.length + " metrics (real " + realMet + " SDH-Platform metrics)");
     console.log("    #Getting available Time Based Data from SDH Platform...");
     try {
         // Get all available TBDs from SDH Platform
