@@ -432,7 +432,7 @@ var getTargetById = function getTargetById(uri) {
  * @param vList {String} The views list
  * @return {Object} with the next attributes: "id", "params", "path", "description" and "optional"
  */
-var normalizeViewList = function normalizeViewList(vList) {
+var normalizeViewList = function normalizeViewList(vList, vListNP) {
     var newList = [];
     tbdById = getDemoViews();
     if (vList !== null) {
@@ -445,7 +445,6 @@ var normalizeViewList = function normalizeViewList(vList) {
                 }
             } else {
                 // New view
-                tbdById[id] = vList[i];
                 tbdById[id] = {
                     "id": id,
                     "path": "/tbdata/" + id,
@@ -454,8 +453,32 @@ var normalizeViewList = function normalizeViewList(vList) {
                     "params": [param],
                     "optional": ['from', 'to', 'max', 'accumulated']
                 };
+                var tType = getTargetById(vList[i].targetType);
                 tbdUriById[id] = vList[i].path;
-                tbdTargetByURI[vList[i].path] = getTargetById(vList[i].targetType);
+                tbdTargetByURI[vList[i].path] = tType;
+                tbdTargetByID[id] = tType;
+            }
+        }
+    }
+    if (vListNP !== null) {
+        for (var k = 0; k < vListNP.length; k++) {
+            var id = vListNP[k].id;
+            if (id in tbdById) {
+                // Nothing to do
+            } else {
+                // New view
+                tbdById[id] = {
+                    "id": id,
+                    "path": "/tbdata/" + id,
+                    "description": vListNP[k].description,
+                    "title": vListNP[k].title,
+                    "params": [],
+                    "optional": ['from', 'to', 'max', 'accumulated']
+                };
+                var ttype2 = getTargetById(vListNP[k].targetType);
+                tbdUriById[id] = vListNP[i].path;
+                tbdTargetByURI[vListNP[i].path] = ttype2;
+                tbdTargetByID[id] = ttype2;
             }
         }
     }
@@ -465,42 +488,49 @@ var normalizeViewList = function normalizeViewList(vList) {
     return newList;
 };
 
+var parseID = function parseID(mid) {
+    var theMetric = mid.split('-');
+    var agg = theMetric[0];
+    var finalid = '';
+    for (var d = 1; d < theMetric.length; d++) {
+        if (d > 1) {
+            finalid += '-';
+        }
+        finalid += theMetric[d];
+    }
+    if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
+        console.log('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ".");
+    }
+    return ({id: finalid, agg: agg});
+};
+
 /**
  * Normalize MetricList to determinate aggregators
  * @param mList {String} The metric list
  * @return {Object} with the next attributes: "id", "params" ,"title", "path", "aggr", and "optional"
  */
-var normalizeMetricList = function normalizeMetricList(mList) {
+var normalizeMetricList = function normalizeMetricList(mList, mListNP) {
     // realId model: aggr-metric
     var newList = [];
     metricsById = getDemoMetrics();
     if(mList !== null) {
         for (var i = 0; i < mList.length; i++) {
-            var theMetric = mList[i].id.split('-');
-            var agg = theMetric[0];
+            var parsedID = parseID(mList[i].id);
+            var agg = parsedID.agg;
+            var id = parsedID.id;
             var param = getParamId(mList[i].targetType);
-            var id = '';
-            for (var d = 1; d < theMetric.length; d++) {
-                if (d > 1) {
-                    id += '-';
-                }
-                id += theMetric[d];
-            }
-            if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
-                console.log('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ". " + mList[i]);
-            }
             if (id in metricsById) {
-                // New Aggregator for this metric
                 if (metricsById[id]['aggr'].indexOf(agg) == -1) {
+                    // New Aggregator for this metric
                     metricsById[id]['aggr'].push(agg);
                     metricUriById[id][agg] = mList[i].path;
                 }
                 if (metricsById[id]['params'].indexOf(param) == -1) {
+                    // New parameter for this metric
                     metricsById[id]['params'].push(param);
                 }
             } else {
                 // New metric
-                metricsById[id] = mList[i];
                 metricsById[id] = {
                     "id": id,
                     "title": mList[i].title,
@@ -512,6 +542,37 @@ var normalizeMetricList = function normalizeMetricList(mList) {
                 };
                 metricUriById[id] = {};
                 metricUriById[id][agg] = mList[i].path;
+            }
+        }
+    }
+    if (mListNP !== null) {
+        for (var k = 0; k < mListNP.length; k++) {
+            var parsedID2 = parseID(mListNP[k].id);
+            var npId = parsedID2.id;
+            var npAgg = parsedID2.agg;
+            console.log(k + " -- API id: " + npId + "; real id: " + mListNP[k].id);
+            if (npId in metricsById){
+                // No new metric, maibe with new aggregator
+                if (metricsById[npId].aggr.indexOf(npAgg) == -1) {
+                    // New aggregator
+                    metricsById[npId]['aggr'].push(npAgg);
+                    metricUriById[npId][npAgg] = mListNP[k].path;
+                } else {
+                    console.log("OLD WITH PARAMS");
+                }
+            } else {
+                // New no param metric
+                metricsById[npId] = {
+                    "id": npId,
+                    "title": mListNP[k].title,
+                    "path": "/metrics/" + npId,
+                    "description": mListNP[k].description,
+                    "params": [],
+                    "optional": ['from', 'to', 'max', 'accumulated', 'aggr'],
+                    "aggr": [npAgg]
+                };
+                metricUriById[npId] = {};
+                metricUriById[npId][npAgg] = mListNP[k].path;
             }
         }
     }
@@ -548,14 +609,10 @@ var getMetricList = function getMetricList(returnCallback) {
             ];
             var parsedTrip2 = sdhTools.parseTriples(metricTriples2);
             sdhTools.getfromSDH(parsedTrip2, function(result2) {
-                console.log("result2: " + JSON.stringify(result2));
-                var nResult2 = normalizeMetricList (result2);
-                console.log("nResult2: " + JSON.stringify(nResult2));
+                var nResult = normalizeMetricList (result, result2);
+                console.log();
+                returnCallback({metricList: nResult});
             });
-            console.log("result: " + JSON.stringify(result));
-            var nResult = normalizeMetricList (result);
-            console.log("nResult: " + JSON.stringify(nResult));
-            returnCallback({metricList: nResult});
         });
     } catch (err) {
         console.log("ERROR in getMetricList: " + err);
@@ -583,9 +640,18 @@ var getTbdList = function getTbdList(returnCallback) {
         var parsedTrip = sdhTools.parseTriples(viewTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
-            var nResult = normalizeViewList (result);
-            //console.log(nResult);
-            returnCallback({viewList: nResult});
+            // TODO Fix problem with metrics without params
+            var viewTriples2 = [
+                '?path views:supports ?_vd',
+                '?_vd platform:identifier ?id',
+                //'?_vd platform:title ?title'
+                '?_vd views:target ?targetType'
+            ];
+            var parsedTrip2 = sdhTools.parseTriples(viewTriples2);
+            sdhTools.getfromSDH(parsedTrip2, function(result2) {
+                var vResult = normalizeViewList (result, result2);
+                returnCallback({viewList: vResult});
+            });
         });
     } catch (err) {
         console.log("ERROR in getTbdList: " + err);
@@ -984,6 +1050,7 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
     GLOBAL.tbdById = {};
     GLOBAL.tbdUriById = {};
     GLOBAL.tbdTargetByURI = {};
+    GLOBAL.tbdTargetByID = {};
     if (DUMMYDATA) {
         GLOBAL.tbds = require('./tbds').tbds;
         for (var i=0; i< tbds.length; i++) {
@@ -1171,7 +1238,14 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                         // TODO this must be the only method to construct the views
                         val = data.result;
                         for (i = 0; i < data.result.length; i ++) {
-                            val.push(tbdTargetByURI[data.result[i].uri]);
+                            if (data.result[i].uri !== undefined) {
+                                val.push(tbdTargetByURI[data.result[i].uri]);
+                            } else if (data.result[i].id !== undefined) {
+                                val.push(tbdTargetByID[data.result[i].id]);
+                            } else {
+                                console.error("Not valid view result");
+                                val = result;
+                            }
                         }
                     }
                     data.result = val;
