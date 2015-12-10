@@ -437,19 +437,23 @@ module.exports.preloadAll = function preloadAll (callback) {
         _organizations.organizationList = parsedOrgs.list;
         _organizationsById = parsedOrgs.byId;
         _organizationsByURI = parsedOrgs.byURI;
-        console.log(_organizations);
+        //console.log(_organizations);
 
         // Make global all this methods for param validation
-        GLOBAL.organizations = this.getOrganizations();
-        GLOBAL.products = this.getProducts();
-        GLOBAL.projects = this.getProjects();
-        GLOBAL.repositories = this.getRepositories();
-        GLOBAL.users = this.getUsers();
-        GLOBAL.organizationsById = this.getOrganizationsById();
-        GLOBAL.productsById = this.getProductsById();
-        GLOBAL.projectsById = this.getProjectsById();
-        GLOBAL.usersById = this.getUsersById();
-        GLOBAL.repositoriesById = this.getRepositoriesById();
+        organizations = this.getOrganizations();
+        products = this.getProducts();
+        projects = this.getProjects();
+        repositories = this.getRepositories();
+        users = this.getUsers();
+        organizationsById = this.getOrganizationsById();
+        productsById = this.getProductsById();
+        projectsById = this.getProjectsById();
+        usersById = this.getUsersById();
+        repositoriesById = this.getRepositoriesById();
+        usersByURI = this.getUsersByURI();
+        productsByURI = this.getProductsByURI();
+        projectsByURI = this.getProjectsByURI();
+        repositoriesByURI = this.getRepositoriesByURI();
         callback();
     }.bind(this);
     getStaticStructures(nextStep);
@@ -543,4 +547,40 @@ module.exports.getRepositoriesById = function getRepositoriesById () {
 module.exports.getUsersById = function getUsersById () {
 
   return _usersById;
+};
+
+/**
+ * Get users by URI
+ * @return {Object}
+ */
+module.exports.getUsersByURI = function getUsersByURI () {
+
+  return _usersByURI;
+};
+
+/**
+ * Get projects by URI
+ * @return {Object}
+ */
+module.exports.getProjectsByURI = function getProjectsByURI () {
+
+  return _projectsByURI;
+};
+
+/**
+ * Get projects by URI
+ * @return {Object}
+ */
+module.exports.getProductsByURI = function getProductsByURI () {
+
+  return _productsByURI;
+};
+
+/**
+ * Get repositories by URI
+ * @return {Object}
+ */
+module.exports.getRepositoriesByURI = function getRepositoriesByURI () {
+
+  return _repositoriesByURI;
 };
