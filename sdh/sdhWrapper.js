@@ -309,7 +309,7 @@ var getDemoMetrics = function getDemoMetrics() {
     // Add Fake metrics 4 Demo
     var metById = {};
 
-    metById["orgcommits"] = {
+    /*metById["orgcommits"] = {
         "id" : "orgcommits",
         "title": 'Organization commits',
         "path" : "/metrics/orgcommits",
@@ -385,7 +385,7 @@ var getDemoMetrics = function getDemoMetrics() {
     metricUriById["orgproducts"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
     metricUriById["prodprojects"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
     metricUriById["prodmembers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
-    metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
+    metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};*/
 
     return metById; // TODO array
     /*GLOBAL.metricsById = metById;
