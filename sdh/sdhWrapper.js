@@ -689,25 +689,24 @@ var parseProductInfo = function parseProductInfo(data) {
  * @param retCallback
  */
 var getProject = function getProject(pid, retCallback) {
-    // Query to get project's information
-    var q = '';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['']
-    };
-    var frag;
-
     try {
-        // TODO chage to sdhTools
-        /*sdhGate.get_fragment(p.patterns, function(f) {
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, retCallback);
-        });*/
-        console.log("no real product for sdhWrapper.getProjectInfo " + pid);
-        retCallback({
-            "status": "NOIMPLEMENTED",
-            "results": null
+        var projectTriples = [
+            '?_o org:hasProject ?URI',
+            '?URI org:id "' + pid + '"',
+            '?URI doap:name ?name',
+            '?URI foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar'
+        ];
+
+        var parsedTrip = sdhTools.parseTriples(projectTriples);
+
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            } else {
+                result[0]['projecttid'] = pid;
+            }
+            retCallback(result[0]);
         });
     } catch (err) {
         console.log("ERROR in : sdhWrapper.getProject " + err);
