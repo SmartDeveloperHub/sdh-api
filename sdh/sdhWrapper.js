@@ -789,26 +789,25 @@ var parseProjectInfo = function parseProjectInfo(data) {
  * @param retCallback
  */
 var getRepository = function getRepository(rid, retCallback) {
-    // Query to get repository's information
-    var q = 'PREFIX scm: <http://www.smartdeveloperhub.org/vocabulary/scm#> \ ' +
-        'SELECT * WHERE { ?s a scm:Repository . \ ' +
-        '?s ?p ?o \ ' +
-        '}';
-
-    var p = {
-        "status": "OK",
-        "patterns": ['?s a scm:Repository', '?s doap:name ?n', '?s doap:description ?d',
-            '?s scm:repositoryId "'+rid+'"', '?s scm:isPublic ?t', '?s scm:isArchived ?a',
-            '?s scm:owner ?o', '?s scm:tags ?ta', '?s scm:createdOn ?co', '?s scm:lastCommit ?lc',
-            '?s scm:firstCommit ?fc', '?s foaf:depiction ?de']
-    };
-    var frag;
     try {
-        // TODO chage to sdhTools
-        sdhGate.get_fragment(p.patterns, function(f) {
-            // TODO control error
-            frag = f.fragment;
-            sdhGate.get_results_from_fragment(frag, q, retCallback);
+        var repoTriples = [
+            '?_h scm:hasRepository ?URI',
+            '?URI doap:name ?name',
+            '?URI scm:repositoryId "' + rid + '"',
+            '?URI scm:createdOn ?createdon',
+            '?URI scm:isArchived ?isarchived',
+            '?URI scm:isPublic ?ispublic',
+            '?URI foaf:depiction ?_im',
+            '?_im foaf:depicts ?avatar'
+        ];
+        var parsedTrip = sdhTools.parseTriples(repoTriples);
+        sdhTools.getfromSDH(parsedTrip, function(result) {
+            if (result == null) {
+                result = [];
+            } else {
+                result[0]['repositoryid'] = rid;
+            }
+            retCallback(result[0]);
         });
     } catch (err) {
         console.log("ERROR in : sdhWrapper.getRepository " + err);
