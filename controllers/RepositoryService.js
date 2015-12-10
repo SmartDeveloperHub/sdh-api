@@ -46,5 +46,4 @@ exports.repositoryInfo = function(rid, callback) {
         callback(404);
         return;
     }
-    sdhWrapper.getRepositoryInfo(rid, callback);
 };
