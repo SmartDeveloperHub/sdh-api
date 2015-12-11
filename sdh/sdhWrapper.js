@@ -846,7 +846,7 @@ var parseProjectInfo = function parseProjectInfo(data) {
  */
 var getRepository = function getRepository(rid, retCallback) {
     try {
-        var repoTriples = [
+        /*var repoTriples = [
             '?_h scm:hasRepository ?URI',
             '?URI doap:name ?name',
             '?URI scm:repositoryId "' + rid + '"',
@@ -854,7 +854,9 @@ var getRepository = function getRepository(rid, retCallback) {
             '?URI scm:isArchived ?isarchived',
             '?URI scm:isPublic ?ispublic',
             '?URI foaf:depiction ?_im',
-            '?_im foaf:depicts ?avatar'
+            '?_im foaf:depicts ?avatar',
+            '?URI scm:firstCommit ?firstcommit',
+            '?URI scm:lastCommit ?lastcommit'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
         sdhTools.getfromSDH(parsedTrip, function(result) {
@@ -864,7 +866,8 @@ var getRepository = function getRepository(rid, retCallback) {
                 result[0]['repositoryid'] = rid;
             }
             retCallback(result[0]);
-        });
+        });*/
+        retCallback(repositoriesById[rid]);
     } catch (err) {
         console.log("ERROR in : sdhWrapper.getRepository " + err);
         retCallback({
@@ -946,18 +949,39 @@ var getUser = function getUser(uid, retCallback) {
             '?URI foaf:name ?name',
             '?URI foaf:nick ?nick',
             '?URI foaf:img ?_im',
-            '?_im foaf:depicts ?avatar'
+            '?_im foaf:depicts ?avatar',
+            '?_ru doap:developer ?_cu',
+            '?_cu scm:firstCommit ?firstcommit',
+            '?_cu scm:lastCommit ?lastcommit'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
-            if (result == null) {
-                result = [];
+            if (result == null || result == []) {
+                var repoTriples = [
+                    '?_ms org:member ?URI',
+                    '?_ms org:position ?_mp',
+                    '?_mp rdfs:label ?position', // positionsByOrg
+                    '?URI org:id "' + uid + '"',
+                    '?URI foaf:mbox ?email',
+                    '?URI foaf:name ?name',
+                    '?URI foaf:nick ?nick',
+                    '?URI foaf:img ?_im',
+                    '?_im foaf:depicts ?avatar'
+                ];
+                var parsedTrip = sdhTools.parseTriples(repoTriples);
+                sdhTools.getfromSDH(parsedTrip, function(result2) {
+                        result2[0]['userid'] = uid;
+                        result2[0]['firstcommit'] = null;
+                        result2[0]['lastcommit'] = null;
+                        retCallback(result2[0]);
+                });
             } else {
-                result[0]['userid'] = uid;
-            }
-            retCallback(result[0]);
-        });
+                        result[0]['userid'] = uid;
+                        retCallback(result[0]);
+                    }
+
+                });
     }
     catch (err) {
         console.log('--bad request!');
@@ -1239,14 +1263,14 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                         val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
                     }else {
                         // TODO this must be the only method to construct the views
-                        val = data.result;
+                        val = [];
                         for (i = 0; i < data.result.length; i ++) {
                             if (data.result[i].uri !== undefined) {
                                 val.push(tbdTargetByURI[data.result[i].uri]);
                             } else if (data.result[i].id !== undefined) {
                                 val.push(tbdTargetByID[data.result[i].id]);
                             } else {
-                                console.error("Not valid view result");
+                                console.error("¡¡Atention!! Not valid view result");
                                 val = result;
                             }
                         }

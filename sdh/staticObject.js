@@ -62,6 +62,10 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
     });
 };
 
+var randomIntFromInterval = function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+};
+
 /**
  * Collect all products info from SDH Platform
  * @param returnCallback
@@ -130,7 +134,9 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
             '?URI scm:isArchived ?isarchived',
             '?URI scm:isPublic ?ispublic',
             '?URI foaf:depiction ?_im',
-            '?_im foaf:depicts ?avatar'
+            '?_im foaf:depicts ?avatar',
+            '?URI scm:firstCommit ?firstcommit',
+            '?URI scm:lastCommit ?lastcommit'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
@@ -158,11 +164,29 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
             '?URI foaf:name ?name',
             '?URI foaf:nick ?nick',
             '?URI foaf:img ?_im',
-            '?_im foaf:depicts ?avatar'
+            '?_im foaf:depicts ?avatar',
+            //'?_ru doap:developer ?_cu',
+            //'?_cu scm:firstCommit ?firstcommit',
+            //'?_cu scm:lastCommit ?lastcommit'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
+            /*var repoTriples2 = [
+                '?_ru doap:developer ?_cu',
+                '?_cu foaf:nick ?nick',
+                '?_cu scm:firstCommit ?firstcommit',
+                '?_cu scm:lastCommit ?lastcommit'
+            ];
+            var parsedTrip = sdhTools.parseTriples(repoTriples2);
+            sdhTools.getfromSDH(parsedTrip, function(result2) {
+                var norep = removeRepeatedItems(result2);
+                console.log(norep);
+                if (result == null) {
+                    result = [];
+                }
+                returnCallback({userList: result});
+            });*/
             if (result == null) {
                 result = [];
             }
@@ -266,6 +290,9 @@ var normalizeUserList = function normalizeUserList(uList) {
                 nick: uList[i].nick,
                 avatar: uList[i].avatar,
                 email: [uList[i].email],
+                firstcommit: uList[i].firstcommit,
+                lastcommit: uList[i].lastcommit,
+                register: uList[i].firstcommit,
                 positionsByOrgId: {1: [posLevel]}//TODO  By the moment we only have 1 organization :S
             };
             __usersById[uList[i].id] = newUser;
@@ -296,7 +323,10 @@ var normalizeRepoList = function normalizeRepoList(rlist) {
                 ispublick: rlist[i].ispublick,
                 isarchived: rlist[i].isarchived,
                 avatar: rlist[i].avatar,
-                createdon: rlist[i].createdon
+                createdon: rlist[i].createdon,
+                firstcommit: rlist[i].firstcommit,
+                lastcommit: rlist[i].lastcommit,
+                buildStatus: randomIntFromInterval(0,1)
             };
             __repositoriesById[rlist[i].id] = newUser;
             __repositoriesByURI[rlist[i].URI] = newUser;
