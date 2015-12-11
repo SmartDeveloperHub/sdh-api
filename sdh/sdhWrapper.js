@@ -438,12 +438,12 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
     if (vList !== null) {
         for (var i = 0; i < vList.length; i++) {
             var param = getParamId(vList[i].paramTargetType);
-            var id = vList[i].id;
+            var id = "view-" + vList[i].id;
             if (id in tbdById) {
                 console.log(JSON.stringify(tbdById[id]));
                 if (tbdById[id]['params'].indexOf(param) == -1) {
                     tbdById[id]['params'].push(param);
-                    console.log("new param " + param + "metric: " + JSON.stringify(tbdById[id]));
+                    //console.log("new param " + param + "metric: " + JSON.stringify(tbdById[id]));
                 }
             } else {
                 // New view
@@ -465,7 +465,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
     }
     if (vListNP !== null) {
         for (var k = 0; k < vListNP.length; k++) {
-            var id = vListNP[k].id;
+            var id = "view-" + vListNP[k].id;
             if (id in tbdById) {
                 // Nothing to do
                 //console.log("Repeated View: " + tbdById[id]);
