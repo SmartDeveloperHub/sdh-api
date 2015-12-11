@@ -164,29 +164,11 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
             '?URI foaf:name ?name',
             '?URI foaf:nick ?nick',
             '?URI foaf:img ?_im',
-            '?_im foaf:depicts ?avatar',
-            //'?_ru doap:developer ?_cu',
-            //'?_cu scm:firstCommit ?firstcommit',
-            //'?_cu scm:lastCommit ?lastcommit'
+            '?_im foaf:depicts ?avatar'
         ];
         var parsedTrip = sdhTools.parseTriples(repoTriples);
 
         sdhTools.getfromSDH(parsedTrip, function(result) {
-            /*var repoTriples2 = [
-                '?_ru doap:developer ?_cu',
-                '?_cu foaf:nick ?nick',
-                '?_cu scm:firstCommit ?firstcommit',
-                '?_cu scm:lastCommit ?lastcommit'
-            ];
-            var parsedTrip = sdhTools.parseTriples(repoTriples2);
-            sdhTools.getfromSDH(parsedTrip, function(result2) {
-                var norep = removeRepeatedItems(result2);
-                console.log(norep);
-                if (result == null) {
-                    result = [];
-                }
-                returnCallback({userList: result});
-            });*/
             if (result == null) {
                 result = [];
             }
@@ -290,9 +272,9 @@ var normalizeUserList = function normalizeUserList(uList) {
                 nick: uList[i].nick,
                 avatar: uList[i].avatar,
                 email: [uList[i].email],
-                firstcommit: uList[i].firstcommit,
-                lastcommit: uList[i].lastcommit,
-                register: uList[i].firstcommit,
+                //firstcommit: uList[i].firstcommit,
+                //lastcommit: uList[i].lastcommit,
+                //register: uList[i].firstcommit,
                 positionsByOrgId: {1: [posLevel]}//TODO  By the moment we only have 1 organization :S
             };
             __usersById[uList[i].id] = newUser;

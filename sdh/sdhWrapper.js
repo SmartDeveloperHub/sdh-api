@@ -412,16 +412,33 @@ var getParamId = function getParamId (uri) {
     }
 };
 
-var getTargetById = function getTargetById(uri) {
+var getTargetByPath = function getTargetByPath(uri, isUri) {
     switch (uri) {
         case "http://www.smartdeveloperhub.org/vocabulary/scm#Repository":
-            return repositoriesByURI;
+            if (isUri) {
+                return repositoriesByURI;
+            } else {
+                return repositoriesById;
+            }
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Project":
-            return projectsByURI;
+            if (isUri) {
+                return projectsByURI;
+            } else {
+                return projectsById;
+            }
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Product":
-            return productsByURI;
+            if (isUri) {
+                return productsByURI;
+            } else {
+                return productsById;
+            }
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Person":
             return usersByURI;
+            if (isUri) {
+                return usersByURI;
+            } else {
+                return usersById;
+            }
         default:
             return {};
     }
@@ -455,10 +472,9 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                     "params": [param],
                     "optional": ['from', 'to', 'max', 'accumulated']
                 };
-                var tType = getTargetById(vList[i].targetType);
                 tbdUriById[id] = vList[i].path;
-                tbdTargetByURI[vList[i].path] = tType;
-                tbdTargetByID[id] = tType;
+                tbdTargetByURI[vList[i].path] = vList[i].targetType;
+                tbdTargetByID[id] = vList[i].targetType;
                 //console.log("------New View" + JSON.stringify(tbdById[id]));
             }
         }
@@ -479,10 +495,9 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                     "params": [],
                     "optional": ['from', 'to', 'max', 'accumulated']
                 };
-                var ttype2 = getTargetById(vListNP[k].targetType);
                 tbdUriById[id] = vListNP[i].path;
-                tbdTargetByURI[vListNP[i].path] = ttype2;
-                tbdTargetByID[id] = ttype2;
+                tbdTargetByURI[vListNP[i].path] = vListNP[k].targetType;
+                tbdTargetByID[id] = vListNP[k].targetType;
                 //console.log("------New View (NO PARAMS)" + JSON.stringify(tbdById[id]));
             }
         }
@@ -1266,9 +1281,11 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                         val = [];
                         for (i = 0; i < data.result.length; i ++) {
                             if (data.result[i].uri !== undefined) {
-                                val.push(tbdTargetByURI[data.result[i].uri]);
+                                var tType = getTargetByPath(tbdTargetByID[tid], true);
+                                val.push(tType[data.result[i].uri]);
                             } else if (data.result[i].id !== undefined) {
-                                val.push(tbdTargetByID[data.result[i].id]);
+                                var tType = getTargetByPath(tbdTargetByID[tid], false);
+                                val.push(tType[data.result[i].id]);
                             } else {
                                 console.error("¡¡Atention!! Not valid view result");
                                 val = result;
