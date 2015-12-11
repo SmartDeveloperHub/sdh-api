@@ -440,8 +440,10 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
             var param = getParamId(vList[i].paramTargetType);
             var id = vList[i].id;
             if (id in tbdById) {
+                console.log(JSON.stringify(tbdById[id]));
                 if (tbdById[id]['params'].indexOf(param) == -1) {
                     tbdById[id]['params'].push(param);
+                    console.log("new param " + param + "metric: " + JSON.stringify(tbdById[id]));
                 }
             } else {
                 // New view
@@ -457,6 +459,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                 tbdUriById[id] = vList[i].path;
                 tbdTargetByURI[vList[i].path] = tType;
                 tbdTargetByID[id] = tType;
+                //console.log("------New View" + JSON.stringify(tbdById[id]));
             }
         }
     }
@@ -465,6 +468,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
             var id = vListNP[k].id;
             if (id in tbdById) {
                 // Nothing to do
+                //console.log("Repeated View: " + tbdById[id]);
             } else {
                 // New view
                 tbdById[id] = {
@@ -479,6 +483,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                 tbdUriById[id] = vListNP[i].path;
                 tbdTargetByURI[vListNP[i].path] = ttype2;
                 tbdTargetByID[id] = ttype2;
+                //console.log("------New View (NO PARAMS)" + JSON.stringify(tbdById[id]));
             }
         }
     }
@@ -550,7 +555,6 @@ var normalizeMetricList = function normalizeMetricList(mList, mListNP) {
             var parsedID2 = parseID(mListNP[k].id);
             var npId = parsedID2.id;
             var npAgg = parsedID2.agg;
-            console.log(k + " -- API id: " + npId + "; real id: " + mListNP[k].id);
             if (npId in metricsById){
                 // No new metric, maibe with new aggregator
                 if (metricsById[npId].aggr.indexOf(npAgg) == -1) {
@@ -558,7 +562,6 @@ var normalizeMetricList = function normalizeMetricList(mList, mListNP) {
                     metricsById[npId]['aggr'].push(npAgg);
                     metricUriById[npId][npAgg] = mListNP[k].path;
                 } else {
-                    console.log("OLD WITH PARAMS");
                 }
             } else {
                 // New no param metric
