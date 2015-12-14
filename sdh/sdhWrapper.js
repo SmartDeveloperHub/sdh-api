@@ -402,13 +402,13 @@ var getParamId = function getParamId (uri) {
         case "http://www.smartdeveloperhub.org/vocabulary/scm#Repository":
             return 'rid';
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Project":
-            return 'pjid';
+            return 'pid';
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Product":
             return 'prid';
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Person":
             return 'uid';
         default:
-            return null;
+            return uri;
     }
 };
 
