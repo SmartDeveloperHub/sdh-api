@@ -309,6 +309,50 @@ var getDemoMetrics = function getDemoMetrics() {
     // Add Fake metrics 4 Demo
     var metById = {};
 
+    metById["member-speed-fake"] = {
+        "id" : "member-speed-fake",
+        "title": 'Member speed',
+        "path" : "/metrics/member-speed-fake",
+        "description" : "Member speed",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['avg']
+    };
+    metricUriById["member-speed-fake"] = {"avg": "floatProg"};
+
+    metById["member-collaboration-fake"] = {
+        "id" : "member-collaboration-fake",
+        "title": 'Member collaboration',
+        "path" : "/metrics/member-collaboration-fake",
+        "description" : "Member collaboration",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['avg']
+    };
+    metricUriById["member-collaboration-fake"] = {"avg": "floatProg"};
+
+    metById["director-popularity-fake"] = {
+        "id" : "director-popularity-fake",
+        "title": 'Director popularity',
+        "path" : "/metrics/director-popularity-fake",
+        "description" : "Director popularity",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['avg']
+    };
+    metricUriById["director-popularity-fake"] = {"avg": "float_1"};
+
+    metById["product-popularity-fake"] = {
+        "id" : "product-popularity-fake",
+        "title": 'Product popularity',
+        "path" : "/metrics/product-popularity-fake",
+        "description" : "Product popularity",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    metricUriById["product-popularity-fake"] = {"sum": "float"};
+    //external-companies-fake TODO
     /*metById["orgcommits"] = {
         "id" : "orgcommits",
         "title": 'Organization commits',
@@ -475,7 +519,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                 tbdUriById[id] = vList[i].path;
                 tbdTargetByURI[vList[i].path] = vList[i].targetType;
                 tbdTargetByID[id] = vList[i].targetType;
-                //console.log("------New View" + JSON.stringify(tbdById[id]));
+                console.log("------New View" + JSON.stringify(tbdById[id]));
             }
         }
     }
@@ -1390,7 +1434,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
         //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "float_1" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
@@ -1405,7 +1449,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             request(options, function (error, response, body) {
                 if (error) {
                     // TODO
-                    callback(response.statusCode);
+                    callback(error);
                 } else {
                     if (response.statusCode == 200) {
                         data = JSON.parse(body);
@@ -1472,7 +1516,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             var timestamp = new Date().getTime();
 
             if (aggr == "avg") {
-                var pieceLen = dataList.length / basic_size;
+                /*var pieceLen = dataList.length / basic_size;
                 if (pieceLen < 1) {
                     pieceLen = 1;
                 }
@@ -1481,7 +1525,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                     aux[c] = [piece.reduce(function (a, b) {
                         return a + b;
                     }) / piece.length];
-                }
+                }*/
             } else {
                 for (var i = 0; i < basic_size; i++) {
                     var v = dataList[i] + modifier;
@@ -1496,11 +1540,15 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             if (http_path == "float") {
                 aux = [];
                 for (var g = 0; g < max; g++) {
-                    aux.push(randomFloatFromInterval(0,1));
+                    aux.push(randomFloatFromInterval(0.2,1));
                 }
-            }
+            } else if (http_path == "float_1") {
+                aux = [];
+                for (var g = 0; g < max; g++) {
+                    aux.push(0.5);
+                }
             // Progresive Random float
-            if (http_path == "floatProg") {
+            } else if (http_path == "floatProg") {
                 var values = [randomFloatFromInterval(0,1)];
                 var changeDiff = 0.30;
                 var change = changeDiff;
