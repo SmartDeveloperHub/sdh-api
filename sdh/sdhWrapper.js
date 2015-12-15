@@ -352,7 +352,18 @@ var getDemoMetrics = function getDemoMetrics() {
         "aggr": ['sum']
     };
     metricUriById["product-popularity-fake"] = {"sum": "float"};
-    //external-companies-fake TODO
+
+    metById["director-externalcompanies-fake"] = {
+        "id" : "director-externalcompanies-fake",
+        "title": 'Director external companies',
+        "path" : "/metrics/director-externalcompanies-fake",
+        "description" : "Director external companies",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    metricUriById["director-externalcompanies-fake"] = {"sum": "int_1497"};
+
     /*metById["orgcommits"] = {
         "id" : "orgcommits",
         "title": 'Organization commits',
@@ -1434,7 +1445,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
         //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "float_1" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
@@ -1542,10 +1553,17 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                 for (var g = 0; g < max; g++) {
                     aux.push(randomFloatFromInterval(0.2,1));
                 }
+            // static 0.5 float
             } else if (http_path == "float_1") {
                 aux = [];
                 for (var g = 0; g < max; g++) {
                     aux.push(0.5);
+                }
+            // static 14..97 float
+            } else if (http_path == "int_1497") {
+                aux = [];
+                for (var g = 0; g < max; g++) {
+                    aux.push(randomIntFromInterval(14,97));
                 }
             // Progresive Random float
             } else if (http_path == "floatProg") {
