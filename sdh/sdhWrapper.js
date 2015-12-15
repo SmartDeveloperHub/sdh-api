@@ -1282,7 +1282,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
             qpObject['uid'] = uid;
         }
         if(pid !== undefined) {
-            qpObject['pid'] = pid;
+            qpObject['pjid'] = pid;
         }
         if(prid !== undefined) {
             qpObject['prid'] = prid;
