@@ -47,12 +47,16 @@ module.exports.login = function login (req, res, next) {
             };
 
             var thePos;
+            var theAvatar;
             // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
             if (usersById[req.user.uidNumber] == undefined) {
                 thePos = {1:[69]};
             }
             else {
                 thePos = usersById[req.user.uidNumber].positionsByOrgId;
+                theAvatar = usersById[req.user.uidNumber].avatar;
+                console.log(theAvatar);
+                req.user["avatar"] = theAvatar;
             }
             req.user["positions"] = thePos;
             console.log("positions: " + thePos);
