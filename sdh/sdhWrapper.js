@@ -342,6 +342,17 @@ var getDemoMetrics = function getDemoMetrics() {
     };
     metricUriById["director-popularity-fake"] = {"avg": "float_1"};
 
+    metById["pmanager-popularity-fake"] = {
+        "id" : "pmanager-popularity-fake",
+        "title": 'Product Manager popularity',
+        "path" : "/metrics/pmanager-popularity-fake",
+        "description" : "Product Manager popularity",
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['avg']
+    };
+    metricUriById["pmanager-popularity-fake"] = {"avg": "float_2"};
+
     metById["product-popularity-fake"] = {
         "id" : "product-popularity-fake",
         "title": 'Product popularity',
@@ -1445,7 +1456,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
         //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             console.log("Metric GET--> " + realPath);
@@ -1558,6 +1569,12 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                 aux = [];
                 for (var g = 0; g < max; g++) {
                     aux.push(0.5);
+                }
+            // static 0.7 float
+            } else if (http_path == "float_2") {
+                aux = [];
+                for (var g = 0; g < max; g++) {
+                    aux.push(0.7);
                 }
             // static 14..97 float
             } else if (http_path == "int_1497") {
