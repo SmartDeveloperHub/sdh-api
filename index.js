@@ -69,6 +69,8 @@
         // UUID
         GLOBAL.uuid = require('uuid4');
         GLOBAL.agentId = uuid(); // uuid 4
+        // Last Update Date
+        GLOBAL.lastUpdate = null;
     }
     catch (err) {
         console.error("Error loading dependencies: " + err);
@@ -141,20 +143,20 @@
 
                 // Serve the Swagger documents and Swagger UI
                 app.use(middleware.swaggerUi());
-                // Take local IP in SERVICE_URL is null
-                if (SERVICE_URL == null) {
-                    SERVICE_URL = "http://localhost";
+                // Take local IP in URL is null
+                if (SWAGGER_URL == null) {
+                    SWAGGER_URL = "http://localhost";
                 }
                 // Start the server
-                http.createServer(app).listen(SERVER_PORT, function () {
+                http.createServer(app).listen(SWAGGER_PORT, function () {
                     setRefreshRate(REFRESH_RATE);
                     var now = moment();
                     loadStartDate = moment(loadStartDate);
                     var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
                     console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
                     console.log('');
-                    console.log('SDH-API is listening on port %d (http://localhost:%d)', SERVER_PORT, SERVER_PORT);
-                    console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SERVER_PORT);
+                    console.log('SDH-API is listening on port %d (http://localhost:%d)', SWAGGER_PORT, SWAGGER_PORT);
+                    console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SWAGGER_PORT);
                 });
 
                 // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
@@ -182,14 +184,14 @@
 //} else {
     // forks
     // Start the server
-   /* http.createServer(app).listen(SERVER_PORT, function () {
+   /* http.createServer(app).listen(SWAGGER_PORT, function () {
         setRefreshRate(REFRESH_RATE);
         var now = moment();
         loadStartDate = moment(loadStartDate);
         var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
         console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
         console.log('');
-        console.log('SDH-API is listening on port %d (http://localhost:%d)', SERVER_PORT, SERVER_PORT);
-        console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SERVER_PORT);
+        console.log('SDH-API is listening on port %d (http://localhost:%d)', SWAGGER_PORT, SWAGGER_PORT);
+        console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SWAGGER_PORT);
     });*/
 //}

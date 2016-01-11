@@ -23,11 +23,12 @@
 'use strict';
 
 // SDH API GENERAL CONFIG
-GLOBAL.SERVICE_URL = null; // null is localhost
-GLOBAL.SERVER_PORT = 8080;
+GLOBAL.SWAGGER_URL = null; // null is localhost
+GLOBAL.SWAGGER_DOC_PORT = 8080;
 GLOBAL.REFRESH_RATE = 600; //In Seconds
 GLOBAL.DUMMYDATA = false; // Provide Dummy data. SDH-platform disconnection
 GLOBAL.DUMMYMETRICS = false;
+global.BACKUP_ON = false; // Save Initial API information in /backup directory
 
 // SESSION CONFIG
 GLOBAL.SESSION_INFO = {
