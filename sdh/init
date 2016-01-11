@@ -41,7 +41,7 @@ GLOBAL.usersByURI = null;
 GLOBAL.productsByURI = null;
 GLOBAL.projectsByURI = null;
 GLOBAL.repositoriesByURI = null;
-
+GLOBAL.fakeMet = null;
 var theCallback;
 
 /**
@@ -54,6 +54,33 @@ var staticDataCallback = function staticDataCallback() {
     console.log("        * " + repositories.length + " Repositories");
     console.log("        * " + users.length + " Users");
     // End
+    // Backups activated?
+    if (BACKUP_ON) {
+        fs.writeFile("./backup/products/" + lastUpdate, JSON.stringify(products), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Products saved in - > /backup/products/" + lastUpdate);
+        });
+        fs.writeFile("./backup/projects/" + lastUpdate, JSON.stringify(projects), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Projects saved in - >" + "/backup/projects/" + lastUpdate);
+        });
+        fs.writeFile("./backup/repositories/" + lastUpdate, JSON.stringify(repositories), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Repositories saved in - > /backup/repositories/" + lastUpdate);
+        });
+        fs.writeFile("./backup/members/" + lastUpdate, JSON.stringify(users), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Members saved in - > /backup/members/" + lastUpdate);
+        });
+    }
     theCallback();
 };
 
@@ -65,6 +92,14 @@ var tdbCallback = function tdbCallback() {
     // Get static Information. Users, repositories, organization...
     console.log("        * " + tbds.length + " Views");
     console.log("    #Getting basic information about Users, Repositories and Organization...");
+    if (BACKUP_ON) {
+        fs.writeFile("./backup/views/" + lastUpdate, JSON.stringify(tbds), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Views saved in - >" + "/backup/views/" + lastUpdate);
+        });
+    }
     try {
         // Collect all static information and update global variables
         var staticObject = require('./staticObject');
@@ -86,7 +121,15 @@ var metricCallback = function metricCallback() {
             realMet++;
         }
     }
-    console.log("        * " + metrics.length + " metrics (real " + realMet + " SDH-Platform metrics)");
+    console.log("        * " + metrics.length + " metrics (real " + (realMet - fakeMet) + " Real SDH-Platform metrics; " + fakeMet + " Fake metrics:)");
+    if (BACKUP_ON) {
+        fs.writeFile("./backup/metrics/" + lastUpdate, JSON.stringify(metrics), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("Metrics saved in - >" + "/backup/metrics/" + lastUpdate);
+        });
+    }
     console.log("    #Getting available Time Based Data from SDH Platform...");
     try {
         // Get all available TBDs from SDH Platform
@@ -116,5 +159,6 @@ var getInfo = function getInfo() {
  */
 exports.update = function update(callback) {
     theCallback = callback;
+    lastUpdate = moment(new Date()).format("YYYYMMDDx");
     getInfo();
 };

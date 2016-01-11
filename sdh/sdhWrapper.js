@@ -453,6 +453,7 @@ var getDemoMetrics = function getDemoMetrics() {
     metricUriById["prodmembers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
     metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};*/
 
+    fakeMet = Object.keys(metById).length;
     return metById; // TODO array
     /*GLOBAL.metricsById = metById;
     console.log("Metrics: " + Object.keys(metricsById));
