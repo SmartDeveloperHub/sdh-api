@@ -45,9 +45,7 @@ module.exports.login = function login (req, res, next) {
                 },
                 data: req.user
             };
-            var getRandomGravatar = function getRandomGravatar(size) {
-                return "https://secure.gravatar.com/avatar/"+CryptoJS.MD5(""+Math.random())+"?d=identicon&s="+size;"https://secure.gravatar.com/avatar/"+CryptoJS.MD5(""+Math.random())+"?d=identicon&s="+size;
-            };
+
             var thePos;
             var theAvatar;
             // TODO add in req.user 'positions': {orgId: [positionId]} and 'roles': {projectId: [roleId]}
@@ -58,13 +56,11 @@ module.exports.login = function login (req, res, next) {
                 thePos = usersById[req.user.uidNumber].positionsByOrgId;
             }
             req.user["positions"] = thePos;
-            if (usersById[req.user.uidNumber].avatar == undefined) {
+            if (typeof usersById[req.user.uidNumber].avatar == 'undefined') {
                 theAvatar = "http://hospitalfranciscovilar.com.br/wp-content/uploads/2013/11/gravatar-60-grey.jpg";
-                console.log(theAvatar);
                 req.user["avatar"] = theAvatar;
             } else {
                 theAvatar = usersById[req.user.uidNumber].avatar;
-                console.log(theAvatar);
                 req.user["avatar"] = theAvatar;
             }
 
