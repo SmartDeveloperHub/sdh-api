@@ -180,10 +180,10 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
             var param = getParamId(vList[i].paramTargetType);
             var id = "view-" + vList[i].id;
             if (id in tbdById) {
-                console.log(JSON.stringify(tbdById[id]));
+                log.trace(JSON.stringify(tbdById[id]));
                 if (tbdById[id]['params'].indexOf(param) == -1) {
                     tbdById[id]['params'].push(param);
-                    //console.log("new param " + param + "metric: " + JSON.stringify(tbdById[id]));
+                    log.trace("new view param " + param + "metric: " + JSON.stringify(tbdById[id]));
                 }
             } else {
                 // New view
@@ -198,7 +198,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                 tbdUriById[id] = vList[i].path;
                 tbdTargetByURI[vList[i].path] = vList[i].targetType;
                 tbdTargetByID[id] = vList[i].targetType;
-                //console.log("------New View" + JSON.stringify(tbdById[id]));
+                log.trace("------New View" + JSON.stringify(tbdById[id]));
             }
         }
     }
@@ -207,7 +207,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
             var id = "view-" + vListNP[k].id;
             if (id in tbdById) {
                 // Nothing to do
-                //console.log("Repeated View: " + tbdById[id]);
+                log.trace("Repeated View: " + tbdById[id]);
             } else {
                 // New view
                 tbdById[id] = {
@@ -221,7 +221,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                 tbdUriById[id] = vListNP[i].path;
                 tbdTargetByURI[vListNP[i].path] = vListNP[k].targetType;
                 tbdTargetByID[id] = vListNP[k].targetType;
-                //console.log("------New View (NO PARAMS)" + JSON.stringify(tbdById[id]));
+                log.trace("------New View (NO PARAMS)" + JSON.stringify(tbdById[id]));
             }
         }
     }
@@ -242,7 +242,7 @@ var parseID = function parseID(mid) {
         finalid += theMetric[d];
     }
     if (agg !== 'avg' && agg !== 'sum' && agg !== 'max' && agg !== 'min') {
-        console.log('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ".");
+        log.error('Error parsing metric aggregator. Invalid value: ' + theMetric[0] + ".");
     }
     return ({id: finalid, agg: agg});
 };
@@ -351,12 +351,12 @@ var getMetricList = function getMetricList(returnCallback) {
             var parsedTrip2 = sdhTools.parseTriples(metricTriples2);
             sdhTools.getfromSDH(parsedTrip2, function(result2) {
                 var nResult = normalizeMetricList (result, result2);
-                console.log();
                 returnCallback({metricList: nResult});
             });
         });
     } catch (err) {
-        console.log("ERROR in getMetricList: " + err);
+        log.error("ERROR in getMetricList:");
+        log.error(err);
         returnCallback(err);
     }
 };
@@ -396,7 +396,8 @@ var
             });
         });
     } catch (err) {
-        console.log("ERROR in getTbdList: " + err);
+        log.error("ERROR in getTbdList:");
+        log.error(err);
         returnCallback(err);
     }
 };
@@ -425,7 +426,8 @@ var getProduct = function getProduct(prid, retCallback) {
             retCallback(result[0]);
         });
     } catch (err) {
-        console.log("ERROR in : sdhWrapper.getProduct " + err);
+        log.error("ERROR in sdhWrapper.getProduct:");
+        log.error(err);
         retCallback({
             "status": "ERROR",
             "results": err
@@ -486,7 +488,8 @@ var getProject = function getProject(pid, retCallback) {
             retCallback(result[0]);
         });
     } catch (err) {
-        console.log("ERROR in : sdhWrapper.getProject " + err);
+        log.error("ERROR in sdhWrapper.getProject");
+        log.error(err);
         retCallback({
             "status": "ERROR",
             "results": err
@@ -577,7 +580,8 @@ var getRepository = function getRepository(rid, retCallback) {
         });*/
         retCallback(repositoriesById[rid]);
     } catch (err) {
-        console.log("ERROR in : sdhWrapper.getRepository " + err);
+        log.error("ERROR in sdhWrapper.getRepository");
+        log.error(err);
         retCallback({
             "status": "ERROR",
             "results": err
@@ -692,7 +696,8 @@ var getUser = function getUser(uid, retCallback) {
                 });
     }
     catch (err) {
-        console.log('--bad request!');
+        log.error('Error getting user ' + uid);
+        log.error(err);
         retCallback(500);
     }
 };
@@ -934,7 +939,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
 
         var querystring = require("querystring");
         var realPath =  http_path + '?' + querystring.stringify(qpObject);
-        console.log("TDB GET--> " + realPath);
+        log.info("TDB GET--> " + realPath);
         // TODO Fix problem with getTBDValue tbd withouth dates
         var options = {
             url: http_path,
@@ -945,7 +950,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
         };
         request(options, function (error, response, body) {
             if (error) {
-                console.log(error);
+                log.error(error);
                 callback(404);
             } else {
                 if (response.statusCode == 200) {
@@ -1086,7 +1091,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         if (http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
-            console.log("Metric GET--> " + realPath);
+            log.info("Metric GET--> " + realPath);
 
             var options = {
                 url: http_path,
@@ -1106,13 +1111,13 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                         console.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
                         data = response.statusCode;
                     }
-                    console.log('real metric: ' + mid);
+                    log.info('Real metric: ' + mid);
                     callback(data);
                 }
             });
         } else {
             // Fake metric
-            console.log('this metric is not real: ' + mid);
+            log.info('this metric is not real: ' + mid);
             // we need from and to values...
             var d;
             var auxurl = "http://138.4.249.224:9001/metrics/scm/total-commits";
