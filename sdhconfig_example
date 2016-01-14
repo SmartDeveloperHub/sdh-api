@@ -30,6 +30,21 @@ GLOBAL.DUMMYDATA = false; // Provide Dummy data. SDH-platform disconnection
 GLOBAL.DUMMYMETRICS = false;
 global.BACKUP_ON = false; // Save Initial API information in /backup directory
 
+// LOG CONFIG
+/* Log configuration
+*   "fatal" (60): The service/app is going to stop or become unusable now. An operator should definitely look into this soon.
+*   "error" (50): Fatal for a particular request, but the service/app continues servicing other requests. An operator should look at this soon(ish).
+*   "warn" (40): A note on something that should probably be looked at by an operator eventually.
+*   "info" (30): Detail on regular operation.
+*   "debug" (20): Anything else, i.e. too verbose to be included in "info" level.
+*   "trace" (10): Logging from external libraries used by your app or very detailed application logging.
+* */
+GLOBAL.CONSOLE_LOG_LEVEL = 'info';         // Set the console log level
+GLOBAL.FILE_LOG_PATH = './logs/sdh_log';   // Set the log file path
+GLOBAL.FILE_LOG_LEVEL = 'debug';           // Set the log level in file log
+GLOBAL.FILE_LOG_PERIOD = 24,               // The period at which to rotate in HOURS
+GLOBAL.FILE_LOG_NFILES = 4                 // The number of rotated files to keep.
+
 // SESSION CONFIG
 GLOBAL.SESSION_INFO = {
     url: 'ldap://demo.smartdeveloperhub.org',
