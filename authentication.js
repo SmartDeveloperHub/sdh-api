@@ -23,41 +23,45 @@
 'use strict';
 
 exports.initialize = function initialize() {
+    try {
+        GLOBAL.passport = require('passport');
+        var LdapStrategy = require('passport-ldapauth');
+        var BearerStrategy = require('passport-http-bearer');
+        var Sessions = require('./sessions');
 
-    GLOBAL.passport = require('passport');
-    var LdapStrategy = require('passport-ldapauth');
-    var BearerStrategy = require('passport-http-bearer');
-    var Sessions = require('./sessions');
-
-    //Initialize passport
-    GLOBAL.passport.use(new LdapStrategy({
-        server: {
-            url: SESSION_INFO.url,
-            bindDn: SESSION_INFO.bindDn,
-            bindCredentials: SESSION_INFO.bindCredentials,
-            searchBase: SESSION_INFO.searchBase,
-            searchFilter: SESSION_INFO.searchFilter
-        }
-    }));
-
-    GLOBAL.passport.use(new BearerStrategy(
-        function(token, done) {
-
-            //Search the session in the sessions map
-            var sessionData = Sessions.getSessionData(token, true);
-
-            if(sessionData != null) {
-
-                //Update the last access to this session
-                Sessions.touch(token);
-
-                //Return the session data
-                return done(null, sessionData);
-
-            } else {
-                return done(null, false);
+        //Initialize passport
+        GLOBAL.passport.use(new LdapStrategy({
+            server: {
+                url: SESSION_INFO.url,
+                bindDn: SESSION_INFO.bindDn,
+                bindCredentials: SESSION_INFO.bindCredentials,
+                searchBase: SESSION_INFO.searchBase,
+                searchFilter: SESSION_INFO.searchFilter
             }
-        }
-    ));
+        }));
 
+        GLOBAL.passport.use(new BearerStrategy(
+            function (token, done) {
+
+                //Search the session in the sessions map
+                var sessionData = Sessions.getSessionData(token, true);
+
+                if (sessionData != null) {
+
+                    //Update the last access to this session
+                    Sessions.touch(token);
+
+                    //Return the session data
+                    return done(null, sessionData);
+
+                } else {
+                    return done(null, false);
+                }
+            }
+        ));
+        log.debug("Authentication utils OK");
+    } catch (err){
+        log.error(" ! Error loading authentication util:");
+        log.error(err);
+    }
 };
