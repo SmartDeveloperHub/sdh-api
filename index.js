@@ -144,14 +144,14 @@
          * @param frec Number in seconds indicating the refresh rate
          */
         var setRefreshRate = function setRefreshRate(frec) {
-            log.info("    > Setting sdh refresh rate in " + frec + 's');
+            log.info("Setting sdh refresh rate in " + frec + 's');
             setInterval( function() {
-                log.info("    -> Checking for sdh changes");
+                log.info("Checking for sdh changes");
                 loadStartDate = moment();
                 loader.update(function() {
                     var now = moment();
                     var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
-                    log.info(" API updated!! " + now.format() + "--- ( " + loadTime/100 + " seconds )");
+                    log.info(" API updated!! " + now.format() + "--- ( " + loadTime/1000 + " seconds )");
                 });
             },frec*1000);
         };
@@ -205,7 +205,7 @@
                     var now = moment();
                     loadStartDate = moment(loadStartDate);
                     var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
-                    log.info("---    SDH-API Ready!!   --- ( " + loadTime/100 + " seconds )");
+                    log.info("---    SDH-API Ready!!   --- ( " + loadTime/1000 + " seconds )");
                     log.info('SDH-API is listening (' + SWAGGER_URL + ':' + SWAGGER_PORT + ')');
                     log.info('SDH-API Swagger-ui is available on ' + SWAGGER_URL + ':' + SWAGGER_PORT + '/docs');
                 });
