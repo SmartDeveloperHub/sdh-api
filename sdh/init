@@ -24,7 +24,6 @@
 
 // SDH platform
 GLOBAL.sdhWrapper = require('./sdhWrapper');
-GLOBAL.sdhTools = require('./sdhTools');
 
 // GLOBALs
 GLOBAL.organizations = null;
@@ -49,37 +48,42 @@ var theCallback;
  * to collect static data repositories and users. Last step in update process
  */
 var staticDataCallback = function staticDataCallback() {
-    console.log("        * " + products.length + " Products");
-    console.log("        * " + projects.length + " Projects");
-    console.log("        * " + repositories.length + " Repositories");
-    console.log("        * " + users.length + " Users");
+    log.info("        * " + products.length + " Products");
+    log.info("        * " + projects.length + " Projects");
+    log.info("        * " + repositories.length + " Repositories");
+    log.info("        * " + users.length + " Users");
     // End
     // Backups activated?
     if (BACKUP_ON) {
         fs.writeFile("./backup/products/" + lastUpdate, JSON.stringify(products), function (err) {
             if (err) {
-                return console.log(err);
+                log.error(err);
+                return;
             }
             console.log("Products saved in - > /backup/products/" + lastUpdate);
         });
         fs.writeFile("./backup/projects/" + lastUpdate, JSON.stringify(projects), function (err) {
             if (err) {
-                return console.log(err);
+                log.error(err);
+                return;
             }
             console.log("Projects saved in - >" + "/backup/projects/" + lastUpdate);
         });
         fs.writeFile("./backup/repositories/" + lastUpdate, JSON.stringify(repositories), function (err) {
             if (err) {
-                return console.log(err);
+                log.error(err);
+                return;
             }
             console.log("Repositories saved in - > /backup/repositories/" + lastUpdate);
         });
         fs.writeFile("./backup/members/" + lastUpdate, JSON.stringify(users), function (err) {
             if (err) {
-                return console.log(err);
+                log.error(err);
+                return;
             }
             console.log("Members saved in - > /backup/members/" + lastUpdate);
         });
+        log.info("New static information backups in /backup/--. (" + lastUpdate + ")");
     }
     theCallback();
 };
@@ -90,14 +94,15 @@ var staticDataCallback = function staticDataCallback() {
  */
 var tdbCallback = function tdbCallback() {
     // Get static Information. Users, repositories, organization...
-    console.log("        * " + tbds.length + " Views");
-    console.log("    #Getting basic information about Users, Repositories and Organization...");
+    log.info("        * " + tbds.length + " Views");
+    log.info("    Getting basic information about Users, Repositories and Organization...");
     if (BACKUP_ON) {
         fs.writeFile("./backup/views/" + lastUpdate, JSON.stringify(tbds), function (err) {
             if (err) {
-                return console.log(err);
+                log.error(err);
+                return;
             }
-            console.log("Views saved in - >" + "/backup/views/" + lastUpdate);
+            log.debug("Views saved in - >" + "/backup/views/" + lastUpdate);
         });
     }
     try {
@@ -105,7 +110,7 @@ var tdbCallback = function tdbCallback() {
         var staticObject = require('./staticObject');
         staticObject.preloadAll(staticDataCallback);
     } catch (err) {
-        console.log("error getting Users, Projects and Repositories from SDH Platform: " + err);
+        log.error(" ! Error getting Users, Projects and Repositories from SDH Platform: " + err);
     }
 };
 
@@ -121,21 +126,22 @@ var metricCallback = function metricCallback() {
             realMet++;
         }
     }
-    console.log("        * " + metrics.length + " metrics (real " + (realMet - fakeMet) + " Real SDH-Platform metrics; " + fakeMet + " Fake metrics:)");
+    log.info("        * " + metrics.length + " metrics (" + (realMet - fakeMet) + " Real SDH-Platform metrics; " + fakeMet + " Fake metrics)");
     if (BACKUP_ON) {
         fs.writeFile("./backup/metrics/" + lastUpdate, JSON.stringify(metrics), function (err) {
             if (err) {
-                return console.log(err);
+                log.error(err);
+                return;
             }
-            console.log("Metrics saved in - >" + "/backup/metrics/" + lastUpdate);
+            log.debug("Metrics saved in - >" + "/backup/metrics/" + lastUpdate);
         });
     }
-    console.log("    #Getting available Time Based Data from SDH Platform...");
+    log.info("    Getting available Time Based Data from SDH Platform...");
     try {
         // Get all available TBDs from SDH Platform
         sdhWrapper.setAvailableTbds(tdbCallback);
     } catch (err) {
-        console.log("error getting TBDs from SDH Platform: " + err);
+        log.error(" ! Error getting TBDs from SDH Platform: " + err);
     }
 };
 
@@ -144,12 +150,12 @@ var metricCallback = function metricCallback() {
  */
 var getInfo = function getInfo() {
     // Get Metrics, tbds, static info... cascade
-    console.log("    #Getting available metrics from Agora-Platform...");
+    log.info("    Getting available metrics from Agora-Platform...");
     try {
         // Get all available metrics from SDH Platform
         sdhWrapper.setAvailableMetrics(metricCallback);
     } catch (err) {
-        console.log("error getting metrics from SDH Platform: " + err);
+        log.info(" ! Error getting metrics from SDH Platform: " + err);
     }
 };
 
@@ -160,5 +166,13 @@ var getInfo = function getInfo() {
 exports.update = function update(callback) {
     theCallback = callback;
     lastUpdate = moment(new Date()).format("YYYYMMDDx");
+    log.info("Updating static info (" + lastUpdate + ")");
+    getInfo();
+};
+
+exports.init = function init(callback) {
+    theCallback = callback;
+    lastUpdate = moment(new Date()).format("YYYYMMDDx");
+    log.info("Initialising SDH API static info (" + lastUpdate + ")");
     getInfo();
 };
