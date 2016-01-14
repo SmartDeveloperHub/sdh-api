@@ -116,93 +116,8 @@ var getDemoMetrics = function getDemoMetrics() {
     };
     metricUriById["director-externalcompanies-fake"] = {"sum": "int_1497"};
 
-    /*metById["orgcommits"] = {
-        "id" : "orgcommits",
-        "title": 'Organization commits',
-        "path" : "/metrics/orgcommits",
-        "description" : "Organization commits",
-        "params": [],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-    metricUriById["orgcommits"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
-
-    metById["membercollaboration"] = {
-        "id" : "membercollaboration",
-        "title": "Collaboration",
-        "path" : "/metrics/membercollaboration",
-        "description" : "Member development collaboration skill value",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-    metricUriById["membercollaboration"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
-
-    metById["memberquality"] = {
-        "id" : "memberquality",
-        "title": "Quality",
-        "path" : "/metrics/memberquality",
-        "description" : "Member development quality skill value",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-    metricUriById["memberquality"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};
-
-    metById["orgproducts"] = {
-        "id" : "orgproducts",
-        "title": "Products",
-        "path" : "/metrics/orgproducts",
-        "description" : "Number of Products",
-        "params": [],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-
-    metById["prodprojects"] = {
-        "id" : "prodprojects",
-        "title": "Product Projects",
-        "path" : "/metrics/prodprojects",
-        "description" : "Number of Products",
-        "params": ['prid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-
-    metById["prodmembers"] = {
-        "id" : "prodmembers",
-        "title": "Product Member",
-        "path" : "/metrics/prodmembers",
-        "description" : "Number of Products",
-        "params": ['prid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-
-    metById["projrepositories"] = {
-        "id" : "projrepositories",
-        "title": "Project Repositories",
-        "path" : "/metrics/projrepositories",
-        "description" : "Number of Products",
-        "params": ['pid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum', 'avg']
-    };
-
-    metricUriById["orgproducts"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
-    metricUriById["prodprojects"] = {"sum": "progresiveRandom2", "avg": "progresiveRandom2"};
-    metricUriById["prodmembers"] = {"sum": "progresiveRandom1", "avg": "progresiveRandom1"};
-    metricUriById["projrepositories"] = {"sum": "progresiveRandom3", "avg": "progresiveRandom3"};*/
-
     fakeMet = Object.keys(metById).length;
     return metById; // TODO array
-    /*GLOBAL.metricsById = metById;
-    console.log("Metrics: " + Object.keys(metricsById));
-    GLOBAL.tbdById = tbdById;
-    console.log("TBDs: " + Object.keys(tbdById));
-    for (var i in metById) {
-        re.push(metById[i]);
-    }*/
 };
 
 var getParamId = function getParamId (uri) {
@@ -509,11 +424,6 @@ var getProduct = function getProduct(prid, retCallback) {
             }
             retCallback(result[0]);
         });
-        /*console.log("no real product for sdhWrapper.getProductInfo " + prid);
-        retCallback({
-            "status": "NOIMPLEMENTED",
-            "results": null
-        });*/
     } catch (err) {
         console.log("ERROR in : sdhWrapper.getProduct " + err);
         retCallback({
