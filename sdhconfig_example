@@ -42,8 +42,8 @@ global.BACKUP_ON = false; // Save Initial API information in /backup directory
 GLOBAL.CONSOLE_LOG_LEVEL = 'info';         // Set the console log level
 GLOBAL.FILE_LOG_PATH = './logs/sdh_log';   // Set the log file path
 GLOBAL.FILE_LOG_LEVEL = 'debug';           // Set the log level in file log
-GLOBAL.FILE_LOG_PERIOD = 24,               // The period at which to rotate in HOURS
-GLOBAL.FILE_LOG_NFILES = 4                 // The number of rotated files to keep.
+GLOBAL.FILE_LOG_PERIOD = 24,               // Set the period at which to rotate in HOURS
+GLOBAL.FILE_LOG_NFILES = 4                 // Set the number of rotated files to keep.
 
 // SESSION CONFIG
 GLOBAL.SESSION_INFO = {
