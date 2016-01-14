@@ -88,7 +88,8 @@ var getProductsInfo = function getProductsInfo(returnCallback) {
             returnCallback({productList: result});
         });
     } catch (err) {
-        console.log("ERROR in getProductsInfo: " + err);
+        log.error("ERROR in getProductsInfo");
+        log.error(err);
         returnCallback(err);
     }
 };
@@ -115,7 +116,8 @@ var getOrganizationInfo = function getOrganizationInfo(returnCallback) {
         });*/
         returnCallback({organizationList: []});
     } catch (err) {
-        console.log("ERROR in getRepositoriesInfo: " + err);
+        log.error("ERROR in getRepositoriesInfo: " + err);
+        log.error(err);
         returnCallback(err);
     }
 };
@@ -144,7 +146,8 @@ var getRepositoriesInfo = function getRepositoriesInfo(returnCallback) {
             returnCallback({repositoryList: result});
         });
     } catch (err) {
-        console.log("ERROR in getRepositoriesInfo: " + err);
+        log.error("ERROR in getRepositoriesInfo: " + err);
+        log.error(err);
         returnCallback(err);
     }
 };
@@ -175,7 +178,8 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
             returnCallback({userList: result});
         });
     } catch (err) {
-        console.log("ERROR in getUsersInfo: " + err);
+        log.error("ERROR in getUsersInfo: " + err);
+        log.error(err);
         returnCallback(err);
     }
 };
@@ -198,16 +202,13 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
     }
     // Cascade. First Organization, products, projects, repos and users
     //getOrganizationInfo(function(e) {
-        //var resultOrganizations = parseOrganizationList(e);
         var resultOrganizations = require("./fakeOrganizationsInfo");
         getProductsInfo(function (resultProducts) {
-            //var resultProducts = require("./fakeProductsInfo");
             getProjectsInfo(function (resultProjects) {
-                //var resultProjects = require("./fakeProjectsInfo");
                 getRepositoriesInfo(function (reposResult) {
-                    //console.log(reposResult);
+                    log.trace(reposResult);
                     getUsersInfo(function (usersResult) {
-                        //console.log(usersResult);
+                        log.trace(usersResult);
                         returnCallback(resultOrganizations, resultProducts, resultProjects, reposResult, usersResult);
                     });
                 });
@@ -421,35 +422,35 @@ module.exports.preloadAll = function preloadAll (callback) {
         _users.userList = parsedUsers.list;
         _usersById = parsedUsers.byId;
         _usersByURI = parsedUsers.byURI;
-        //console.log(_users);
+        log.trace(_users);
 
         // Static data structures generation for repos
         var parsedRepos = normalizeRepoList(reps.repositoryList);
         _repositories.repositoryList = parsedRepos.list;
         _repositoriesById = parsedRepos.byId;
         _repositoriesByURI = parsedRepos.byURI;
-        //console.log(_repositories);
+        log.trace(_repositories);
 
         // Static data structures generation for products
         var parsedProducts = normalizeProductList(prod.productList);
         _products.productList = parsedProducts.list;
         _productsById = parsedProducts.byId;
         _productsByURI = parsedProducts.byURI;
-        //console.log(_products);
+        log.trace(_products);
 
         // Static data structures generation for projects
         var parsedProjects = normalizeProjectList(proj.projectList);
         _projects.projectList = parsedProjects.list;
         _projectsById = parsedProjects.byId;
         _projectsByURI = parsedProjects.byURI;
-        //console.log(_projects);
+        log.trace(_projects);
 
         // Static data structures generation for organizations
         var parsedOrgs = normalizeOrganizationList(orgs.organizationList);
         _organizations.organizationList = parsedOrgs.list;
         _organizationsById = parsedOrgs.byId;
         _organizationsByURI = parsedOrgs.byURI;
-        //console.log(_organizations);
+        log.trace(_organizations);
 
         // Make global all this methods for param validation
         organizations = this.getOrganizations();
