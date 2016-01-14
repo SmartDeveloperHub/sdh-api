@@ -116,15 +116,15 @@ var sendAfterWrite = function sendAfterWrite(result, ch) {
     // Send file
     //ch.assertExchange(EXCHANGE, 'topic', {durable: false});
     ch.publish(EXCHANGE, ROUTINGKEY, new Buffer(result));
-    //console.log(" [x] Sent " + ROUTINGKEY);
-    //console.log(result);
+    log.debug(" [x] Sent " + ROUTINGKEY);
+    log.trace(result);
     return;
 };
 
 module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
     try {
         if (!bNodes.length) {
-            console.log('Bad bNodes parameter. N3 Node Array expected');
+            log.error('Bad bNodes parameter. N3 Node Array expected');
             callback(null);
             return -1;
         }
@@ -136,27 +136,30 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
         var dataQ;
         amqp.connect(RABBITHOST + ':' + RABBITPORT, function (err, conn) {
             if (err) {
-                console.log('Error connecting' + RABBITHOST + ':' + RABBITPORT + '---> ' + err);
+                log.error('Error connecting' + RABBITHOST + ':' + RABBITPORT + ':');
+                log.error(err);
                 callback(null);
                 return -1;
             }
             conn.createChannel(function (err, ch) {
                 if (err) {
-                    console.log('Error creating channel (ttl send): ' + err);
+                    log.error('Error creating channel (ttl send):');
+                    log.error(err);
                     callback(null);
                     return -1;
                 }
                 ch.assertQueue('', {durable: false, autoDelete: true, exclusive: false}, function (err, q) {
                     ch.bindQueue(q.queue, EXCHANGE, qName);
                     ch.consume(q.queue, function (msg) {
-                        //console.log(" [x Accept] %s", msg.fields.routingKey);
+                        log.debug(" [x Accept] %s", msg.fields.routingKey);
                         // Parse msg
                         var parser = N3.Parser();
                         var isOk = false;
                         var trip = [];
                         parser.parse(msg.content.toString(), function (error, triple, prefixes) {
                             if (error) {
-                                console.log("Error parsing accept ttl.  " + error);
+                                log.error("Error parsing accept ttl:");
+                                log.error(error);
                                 return -1;
                             }
                             if (triple) {
@@ -168,10 +171,10 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                             } else {
                                 // Failed
                                 if (!isOk) {
-                                    console.log('Error: ');
-                                    console.log(prefixes);
-                                    console.log(trip);
-                                    console.log('...Connection close...');
+                                    log.error('Error parsing response. http://www.smartdeveloperhub.org/vocabulary/curator#Accepted type not found');
+                                    log.trace(prefixes);
+                                    log.trace(trip);
+                                    log.debug('...Connection close...');
                                     conn.close();
                                 }
                             }
@@ -186,12 +189,14 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                     var finalResponse = [];
                     ch.consume(q.queue, function (msg) {
                         if (msg.properties.headers.state == 'end') {
-                            //console.log(" [x Data] %s: ", msg.fields.routingKey);
-                            console.log('...Connection close...');
+                            log.debug(" [x Data] %s: ", msg.fields.routingKey);
+                            log.debug('...Connection close...');
                             conn.close();
                             callback(finalResponse);
                         } else {
-                            finalResponse = finalResponse.concat(JSON.parse(msg.content.toString()));
+                            var dt = JSON.parse(msg.content.toString());
+                            finalResponse = finalResponse.concat(dt);
+                            log.trace(dt);
                         }
                     }, {noAck: true});
                 });
@@ -202,20 +207,23 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
             // Obtain request ttl
             amqp.connect(RABBITHOST + ':' + RABBITPORT, function (err, conn) {
                 if (err) {
-                    console.log('Error connecting' + RABBITHOST + ':' + RABBITPORT + '---> ' + err);
+                    log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT + ":");
+                    log.error(err);
                     callback(null);
                     return -1;
                 }
                 conn.createChannel(function (err, ch) {
                     if (err) {
-                        console.log('Error creating channel (ttl send): ' + err);
+                        log.error('Error creating channel (ttl send):');
+                        log.error(err);
                         callback(null);
                         return -1;
                     }
                     // Generate the ttl
                     fs.readFile('./sdh/curatorExample.ttl', 'utf8', function (err, data) {
                         if (err) {
-                            console.log('Error reading ./sdh/curatorExample.ttl.  ' + err);
+                            log.error('Error reading ./sdh/curatorExample.ttl');
+                            log.error(err);
                             return -1;
                         }
                         // Parse file
@@ -223,7 +231,8 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                         var triples = [];
                         parser.parse(data, function (error, triple, prefixes) {
                             if (error) {
-                                console.log("Error parsing ttl.  " + error);
+                                log.error("Error parsing ttl:");
+                                log.error(error);
                                 return -1;
                             }
                             if (triple) {
@@ -233,7 +242,8 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                                 getNewTtl(triples, prefixes, bNodes,
                                     function (error, result) {
                                         if (error) {
-                                            console.log("Error rewriting ttl.  " + error);
+                                            log.error("Error rewriting ttl.");
+                                            log.error(error);
                                             return -1;
                                         }
                                         // send ttl
@@ -248,7 +258,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
             });
         };
     } catch (err) {
-        console.log('Error connecting' + RABBITHOST + ':' + RABBITPORT);
+        log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT);
         callback(null);
     }
 
