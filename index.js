@@ -28,27 +28,81 @@
 
 //if (cluster.isMaster) {
     var loadStartDate = new Date();
-    console.log('');
-    console.log("--- SDH-API Initializing ---");
+    try {
+        // global buyan
+        var bunyan = require('bunyan');
+        var PrettyStream = require('bunyan-prettystream');
+    } catch (err) {
+        console.error("Fatal API Error. bunyan logs problem: " + err);
+        log.info('Exiting...');
+        setTimeout(function() {
+            process.exit(0);
+        }, 1000);
+    }
+    try {
+        // Set Config params
+        require('./sdhconfig');
+    } catch (err) {
+        console.error("Fatal API Error with sdhconfig: " + err);
+        log.info('Exiting...');
+        setTimeout(function() {
+            process.exit(0);
+        }, 1000);
+    }
+    /* Log configuration
+    *   "fatal" (60): The service/app is going to stop or become unusable now. An operator should definitely look into this soon.
+    *   "error" (50): Fatal for a particular request, but the service/app continues servicing other requests. An operator should look at this soon(ish).
+    *   "warn" (40): A note on something that should probably be looked at by an operator eventually.
+    *   "info" (30): Detail on regular operation.
+    *   "debug" (20): Anything else, i.e. too verbose to be included in "info" level.
+    *   "trace" (10): Logging from external libraries used by your app or very detailed application logging.
+    * */
+    var prettyStdOut = new PrettyStream();
+    prettyStdOut.pipe(process.stdout);
+
+    GLOBAL.log = bunyan.createLogger({
+            name: 'SDH_API',
+            streams: [{
+                level: CONSOLE_LOG_LEVEL,
+                stream: prettyStdOut
+            },
+            {
+                level: FILE_LOG_LEVEL,
+                type: 'rotating-file',
+                path: FILE_LOG_PATH,
+                period: FILE_LOG_PERIOD + 'h',   // daily rotation
+                count: FILE_LOG_NFILES        // keep 3 back copies
+            }]
+    });
+
+    log.info("... Starting SDH-API ...");
 
     // Shut down function
     var gracefullyShuttinDown = function gracefullyShuttinDown() {
-        console.log('Shut down signal Received ');
-        console.log('Exiting...');
-        process.exit(0);
+        log.warn('Shut down signal Received ');
+        log.warn(" ! Shutting Down SDH-API manually.");
+        setTimeout(function() {
+            process.exit(0);
+        }, 1000);
+
     };
     // Set security handlers
     process.on('SIGINT', gracefullyShuttinDown);
     process.on('SIGTERM', gracefullyShuttinDown);
 
 
-    console.log("... Loading Modules...");
+    log.info("... Loading Modules...");
     try {
-        // Set Config params
-        require('./sdhconfig');
         if (DUMMYDATA) {
             console.warn("**  !!Attention!! This API is configurated to provide dummy information. If you want to connect to the real SDH-platform, change the DUMMYDATA flag in sdhconfig file");
         }
+
+        //fs
+        GLOBAL.fs = require('fs');
+        // global sdhTools for log and other basic utils
+        GLOBAL.sdhTools = require('./sdh/sdhTools');
+        // global moment.js
+        GLOBAL.moment = require('moment');
         // APP
         var app = require('connect')();
         GLOBAL.http = require('http');
@@ -57,15 +111,11 @@
         GLOBAL.request = require('request');
         // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
         var swaggerDoc = require('./api/swagger.json');
-        // global moment.js
-        GLOBAL.moment = require('moment');
         GLOBAL.underscore = require('underscore');
         // Rabbitmq
         GLOBAL.amqp = require('amqplib/callback_api');
         // n3
         GLOBAL.N3 = require('n3');
-        //fs
-        GLOBAL.fs = require('fs');
         // UUID
         GLOBAL.uuid = require('uuid4');
         GLOBAL.agentId = uuid(); // uuid 4
@@ -73,9 +123,11 @@
         GLOBAL.lastUpdate = null;
     }
     catch (err) {
-        console.error("Error loading dependencies: " + err);
-        console.log('Exiting...');
-        process.exit(0);
+        log.error(" ! Error loading dependencies: " + err);
+        log.info('Exiting...');
+        setTimeout(function() {
+            process.exit(0);
+        }, 1000);
     }
     // init server
     try {
@@ -92,14 +144,14 @@
          * @param frec Number in seconds indicating the refresh rate
          */
         var setRefreshRate = function setRefreshRate(frec) {
-            console.log("    > Setting sdh refresh rate in " + frec + 's');
+            log.info("    > Setting sdh refresh rate in " + frec + 's');
             setInterval( function() {
-                console.log("    -> Checking for sdh changes");
+                log.info("    -> Checking for sdh changes");
                 loadStartDate = moment();
                 loader.update(function() {
                     var now = moment();
                     var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
-                    console.log("    -> API updated!! " + now.format() + "--- ( " + loadTime + " ms )");
+                    log.info(" API updated!! " + now.format() + "--- ( " + loadTime/100 + " seconds )");
                 });
             },frec*1000);
         };
@@ -153,10 +205,9 @@
                     var now = moment();
                     loadStartDate = moment(loadStartDate);
                     var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
-                    console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
-                    console.log('');
-                    console.log('SDH-API is listening on port %d (http://localhost:%d)', SWAGGER_PORT, SWAGGER_PORT);
-                    console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SWAGGER_PORT);
+                    log.info("---    SDH-API Ready!!   --- ( " + loadTime/100 + " seconds )");
+                    log.info('SDH-API is listening (' + SWAGGER_URL + ':' + SWAGGER_PORT + ')');
+                    log.info('SDH-API Swagger-ui is available on ' + SWAGGER_URL + ':' + SWAGGER_PORT + '/docs');
                 });
 
                 // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
@@ -171,15 +222,19 @@
             });
         };
         process.on('uncaughtException', function (err) {
-            console.error(err.stack);
-            console.log("...not exiting...");
+            log.error(err);
+            log.warn("Something is wrong, but SDH will continue on line");
         });
-        loader.update(launchSwaggerAPI);
+        loader.init(launchSwaggerAPI);
     }
     catch (err) {
-        console.error("Error loading initial data from SDH-Platform: " + err);
-        console.log('Exiting...');
-        process.exit(0);
+        log.error("Error loading initial data from SDH-Platform: ");
+        log.error(err);
+        log.info('Exiting...');
+        setTimeout(function() {
+            process.exit(0);
+        }, 1000);
+
     }
 //} else {
     // forks
