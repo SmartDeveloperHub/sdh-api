@@ -41,6 +41,8 @@
     "request": "*",
     "amqplib": "*",
     "n3": "*",
-    "uuid4": "*"
+    "uuid4": "*",
+    "bunyan": "*",
+    "bunyan-prettystream": "*"
   }
 }
