@@ -60,28 +60,28 @@ var staticDataCallback = function staticDataCallback() {
                 log.error(err);
                 return;
             }
-            console.log("Products saved in - > /backup/products/" + lastUpdate);
+            log.debug("Products saved in - > /backup/products/" + lastUpdate);
         });
         fs.writeFile("./backup/projects/" + lastUpdate, JSON.stringify(projects), function (err) {
             if (err) {
                 log.error(err);
                 return;
             }
-            console.log("Projects saved in - >" + "/backup/projects/" + lastUpdate);
+            log.debug("Projects saved in - >" + "/backup/projects/" + lastUpdate);
         });
         fs.writeFile("./backup/repositories/" + lastUpdate, JSON.stringify(repositories), function (err) {
             if (err) {
                 log.error(err);
                 return;
             }
-            console.log("Repositories saved in - > /backup/repositories/" + lastUpdate);
+            log.debug("Repositories saved in - > /backup/repositories/" + lastUpdate);
         });
         fs.writeFile("./backup/members/" + lastUpdate, JSON.stringify(users), function (err) {
             if (err) {
                 log.error(err);
                 return;
             }
-            console.log("Members saved in - > /backup/members/" + lastUpdate);
+            log.debug("Members saved in - > /backup/members/" + lastUpdate);
         });
         log.info("New static information backups in /backup/--. (" + lastUpdate + ")");
     }
