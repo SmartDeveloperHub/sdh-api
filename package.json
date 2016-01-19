@@ -43,6 +43,7 @@
     "n3": "*",
     "uuid4": "*",
     "bunyan": "*",
-    "bunyan-prettystream": "*"
+    "bunyan-prettystream": "*",
+    "mkdirp": "*"
   }
 }
