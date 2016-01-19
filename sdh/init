@@ -40,6 +40,7 @@ GLOBAL.projects = null;
 GLOBAL.repositories = null;
 GLOBAL.users = null;
 GLOBAL.organizationsById = null;
+GLOBAL.organizationsByURI = null;
 GLOBAL.productsById = null;
 GLOBAL.projectsById = null;
 GLOBAL.usersById = null;

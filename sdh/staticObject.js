@@ -467,6 +467,7 @@ module.exports.preloadAll = function preloadAll (callback) {
         productsByURI = this.getProductsByURI();
         projectsByURI = this.getProjectsByURI();
         repositoriesByURI = this.getRepositoriesByURI();
+        organizationsByURI = this.getOrganizationsByURI();
         callback();
     }.bind(this);
     getStaticStructures(nextStep);
@@ -596,4 +597,13 @@ module.exports.getProductsByURI = function getProductsByURI () {
 module.exports.getRepositoriesByURI = function getRepositoriesByURI () {
 
   return _repositoriesByURI;
+};
+
+/**
+ * Get organizations by URI
+ * @return {Object}
+ */
+module.exports.getOrganizationsByURI = function getOrganizationsByURI () {
+
+  return _organizationsByURI;
 };
