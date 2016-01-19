@@ -22,6 +22,8 @@
 
 'use strict';
 
+// fs, mkdirp and getDirName method is required before load this module
+
 /* Aux Methods*/
 var getNewTriple = function getNewTriple(triple, dataQ, agentId, theUuid) {
     if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/curator#messageId") {
@@ -61,7 +63,6 @@ var getNewTtl = function getNewTtl(triples, prefixes, bNodes, callback) {
     }
     writer.end(callback);
 };
-
 
 module.exports.parseTriples = function parseTriples (triplesList) {
     var newElement = function newElement(subject, predicate, object) {
@@ -261,5 +262,179 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
         log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT);
         callback(null);
     }
+};
 
+module.exports.saveBackups = function getBackupFile (callback) {
+    // Metrics
+    var metricsData = JSON.stringify({
+        list: metrics,
+        byId: metricsById,
+        uris: metricUriById
+    });
+    writeBackupFile("./backup/metrics/" + lastUpdate, metricsData, function(err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+    // Views
+    var viewsData = JSON.stringify({
+        list: tbds,
+        byId: tbdById,
+        uris: tbdUriById,
+        targetByUri: tbdTargetByURI,
+        targetById: tbdTargetByID
+    });
+    writeBackupFile("./backup/views/" + lastUpdate, viewsData, function (err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+
+    // Organizations
+    var organizationData = JSON.stringify({
+        list: organizations,
+        byId: organizationsById,
+        uris: organizationsByURI
+    });
+    writeBackupFile("./backup/organizations/" + lastUpdate, organizationData, function (err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+
+    // Products
+    var productsData = JSON.stringify({
+        list: products,
+        byId: productsById,
+        uris: productsByURI
+    });
+    writeBackupFile("./backup/products/" + lastUpdate, productsData, function (err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+
+    // Projects
+    var projectsData = JSON.stringify({
+        list: projects,
+        byId: projectsById,
+        uris: projectsByURI
+    });
+    writeBackupFile("./backup/projects/" + lastUpdate, projectsData, function (err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+
+    // Repositories
+    var repositoriesData = JSON.stringify({
+        list: repositories,
+        byId: repositoriesById,
+        uris: repositoriesByURI
+    });
+    writeBackupFile("./backup/repositories/" + lastUpdate, repositoriesData, function (err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+
+    // Members
+    var membersData = JSON.stringify({
+        list: users,
+        byId: usersById,
+        uris: usersByURI
+    });
+    writeBackupFile("./backup/members/" + lastUpdate, membersData, function (err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+
+    log.info("New static information backups in /backup/--. (" + lastUpdate + ")");
+    callback();
+};
+
+var writeBackupFile = function writeBackupFile (path, contents, cb) {
+    mkdirp(getDirName(path), function (err) {
+        if (err) {
+            return cb(err);
+        }
+        fs.writeFile(path, contents, cb);
+    })
+};
+
+var getBackupFile = function getBackupFile (id, type, callback) {
+    var nPath = './backup/' + type + "/" + id;
+    fs.readFile(nPath, 'utf8', function (err, data) {
+        if (err) {
+            log.error('Error reading ' + nPath);
+            log.error(err);
+            callback([]);
+        } else {
+            // Parse file
+            var parseData = JSON.parse(data);
+            callback(parseData);
+        }
+    });
+};
+
+module.exports.loadBackup = function loadBackup (id, callback) {
+    var backupCounter = 0;
+    var loadingEnd = function loadingEnd() {
+        backupCounter ++;
+        if (backupCounter == 6) {
+            callback();
+        }
+    };
+    // Metrics
+    getBackupFile(id, 'metrics', function(result) {
+        metrics = result.list;
+        metricsById = result.byId;
+        metricUriById = result.uris;
+        loadingEnd();
+    });
+    // Views
+    getBackupFile(id, 'views', function(result) {
+        tbds = result.list;
+        tbdById = result.byId;
+        tbdUriById = result.uris;
+        tbdTargetByURI = result.targetByUri;
+        tbdTargetByID = result.targetById;
+        loadingEnd();
+    });
+    // Organizations
+    getBackupFile(id, 'organizations', function(result) {
+        organizations = result.list;
+        organizationsById = result.byId;
+        organizationsByURI = result.uris;
+        loadingEnd();
+    });
+    // Products
+    getBackupFile(id, 'products', function(result) {
+        products = result.list;
+        productsById = result.byId;
+        productsByURI = result.uris;
+        loadingEnd();
+    });
+    // Projects
+    getBackupFile(id, 'projects', function(result) {
+        projects = result.list;
+        projectsById = result.byId;
+        projectsByURI = result.uris;
+        loadingEnd();
+    });
+    // Repositories
+    getBackupFile(id, 'repositories', function(result) {
+        repositories = result.list;
+        repositoriesById = result.byId;
+        repositoriesByURI = result.uris;
+        loadingEnd();
+    });
+    // Members
+    getBackupFile(id, 'members', function(result) {
+        users = result.list;
+        usersById = result.byId;
+        usersByURI = result.uris;
+        loadingEnd();
+    });
 };
