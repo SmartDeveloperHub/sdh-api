@@ -787,12 +787,12 @@ exports.sync_productExist = function (rid) {
  * @param callback
  */
 exports.setAvailableTbds = function setAvailableTbds(callback) {
-    GLOBAL.tbdById = {};
-    GLOBAL.tbdUriById = {};
-    GLOBAL.tbdTargetByURI = {};
-    GLOBAL.tbdTargetByID = {};
+    tbdById = {};
+    tbdUriById = {};
+    tbdTargetByURI = {};
+    tbdTargetByID = {};
     if (DUMMYDATA) {
-        GLOBAL.tbds = require('./tbds').tbds;
+        tbds = require('./tbds').tbds;
         for (var i=0; i< tbds.length; i++) {
             tbdById[tbds[i].id] = tbds[i];
             tbdUriById[tbds[i].id] = tbds[i].path;
@@ -800,11 +800,7 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
         callback();
     } else {
         getTbdList(function(newTBDs) {
-            GLOBAL.tbds = newTBDs.viewList;
-            /*for (var i=0; i< tbds.length; i++) {
-                tbdById[tbds[i].id] = tbds[i];
-                tbdUriById[tbds[i].id] = tbds[i].path;
-            }*/
+            tbds = newTBDs.viewList;
             callback();
         });
     }
@@ -816,17 +812,17 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
  * @param callback
  */
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
-    GLOBAL.metricsById = {};
-    GLOBAL.metricUriById = {};
+    metricsById = {};
+    metricUriById = {};
     if (DUMMYDATA) {
-        GLOBAL.metrics = require('./metrics').metrics;
+        metrics = require('./metrics').metrics;
         for (var i=0; i< metrics.length; i++) {
             metricsById[metrics[i].id] = metrics[i];
         }
         callback();
     } else {
         getMetricList(function (newMetrics) {
-            GLOBAL.metrics = newMetrics.metricList;
+            metrics = newMetrics.metricList;
             callback();
         });
     }

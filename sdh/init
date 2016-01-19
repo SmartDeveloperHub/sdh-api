@@ -26,6 +26,14 @@
 GLOBAL.sdhWrapper = require('./sdhWrapper');
 
 // GLOBALs
+GLOBAL.metrics = null;
+GLOBAL.metricsById = null;
+GLOBAL.metricUriById = null;
+GLOBAL.tbds = null;
+GLOBAL.tbdById = null;
+GLOBAL.tbdUriById = null;
+GLOBAL.tbdTargetByURI = null;
+GLOBAL.tbdTargetByID = null;
 GLOBAL.organizations = null;
 GLOBAL.products = null;
 GLOBAL.projects = null;
@@ -40,7 +48,7 @@ GLOBAL.usersByURI = null;
 GLOBAL.productsByURI = null;
 GLOBAL.projectsByURI = null;
 GLOBAL.repositoriesByURI = null;
-GLOBAL.fakeMet = null;
+GLOBAL.fakeMet = 0;
 var theCallback;
 
 /**
