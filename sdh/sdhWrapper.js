@@ -906,7 +906,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
     if (typeof tbdUriById[tid] !== "undefined") {
         var http_path = tbdUriById[tid];
     } else {
-        console.error("Unexpected error getting tbd. tid '" + tid + "' metric is not available in Agora!");
+        log.error("Unexpected error getting tbd. tid '" + tid + "' metric is not available in Agora!");
         callback(null);
         return;
     }
@@ -981,7 +981,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                                 var tType = getTargetByPath(tbdTargetByID[tid], false);
                                 val.push(tType[data.result[i].id]);
                             } else {
-                                console.error("¡¡Atention!! Not valid view result");
+                                log.error("¡¡Atention!! Not valid view result");
                                 val = result;
                             }
                         }
@@ -990,7 +990,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                     callback(data);
                 } else {
                     // TODO
-                    console.warn('TDB Error ' + response.statusCode + ";  GET-> " + realPath);
+                    log.warn('TDB Error ' + response.statusCode + ";  GET-> " + realPath);
                     callback(response.statusCode);
                 }
             }
@@ -1004,16 +1004,16 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
             data = JSON.parse(req.getBody());
         }
         else {
-            console.warn('TDB :( Error ' + req.statusCode + ";  GET-> " + realPath);
+            log.warn('TDB :( Error ' + req.statusCode + ";  GET-> " + realPath);
             data = req.statusCode;
             callback(data);
             return;
         }*/
     }
     catch (err) {
-        console.error('-- ! Bad request in TBD (' + tid + ') : ' + err);
-        console.error('-- ! Params :' + [tid, rid, uid, from, to]);
-        console.error('-- ! Request: ' + http_path);
+        log.error('-- ! Bad request in TBD (' + tid + ') : ' + err);
+        log.error('-- ! Params :' + [tid, rid, uid, from, to]);
+        log.error('-- ! Request: ' + http_path);
         callback(500);
         return;
     }
@@ -1046,11 +1046,11 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             if (typeof metricUriById[mid][aggr] !== "undefined") {
                 http_path = metricUriById[mid][aggr];
             } else {
-                console.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available in Agora!");
+                log.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available in Agora!");
                 callback(null);
             }
         } else {
-            console.error("Unexpected error getting metric. '" + mid + "' metric is not available in Agora!");
+            log.error("Unexpected error getting metric. '" + mid + "' metric is not available in Agora!");
             callback(null);
         }
     }
@@ -1104,7 +1104,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                     if (response.statusCode == 200) {
                         data = JSON.parse(body);
                     } else {
-                        console.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
+                        log.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
                         data = response.statusCode;
                     }
                     log.info('Real metric: ' + mid);
@@ -1249,9 +1249,9 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
     }
     catch (err) {
-        console.error('-- Bad request in Metric (' + mid + ') : ' + err);
-        console.error('-- ! Params :' + [mid, rid, uid, from, to, accumulated, max, aggr]);
-        console.error('-- request: ' + http_path);
+        log.error('-- Bad request in Metric (' + mid + ') : ' + err);
+        log.error('-- ! Params :' + [mid, rid, uid, from, to, accumulated, max, aggr]);
+        log.error('-- request: ' + http_path);
         callback(500);
     }
 };

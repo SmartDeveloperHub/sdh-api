@@ -48,19 +48,19 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
     var tbdRequest = function tbdRequest () {
         // Normalize params
         if (!uidRequired && typeof uid !== 'undefined') {
-            console.warn(tid + " view does not require query param 'uid'");
+            log.warn(tid + " view does not require query param 'uid'");
             uid = null;
         }
         if (!ridRequired && typeof rid !== 'undefined') {
-            console.warn(tid + " view does not require query param 'rid'");
+            log.warn(tid + " view does not require query param 'rid'");
             rid = null;
         }
         if (!pidRequired && typeof pid !== 'undefined') {
-            console.warn(tid + " view does not require query param 'pid'");
+            log.warn(tid + " view does not require query param 'pid'");
             pid = null;
         }
         if (!pridRequired && typeof prid !== 'undefined') {
-            console.warn(tid + " view does not require query param 'prid'");
+            log.warn(tid + " view does not require query param 'prid'");
             prid = null;
         }
 
@@ -118,7 +118,7 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
     // Logical validation
     // check ids
     if (!(tid in tbdById)) {
-        console.error("TID not found: " + tid);
+        log.error("TID not found: " + tid);
         callback(404);
         return;
     }
@@ -129,42 +129,42 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
     var pridRequired = tbdById[tid].params.indexOf('prid') >= 0;
 
     if (uidRequired && typeof uid == 'undefined') {
-        console.error(tid + " view require query param 'uid'");
+        log.error(tid + " view require query param 'uid'");
         callback(400);
         return;
     }
     if (ridRequired && typeof rid == 'undefined') {
-        console.error(tid + " view require query param 'rid'");
+        log.error(tid + " view require query param 'rid'");
         callback(400);
         return;
     }
     if (pidRequired && typeof pid == 'undefined') {
-        console.error(tid + " view require query param 'pid'");
+        log.error(tid + " view require query param 'pid'");
         callback(400);
         return;
     }
     if (pridRequired && typeof prid == 'undefined') {
-        console.error(tid + " view require query param 'prid'");
+        log.error(tid + " view require query param 'prid'");
         callback(400);
         return;
     }
     if (uidRequired && !sdhWrapper.sync_userExist(uid)) {
-        console.error("UID not found: " + uid);
+        log.error("UID not found: " + uid);
         callback(404);
         return;
     }
     if (ridRequired && !sdhWrapper.sync_repoExist(rid)) {
-        console.error("RID not found: " + rid);
+        log.error("RID not found: " + rid);
         callback(404);
         return;
     }
     if (pidRequired && !sdhWrapper.sync_projectExist(pid)) {
-        console.error("PID not found: " + pid);
+        log.error("PID not found: " + pid);
         callback(404);
         return;
     }
     if (pridRequired && !sdhWrapper.sync_productExist(prid)) {
-        console.error("PRID not found: " + prid);
+        log.error("PRID not found: " + prid);
         callback(404);
         return;
     }
@@ -172,23 +172,23 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
     if (uidRequired && ridRequired) {
         // uid and rid required for this tbd
         if (typeof uid == 'undefined') {
-            console.error(tid + " time-based data require query param 'uid'");
+            log.error(tid + " time-based data require query param 'uid'");
             callback(400);
             return;
         }
         if (typeof rid == 'undefined') {
-            console.error(tid + " time-based data require query param 'rid'");
+            log.error(tid + " time-based data require query param 'rid'");
             callback(400);
             return;
         }
         sdhWrapper.userExist(uid, function(usExist) {
             if (!usExist) {
-                console.error("UID not found: " + uid);
+                log.error("UID not found: " + uid);
                 callback(404);
             } else {
                 sdhWrapper.repoExist(rid, function(reExist) {
                     if (!reExist) {
-                        console.error("RID not found: " + rid);
+                        log.error("RID not found: " + rid);
                         callback(404);
                     } else {
                         // continue with the tbd
@@ -203,13 +203,13 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
     } else if (uidRequired) {
         // only uid required for this tbd
         if (typeof uid == 'undefined') {
-            console.error(tid + " time-based data require query param 'uid'");
+            log.error(tid + " time-based data require query param 'uid'");
             callback(400);
             return;
         } else {
             sdhWrapper.userExist(uid, function(usExist) {
                 if (!usExist) {
-                    console.error("UID not found: " + uid);
+                    log.error("UID not found: " + uid);
                     callback(404);
                 } else {
                     // continue with the tbd
@@ -222,13 +222,13 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
     } else if (ridRequired) {
         // only rid required for this tbd
         if (typeof rid == 'undefined') {
-            console.error(tid + " time-based data require query param 'rid'");
+            log.error(tid + " time-based data require query param 'rid'");
             callback(400);
             return;
         } else {
             sdhWrapper.repoExist(rid, function(reExist) {
                 if (!reExist) {
-                    console.error("RID not found: " + rid);
+                    log.error("RID not found: " + rid);
                     callback(404);
                 } else {
                     // continue with the tbd

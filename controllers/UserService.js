@@ -43,7 +43,7 @@ exports.userInfo = function(uid, callback) {
     if (uid in usersById) {
         sdhWrapper.getUserInfo(uid, callback);
     } else {
-        console.log("--UID not found");
+        log.warn("404 UID not found getting Member Information (" + uid + ")");
         callback(404);
         return;
     }

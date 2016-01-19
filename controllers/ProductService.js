@@ -43,7 +43,7 @@ exports.productInfo = function(prid, callback) {
     if (prid in productsById) {
         sdhWrapper.getProductInfo(prid, callback)
     } else {
-        console.log("--PRID not found");
+        log.warn("404 PRID not found getting Product Information (" + prid + ")");
         callback(404);
         return;
     };

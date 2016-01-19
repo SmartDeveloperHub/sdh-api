@@ -79,7 +79,7 @@ module.exports.getMetric = function getMetric (req, res) {
     var aggr = req.swagger.params['aggr'].value;
 
     // Control log
-    console.log("getMetric: " + mid + " (" + [rid, uid, from, to, accumulated, max, aggr] + ")");
+    log.info("--> getMetric: " + mid + " (" + [rid, uid, from, to, accumulated, max, aggr] + ")");
 
     /**
      * The main callback for this request
@@ -90,7 +90,7 @@ module.exports.getMetric = function getMetric (req, res) {
         if(typeof result !== 'undefined') {
             if(typeof result == 'number') {
                 // specific error
-                console.error("Error in metric request: " + result);
+                log.error("Error in metric request: " + result);
                 res.statusCode = result;
                 res.end();
             } else {

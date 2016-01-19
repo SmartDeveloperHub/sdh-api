@@ -43,7 +43,7 @@ exports.projectInfo = function(pid, callback) {
     if (pid in projectsById) {
         sdhWrapper.getProjectInfo(pid, callback);
     } else {
-        console.log("--PID not found");
+        log.warn("404 PID not found getting Project Information (" + pid + ")");
         callback(404);
         return;
     }

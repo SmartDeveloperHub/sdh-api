@@ -95,7 +95,7 @@
         log.info("... Loading Modules...");
         try {
             if (DUMMYDATA) {
-                console.warn("**  !!Attention!! This API is configurated to provide dummy information. If you want to connect to the real SDH-platform, change the DUMMYDATA flag in sdhconfig file");
+                log.warn("**  !!Attention!! This API is configurated to provide dummy information. If you want to connect to the real SDH-platform, change the DUMMYDATA flag in sdhconfig file");
             }
 
             //fs

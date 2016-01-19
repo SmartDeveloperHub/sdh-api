@@ -42,7 +42,7 @@ exports.repositoryInfo = function(rid, callback) {
     if (rid in repositoriesById) {
         sdhWrapper.getRepositoryInfo(rid, callback);
     } else {
-        console.log("--RID not found");
+        log.warn("404 RID not found getting Repository Information (" + rid + ")");
         callback(404);
         return;
     }
