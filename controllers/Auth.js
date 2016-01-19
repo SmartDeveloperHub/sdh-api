@@ -32,11 +32,11 @@ var uuid = require('node-uuid');
  * @param next Pass control to the next handler
  */
 module.exports.login = function login (req, res, next) {
-    console.log("Trying to login in SDH-API");
+    log.info("Trying to login in SDH-API");
     passport.authenticate('ldapauth', {session: false})(req, res, function() {
-        console.log("... LDAP ...");
+        log.debug("LDAP Connected");
         if(req.user != null) {
-            console.log("LDAP credentials validation");
+            log.trace("LDAP credentials validation");
             //Create a new session
             var token = uuid.v4();
             GLOBAL.SESSIONS[token] = {
@@ -64,13 +64,12 @@ module.exports.login = function login (req, res, next) {
                 req.user["avatar"] = theAvatar;
             }
 
-            console.log("positions: " + thePos);
-            console.log(JSON.stringify({token: token, user: req.user}));
+            log.info(JSON.stringify({token: token, user: req.user}));
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({token: token, user: req.user}));
         } else {
-            console.log("Login Error. User '" + req.body.username + '"');
+            log.error("Login Error. User '" + req.body.username + '"');
             res.statusCode = 401;
             res.end();
         }
