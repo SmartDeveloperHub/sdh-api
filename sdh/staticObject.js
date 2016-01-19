@@ -198,23 +198,23 @@ var getStaticStructures = function getStaticStructures(returnCallback) {
         var theRepos = require("./fakeRepositoriesInfo");
         var theProducts = require("./fakeProductsInfo");
         returnCallback(theOrganizations, theProducts, theProjects, theRepos, theUsers);
-        return;
-    }
-    // Cascade. First Organization, products, projects, repos and users
-    //getOrganizationInfo(function(e) {
-        var resultOrganizations = require("./fakeOrganizationsInfo");
-        getProductsInfo(function (resultProducts) {
-            getProjectsInfo(function (resultProjects) {
-                getRepositoriesInfo(function (reposResult) {
-                    log.trace(reposResult);
-                    getUsersInfo(function (usersResult) {
-                        log.trace(usersResult);
-                        returnCallback(resultOrganizations, resultProducts, resultProjects, reposResult, usersResult);
+    } else {
+        // Cascade. First Organization, products, projects, repos and users
+        //getOrganizationInfo(function(e) {
+            var resultOrganizations = require("./fakeOrganizationsInfo");
+            getProductsInfo(function (resultProducts) {
+                getProjectsInfo(function (resultProjects) {
+                    getRepositoriesInfo(function (reposResult) {
+                        log.trace(reposResult);
+                        getUsersInfo(function (usersResult) {
+                            log.trace(usersResult);
+                            returnCallback(resultOrganizations, resultProducts, resultProjects, reposResult, usersResult);
+                        });
                     });
                 });
             });
-        });
-    //});
+        //});
+    }
 };
 
 var removeRepeatedItems = function removeRepeatedItems(theList) {
