@@ -430,36 +430,37 @@ module.exports.preloadAll = function preloadAll (callback) {
         _productsByURI = {};
         _organizationsByURI = {};
 
-        // Static data structures generation for users
         var parsedUsers = normalizeUserList(usrs.userList);
+        var parsedRepos = normalizeRepoList(reps.repositoryList);
+        var parsedProducts = normalizeProductList(prod.productList);
+        var parsedProjects = normalizeProjectList(proj.projectList);
+        var parsedOrgs = normalizeOrganizationList(orgs.organizationList);
+
+        // Static data structures generation for users
         _users.userList = parsedUsers.list;
         _usersById = parsedUsers.byId;
         _usersByURI = parsedUsers.byURI;
         log.trace(_users);
 
         // Static data structures generation for repos
-        var parsedRepos = normalizeRepoList(reps.repositoryList);
         _repositories.repositoryList = parsedRepos.list;
         _repositoriesById = parsedRepos.byId;
         _repositoriesByURI = parsedRepos.byURI;
         log.trace(_repositories);
 
         // Static data structures generation for products
-        var parsedProducts = normalizeProductList(prod.productList);
         _products.productList = parsedProducts.list;
         _productsById = parsedProducts.byId;
         _productsByURI = parsedProducts.byURI;
         log.trace(_products);
 
         // Static data structures generation for projects
-        var parsedProjects = normalizeProjectList(proj.projectList);
         _projects.projectList = parsedProjects.list;
         _projectsById = parsedProjects.byId;
         _projectsByURI = parsedProjects.byURI;
         log.trace(_projects);
 
         // Static data structures generation for organizations
-        var parsedOrgs = normalizeOrganizationList(orgs.organizationList);
         _organizations.organizationList = parsedOrgs.list;
         _organizationsById = parsedOrgs.byId;
         _organizationsByURI = parsedOrgs.byURI;
