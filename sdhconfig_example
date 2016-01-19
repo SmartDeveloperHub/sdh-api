@@ -24,26 +24,46 @@
 
 // SDH API GENERAL CONFIG
 GLOBAL.SWAGGER_URL = null; // null is localhost
-GLOBAL.SWAGGER_DOC_PORT = 8080;
+GLOBAL.SWAGGER_PORT = 8080;
 GLOBAL.REFRESH_RATE = 600; //In Seconds
-GLOBAL.DUMMYDATA = false; // Provide Dummy data. SDH-platform disconnection
-GLOBAL.DUMMYMETRICS = false;
-global.BACKUP_ON = false; // Save Initial API information in /backup directory
 
-// LOG CONFIG
-/* Log configuration
-*   "fatal" (60): The service/app is going to stop or become unusable now. An operator should definitely look into this soon.
-*   "error" (50): Fatal for a particular request, but the service/app continues servicing other requests. An operator should look at this soon(ish).
-*   "warn" (40): A note on something that should probably be looked at by an operator eventually.
-*   "info" (30): Detail on regular operation.
-*   "debug" (20): Anything else, i.e. too verbose to be included in "info" level.
-*   "trace" (10): Logging from external libraries used by your app or very detailed application logging.
+// DUMMY INFORMATION ONLY FOR TEST
+GLOBAL.DUMMYDATA = false;
+GLOBAL.DUMMYMETRICS = false;
+
+
+/* BACKUPS CONFIG
+*
+*   When this utility (GLOBAL.BACKUP ON = true;) is activated, the API stored in the / backups the last
+*   information received from SDH-Platform separated into different folders for each entity.
+*   In each folder, a backup file will appear with a identifier based on the last update timestamp. This timestamp
+*   can be found by analyzing the API log during upgrades (eg. "Updating static info (201601191453222072648)")
+*
+*   When a backup id specified in BACKUP_LOAD variable (eg. GLOBAL.BACKUP_LOAD = 201601141452774597187;), the API
+*   will get static information specified backup files. If you select this option, new backups will not be saved,
+*   the API will not be updated with new data and does not ensure proper operation of the system.
+*   Recommended only for developers.
 * */
-GLOBAL.CONSOLE_LOG_LEVEL = 'info';         // Set the console log level
-GLOBAL.FILE_LOG_PATH = './logs/sdh_log';   // Set the log file path
-GLOBAL.FILE_LOG_LEVEL = 'debug';           // Set the log level in file log
-GLOBAL.FILE_LOG_PERIOD = 24,               // Set the period at which to rotate in HOURS
-GLOBAL.FILE_LOG_NFILES = 4                 // Set the number of rotated files to keep.
+GLOBAL.BACKUP_ON = false;
+GLOBAL.BACKUP_LOAD_ON = false; // Be careful if you enable this option
+GLOBAL.BACKUP_LOAD_ID = "201601191453222072648" // (STRING!) This variable is only used if BACKUP_LOAD_ON == true
+
+
+/* LOG CONFIG
+*
+*   Log levels:
+*       "fatal" (60): The service/app is going to stop or become unusable now. An operator should definitely look into this soon.
+*       "error" (50): Fatal for a particular request, but the service/app continues servicing other requests. An operator should look at this soon(ish).
+*       "warn" (40): A note on something that should probably be looked at by an operator eventually.
+*       "info" (30): Detail on regular operation.
+*       "debug" (20): Anything else, i.e. too verbose to be included in "info" level.
+*       "trace" (10): Logging from external libraries used by your app or very detailed application logging.
+* */
+GLOBAL.CONSOLE_LOG_LEVEL = 'info';
+GLOBAL.FILE_LOG_PATH = './logs/sdh_log';
+GLOBAL.FILE_LOG_LEVEL = 'debug';
+GLOBAL.FILE_LOG_PERIOD = 24,               // The period at which to rotate in HOURS
+GLOBAL.FILE_LOG_NFILES = 4                 // The number of rotated files to keep.
 
 // SESSION CONFIG
 GLOBAL.SESSION_INFO = {
@@ -54,7 +74,7 @@ GLOBAL.SESSION_INFO = {
     searchFilter: '(uid={{username}})'
 };
 GLOBAL.SESSION_DURATION = 3600 * 1000; //1 hour in ms
-GLOBAL.SESSION_GARBAGE_COLLECTOR = 120 * 1000; //2 minutes in ms
+GLOBAL.SESSION_GARBAGE_COLLECTOR = 10 * 60 * 1000; //10 minutes in ms
 
 // RABBITMQ CONFIG
 GLOBAL.RABBITHOST = "amqp://<yourRabbitHost>";
