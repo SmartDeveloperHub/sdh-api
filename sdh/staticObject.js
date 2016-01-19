@@ -236,6 +236,10 @@ var removeRepeatedItems = function removeRepeatedItems(theList) {
     return newL;
 };
 
+/**
+ * normalize member list
+ * @param ulist repository array
+ */
 var normalizeUserList = function normalizeUserList(uList) {
     uList = removeRepeatedItems(uList);
     var __usersById = {};
@@ -290,7 +294,7 @@ var normalizeUserList = function normalizeUserList(uList) {
 };
 
 /**
- * normalize repositories list
+ * normalize repository list
  * @param rlist repository array
  */
 var normalizeRepoList = function normalizeRepoList(rlist) {
@@ -320,8 +324,8 @@ var normalizeRepoList = function normalizeRepoList(rlist) {
 };
 
 /**
- * normalize repositories list
- * @param rlist repository array
+ * normalize product list
+ * @param plist repository array
  */
 var normalizeProductList = function normalizeProductList(plist) {
     var newList = [];
@@ -343,6 +347,10 @@ var normalizeProductList = function normalizeProductList(plist) {
     return {byId: __productsById, byURI: __productsByURI, list: newList};
 };
 
+/**
+ * normalize project list
+ * @param plist repository array
+ */
 var normalizeProjectList = function normalizeProjectList(plist) {
     var newList = [];
     plist = removeRepeatedItems(plist);
@@ -363,6 +371,10 @@ var normalizeProjectList = function normalizeProjectList(plist) {
     return {byId: __projectsById, byURI: __projectsByURI, list: newList};
 };
 
+/**
+ * normalize organization list
+ * @param olist repository array
+ */
 var normalizeOrganizationList = function normalizeOrganizationList(olist) {
     var newList = [];
     olist = removeRepeatedItems(olist);
@@ -385,6 +397,7 @@ var normalizeOrganizationList = function normalizeOrganizationList(olist) {
     }
     return {byId: __organizationsById, byURI: __organizationsByURI, list: newList};
 };
+
 
 /**
  * --PUBLIC METHODS--
