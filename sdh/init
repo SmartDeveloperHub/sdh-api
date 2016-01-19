@@ -57,6 +57,7 @@ var theCallback;
  * to collect static data repositories and users. Last step in update process
  */
 var staticDataCallback = function staticDataCallback() {
+    log.info("        * " + organizations.length + " Organizations");
     log.info("        * " + products.length + " Products");
     log.info("        * " + projects.length + " Projects");
     log.info("        * " + repositories.length + " Repositories");
