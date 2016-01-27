@@ -79,7 +79,7 @@ module.exports.getMetric = function getMetric (req, res) {
     var aggr = req.swagger.params['aggr'].value;
 
     // Control log
-    log.info("--> getMetric: " + mid + " (" + [rid, uid, from, to, accumulated, max, aggr] + ")");
+    log.debug("--> getMetric: " + mid + " (" + [rid, uid, pid, prid, from, to, accumulated, max, aggr] + ")");
 
     /**
      * The main callback for this request

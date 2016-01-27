@@ -76,7 +76,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res) {
     var to = req.swagger.params['to'].value;
 
     // Control log
-    log.info("--> getView: " + tid + " (" + [rid, uid, from, to] + ")");
+    log.debug("--> getView: " + tid + " (" + [rid, uid, pid, prid, from, to] + ")");
 
     /**
      * The main callback for this request

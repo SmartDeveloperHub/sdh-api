@@ -1107,13 +1107,13 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                         log.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
                         data = response.statusCode;
                     }
-                    log.info('Real metric: ' + mid);
+                    log.debug('<-- Metric "' + mid + '"');
+                    log.trace('Metric result: ' + data.result);
                     callback(data);
                 }
             });
         } else {
             // Fake metric
-            log.info('this metric is not real: ' + mid);
             // we need from and to values...
             var d;
             var auxurl = "http://138.4.249.224:9001/metrics/scm/total-commits";
@@ -1245,6 +1245,8 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                 },
                 "result": aux
             };
+            log.debug('<-- Dummy metric "' + mid + '"');
+            log.trace('Metric result: ' + aux);
             callback(data);
         }
     }

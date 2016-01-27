@@ -137,7 +137,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
         var dataQ;
         amqp.connect(RABBITHOST + ':' + RABBITPORT, function (err, conn) {
             if (err) {
-                log.error('Error connecting' + RABBITHOST + ':' + RABBITPORT + ':');
+                log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT);
                 log.error(err);
                 callback(null);
                 return -1;
