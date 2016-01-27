@@ -94,7 +94,7 @@ var tdbCallback = function tdbCallback() {
  */
 var metricCallback = function metricCallback() {
     // Get Tbds
-    var realMet = 0;
+    GLOBAL.realMet = 0;
     for (var k in metricUriById) {
         for (var kk in metricUriById[k]) {
             realMet++;

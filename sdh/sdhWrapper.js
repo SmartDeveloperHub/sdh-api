@@ -834,7 +834,7 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
  * @param returnCallback
  */
 exports.getProductInfo = function getProductInfo(prid, returnCallback) {
-    if (DUMMYDATA) {
+    if (DUMMYDATA || BACKUP_LOAD_ON) {
         returnCallback(productsById[prid]);
     } else {
         getProduct(prid, function (e) {
@@ -850,7 +850,7 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
  * @param returnCallback
  */
 exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
-    if (DUMMYDATA) {
+    if (DUMMYDATA|| BACKUP_LOAD_ON) {
         returnCallback(projectsById[pid]);
     } else {
         getProject(pid, function (e) {
@@ -866,7 +866,7 @@ exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
  * @param returnCallback
  */
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
-    if (DUMMYDATA) {
+    if (DUMMYDATA|| BACKUP_LOAD_ON) {
         returnCallback(repositoriesById[rid]);
     } else {
         getRepository(rid, function (e) {
@@ -882,7 +882,7 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
  * @param returnCallback
  */
 exports.getUserInfo = function getUserInfo(uid, returnCallback) {
-    if (DUMMYDATA) {
+    if (DUMMYDATA|| BACKUP_LOAD_ON) {
         returnCallback(usersById[uid]);
     }else {
         getUser(uid, function (e) {
@@ -910,112 +910,144 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
         callback(null);
         return;
     }
-    var data = null;
-    try {
-        var qpObject = {};
-        // Query Params
-        if(rid !== undefined) {
-            qpObject['rid'] = rid;
+    if (DUMMYMETRICS) {
+        var tType = getTargetByPath(tbdTargetByID[tid], true);
+        var val = [];
+        for (var key in tType) {
+            val.push(tType[key]);
         }
-        if(uid !== undefined) {
-            qpObject['uid'] = uid;
-        }
-        if(pid !== undefined) {
-            qpObject['pjid'] = pid;
-        }
-        if(prid !== undefined) {
-            qpObject['prid'] = prid;
-        }
+        var basic_from = 1432936800000;
+        var basic_to = new Date().getTime();
+        var timestamp = new Date().getTime();
         if(from !== null) {
-            qpObject['begin'] = from / 1000;
+            basic_from = from;
         }
         if(to !== null) {
-            qpObject['end'] = to / 1000;
+            basic_to = to + 86399;
         }
-
-        var querystring = require("querystring");
-        var realPath =  http_path + '?' + querystring.stringify(qpObject);
-        log.info("TDB GET--> " + realPath);
-        // TODO Fix problem with getTBDValue tbd withouth dates
-        var options = {
-            url: http_path,
-            headers: {
-                "Accept": "application/json",
+        var data = {
+            "context": {
+                "begin": basic_from / 1000,
+                "end": basic_to / 1000,
+                "data_begin": basic_from / 1000,
+                "data_end": basic_to / 1000,
+                "timestamp": timestamp
             },
-            qs: qpObject
+            "result": val
         };
-        request(options, function (error, response, body) {
-            if (error) {
-                log.error(error);
-                callback(404);
-            } else {
-                if (response.statusCode == 200) {
-                    data = JSON.parse(body);
-                    var i;
-                    var val = [];
-                    // For test TODO remove all else ifs
-                    if (tid == 'userrepositoriestbd') {
-                        for (i = 0; i < data.result.length; i ++) {
-                            val.push(repositoriesById[data.result[i]]);
-                        }
-                    } else if (tid == 'repodeveloperstbd') {
-                        for (i = 0; i < data.result.length; i ++) {
-                            val.push(usersById[data.result[i]]);
-                        }
-                    } else if (tid == 'orgrepositoriestbd') {
-                        for (i = 0; i < data.result.length; i ++) {
-                            val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
-                        }
-                    } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "getTBDValue") {
-                        val = [parseInt((data.result[0] / 3600)* 100) / 100];
-                    } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
-                        val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
-                    }else {
-                        // TODO this must be the only method to construct the views
-                        val = [];
-                        for (i = 0; i < data.result.length; i ++) {
-                            if (data.result[i].uri !== undefined) {
-                                var tType = getTargetByPath(tbdTargetByID[tid], true);
-                                val.push(tType[data.result[i].uri]);
-                            } else if (data.result[i].id !== undefined) {
-                                var tType = getTargetByPath(tbdTargetByID[tid], false);
-                                val.push(tType[data.result[i].id]);
-                            } else {
-                                log.error("¡¡Atention!! Not valid view result");
-                                val = result;
+        log.debug('<-- Dummy View "' + tid + '"');
+        log.trace('View result: ' + val);
+        callback(data);
+    } else {
+        var data = null;
+        try {
+            var qpObject = {};
+            // Query Params
+            if(rid !== undefined) {
+                qpObject['rid'] = rid;
+            }
+            if(uid !== undefined) {
+                qpObject['uid'] = uid;
+            }
+            if(pid !== undefined) {
+                qpObject['pjid'] = pid;
+            }
+            if(prid !== undefined) {
+                qpObject['prid'] = prid;
+            }
+            if(from !== null) {
+                qpObject['begin'] = from / 1000;
+            }
+            if(to !== null) {
+                qpObject['end'] = to / 1000;
+            }
+
+            var querystring = require("querystring");
+            var realPath =  http_path + '?' + querystring.stringify(qpObject);
+            log.info("TDB GET--> " + realPath);
+            // TODO Fix problem with getTBDValue tbd withouth dates
+            var options = {
+                url: http_path,
+                headers: {
+                    "Accept": "application/json",
+                },
+                qs: qpObject
+            };
+            request(options, function (error, response, body) {
+                if (error) {
+                    log.error(error);
+                    callback(404);
+                } else {
+                    if (response.statusCode == 200) {
+                        data = JSON.parse(body);
+                        var i;
+                        var val = [];
+                        // For test TODO remove all else ifs
+                        if (tid == 'userrepositoriestbd') {
+                            for (i = 0; i < data.result.length; i ++) {
+                                val.push(repositoriesById[data.result[i]]);
+                            }
+                        } else if (tid == 'repodeveloperstbd') {
+                            for (i = 0; i < data.result.length; i ++) {
+                                val.push(usersById[data.result[i]]);
+                            }
+                        } else if (tid == 'orgrepositoriestbd') {
+                            for (i = 0; i < data.result.length; i ++) {
+                                val.push(repositoriesById[repoIdByUri[data.result[i].uri]]);
+                            }
+                        } else if (tid == 'orgbuildtimetbd' || tid == 'repobuildtimetbd' || tid == 'repotimetofixtbd' || tid == "getTBDValue") {
+                            val = [parseInt((data.result[0] / 3600)* 100) / 100];
+                        } else if (tid == 'orgbrokentimetbd' || tid == 'repobrokentimetbd') {
+                            val = [parseInt(((data.result[0] / 3600) / 24) * 100) / 100];
+                        }else {
+                            // TODO this must be the only method to construct the views
+                            val = [];
+                            for (i = 0; i < data.result.length; i ++) {
+                                if (data.result[i].uri !== undefined) {
+                                    var tType = getTargetByPath(tbdTargetByID[tid], true);
+                                    val.push(tType[data.result[i].uri]);
+                                } else if (data.result[i].id !== undefined) {
+                                    var tType = getTargetByPath(tbdTargetByID[tid], false);
+                                    val.push(tType[data.result[i].id]);
+                                } else {
+                                    log.error("¡¡Atention!! Not valid view result");
+                                    val = result;
+                                }
                             }
                         }
+                        data.result = val;
+                        log.debug('<-- View "' + tid + '"');
+                        log.trace('View result: ' + val);
+                        callback(data);
+                    } else {
+                        // TODO
+                        log.warn('TDB Error ' + response.statusCode + ";  GET-> " + realPath);
+                        callback(response.statusCode);
                     }
-                    data.result = val;
-                    callback(data);
-                } else {
-                    // TODO
-                    log.warn('TDB Error ' + response.statusCode + ";  GET-> " + realPath);
-                    callback(response.statusCode);
                 }
-            }
-        });
+            });
 
-        /*var req = request('GET', http_path, {
-            "headers": {"Accept": "application/json"},
-            "qs": qpObject
-        });
-        if (req.statusCode === 200) {
-            data = JSON.parse(req.getBody());
+            /*var req = request('GET', http_path, {
+                "headers": {"Accept": "application/json"},
+                "qs": qpObject
+            });
+            if (req.statusCode === 200) {
+                data = JSON.parse(req.getBody());
+            }
+            else {
+                log.warn('TDB :( Error ' + req.statusCode + ";  GET-> " + realPath);
+                data = req.statusCode;
+                callback(data);
+                return;
+            }*/
         }
-        else {
-            log.warn('TDB :( Error ' + req.statusCode + ";  GET-> " + realPath);
-            data = req.statusCode;
-            callback(data);
+        catch (err) {
+            log.error('-- ! Bad request in TBD (' + tid + ') : ' + err);
+            log.error('-- ! Params :' + [tid, rid, uid, from, to]);
+            log.error('-- ! Request: ' + http_path);
+            callback(500);
             return;
-        }*/
-    }
-    catch (err) {
-        log.error('-- ! Bad request in TBD (' + tid + ') : ' + err);
-        log.error('-- ! Params :' + [tid, rid, uid, from, to]);
-        log.error('-- ! Request: ' + http_path);
-        callback(500);
-        return;
+        }
     }
 };
 
