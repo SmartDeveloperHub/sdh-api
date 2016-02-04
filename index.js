@@ -77,14 +77,77 @@
 
     var startAPI = function startAPI () {
         log.info("... Starting SDH-API ...");
+        //fs
+        GLOBAL.fs = require('fs');
+        // Check backup config
+        if (BACKUP_UPDATE_METRICS_ON) {
+            BACKUP_UPDATE_METRICS_ON = true;
+            log.warn("The API will try to generate a new backup updating " + BACKUP_LOAD_ID + " backup metrics");
+            var apth = "./backup/metricData/" + BACKUP_LOAD_ID;
+            if (!fs.existsSync(apth)) {
+                BACKUP_UPDATE_METRICS_ON = false;
+                log.error("Metric backup " + apth +" not found...");
+            } else {
+                if (BACKUP_LOAD_ON) {
+                    log.warn("BACKUP_LOAD_ON should be false... changing value...");
+                }
+                if (BACKUP_ON) {
+                    log.warn("BACKUP_ON should be false... changing value...");
+                }
+            }
+            BACKUP_LOAD_ON = false;
+            BACKUP_ON = false;
+        } else if (BACKUP_LOAD_ON) {
+            BACKUP_LOAD_ON = true;
+            var apthm = "./backup/metrics/" + BACKUP_LOAD_ID;
+            var apthv = "./backup/views/" + BACKUP_LOAD_ID;
+            var aptho = "./backup/organizations/" + BACKUP_LOAD_ID;
+            var apthpr = "./backup/products/" + BACKUP_LOAD_ID;
+            var apthpj = "./backup/projects/" + BACKUP_LOAD_ID;
+            var apthr = "./backup/repositories/" + BACKUP_LOAD_ID;
+            var apthu = "./backup/members/" + BACKUP_LOAD_ID;
+            var apthmv = "./backup/metricData/" + BACKUP_LOAD_ID;
+            if (!fs.existsSync(apthm) || !fs.existsSync(apthv) || !fs.existsSync(aptho) || !fs.existsSync(apthpr) ||
+                !fs.existsSync(apthpj) || !fs.existsSync(apthr) || !fs.existsSync(apthu) || !fs.existsSync(apthmv)) {
+                BACKUP_LOAD_ON = false;
+                log.error("Backup ./backup/..../" + BACKUP_LOAD_ID +" not found...");
+            } else if (BACKUP_ON) {
+                log.warn("BACKUP_ON should be false... changing value...");
+            }
+            BACKUP_ON = false;
+        }
+
+        /* Slack test */
+        var Slack = require('slack-node');
+        var webhookUri = "https://hooks.slack.com/services/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";
+
+        GLOBAL.slack = new Slack();
+        slack.setWebhook(webhookUri);
+        slack.webhook({
+            channel: "#carlostest2",
+            username: "Local-Carlos-SDH-API",
+            icon_emoji: "https://avatars2.githubusercontent.com/u/7658037?v=3&s=400",
+            text: "Hello Slack!!! I'm SDH API bot & i'm starting in this moment"
+        }, function(err, response) {
+            log.trace(response);
+        });
 
         // Shut down function
         var gracefullyShuttinDown = function gracefullyShuttinDown() {
             log.warn('Shut down signal Received ');
             log.warn(" ! Shutting Down SDH-API manually.");
-            setTimeout(function () {
-                process.exit(0);
-            }, 1000);
+            if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+                sdhTools.saveBackups(function(){
+                    setTimeout(function () {
+                        process.exit(0);
+                    }, 500);
+                });
+            } else {
+                setTimeout(function () {
+                    process.exit(0);
+                }, 500);
+            }
+
 
         };
         // Set security handlers
@@ -94,12 +157,7 @@
 
         log.info("... Loading Modules...");
         try {
-            if (DUMMYDATA) {
-                log.warn("**  !!Attention!! This API is configurated to provide dummy information. If you want to connect to the real SDH-platform, change the DUMMYDATA flag in sdhconfig file");
-            }
-
-            //fs
-            GLOBAL.fs = require('fs');
+            GLOBAL.metricValues = {};
             // global sdhTools for log and other basic utils
             GLOBAL.sdhTools = require('./sdh/sdhTools');
             // global moment.js
@@ -212,6 +270,16 @@
                         log.info("---    SDH-API Ready!!   --- ( " + loadTime / 1000 + " seconds )");
                         log.info('SDH-API is listening (' + SWAGGER_URL + ':' + SWAGGER_PORT + ')');
                         log.info('SDH-API Swagger-ui is available on ' + SWAGGER_URL + ':' + SWAGGER_PORT + '/docs');
+
+                        var auxFun = function(err, response) {
+                            log.trace(response);
+                        };
+                        slack.webhook({
+                            channel: "#carlostest2",
+                            username: "Local-Carlos-SDH-API",
+                            icon_emoji: "https://avatars2.githubusercontent.com/u/7658037?v=3&s=400",
+                            text: "I have:\n" + tbds.length + " Views,\n" + metrics.length + " metrics (" + (realMet - fakeMet) + " Real SDH-Platform metrics; " + fakeMet + " Fake metrics),\n"  + organizations.length + " Organizations,\n" + products.length + " Products,\n" + projects.length + " Projects,\n" + repositories.length + " Repositories,\n" + users.length + " Team Members.\n"
+                        }, auxFun);
                     });
 
                     // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
