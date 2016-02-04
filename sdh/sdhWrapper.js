@@ -791,19 +791,10 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
     tbdUriById = {};
     tbdTargetByURI = {};
     tbdTargetByID = {};
-    if (DUMMYDATA) {
-        tbds = require('./tbds').tbds;
-        for (var i=0; i< tbds.length; i++) {
-            tbdById[tbds[i].id] = tbds[i];
-            tbdUriById[tbds[i].id] = tbds[i].path;
-        }
+    getTbdList(function(newTBDs) {
+        tbds = newTBDs.viewList;
         callback();
-    } else {
-        getTbdList(function(newTBDs) {
-            tbds = newTBDs.viewList;
-            callback();
-        });
-    }
+    });
 
 };
 
@@ -814,18 +805,11 @@ exports.setAvailableTbds = function setAvailableTbds(callback) {
 exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     metricsById = {};
     metricUriById = {};
-    if (DUMMYDATA) {
-        metrics = require('./metrics').metrics;
-        for (var i=0; i< metrics.length; i++) {
-            metricsById[metrics[i].id] = metrics[i];
-        }
+
+    getMetricList(function (newMetrics) {
+        metrics = newMetrics.metricList;
         callback();
-    } else {
-        getMetricList(function (newMetrics) {
-            metrics = newMetrics.metricList;
-            callback();
-        });
-    }
+    });
 };
 
 /** TODO
@@ -834,7 +818,7 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
  * @param returnCallback
  */
 exports.getProductInfo = function getProductInfo(prid, returnCallback) {
-    if (DUMMYDATA || BACKUP_LOAD_ON) {
+    if (BACKUP_LOAD_ON) {
         returnCallback(productsById[prid]);
     } else {
         getProduct(prid, function (e) {
@@ -850,7 +834,7 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
  * @param returnCallback
  */
 exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
-    if (DUMMYDATA|| BACKUP_LOAD_ON) {
+    if (BACKUP_LOAD_ON) {
         returnCallback(projectsById[pid]);
     } else {
         getProject(pid, function (e) {
@@ -866,7 +850,7 @@ exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
  * @param returnCallback
  */
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
-    if (DUMMYDATA|| BACKUP_LOAD_ON) {
+    if (BACKUP_LOAD_ON) {
         returnCallback(repositoriesById[rid]);
     } else {
         getRepository(rid, function (e) {
@@ -882,14 +866,7 @@ exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
  * @param returnCallback
  */
 exports.getUserInfo = function getUserInfo(uid, returnCallback) {
-    if (DUMMYDATA|| BACKUP_LOAD_ON) {
-        returnCallback(usersById[uid]);
-    }else {
-        getUser(uid, function (e) {
-            var resultUser = parseUserInfo(e);
-            returnCallback(resultUser);
-        });
-    }
+    returnCallback(usersById[uid]);
 };
 
 /**
@@ -910,7 +887,7 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
         callback(null);
         return;
     }
-    if (DUMMYMETRICS) {
+    if (BACKUP_LOAD_ON) {
         var tType = getTargetByPath(tbdTargetByID[tid], true);
         var val = [];
         for (var key in tType) {
@@ -1067,12 +1044,8 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
  */
 exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback) {
     var http_path;
-    if (DUMMYDATA || DUMMYMETRICS) {
-        http_path = "progresiveRandom" + randomIntFromInterval(1,3);
-        if (mid == 'reporeleasestatus' || mid == 'productreleasestatus' || mid == 'projectreleasestatus') {
-            //http_path = "float"; //simply random float number serie
-            http_path = "floatProg"; //progresive random float number serie
-        }
+    if (BACKUP_LOAD_ON){
+        http_path = "BACKUP";
     } else {
         if (typeof metricUriById[mid] !== "undefined") {
             if (typeof metricUriById[mid][aggr] !== "undefined") {
@@ -1116,7 +1089,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         }
         //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (!BACKUP_LOAD_ON && http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             log.info("Metric GET--> " + realPath);
@@ -1138,8 +1111,8 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                     } else {
                         log.warn('Metric Error ' + response.statusCode + ";  GET-> " + realPath);
                         data = response.statusCode;
+                        log.debug('<-- Metric "' + mid + '"');
                     }
-                    log.debug('<-- Metric "' + mid + '"');
                     log.trace('Metric result: ' + data.result);
                     callback(data);
                 }
