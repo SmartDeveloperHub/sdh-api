@@ -265,17 +265,23 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
 };
 
 module.exports.saveBackups = function getBackupFile (callback) {
+    var auxC = 0;
+    var genericCall = function genericCall(err) {
+        auxC ++;
+        if (err) {
+            log.error(err);
+        } else if(auxC == 8){
+            callback();
+        }
+    };
+
     // Metrics
     var metricsData = JSON.stringify({
         list: metrics,
         byId: metricsById,
         uris: metricUriById
     });
-    writeBackupFile("./backup/metrics/" + lastUpdate, metricsData, function(err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/metrics/" + lastUpdate, metricsData, genericCall);
     // Views
     var viewsData = JSON.stringify({
         list: tbds,
@@ -284,11 +290,7 @@ module.exports.saveBackups = function getBackupFile (callback) {
         targetByUri: tbdTargetByURI,
         targetById: tbdTargetByID
     });
-    writeBackupFile("./backup/views/" + lastUpdate, viewsData, function (err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/views/" + lastUpdate, viewsData, genericCall);
 
     // Organizations
     var organizationData = JSON.stringify({
@@ -296,11 +298,7 @@ module.exports.saveBackups = function getBackupFile (callback) {
         byId: organizationsById,
         uris: organizationsByURI
     });
-    writeBackupFile("./backup/organizations/" + lastUpdate, organizationData, function (err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/organizations/" + lastUpdate, organizationData, genericCall);
 
     // Products
     var productsData = JSON.stringify({
@@ -308,11 +306,7 @@ module.exports.saveBackups = function getBackupFile (callback) {
         byId: productsById,
         uris: productsByURI
     });
-    writeBackupFile("./backup/products/" + lastUpdate, productsData, function (err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/products/" + lastUpdate, productsData, genericCall);
 
     // Projects
     var projectsData = JSON.stringify({
@@ -320,11 +314,7 @@ module.exports.saveBackups = function getBackupFile (callback) {
         byId: projectsById,
         uris: projectsByURI
     });
-    writeBackupFile("./backup/projects/" + lastUpdate, projectsData, function (err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/projects/" + lastUpdate, projectsData, genericCall);
 
     // Repositories
     var repositoriesData = JSON.stringify({
@@ -332,11 +322,7 @@ module.exports.saveBackups = function getBackupFile (callback) {
         byId: repositoriesById,
         uris: repositoriesByURI
     });
-    writeBackupFile("./backup/repositories/" + lastUpdate, repositoriesData, function (err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/repositories/" + lastUpdate, repositoriesData, genericCall);
 
     // Members
     var membersData = JSON.stringify({
@@ -344,14 +330,22 @@ module.exports.saveBackups = function getBackupFile (callback) {
         byId: usersById,
         uris: usersByURI
     });
-    writeBackupFile("./backup/members/" + lastUpdate, membersData, function (err) {
-        if (err) {
-            log.error(err);
-        }
-    });
+    writeBackupFile("./backup/members/" + lastUpdate, membersData, genericCall);
+
+    writeBackupFile("./backup/metricData/" + lastUpdate, JSON.stringify(metricValues), genericCall);
 
     log.info("New static information backups in /backup/--. (" + lastUpdate + ")");
-    callback();
+};
+
+module.exports.saveMetricData = function saveMetricData (callback) {
+    writeBackupFile("./backup/metricData/" + lastUpdate, JSON.stringify(metricValues), function(err) {
+        if (err) {
+            log.error(err);
+        } else {
+            log.info("Metric Data backup saved in: ./backup/metricData/" + lastUpdate);
+            callback();
+        }
+    });
 };
 
 var writeBackupFile = function writeBackupFile (path, contents, cb) {
@@ -369,7 +363,10 @@ var getBackupFile = function getBackupFile (id, type, callback) {
         if (err) {
             log.error('Error reading ' + nPath);
             log.error(err);
-            callback([]);
+            log.info('Exiting...');
+            setTimeout(function () {
+                process.exit(0);
+            }, 500);
         } else {
             // Parse file
             var parseData = JSON.parse(data);
@@ -378,11 +375,13 @@ var getBackupFile = function getBackupFile (id, type, callback) {
     });
 };
 
+module.exports.getBackupFile = getBackupFile;
+
 module.exports.loadBackup = function loadBackup (id, callback) {
     var backupCounter = 0;
     var loadingEnd = function loadingEnd() {
         backupCounter ++;
-        if (backupCounter == 6) {
+        if (backupCounter == 8) {
             callback();
         }
     };
@@ -435,6 +434,11 @@ module.exports.loadBackup = function loadBackup (id, callback) {
         users = result.list;
         usersById = result.byId;
         usersByURI = result.uris;
+        loadingEnd();
+    });
+    // Metric Values
+    getBackupFile(id, 'metricData', function(result) {
+        metricValues = result;
         loadingEnd();
     });
 };
