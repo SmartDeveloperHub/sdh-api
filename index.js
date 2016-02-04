@@ -117,21 +117,6 @@
             BACKUP_ON = false;
         }
 
-        /* Slack test */
-        var Slack = require('slack-node');
-        var webhookUri = "https://hooks.slack.com/services/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";
-
-        GLOBAL.slack = new Slack();
-        slack.setWebhook(webhookUri);
-        slack.webhook({
-            channel: "#carlostest2",
-            username: "Local-Carlos-SDH-API",
-            icon_emoji: "https://avatars2.githubusercontent.com/u/7658037?v=3&s=400",
-            text: "Hello Slack!!! I'm SDH API bot & i'm starting in this moment"
-        }, function(err, response) {
-            log.trace(response);
-        });
-
         // Shut down function
         var gracefullyShuttinDown = function gracefullyShuttinDown() {
             log.warn('Shut down signal Received ');
@@ -270,16 +255,6 @@
                         log.info("---    SDH-API Ready!!   --- ( " + loadTime / 1000 + " seconds )");
                         log.info('SDH-API is listening (' + SWAGGER_URL + ':' + SWAGGER_PORT + ')');
                         log.info('SDH-API Swagger-ui is available on ' + SWAGGER_URL + ':' + SWAGGER_PORT + '/docs');
-
-                        var auxFun = function(err, response) {
-                            log.trace(response);
-                        };
-                        slack.webhook({
-                            channel: "#carlostest2",
-                            username: "Local-Carlos-SDH-API",
-                            icon_emoji: "https://avatars2.githubusercontent.com/u/7658037?v=3&s=400",
-                            text: "I have:\n" + tbds.length + " Views,\n" + metrics.length + " metrics (" + (realMet - fakeMet) + " Real SDH-Platform metrics; " + fakeMet + " Fake metrics),\n"  + organizations.length + " Organizations,\n" + products.length + " Products,\n" + projects.length + " Projects,\n" + repositories.length + " Repositories,\n" + users.length + " Team Members.\n"
-                        }, auxFun);
                     });
 
                     // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
