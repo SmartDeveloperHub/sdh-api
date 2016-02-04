@@ -50,6 +50,7 @@ GLOBAL.productsByURI = null;
 GLOBAL.projectsByURI = null;
 GLOBAL.repositoriesByURI = null;
 GLOBAL.fakeMet = 0;
+GLOBAL.realMet = 0;
 var theCallback;
 
 /**
@@ -64,7 +65,7 @@ var staticDataCallback = function staticDataCallback() {
     log.info("        * " + users.length + " Users");
     // End
     // Backups activated?
-    if (BACKUP_ON && !BACKUP_LOAD_ON) {
+    if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
         sdhTools.saveBackups(theCallback);
     } else {
         theCallback();
@@ -94,7 +95,7 @@ var tdbCallback = function tdbCallback() {
  */
 var metricCallback = function metricCallback() {
     // Get Tbds
-    GLOBAL.realMet = 0;
+    realMet = 0;
     for (var k in metricUriById) {
         for (var kk in metricUriById[k]) {
             realMet++;
@@ -149,6 +150,12 @@ exports.init = function init(callback) {
     if (BACKUP_LOAD_ON) {
         log.warn("BACKUP_LOAD_ON: Loading data from the backup " + BACKUP_LOAD_ID);
         sdhTools.loadBackup(BACKUP_LOAD_ID, callback);
+    } else if (BACKUP_UPDATE_METRICS_ON) {
+        // Get previous metrics values from backup
+        sdhTools.getBackupFile(BACKUP_LOAD_ID, 'metricData', function(result) {
+            metricValues = result;
+            getInfo();
+        });
     } else {
         getInfo();
     }
