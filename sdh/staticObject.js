@@ -191,30 +191,36 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
  * @param returnCallback
  */
 var getStaticStructures = function getStaticStructures(returnCallback) {
-    if (DUMMYDATA) {
+    //getOrganizationInfo(function(e) {
         var theOrganizations = require("./fakeOrganizationsInfo");
-        var theProjects = require("./fakeProjectsInfo");
-        var theUsers = require("./fakeUsersInfo");
-        var theRepos = require("./fakeRepositoriesInfo");
-        var theProducts = require("./fakeProductsInfo");
-        returnCallback(theOrganizations, theProducts, theProjects, theRepos, theUsers);
-    } else {
-        // Cascade. First Organization, products, projects, repos and users
-        //getOrganizationInfo(function(e) {
-            var resultOrganizations = require("./fakeOrganizationsInfo");
-            getProductsInfo(function (resultProducts) {
-                getProjectsInfo(function (resultProjects) {
-                    getRepositoriesInfo(function (reposResult) {
-                        log.trace(reposResult);
-                        getUsersInfo(function (usersResult) {
-                            log.trace(usersResult);
-                            returnCallback(resultOrganizations, resultProducts, resultProjects, reposResult, usersResult);
-                        });
-                    });
-                });
-            });
-        //});
-    }
+        var theProducts, theProjects, theRepos, themembers;
+        getProductsInfo(function (resultProducts) {
+            theProducts = resultProducts;
+            log.trace(resultProducts);
+            genCallback();
+        });
+        getProjectsInfo(function (resultProjects) {
+            log.trace(resultProjects);
+            theProjects = resultProjects;
+            genCallback();
+        });
+        getRepositoriesInfo(function (reposResult) {
+            log.trace(reposResult);
+            theRepos = reposResult;
+            genCallback();
+        });
+        getUsersInfo(function (usersResult) {
+            log.trace(usersResult);
+            themembers = usersResult;
+            genCallback();
+        });
+        var syncCounter = 0;
+        var genCallback = function genCallback() {
+            syncCounter ++;
+            if (syncCounter == 4) {
+                returnCallback(theOrganizations, theProducts, theProjects, theRepos, themembers);
+            }
+        };
 };
 
 var removeRepeatedItems = function removeRepeatedItems(theList) {
