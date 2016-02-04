@@ -27,26 +27,32 @@ GLOBAL.SWAGGER_URL = null;  // null is localhost
 GLOBAL.SWAGGER_PORT = 8080;
 GLOBAL.REFRESH_RATE = 600;  //In Seconds
 
-// DUMMY INFORMATION ONLY FOR TEST
-GLOBAL.DUMMYDATA = false;   // DEPRECATED. Use BACKUP_LOAD_ON.
-GLOBAL.DUMMYMETRICS = false;
-
-
 /* BACKUPS CONFIG
+*   This feature is only recommended for developers.
 *
-*   When this utility (GLOBAL.BACKUP ON = true;) is activated, the API stored in the / backups the last
-*   information received from SDH-Platform separated into different folders for each entity.
-*   In each folder, a backup file will appear with a identifier based on the last update timestamp. This timestamp
-*   can be found by analyzing the API log during upgrades (eg. "Updating static info (201601191453222072648)")
+*   If this feature (GLOBAL.BACKUP_ON = true;) is activated, SDH API will save in /backups path the last
+*   information received from SDH-Platform and will save it into different folders for each entity.
+*   In each folder, a backup file will be saved with a identifier based on the last update timestamp. This timestamp
+*   can be found by analyzing the API log during upgrades (eg. "Updating static info (201601141452774597187)")
 *
-*   When a backup id specified in BACKUP_LOAD variable (eg. GLOBAL.BACKUP_LOAD = 201601141452774597187;), the API
-*   will get static information specified backup files. If you select this option, new backups will not be saved,
-*   the API will not be updated with new data and does not ensure proper operation of the system.
-*   Recommended only for developers.
+*   When a backup id specified in BACKUP_LOAD_ID variable (eg. GLOBAL.BACKUP_LOAD = 201601141452774597187;) and
+*   BACKUP_LOAD_ON is true, the API will get static information from specified backup files. If this option is activated
+*   new backups will not be saved, the API will not be updated with new data and will not ensure proper operation
+*   of the system. Returned metric values will be estimations based in metric results obtained during the Backup
+*   execution. If you want realistic metrics, you must make several requests to this API in order to make it learn
+*   about each metric response. Views will always return all resources.
+*
+*   When a backup id is specified in BACKUP_LOAD_ID variable (eg. GLOBAL.BACKUP_LOAD = 201601141452774597187;) and
+*   BACKUP_UPDATE_METRICS_ON is true, the metric values information will be updated and will be stored in the
+*   BACKUP_LOAD_ID file. The other backup information (user, products, projects, etc) will be overwritten and the
+*   new backup will be saved with a new id. When BACKUP_UPDATE_METRICS_ON is activated BACKUP_LOAD_ON will be ignored.
+*
 * */
-GLOBAL.BACKUP_ON = false;
-GLOBAL.BACKUP_LOAD_ON = false; // Be careful if you enable this option
-GLOBAL.BACKUP_LOAD_ID = "201601191453222072648" // (STRING!) This variable is only used if BACKUP_LOAD_ON == true
+
+GLOBAL.BACKUP_ON = false;  // New backup
+GLOBAL.BACKUP_LOAD_ON = false; // Be careful if you enable this option. Load BACKUP_LOAD_ID backup
+GLOBAL.BACKUP_UPDATE_METRICS_ON = false; // Be careful if you enable this option New backup based in BACKUP_LOAD_ID backup (Improve dummy metric values)
+GLOBAL.BACKUP_LOAD_ID = "201602041454612467075" // (STRING!) This variable is only used if BACKUP_LOAD_ON == true || BACKUP_UPDATE_METRICS_ON == true
 
 
 /* LOG CONFIG
