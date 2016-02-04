@@ -175,7 +175,39 @@ var getUsersInfo = function getUsersInfo(returnCallback) {
             if (result == null) {
                 result = [];
             }
-            returnCallback({userList: result});
+            var repoTriples2 = [
+                '?_ru doap:developer ?uri',
+                '?uri foaf:nick ?nick',
+                '?uri scm:firstCommit ?firstcommit',
+                '?uri scm:lastCommit ?lastcommit'
+            ];
+            var parsedTrip2 = sdhTools.parseTriples(repoTriples2);
+
+            sdhTools.getfromSDH(parsedTrip2, function(result2) {
+                if (result2 == null) {
+                    result2 = [];
+                }
+                result2 = removeRepeatedItems(result2);
+                var firstlastcommits = {};
+                for (var i = 0; i < result2.length; i ++) {
+                    firstlastcommits[result2[i].nick]= {
+                        'firstcommit': result2[i].firstcommit,
+                        'lastcommit': result2[i].lastcommit,
+                    }
+                }
+                var theNick;
+                for (var i = 0; i < result.length; i ++) {
+                    theNick = firstlastcommits[result[i].nick];
+                    if (theNick) {
+                        result[i]['lastcommit'] = theNick.lastcommit;
+                        result[i]['firstcommit'] = theNick.firstcommit;
+                    } else {
+                        result[i]['lastcommit'] = null;
+                        result[i]['firstcommit'] = null;
+                    }
+                }
+                returnCallback({userList: result});
+            });
         });
     } catch (err) {
         log.error("ERROR in getUsersInfo: " + err);
