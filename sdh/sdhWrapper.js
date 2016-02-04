@@ -1027,6 +1027,50 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
         }
     }
 };
+var isInt = function isInt(n) {
+   return n % 1 === 0;
+};
+
+var analizeResult = function analizeResult (mid, data) {
+    if (!data) {
+        log.error("This metric result is not valid. Metric data can't be learned.")
+        return;
+
+    }
+    if (!metricValues[mid]) {
+        var auxt = 'int';
+        if (!isInt(data[0])) {
+            auxt = 'float';
+        }
+        var resultDesc = {
+            type: auxt,
+            range: {
+                from: data[0],
+                to: data[0]
+            },
+            values: [data]
+        }
+    } else {
+        var resultDesc = metricValues[mid];
+    }
+
+    for (var i = 0; i < data.length; i ++) {
+        if (resultDesc.type == 'int' && !isInt(data[i])) {
+            resultDesc.type = 'float';
+        }
+        if (data[i] < resultDesc.range.from) {
+            resultDesc.range.from = data[i];
+        }
+        if (data[i] > resultDesc.range.to) {
+            resultDesc.range.to = data[i];
+        }
+        //resultDesc.values.push(data);
+        resultDesc.values = data;
+    }
+    metricValues[mid] = resultDesc;
+    log.debug('Analyzing metric "' + mid + '" -- >' + JSON.stringify(resultDesc));
+};
+
 /**
  * Get specific Metric value using SDH Platform
  * @param type {String} "int" or "float"
@@ -1169,31 +1213,37 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                         log.debug('<-- Metric "' + mid + '"');
                     }
                     log.trace('Metric result: ' + data.result);
+                    if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+                        analizeResult(mid, data.result);
+                    }
                     callback(data);
                 }
             });
         } else {
+            // New Backup metrics
+            if (http_path == "BACKUP") {
+                if (!metricValues[mid]) {
+                    // No backup data about this metric
+                    log.warn("No backup data for the metric " + mid + '"');
+                    http_path = "progresiveRandom1";
+                    // continue with a generic progresiveRandom1 dummy metric
+                } else {
+                    // Use Metric Backup.
+                    /*
+                    {
+                        type: auxt, //"float", "int"
+                        range: {
+                            from: data[0],
+                            to: data[0]
+                        },
+                        values: [data]
+                    }
+                     */
+                    getDummyMetricValue(mid, metricValues[mid].type, metricValues[mid].range.from, metricValues[mid].range.to, max, from, to, callback);
+                    return;
+                }
+            }
             // Fake metric
-            // we need from and to values...
-            var d;
-            var auxurl = "http://138.4.249.224:9001/metrics/scm/total-commits";
-
-            if (qpObject.uid) {
-                auxurl = "http://138.4.249.224/metrics/scm/total-user-commits";
-            } else if (qpObject.rid) {
-                auxurl = "http://138.4.249.224/metrics/scm/total-repo-commits";
-            }
-            if (qpObject.uid && qpObject.rid) {
-                auxurl = "http://138.4.249.224/metrics/scm/total-repo-user-commits";
-            }
-            var options = {
-                url: auxurl,
-                headers: {
-                    "Accept": "application/json",
-                },
-                qs: qpObject
-            };
-
             // TODO Fake metrics
             var dataList = [];
             var dataListUp = [25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 25, 26, 27, 26, 29, 35, 60, 67, 70, 71, 70, 68, 65, 60, 55, 70, 75, 80, 85, 90, 88, 87, 88, 89, 91, 88, 90, 88, 87, 88, 89, 91, 88, 80, 79, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90, 78, 77, 76, 75, 74, 75, 76, 77, 78, 79, 80, 90];
@@ -1246,6 +1296,7 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
                     modifier = randomIntFromInterval(-10, 15);
                 }
             }
+
             // Random float
             if (http_path == "float") {
                 aux = [];
