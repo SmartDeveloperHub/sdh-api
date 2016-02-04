@@ -1027,6 +1027,61 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
         }
     }
 };
+/**
+ * Get specific Metric value using SDH Platform
+ * @param type {String} "int" or "float"
+ * @param minVal {Number} Min value for metric data
+ * @param max {Number} Max number of values in this metric
+ * @param from {Date} Date 'from'
+ * @param to {Date} Date 'to'
+ */
+var getDummyMetricValue = function getDummyMetricValue(mid, type, minVal, maxVal, max, from, to, metCallback) {
+    if(max == null || max == 0) {
+        max = 60;
+    }
+    var basic_from = 1432936800000;
+    var basic_to = new Date().getTime();
+    if(from !== null) {
+        basic_from = from;
+    }
+    if(to !== null) {
+        basic_to = to + 86399;
+    }
+
+    var basic_step = (basic_to - basic_from) / max;
+    var basic_size = max;
+    var timestamp = new Date().getTime();
+    var randomMeth;
+    if (type == "int") {
+        randomMeth = randomIntFromInterval;
+    } else if (type == 'float'){
+        randomMeth = randomFloatFromInterval;
+    } else {
+        log.error("Error obtaining Dummy data. a Valid Type parameter required");
+        callback ([0]);
+        return;
+    }
+    var aux = [];
+    for (var i = 0; i < basic_size; i++) {
+        aux[i] = randomMeth(minVal, maxVal);
+    }
+    var finaldata = {
+        "context": {
+            "begin": basic_from / 1000,
+            "end": basic_to / 1000,
+            "data_begin": basic_from / 1000,
+            "data_end": basic_to / 1000,
+            "step": basic_step / 1000,
+            "max": max,
+            "size": basic_size,
+            "timestamp": timestamp
+        },
+        "result": aux
+    };
+    log.debug('<-- Dummy metric "' + mid + '"');
+    log.trace('Metric result: ' + aux);
+    metCallback(finaldata);
+};
 
 /**
  * Get specific Metric value using SDH Platform
