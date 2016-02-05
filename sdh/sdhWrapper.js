@@ -818,14 +818,7 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
  * @param returnCallback
  */
 exports.getProductInfo = function getProductInfo(prid, returnCallback) {
-    if (BACKUP_LOAD_ON) {
-        returnCallback(productsById[prid]);
-    } else {
-        getProduct(prid, function (e) {
-            var resultProduct = parseProductInfo(e);
-            returnCallback(resultProduct);
-        });
-    }
+    returnCallback(productsById[prid]);
 };
 
 /** TODO
@@ -834,14 +827,7 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
  * @param returnCallback
  */
 exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
-    if (BACKUP_LOAD_ON) {
         returnCallback(projectsById[pid]);
-    } else {
-        getProject(pid, function (e) {
-            var resultProject = parseProjectInfo(e);
-            returnCallback(resultProject);
-        });
-    }
 };
 
 /** TODO
@@ -850,14 +836,8 @@ exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
  * @param returnCallback
  */
 exports.getRepositoryInfo = function getRepositoryInfo(rid, returnCallback) {
-    if (BACKUP_LOAD_ON) {
         returnCallback(repositoriesById[rid]);
-    } else {
-        getRepository(rid, function (e) {
-            var resultRepo = parseRepositoryInfo(e);
-            returnCallback(resultRepo);
-        });
-    }
+
 };
 
 /** TODO
