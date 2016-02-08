@@ -315,9 +315,9 @@ var normalizeUserList = function normalizeUserList(uList) {
                 nick: uList[i].nick,
                 avatar: uList[i].avatar,
                 email: [uList[i].email],
-                //firstcommit: uList[i].firstcommit,
-                //lastcommit: uList[i].lastcommit,
-                //register: uList[i].firstcommit,
+                firstcommit: uList[i].firstcommit,
+                lastcommit: uList[i].lastcommit,
+                register: uList[i].firstcommit,
                 positionsByOrgId: {1: [posLevel]}//TODO  By the moment we only have 1 organization :S
             };
             __usersById[uList[i].id] = newUser;
