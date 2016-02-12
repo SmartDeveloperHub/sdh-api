@@ -29,12 +29,23 @@ var Project = require('./ProjectService');
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.allProjectsInfo = function allProjectsInfo (req, res) {
+module.exports.allProjectsInfo = function allProjectsInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] allProjects request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -63,7 +74,13 @@ module.exports.allProjectsInfo = function allProjectsInfo (req, res) {
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.projectInfo = function projectInfo (req, res) {
+module.exports.projectInfo = function projectInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     // Collect all repository request params
     var pid = req.swagger.params['pid'].value;
 
@@ -72,6 +89,11 @@ module.exports.projectInfo = function projectInfo (req, res) {
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] project request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {

@@ -29,12 +29,23 @@ var User = require('./UserService');
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.allUsers = function allUsers (req, res) {
+module.exports.allUsers = function allUsers (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] allUsers request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -63,7 +74,13 @@ module.exports.allUsers = function allUsers (req, res) {
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.userInfo = function userInfo (req, res) {
+module.exports.userInfo = function userInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     // Collect all repository request params
     var uid = req.swagger.params['uid'].value;
 
@@ -72,6 +89,11 @@ module.exports.userInfo = function userInfo (req, res) {
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] user request canceled '" + uid + "'");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {

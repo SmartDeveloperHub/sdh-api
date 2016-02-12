@@ -32,13 +32,23 @@ var Metric = require('./MetricService');
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.metricList = function metricList (req, res) {
+module.exports.metricList = function metricList (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
-
+        if (req.isClosed) {
+            log.debug("[-X-] allMetrics request canceled");
+            next();
+            return;
+        }
         if(typeof result !== 'undefined') {
             if(typeof result == 'number') {
                 // specific error
@@ -65,7 +75,7 @@ module.exports.metricList = function metricList (req, res) {
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.getMetric = function getMetric (req, res) {
+module.exports.getMetric = function getMetric (req, res, next) {
     // Collect all metric request params
     var mid = req.swagger.params['mid'].value;
     var rid = req.swagger.params['rid'].value;
@@ -78,6 +88,11 @@ module.exports.getMetric = function getMetric (req, res) {
     var max = req.swagger.params['max'].value;
     var aggr = req.swagger.params['aggr'].value;
 
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     // Control log
     log.debug("--> getMetric: " + mid + " (" + [rid, uid, pid, prid, from, to, accumulated, max, aggr] + ")");
 
@@ -86,7 +101,11 @@ module.exports.getMetric = function getMetric (req, res) {
      * @param result JSON with re request result or a Number if error indicating the status code
      */
     var callback = function(result) {
-
+        if (req.isClosed) {
+            log.debug("[-X-] metric request canceled '" + mid + "'");
+            next();
+            return;
+        }
         if(typeof result !== 'undefined') {
             if(typeof result == 'number') {
                 // specific error

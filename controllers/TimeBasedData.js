@@ -31,12 +31,23 @@ var TimeBasedData = require('./TimeBasedDataService');
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.timeBasedDataList = function timeBasedDataList (req, res) {
+module.exports.timeBasedDataList = function timeBasedDataList (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] allViews request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -65,7 +76,13 @@ module.exports.timeBasedDataList = function timeBasedDataList (req, res) {
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.getTimeBasedData = function getTimeBasedData (req, res) {
+module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     // Collect all tbd request params
     var tid = req.swagger.params['tid'].value;
     var rid = req.swagger.params['rid'].value;
@@ -83,6 +100,11 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res) {
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] view request canceled '" + tid + "'");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {

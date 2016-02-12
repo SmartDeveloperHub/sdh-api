@@ -29,12 +29,23 @@ var Product = require('./ProductService');
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.allProductsInfo = function allProductsInfo (req, res) {
+module.exports.allProductsInfo = function allProductsInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] allProducts request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -63,15 +74,25 @@ module.exports.allProductsInfo = function allProductsInfo (req, res) {
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.productInfo = function productInfo (req, res) {
+module.exports.productInfo = function productInfo (req, res, next) {
     // Collect all repository request params
     var prid = req.swagger.params['prid'].value;
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
 
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] product request canceled '" + prid + "'");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {

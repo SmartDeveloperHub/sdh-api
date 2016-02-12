@@ -33,11 +33,22 @@ var Organization = require('./OrganizationService');
  * @param next Pass control to the next handler
  */
 module.exports.orgInfo = function orgInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] organization request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {

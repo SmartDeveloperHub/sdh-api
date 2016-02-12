@@ -29,12 +29,23 @@ var Repository = require('./RepositoryService');
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res) {
+module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     /**
      * The main callback for this request
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] allRepositories request canceled");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
@@ -63,7 +74,13 @@ module.exports.allRepositoriesInfo = function allRepositoriesInfo (req, res) {
  * @param req Request http://expressjs.com/api.html#req
  * @param res Response http://expressjs.com/api.html#res
  */
-module.exports.repositoryInfo = function repositoryInfo (req, res) {
+module.exports.repositoryInfo = function repositoryInfo (req, res, next) {
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
     // Collect all repository request params
     var rid = req.swagger.params['rid'].value;
 
@@ -72,6 +89,11 @@ module.exports.repositoryInfo = function repositoryInfo (req, res) {
      * @param result JSON with request result or a Number if error indicating the status code
      */
     var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] repository request canceled '" + rid + "'");
+            next();
+            return;
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
 
         if(typeof result !== 'undefined') {
