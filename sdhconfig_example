@@ -49,11 +49,17 @@ GLOBAL.REFRESH_RATE = 600;  //In Seconds
 *
 * */
 
-GLOBAL.BACKUP_ON = false;  // New backup
-GLOBAL.BACKUP_LOAD_ON = false; // Be careful if you enable this option. Load BACKUP_LOAD_ID backup
-GLOBAL.BACKUP_UPDATE_METRICS_ON = false; // Be careful if you enable this option New backup based in BACKUP_LOAD_ID backup (Improve dummy metric values)
-GLOBAL.BACKUP_LOAD_ID = "201602041454612467075" // (STRING!) This variable is only used if BACKUP_LOAD_ON == true || BACKUP_UPDATE_METRICS_ON == true
+// New backup
+GLOBAL.BACKUP_ON = false;
 
+// Be careful if you enable this option. Load BACKUP_LOAD_ID backup
+GLOBAL.BACKUP_LOAD_ON = false;
+
+// Be careful if you enable this option New backup based in BACKUP_LOAD_ID backup (Improve dummy metric values)
+GLOBAL.BACKUP_UPDATE_METRICS_ON = false;
+
+// This variable is only used if BACKUP_LOAD_ON == true || BACKUP_UPDATE_METRICS_ON == true
+GLOBAL.BACKUP_LOAD_ID = "201602041454612467075" // (STRING!)
 
 /* LOG CONFIG
 *
