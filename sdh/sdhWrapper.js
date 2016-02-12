@@ -1338,6 +1338,10 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
             };
             log.debug('<-- Dummy metric "' + mid + '"');
             log.trace('Metric result: ' + aux);
+            // Backup fake metrics too.
+            if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+                analizeResult(mid, data.result);
+            }
             callback(data);
         }
     }
