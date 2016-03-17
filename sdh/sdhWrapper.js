@@ -962,10 +962,20 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
                             for (i = 0; i < data.result.length; i ++) {
                                 if (data.result[i].uri !== undefined) {
                                     var tType = getTargetByPath(tbdTargetByID[tid], true);
-                                    val.push(tType[data.result[i].uri]);
+                                    var f = tType[data.result[i].uri];
+                                    if (f) {
+                                        val.push(f);
+                                    } else {
+                                        log.warn("-formating View- element uri can't be find: " + data.result[i].uri);
+                                    }
                                 } else if (data.result[i].id !== undefined) {
                                     var tType = getTargetByPath(tbdTargetByID[tid], false);
-                                    val.push(tType[data.result[i].id]);
+                                    var f = tType[tType[data.result[i].id]];
+                                    if (f) {
+                                        val.push(f);
+                                    } else {
+                                        log.warn("-formating View- Element ID can't be find: " + data.result[i].id);
+                                    }
                                 } else {
                                     log.error("¡¡Atention!! Not valid view result");
                                     val = result;
