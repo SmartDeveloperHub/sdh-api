@@ -24,7 +24,7 @@
 
 exports.fakeOrganizationsInfo = [
     {
-        "id": 1,
+        "organizationid": 1,
         "title" : "Organization DePalo 1",
         "description" : "Center Open Middleware Researches ",
         "purpose" : "This description explains the purpose of this organization",
@@ -39,7 +39,7 @@ exports.fakeOrganizationsInfo = [
 
 exports.organizationList = [
     {
-        "id": 1,
+        "organizationid": 1,
         "title" : "Organization DePalo 1",
         "description" : "Center Open Middleware Researches ",
         "purpose" : "This description explains the purpose of this organization",
