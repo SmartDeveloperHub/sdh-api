@@ -10,7 +10,7 @@
 @prefix metrics: <http://www.smartdeveloperhub.org/vocabulary/metrics#> .
 @prefix views: <http://www.smartdeveloperhub.org/vocabulary/views#> .
 
-@prefix curator: <http://www.smartdeveloperhub.org/vocabulary/curator#> .
+@prefix stoa: <http://www.smartdeveloperhub.org/vocabulary/stoa#> .
 @prefix amqp:    <http://www.smartdeveloperhub.org/vocabulary/amqp#> .
 @prefix types:   <http://www.smartdeveloperhub.org/vocabulary/types#> .
 
@@ -25,16 +25,16 @@
 
 ##-- EXAMPLE ENRICHMENT REQUEST ----------------------------------------------##
 
-<#request> a curator:QueryRequest ;
-  curator:messageId "00000000-0000-0000-0000-000000000005"^^types:UUID ;
-  curator:submittedBy <#connector> ;
-  curator:submittedOn "2015-09-29T09:30:10+01:00"^^xsd:dateTime ;
-  curator:replyTo <#deliveryChannel> .
+<#request> a stoa:QueryRequest ;
+  stoa:messageId "00000000-0000-0000-0000-000000000005"^^types:UUID ;
+  stoa:submittedBy <#connector> ;
+  stoa:submittedOn "2015-09-29T09:30:10+01:00"^^xsd:dateTime ;
+  stoa:replyTo <#deliveryChannel> .
 
 <#connector> a foaf:Agent ;
-  curator:agentId "00000000-0000-0000-0001-000000000001"^^types:UUID .
+  stoa:agentId "00000000-0000-0000-0001-000000000001"^^types:UUID .
 
-<#deliveryChannel> a curator:DeliveryChannel ;
+<#deliveryChannel> a stoa:DeliveryChannel ;
   amqp:broker <#broker> ;
   amqp:exchangeName ""^^types:Name ;
   amqp:routingKey ""^^types:Name .

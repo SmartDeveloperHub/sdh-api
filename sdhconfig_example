@@ -92,4 +92,4 @@ GLOBAL.SESSION_GARBAGE_COLLECTOR = 10 * 60 * 1000; //10 minutes in ms
 GLOBAL.RABBITHOST = "amqp://<yourRabbitHost>";
 GLOBAL.RABBITPORT = 5672 //Rabbit Port
 GLOBAL.EXCHANGE = "sdh"; // Rabbit Exchange tag
-GLOBAL.ROUTINGKEY = "curator.request.query"; // Rabbit Routing Key
+GLOBAL.ROUTINGKEY = "scholar.request.query"; // Rabbit Routing Key

@@ -26,14 +26,14 @@
 
 /* Aux Methods*/
 var getNewTriple = function getNewTriple(triple, dataQ, agentId, theUuid) {
-    if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/curator#messageId") {
+    if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/stoa#messageId") {
         triple.object = '"' + theUuid + '"^^http://www.smartdeveloperhub.org/vocabulary/types#UUID';
     }
-    if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/curator#submittedOn") {
+    if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/stoa#submittedOn") {
         var submitDate = moment().format(); // ISO 8601
         triple.object = '"' + submitDate + '"^^http://www.w3.org/2001/XMLSchema#dateTime';
     }
-    if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/curator#agentId") {
+    if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/stoa#agentId") {
         triple.object = '"' + agentId + '"^^http://www.smartdeveloperhub.org/vocabulary/types#UUID';
     }
     if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/amqp#host") {
@@ -91,8 +91,8 @@ module.exports.parseTriples = function parseTriples (triplesList) {
                 sub1 = t[0];
             }
             // new
-            nodes.push(newElement(sub1, 'rdf:type', 'curator:Variable'));
-            nodes.push(newElement(sub1, 'curator:label', JSON.stringify(t[0])));
+            nodes.push(newElement(sub1, 'rdf:type', 'stoa:Variable'));
+            nodes.push(newElement(sub1, 'stoa:label', JSON.stringify(t[0])));
             subjects[t[0]] = sub1;
         }
         if (!(t[2] in subjects)) {
@@ -103,8 +103,8 @@ module.exports.parseTriples = function parseTriples (triplesList) {
                 sub2 = t[2];
             }
             // new
-            nodes.push(newElement(sub2, 'rdf:type', 'curator:Variable'));
-            nodes.push(newElement(sub2, 'curator:label', JSON.stringify(t[2])));
+            nodes.push(newElement(sub2, 'rdf:type', 'stoa:Variable'));
+            nodes.push(newElement(sub2, 'stoa:label', JSON.stringify(t[2])));
             subjects[t[2]] = sub2;
         }
         nodes.push(newElement(subjects[t[0]], t[1], subjects[t[2]]));
@@ -133,7 +133,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
         var agentId = uuid();
         // generate UUIDfor each request
         var theUuid = uuid();
-        var qName = "curator.response." + agentId;
+        var qName = "scholar.response." + agentId;
         var dataQ;
         amqp.connect(RABBITHOST + ':' + RABBITPORT, function (err, conn) {
             if (err) {
@@ -165,14 +165,14 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                             }
                             if (triple) {
                                 trip.push(triple);
-                                if (triple.predicate === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && triple.object === "http://www.smartdeveloperhub.org/vocabulary/curator#Accepted") {
+                                if (triple.predicate === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && triple.object === "http://www.smartdeveloperhub.org/vocabulary/stoa#Accepted") {
                                     // Success
                                     isOk = true;
                                 }
                             } else {
                                 // Failed
                                 if (!isOk) {
-                                    log.error('Error parsing response. http://www.smartdeveloperhub.org/vocabulary/curator#Accepted type not found');
+                                    log.error('Error parsing response. http://www.smartdeveloperhub.org/vocabulary/stoa#Accepted type not found');
                                     log.trace(prefixes);
                                     log.trace(trip);
                                     log.debug('...Connection close...');
