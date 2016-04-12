@@ -31,6 +31,21 @@ exports.metricList = function(callback) {
 };
 
 /**
+ * Get available metric Info
+ */
+exports.metricInfo = function(mid, callback) {
+    // check mid
+    if (!(mid in metricsById)) {
+        log.error("MID not found: " + mid);
+        callback(404);
+        return;
+    } else {
+        // Return metric from global variable in the callback
+        callback(metricsById[mid]);
+    }
+};
+
+/**
  * Obtain the result from a particular metric. This method make the second validation for a specific metric using
  * the description of each metric
  * @param mid {Number} the metric ID

@@ -391,6 +391,36 @@
                 }
             }
         },
+        "/metricinfo/{mid}": {
+            "get": {
+                "x-swagger-router-controller": "Metric",
+                "tags": [
+                    "Metric"
+                ],
+                "summary": "Metric Information",
+                "operationId": "metricInfo",
+                "parameters": [
+                      {
+                          "name": "mid",
+                          "in": "path",
+                          "description": "Metric id",
+                          "required": true,
+                          "type": "string"
+                      }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Metric info.",
+                        "schema": {
+                            "$ref": "#/definitions/metricinfo"
+                        }
+                    },
+                    "404": {
+                        "description": "Metric not found"
+                    }
+                }
+            }
+        },
         "/metrics/": {
             "get": {
                 "x-swagger-router-controller": "Metric",

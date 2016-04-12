@@ -125,3 +125,50 @@ module.exports.getMetric = function getMetric (req, res, next) {
     };
     Metric.getMetric(mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback);
 };
+
+/**
+ * Get the information abut a particular metric
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
+module.exports.metricInfo = function metricInfo (req, res, next) {
+    // Collect all metric request params
+    var mid = req.swagger.params['mid'].value;
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
+    /**
+     * The main callback for this request
+     * @param result JSON with re request result or a Number if error indicating the status code
+     */
+    var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] metric request canceled '" + mid + "'");
+            next();
+            return;
+        }
+        if(typeof result !== 'undefined') {
+            if(typeof result == 'number') {
+                // specific error
+                log.error("Error in metricInfo request: " + result);
+                res.statusCode = result;
+                res.end();
+            } else {
+                // success
+                res.setHeader('Content-Type', 'application/json');
+                res.setHeader('cache-control', 'public, max-age=60');
+                res.end(JSON.stringify(result || {}, null, 2));
+            }
+        } else {
+            res.statusCode = 500;
+            res.end();
+        }
+    };
+    // Control log
+    log.debug("--> metricInfo: " + mid );
+    Metric.metricInfo(mid, callback);
+};
