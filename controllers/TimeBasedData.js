@@ -126,3 +126,50 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
 
     TimeBasedData.getTimeBasedData(tid, rid, uid, pid, prid, from, to, callback);
 };
+
+/**
+ * Get the information abut a particular view
+ * This method use express (http://expressjs.com/)
+ * @param req Request http://expressjs.com/api.html#req
+ * @param res Response http://expressjs.com/api.html#res
+ */
+module.exports.viewInfo = function viewInfo (req, res, next) {
+    // Collect all view request params
+    var tid = req.swagger.params['tid'].value;
+
+    res.connection.setMaxListeners(0);
+    res.connection.once('close',function(){
+        req['isClosed'] = true;
+    });
+
+    /**
+     * The main callback for this request
+     * @param result JSON with re request result or a Number if error indicating the status code
+     */
+    var callback = function(result) {
+        if (req.isClosed) {
+            log.debug("[-X-] view request canceled '" + tid + "'");
+            next();
+            return;
+        }
+        if(typeof result !== 'undefined') {
+            if(typeof result == 'number') {
+                // specific error
+                log.error("Error in viewInfo request: " + result);
+                res.statusCode = result;
+                res.end();
+            } else {
+                // success
+                res.setHeader('Content-Type', 'application/json');
+                res.setHeader('cache-control', 'public, max-age=60');
+                res.end(JSON.stringify(result || {}, null, 2));
+            }
+        } else {
+            res.statusCode = 500;
+            res.end();
+        }
+    };
+    // Control log
+    log.debug("--> viewInfo: " + tid );
+    TimeBasedData.viewInfo(tid, callback);
+};

@@ -23,11 +23,26 @@
 'use strict';
 
 /**
- * Get available metrics list
+ * Get available View list
  */
 exports.timeBasedDataList = function(callback) {
     // Return tbd list from global variable in the callback
     callback(tbds);
+};
+
+/**
+ * Get available View Info
+ */
+exports.viewInfo = function(tid, callback) {
+    // check mid
+    if (!(tid in tbdById)) {
+        log.error("MID not found: " + tid);
+        callback(404);
+        return;
+    } else {
+        // Return metric from global variable in the callback
+        callback(tbdById[tid]);
+    }
 };
 
 /**

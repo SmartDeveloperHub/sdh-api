@@ -463,6 +463,36 @@
                 }
             }
         },
+        "/tbdatainfo/{tid}": {
+            "get": {
+                "x-swagger-router-controller": "TimeBasedData",
+                "tags": [
+                    "TimeBasedData"
+                ],
+                "summary": "View Information",
+                "operationId": "viewInfo",
+                "parameters": [
+                    {
+                        "name": "tid",
+                        "in": "path",
+                        "description": "Time Based Data id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "View info.",
+                        "schema": {
+                            "$ref": "#/definitions/tbdinfo"
+                        }
+                    },
+                    "404": {
+                        "description": "View not found"
+                    }
+                }
+            }
+        },
         "/metrics/{mid}": {
             "get": {
                 "x-swagger-router-controller": "Metric",
