@@ -125,7 +125,7 @@ var getParamId = function getParamId (uri) {
         case "http://www.smartdeveloperhub.org/vocabulary/scm#Repository":
             return 'rid';
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Project":
-            return 'pid';
+            return 'pjid';
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Product":
             return 'prid';
         case "http://www.smartdeveloperhub.org/vocabulary/organization#Person":
@@ -163,6 +163,7 @@ var getTargetByPath = function getTargetByPath(uri, isUri) {
                 return usersById;
             }
         default:
+            console.error("Error in View Data. Unknown target: " + uri);
             return {};
     }
 };
@@ -421,7 +422,7 @@ var getProduct = function getProduct(prid, retCallback) {
             if (result == null) {
                 result = [];
             } else {
-                result[0]['productid'] = prid;
+                result[0]['prid'] = prid;
             }
             retCallback(result[0]);
         });
@@ -443,7 +444,7 @@ var getProduct = function getProduct(prid, retCallback) {
  */
 var parseProductInfo = function parseProductInfo(data) {
     /*var theProduct = {
-        "repositoryid": productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"],
+        "rid": productAtts["http://www.smartdeveloperhub.org/vocabulary/--#productId"],
         "name": productAtts["http://usefulinc.com/ns/doap#name"],
         "description": productAtts["http://usefulinc.com/ns/doap#description"],
         "tags": tagList,
@@ -464,14 +465,14 @@ var parseProductInfo = function parseProductInfo(data) {
 
 /**
  * Get Specific Project Information from SDH Platform
- * @param pid {Number} project ID
+ * @param pjid {Number} project ID
  * @param retCallback
  */
-var getProject = function getProject(pid, retCallback) {
+var getProject = function getProject(pjid, retCallback) {
     try {
         var projectTriples = [
             '?_o org:hasProject ?URI',
-            '?URI org:id "' + pid + '"',
+            '?URI org:id "' + pjid + '"',
             '?URI doap:name ?name',
             '?URI foaf:depiction ?_im',
             '?_im foaf:depicts ?avatar'
@@ -483,7 +484,7 @@ var getProject = function getProject(pid, retCallback) {
             if (result == null) {
                 result = [];
             } else {
-                result[0]['projecttid'] = pid;
+                result[0]['projecttid'] = pjid;
             }
             retCallback(result[0]);
         });
@@ -531,7 +532,7 @@ var parseProjectTree = function parseProjectTree (e) {
  */
 var parseProjectInfo = function parseProjectInfo(data) {
        /* var theProject = {
-            "repositoryid": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/--#projectId"],
+            "rid": ProjectAtts["http://www.smartdeveloperhub.org/vocabulary/--#projectId"],
             "name": ProjectAtts["http://usefulinc.com/ns/doap#name"],
             "description": ProjectAtts["http://usefulinc.com/ns/doap#description"],
             "tags": tagList,
@@ -574,7 +575,7 @@ var getRepository = function getRepository(rid, retCallback) {
             if (result == null) {
                 result = [];
             } else {
-                result[0]['repositoryid'] = rid;
+                result[0]['rid'] = rid;
             }
             retCallback(result[0]);
         });*/
@@ -619,13 +620,13 @@ var parseRepoTree = function parseRepoTree (e) {
  * Parse Repository information
  * @param data {Object} Repository tree.
  * @returns {Object} With the next attributes:
- * 'repositoryid' {Number}, 'name' {String}, 'description' {String}, 'tags' {Array}, 'avatar' {Url},
+ * 'rid' {Number}, 'name' {String}, 'description' {String}, 'tags' {Array}, 'avatar' {Url},
  * 'archived' {Boolean}, 'public' {Boolean}, 'owner' {Number}, 'creation' {Date}, 'fistCommit' {Date},
  * 'lastCommit' {Date}, 'scmlink' {Url}, 'buildStatus' {Number}, 'buildDate' {Date}, 'users' {Array}
  */
 var parseRepositoryInfo = function parseRepositoryInfo(data) {
         /*var theRep = {
-            "repositoryid": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
+            "rid": repoAtts["http://www.smartdeveloperhub.org/vocabulary/scm#repositoryId"],
             "name": repoAtts["http://usefulinc.com/ns/doap#name"],
             "description": repoAtts["http://usefulinc.com/ns/doap#description"],
             "tags": tagList,
@@ -683,13 +684,13 @@ var getUser = function getUser(uid, retCallback) {
                 ];
                 var parsedTrip = sdhTools.parseTriples(repoTriples);
                 sdhTools.getfromSDH(parsedTrip, function(result2) {
-                        result2[0]['userid'] = uid;
+                        result2[0]['uid'] = uid;
                         result2[0]['firstcommit'] = null;
                         result2[0]['lastcommit'] = null;
                         retCallback(result2[0]);
                 });
             } else {
-                        result[0]['userid'] = uid;
+                        result[0]['uid'] = uid;
                         retCallback(result[0]);
                     }
 
@@ -706,12 +707,12 @@ var getUser = function getUser(uid, retCallback) {
  * Parse User information
  * @param data {Object} User tree.
  * @returns {Object} With the next attributes:
- * 'userid' {Number}, 'name' {String}, 'email' {String}, 'avatar' {Url}, 'register' {Date}, 'fistCommit' {Date},
+ * 'uid' {Number}, 'name' {String}, 'email' {String}, 'avatar' {Url}, 'register' {Date}, 'fistCommit' {Date},
  * 'lastCommit' {Date}, 'scmUserUrl' {Url} and 'repositories' {Array}
  */
 var parseUserInfo = function parseUserInfo(data) {
         /*var theUser = {
-            "userid": userAtts["userid"].value,
+            "uid": userAtts["uid"].value,
             "name": userAtts["name"].value,
             "email": userAtts['email'].value,
             "avatar": userAtts['avatar'].value,
@@ -823,11 +824,11 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
 
 /** TODO
  * Get specific project information
- * @param pid {Object} Project Id.
+ * @param pjid {Object} Project Id.
  * @param returnCallback
  */
-exports.getProjectInfo = function getProjectInfo(pid, returnCallback) {
-        returnCallback(projectsById[pid]);
+exports.getProjectInfo = function getProjectInfo(pjid, returnCallback) {
+        returnCallback(projectsById[pjid]);
 };
 
 /** TODO
@@ -858,7 +859,7 @@ exports.getUserInfo = function getUserInfo(uid, returnCallback) {
  * @param to {Date} date indicating the "to" limit for the request
  * @param callback {Function} the callback to send the metric result to client
  */
-exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
+exports.getTBDValue = function (tid, rid, uid, pjid, prid, from, to, callback) {
     // REAL tdbs
     if (typeof tbdUriById[tid] !== "undefined") {
         var http_path = tbdUriById[tid];
@@ -906,8 +907,8 @@ exports.getTBDValue = function (tid, rid, uid, pid, prid, from, to, callback) {
             if(uid !== undefined) {
                 qpObject['uid'] = uid;
             }
-            if(pid !== undefined) {
-                qpObject['pjid'] = pid;
+            if(pjid !== undefined) {
+                qpObject['pjid'] = pjid;
             }
             if(prid !== undefined) {
                 qpObject['prid'] = prid;
@@ -1122,7 +1123,7 @@ var getDummyMetricValue = function getDummyMetricValue(mid, type, minVal, maxVal
  * @param mid {Number} the metric ID
  * @param rid {Number} repository ID
  * @param uid {Number} user ID
- * @param pid {Number} project ID
+ * @param pjid {Number} project ID
  * @param prid {Number} product ID
  * @param from {Date} date indicating the "from" limit for the request
  * @param to {Date} date indicating the "to" limit for the request
@@ -1131,7 +1132,7 @@ var getDummyMetricValue = function getDummyMetricValue(mid, type, minVal, maxVal
  * @param aggr {String} indicate an aggregation method (max, min, sum, avg)
  * @param callback {Function} the callback to send the metric result to client
  */
-exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback) {
+exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumulated, max, aggr, callback) {
     var http_path;
     if (BACKUP_LOAD_ON){
         http_path = "BACKUP";
@@ -1158,8 +1159,8 @@ exports.getMetricValue = function (mid, rid, uid, pid, prid, from, to, accumulat
         if(uid !== undefined) {
             qpObject['uid'] = uid;
         }
-        if(pid !== undefined) {
-            qpObject['pjid'] = pid;
+        if(pjid !== undefined) {
+            qpObject['pjid'] = pjid;
         }
         if(prid !== undefined) {
             qpObject['prid'] = prid;

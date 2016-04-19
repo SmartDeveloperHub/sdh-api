@@ -187,7 +187,7 @@ exports.tbds = [
         "path": "/tbdata/projectlanguagelines",
         "description": "Project lines per language",
         "params": [
-            "pid"
+            "pjid"
         ],
         "optional": [
             "from",
@@ -203,7 +203,7 @@ exports.tbds = [
         "description": "User lines per language in a project",
         "params": [
             "uid",
-            "pid"
+            "pjid"
         ],
         "optional": [
             "from",

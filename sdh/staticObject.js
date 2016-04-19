@@ -310,7 +310,7 @@ var normalizeUserList = function normalizeUserList(uList) {
             };
 
             var newUser = {
-                userid: uList[i].id,
+                uid: uList[i].id,
                 name: uList[i].name,
                 nick: uList[i].nick,
                 avatar: uList[i].avatar,
@@ -343,7 +343,7 @@ var normalizeRepoList = function normalizeRepoList(rlist) {
     if(rlist !== null) {
         for (var i = 0; i < rlist.length; i++) {
             var newUser = {
-                repositoryid: rlist[i].id,
+                rid: rlist[i].id,
                 name: rlist[i].name,
                 ispublick: rlist[i].ispublick,
                 isarchived: rlist[i].isarchived,
@@ -373,7 +373,7 @@ var normalizeProductList = function normalizeProductList(plist) {
     if(plist !== null) {
         for (var i = 0; i < plist.length; i++) {
             var newProduct = {
-                productid: plist[i].id,
+                prid: plist[i].id,
                 name: plist[i].name,
                 avatar: plist[i].avatar
             };
@@ -397,7 +397,7 @@ var normalizeProjectList = function normalizeProjectList(plist) {
     if(plist !== null) {
         for (var i = 0; i < plist.length; i++) {
             var newProject = {
-                projectid: plist[i].id,
+                pjid: plist[i].id,
                 name: plist[i].name,
                 avatar: plist[i].avatar
             };
@@ -421,7 +421,7 @@ var normalizeOrganizationList = function normalizeOrganizationList(olist) {
     if(olist !== null) {
         for (var i = 0; i < olist.length; i++) {
             var newOrg = {
-                organizationid: olist[i].id,
+                oid: olist[i].id,
                 title: olist[i].title,
                 description: olist[i].description,
                 purpose: olist[i].purpose,

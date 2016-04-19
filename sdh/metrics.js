@@ -314,7 +314,7 @@ exports.metrics = [
         "title": "Product repositories",
         "path" : "/metrics/prodrepositories",
         "description" : "Number of repositories in a product",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -323,7 +323,7 @@ exports.metrics = [
         "title": "Project repositories",
         "path" : "/metrics/projrepositories",
         "description" : "Number of repositories in a project",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -332,7 +332,7 @@ exports.metrics = [
         "title": "Project users",
         "path" : "/metrics/projusers",
         "description" : "Number of users in a project",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -360,7 +360,7 @@ exports.metrics = [
         "title": "Project releases status",
         "path" : "/metrics/projectreleasestatus",
         "description" : "Project releases status [0..1]",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -549,7 +549,7 @@ exports.metrics = [
         "title": "Stakeholders",
         "path" : "/metrics/projectstakeholders",
         "description" : "Total Project Stakeholders",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -558,7 +558,7 @@ exports.metrics = [
         "title": "Software Developers",
         "path" : "/metrics/projectdevelopers",
         "description" : "Total Project Software Developers",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -567,7 +567,7 @@ exports.metrics = [
         "title": "Software Managers",
         "path" : "/metrics/projectmanagers",
         "description" : "Total Project Software Managers",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     },
@@ -576,7 +576,7 @@ exports.metrics = [
         "title": "Software Architects",
         "path" : "/metrics/projectarchitects",
         "description" : "Total Project Software Architects",
-        "params": ['pid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum', 'avg']
     }
