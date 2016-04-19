@@ -34,16 +34,16 @@ exports.allProjectsInfo = function(callback) {
 /**
  * Get the information from a specific Project
  * @param callback To response with the project information
- * @param pid Project ID
+ * @param pjid Project ID
  */
-exports.projectInfo = function(pid, callback) {
+exports.projectInfo = function(pjid, callback) {
 
     // Check if Project ID is available
     var _proj;
-    if (pid in projectsById) {
-        sdhWrapper.getProjectInfo(pid, callback);
+    if (pjid in projectsById) {
+        sdhWrapper.getProjectInfo(pjid, callback);
     } else {
-        log.warn("404 PID not found getting Project Information (" + pid + ")");
+        log.warn("404 PJID not found getting Project Information (" + pjid + ")");
         callback(404);
         return;
     }

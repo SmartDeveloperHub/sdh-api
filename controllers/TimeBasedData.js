@@ -84,16 +84,16 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
     });
 
     // Collect all tbd request params
-    var tid = req.swagger.params['tid'].value;
+    var id = req.swagger.params['id'].value;
     var rid = req.swagger.params['rid'].value;
-    var pid = req.swagger.params['pid'].value;
+    var pjid = req.swagger.params['pjid'].value;
     var prid = req.swagger.params['prid'].value;
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
     var to = req.swagger.params['to'].value;
 
     // Control log
-    log.debug("--> getView: " + tid + " (" + [rid, uid, pid, prid, from, to] + ")");
+    log.debug("--> getView: " + id + " (" + [rid, uid, pjid, prid, from, to] + ")");
 
     /**
      * The main callback for this request
@@ -101,7 +101,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
      */
     var callback = function(result) {
         if (req.isClosed) {
-            log.debug("[-X-] view request canceled '" + tid + "'");
+            log.debug("[-X-] view request canceled '" + id + "'");
             next();
             return;
         }
@@ -124,7 +124,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
         }
     };
 
-    TimeBasedData.getTimeBasedData(tid, rid, uid, pid, prid, from, to, callback);
+    TimeBasedData.getTimeBasedData(id, rid, uid, pjid, prid, from, to, callback);
 };
 
 /**
@@ -135,7 +135,7 @@ module.exports.getTimeBasedData = function getTimeBasedData (req, res, next) {
  */
 module.exports.viewInfo = function viewInfo (req, res, next) {
     // Collect all view request params
-    var tid = req.swagger.params['tid'].value;
+    var id = req.swagger.params['id'].value;
 
     res.connection.setMaxListeners(0);
     res.connection.once('close',function(){
@@ -148,7 +148,7 @@ module.exports.viewInfo = function viewInfo (req, res, next) {
      */
     var callback = function(result) {
         if (req.isClosed) {
-            log.debug("[-X-] view request canceled '" + tid + "'");
+            log.debug("[-X-] view request canceled '" + id + "'");
             next();
             return;
         }
@@ -170,6 +170,6 @@ module.exports.viewInfo = function viewInfo (req, res, next) {
         }
     };
     // Control log
-    log.debug("--> viewInfo: " + tid );
-    TimeBasedData.viewInfo(tid, callback);
+    log.debug("--> viewInfo: " + id );
+    TimeBasedData.viewInfo(id, callback);
 };

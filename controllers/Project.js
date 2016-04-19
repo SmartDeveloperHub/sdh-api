@@ -82,7 +82,7 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
     });
 
     // Collect all repository request params
-    var pid = req.swagger.params['pid'].value;
+    var pjid = req.swagger.params['pjid'].value;
 
     /**
      * The main callback for this request
@@ -113,5 +113,5 @@ module.exports.projectInfo = function projectInfo (req, res, next) {
         }
     };
 
-    Project.projectInfo(pid, callback);
+    Project.projectInfo(pjid, callback);
 };

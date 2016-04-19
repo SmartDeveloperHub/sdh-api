@@ -55,7 +55,7 @@ exports.viewInfo = function(tid, callback) {
  * @param to {Date} date indicating the "to" limit for the request
  * @param callback {Function} the callback to send the metric result to client
  */
-exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback) {
+exports.getTimeBasedData = function(tid, rid, uid, pjid, prid, from, to, callback) {
 
     /**
      *This method make the TBD request after logical validation
@@ -70,9 +70,9 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
             log.warn(tid + " view does not require query param 'rid'");
             rid = null;
         }
-        if (!pidRequired && typeof pid !== 'undefined') {
-            log.warn(tid + " view does not require query param 'pid'");
-            pid = null;
+        if (!pjidRequired && typeof pjid !== 'undefined') {
+            log.warn(tid + " view does not require query param 'pjid'");
+            pjid = null;
         }
         if (!pridRequired && typeof prid !== 'undefined') {
             log.warn(tid + " view does not require query param 'prid'");
@@ -119,15 +119,15 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
             if (result.info.params.indexOf('rid') >= 0) {
                 result.info['rid'] =  underscore(repositoriesById[rid]).clone();
             }
-            if (result.info.params.indexOf('pid') >= 0) {
-                result.info['pid'] = underscore(projectsById[pid]).clone();
+            if (result.info.params.indexOf('pjid') >= 0) {
+                result.info['pjid'] = underscore(projectsById[pjid]).clone();
             }
             if (result.info.params.indexOf('prid') >= 0) {
                 result.info['prid'] = underscore(productsById[prid]).clone();
             }
             callback(result);
         };
-        sdhWrapper.getTBDValue(tid, rid, uid, pid, prid, from, to, localcallback2);
+        sdhWrapper.getTBDValue(tid, rid, uid, pjid, prid, from, to, localcallback2);
     };
 
     // Logical validation
@@ -140,7 +140,7 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
 
     var uidRequired = tbdById[tid].params.indexOf('uid') >= 0;
     var ridRequired = tbdById[tid].params.indexOf('rid') >= 0;
-    var pidRequired = tbdById[tid].params.indexOf('pid') >= 0;
+    var pjidRequired = tbdById[tid].params.indexOf('pjid') >= 0;
     var pridRequired = tbdById[tid].params.indexOf('prid') >= 0;
 
     if (uidRequired && typeof uid == 'undefined') {
@@ -153,8 +153,8 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
         callback(400);
         return;
     }
-    if (pidRequired && typeof pid == 'undefined') {
-        log.error(tid + " view require query param 'pid'");
+    if (pjidRequired && typeof pjid == 'undefined') {
+        log.error(tid + " view require query param 'pjid'");
         callback(400);
         return;
     }
@@ -173,8 +173,8 @@ exports.getTimeBasedData = function(tid, rid, uid, pid, prid, from, to, callback
         callback(404);
         return;
     }
-    if (pidRequired && !sdhWrapper.sync_projectExist(pid)) {
-        log.error("PID not found: " + pid);
+    if (pjidRequired && !sdhWrapper.sync_projectExist(pjid)) {
+        log.error("PJID not found: " + pjid);
         callback(404);
         return;
     }

@@ -77,9 +77,9 @@ module.exports.metricList = function metricList (req, res, next) {
  */
 module.exports.getMetric = function getMetric (req, res, next) {
     // Collect all metric request params
-    var mid = req.swagger.params['mid'].value;
+    var id = req.swagger.params['id'].value;
     var rid = req.swagger.params['rid'].value;
-    var pid = req.swagger.params['pid'].value;
+    var pjid = req.swagger.params['pjid'].value;
     var prid = req.swagger.params['prid'].value;
     var uid = req.swagger.params['uid'].value;
     var from = req.swagger.params['from'].value;
@@ -94,7 +94,7 @@ module.exports.getMetric = function getMetric (req, res, next) {
     });
 
     // Control log
-    log.debug("--> getMetric: " + mid + " (" + [rid, uid, pid, prid, from, to, accumulated, max, aggr] + ")");
+    log.debug("--> getMetric: " + id + " (" + [rid, uid, pjid, prid, from, to, accumulated, max, aggr] + ")");
 
     /**
      * The main callback for this request
@@ -102,7 +102,7 @@ module.exports.getMetric = function getMetric (req, res, next) {
      */
     var callback = function(result) {
         if (req.isClosed) {
-            log.debug("[-X-] metric request canceled '" + mid + "'");
+            log.debug("[-X-] metric request canceled '" + id + "'");
             next();
             return;
         }
@@ -123,7 +123,7 @@ module.exports.getMetric = function getMetric (req, res, next) {
             res.end();
         }
     };
-    Metric.getMetric(mid, rid, uid, pid, prid, from, to, accumulated, max, aggr, callback);
+    Metric.getMetric(id, rid, uid, pjid, prid, from, to, accumulated, max, aggr, callback);
 };
 
 /**
@@ -134,7 +134,7 @@ module.exports.getMetric = function getMetric (req, res, next) {
  */
 module.exports.metricInfo = function metricInfo (req, res, next) {
     // Collect all metric request params
-    var mid = req.swagger.params['mid'].value;
+    var id = req.swagger.params['id'].value;
 
     res.connection.setMaxListeners(0);
     res.connection.once('close',function(){
@@ -147,7 +147,7 @@ module.exports.metricInfo = function metricInfo (req, res, next) {
      */
     var callback = function(result) {
         if (req.isClosed) {
-            log.debug("[-X-] metric request canceled '" + mid + "'");
+            log.debug("[-X-] metric request canceled '" + id + "'");
             next();
             return;
         }
@@ -169,6 +169,6 @@ module.exports.metricInfo = function metricInfo (req, res, next) {
         }
     };
     // Control log
-    log.debug("--> metricInfo: " + mid );
-    Metric.metricInfo(mid, callback);
+    log.debug("--> metricInfo: " + id );
+    Metric.metricInfo(id, callback);
 };
