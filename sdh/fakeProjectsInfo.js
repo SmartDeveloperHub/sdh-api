@@ -26,7 +26,7 @@ exports.fakeProjectsInfo = [
     {
         "name" : "SDH-Test1",
         "description" : "A project",
-        "projectid" : "1",
+        "pjid" : "1",
         "lastcommit" : 1431208800000,
         "firstcommit": 1273010400000,
         "scmlink" : "http://gitlabProjectURL",
@@ -37,7 +37,7 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "ALPHA jin",
                 "description" : "A repository",
-                "repositoryid" : "1",
+                "rid" : "1",
                 "tags" :['framework','hack','dark'],
                 "avatar": "http://repositoryAvatarURL",
                 "archived" : true,
@@ -47,19 +47,19 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1001"
+                        "uid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "1002"
+                        "uid" : "1002"
                     }
                 ]
             },
             {
                 "name" : "BETA jang",
                 "description" : "A repository",
-                "repositoryid" : "2",
+                "rid" : "2",
                 "tags" :['framework','php','laravel'],
                 "avatar": "http://repositoryAvatarURL",
                 "archived" : true,
@@ -69,12 +69,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1001"
+                        "uid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "1002"
+                        "uid" : "1002"
                     }
                 ]
             }
@@ -83,19 +83,19 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1001"
+                "uid" : "1001"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "1002"
+                "uid" : "1002"
             }
         ]
     },
     {
         "name" : "SDH-Test2",
         "description" : "A project",
-        "projectid" : "2",
+        "pjid" : "2",
         "lastcommit" : 1431208800000,
         "firstcommit": 1273010400000,
         "scmlink" : "http://gitlabProjectURL",
@@ -106,7 +106,7 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "ALPHA jin",
                 "description" : "A repository",
-                "repositoryid" : "1",
+                "rid" : "1",
                 "tags" :['framework','hack','dark'],
                 "avatar": "http://repositoryAvatarURL",
                 "archived" : true,
@@ -116,19 +116,19 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1001"
+                        "uid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "1002"
+                        "uid" : "1002"
                     }
                 ]
             },
             {
                 "name" : "BETA jang",
                 "description" : "A repository",
-                "repositoryid" : "2",
+                "rid" : "2",
                 "tags" :['framework','php','laravel'],
                 "avatar": "http://repositoryAvatarURL",
                 "archived" : true,
@@ -138,12 +138,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1001"
+                        "uid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "1002"
+                        "uid" : "1002"
                     }
                 ]
             }
@@ -152,19 +152,19 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1001"
+                "uid" : "1001"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "1002"
+                "uid" : "1002"
             }
         ]
     },
     {
         "name" : "SDH-Test3",
         "description" : "A project",
-        "projectid" : "3",
+        "pjid" : "3",
         "lastcommit" : 1431208800000,
         "firstcommit": 1273010400000,
         "scmlink" : "http://gitlabProjectURL",
@@ -175,7 +175,7 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "ALPHA jin",
                 "description" : "A repository",
-                "repositoryid" : "1",
+                "rid" : "1",
                 "tags" :['framework','hack','dark'],
                 "avatar": "http://repositoryAvatarURL",
                 "archived" : true,
@@ -185,19 +185,19 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1001"
+                        "uid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "1002"
+                        "uid" : "1002"
                     }
                 ]
             },
             {
                 "name" : "BETA jang",
                 "description" : "A repository",
-                "repositoryid" : "2",
+                "rid" : "2",
                 "tags" :['framework','php','laravel'],
                 "avatar": "http://repositoryAvatarURL",
                 "archived" : true,
@@ -207,12 +207,12 @@ exports.fakeProjectsInfo = [
                     {
                         "name" : "Jos\u00e9 Mart\u00ednez",
                         "email" : "pepe@organization.com",
-                        "userid" : "1001"
+                        "uid" : "1001"
                     },
                     {
                         "name" : "Dolores Garc\u00eda",
                         "email" : "lola@organization.com",
-                        "userid" : "1002"
+                        "uid" : "1002"
                     }
                 ]
             }
@@ -221,12 +221,12 @@ exports.fakeProjectsInfo = [
             {
                 "name" : "Jos\u00e9 Mart\u00ednez",
                 "email" : "pepe@organization.com",
-                "userid" : "1001"
+                "uid" : "1001"
             },
             {
                 "name" : "Dolores Garc\u00eda",
                 "email" : "lola@organization.com",
-                "userid" : "1002"
+                "uid" : "1002"
             }
         ]
     }
@@ -236,21 +236,21 @@ exports.projectList = [
     {
         "name" : "SDH-Test1",
         "description" : "A project",
-        "projectid" : "1",
+        "pjid" : "1",
         "tags" :['SDH','jordi','dark'],
         "avatar": "http://ProjectAvatarURL"
     },
     {
         "name" : "SDH-Test2",
         "description" : "A project",
-        "projectid" : "2",
+        "pjid" : "2",
         "tags" :['SDH','jordi','dark'],
         "avatar": "http://ProjectAvatarURL"
     },
     {
         "name" : "SDH-Test3",
         "description" : "A project",
-        "projectid" : "3",
+        "pjid" : "3",
         "tags" :['SDH','jordi','dark'],
         "avatar": "http://ProjectAvatarURL"
     }
