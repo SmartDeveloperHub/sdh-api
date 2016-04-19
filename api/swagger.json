@@ -256,7 +256,7 @@
                 }
             }
         },
-        "/projects/{pid}": {
+        "/projects/{pjid}": {
             "get": {
                 "x-swagger-router-controller": "Project",
                 "tags": [
@@ -266,7 +266,7 @@
                 "operationId": "projectInfo",
                 "parameters": [
                     {
-                        "name": "pid",
+                        "name": "pjid",
                         "in": "path",
                         "description": "Project id",
                         "required": true,
@@ -391,7 +391,7 @@
                 }
             }
         },
-        "/metricinfo/{mid}": {
+        "/metricinfo/{id}": {
             "get": {
                 "x-swagger-router-controller": "Metric",
                 "tags": [
@@ -401,7 +401,7 @@
                 "operationId": "metricInfo",
                 "parameters": [
                       {
-                          "name": "mid",
+                          "name": "id",
                           "in": "path",
                           "description": "Metric id",
                           "required": true,
@@ -463,7 +463,7 @@
                 }
             }
         },
-        "/tbdatainfo/{tid}": {
+        "/tbdatainfo/{id}": {
             "get": {
                 "x-swagger-router-controller": "TimeBasedData",
                 "tags": [
@@ -473,7 +473,7 @@
                 "operationId": "viewInfo",
                 "parameters": [
                     {
-                        "name": "tid",
+                        "name": "id",
                         "in": "path",
                         "description": "Time Based Data id",
                         "required": true,
@@ -493,7 +493,7 @@
                 }
             }
         },
-        "/metrics/{mid}": {
+        "/metrics/{id}": {
             "get": {
                 "x-swagger-router-controller": "Metric",
                 "tags": [
@@ -503,7 +503,7 @@
                 "operationId": "getMetric",
                 "parameters": [
                     {
-                        "name": "mid",
+                        "name": "id",
                         "in": "path",
                         "description": "Metric id",
                         "required": true,
@@ -517,7 +517,7 @@
                         "type": "string"
                     },
                     {
-                        "name": "pid",
+                        "name": "pjid",
                         "in": "query",
                         "description": "Project id",
                         "required": false,
@@ -597,7 +597,7 @@
                 }
             }
         },
-        "/tbdata/{tid}": {
+        "/tbdata/{id}": {
             "get": {
                 "x-swagger-router-controller": "TimeBasedData",
                 "tags": [
@@ -607,7 +607,7 @@
                 "operationId": "getTimeBasedData",
                 "parameters": [
                     {
-                        "name": "tid",
+                        "name": "id",
                         "in": "path",
                         "description": "Time Based Data id",
                         "required": true,
@@ -621,7 +621,7 @@
                         "type": "string"
                     },
                     {
-                        "name": "pid",
+                        "name": "pjid",
                         "in": "query",
                         "description": "Project id",
                         "required": false,
@@ -683,7 +683,7 @@
         },
         "organizationinfo": {
             "properties": {
-                "organizationid": {
+                "oid": {
                     "type": "string",
                     "description": "Unique organization id"
                 },
@@ -699,7 +699,7 @@
         },
         "product": {
             "properties": {
-                "productid": {
+                "prid": {
                     "type": "string",
                     "description": "Unique Product identifier"
                 },
@@ -726,7 +726,7 @@
         },
         "productinfo": {
             "properties": {
-                "productid": {
+                "prid": {
                     "type": "string",
                     "description": "Unique Product identifier"
                 },
@@ -787,7 +787,7 @@
         },
         "project": {
             "properties": {
-                "projectid": {
+                "pjid": {
                     "type": "string",
                     "description": "Unique Project identifier"
                 },
@@ -814,7 +814,7 @@
         },
         "projectinfo": {
             "properties": {
-                "projectid": {
+                "pjid": {
                     "type": "string",
                     "description": "Unique Project identifier"
                 },
@@ -875,11 +875,11 @@
         },
         "repository": {
             "properties": {
-                "repositoryid": {
+                "rid": {
                     "type": "string",
                     "description": "Unique Repository identifier"
                 },
-                "projectid": {
+                "pjid": {
                     "type": "string",
                     "description": "Unique Project identifier"
                 },
@@ -918,11 +918,11 @@
         },
         "repositoryinfo": {
             "properties": {
-                "repositoryid": {
+                "rid": {
                     "type": "string",
                     "description": "Unique Repository identifier"
                 },
-                "projectid": {
+                "pjid": {
                     "type": "string",
                     "description": "Unique Project identifier"
                 },
@@ -993,7 +993,7 @@
         },
         "user": {
             "properties": {
-                "userid": {
+                "uid": {
                     "type": "string",
                     "description": "Unique user identifier"
                 },
@@ -1013,7 +1013,7 @@
         },
         "userinfo": {
             "properties": {
-                "userid": {
+                "uid": {
                     "type": "string",
                     "description": "Unique user identifier"
                 },
