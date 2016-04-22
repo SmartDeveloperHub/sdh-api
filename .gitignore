@@ -2,4 +2,4 @@
 /backup/*
 /logs/*
 .idea/
-sdhconfig
+.env
