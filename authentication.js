@@ -32,11 +32,11 @@ exports.initialize = function initialize() {
         //Initialize passport
         GLOBAL.passport.use(new LdapStrategy({
             server: {
-                url: SESSION_INFO.url,
-                bindDn: SESSION_INFO.bindDn,
-                bindCredentials: SESSION_INFO.bindCredentials,
-                searchBase: SESSION_INFO.searchBase,
-                searchFilter: SESSION_INFO.searchFilter
+                url: process.env.SESSION_INFO_URL,
+                bindDn: process.env.SESSION_INFO_BINDDN,
+                bindCredentials: process.env.SESSION_INFO_BINDCREDENTIALS,
+                searchBase: process.env.SESSION_INFO_SEARCHBASE,
+                searchFilter: process.env.SESSION_INFO_SEARCHFILTER
             }
         }));
 

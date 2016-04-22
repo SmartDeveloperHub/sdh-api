@@ -25,7 +25,7 @@
 try {
     // PRIVATE METHODS
     var hasExpired = function hasExpired(session) {
-        return session['info']['lastAccess'] + SESSION_DURATION < Date.now();
+        return session['info']['lastAccess'] + process.env.SESSION_DURATION < Date.now();
     };
 
 
@@ -94,7 +94,7 @@ try {
                 getSession(token, true); //et session can check if it has expired
             }
 
-        }, SESSION_GARBAGE_COLLECTOR);
+        }, process.env.SESSION_GARBAGE_COLLECTOR);
 
     };
 

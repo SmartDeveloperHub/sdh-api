@@ -29,21 +29,17 @@
 //if (cluster.isMaster) {
     var loadStartDate = new Date();
     try {
+        //env
+        var dotenv = require('dotenv');
+        //load environment variables,
+        //either from .env files (development),
+        dotenv.load();
+
         // global buyan
         var bunyan = require('bunyan');
         var PrettyStream = require('bunyan-prettystream');
     } catch (err) {
         console.error("API Error. bunyan logs problem: " + err);
-    }
-    try {
-        // Set Config params
-        require('./sdhconfig');
-    } catch (err) {
-        console.error("Fatal API Error with sdhconfig: " + err);
-        log.info('Exiting...');
-        setTimeout(function() {
-            process.exit(0);
-        }, 1000);
     }
     /* File Log */
     var prettyStdOut = new PrettyStream();
@@ -51,24 +47,24 @@
     GLOBAL.log = null;
     GLOBAL.mkdirp = require("mkdirp");
     GLOBAL.getDirName = require("path").dirname;
-    mkdirp(getDirName(FILE_LOG_PATH), function (err) {
+    mkdirp(getDirName(process.env.FILE_LOG_PATH), function (err) {
         if (err) {
             console.error("! Log file disabled");
-            console.error("Error creating log file " +  FILE_LOG_PATH);
+            console.error("Error creating log file " +  process.env.FILE_LOG_PATH);
             log.error(err);
         } else {
             log = bunyan.createLogger({
                     name: 'SDH_API',
                     streams: [{
-                        level: CONSOLE_LOG_LEVEL,
+                        level: process.env.CONSOLE_LOG_LEVEL,
                         stream: prettyStdOut
                     },
                     {
-                        level: FILE_LOG_LEVEL,
+                        level: process.env.FILE_LOG_LEVEL,
                         type: 'rotating-file',
-                        path: FILE_LOG_PATH,
-                        period: FILE_LOG_PERIOD + 'h',   // daily rotation
-                        count: FILE_LOG_NFILES        // keep 3 back copies
+                        path: process.env.FILE_LOG_PATH,
+                        period: process.env.FILE_LOG_PERIOD + 'h',   // daily rotation
+                        count: parseInt(process.env.FILE_LOG_NFILES)        // keep 3 back copies
                     }]
             });
             startAPI();
@@ -80,48 +76,48 @@
         //fs
         GLOBAL.fs = require('fs');
         // Check backup config
-        if (BACKUP_UPDATE_METRICS_ON) {
-            BACKUP_UPDATE_METRICS_ON = true;
-            log.warn("The API will try to generate a new backup updating " + BACKUP_LOAD_ID + " backup metrics");
-            var apth = "./backup/metricData/" + BACKUP_LOAD_ID;
+        if (process.env.BACKUP_UPDATE_METRICS_ON == 'true') {
+            process.env.BACKUP_UPDATE_METRICS_ON = true;
+            log.warn("The API will try to generate a new backup updating " + process.env.BACKUP_LOAD_ID + " backup metrics");
+            var apth = "./backup/metricData/" + process.env.BACKUP_LOAD_ID;
             if (!fs.existsSync(apth)) {
-                BACKUP_UPDATE_METRICS_ON = false;
+                process.env.BACKUP_UPDATE_METRICS_ON = false;
                 log.error("Metric backup " + apth +" not found...");
             } else {
-                if (BACKUP_LOAD_ON) {
+                if (process.env.BACKUP_LOAD_ON  == 'true') {
                     log.warn("BACKUP_LOAD_ON should be false... changing value...");
                 }
-                if (BACKUP_ON) {
+                if (process.env.BACKUP_ON  == 'true') {
                     log.warn("BACKUP_ON should be false... changing value...");
                 }
             }
-            BACKUP_LOAD_ON = false;
-            BACKUP_ON = false;
-        } else if (BACKUP_LOAD_ON) {
-            BACKUP_LOAD_ON = true;
-            var apthm = "./backup/metrics/" + BACKUP_LOAD_ID;
-            var apthv = "./backup/views/" + BACKUP_LOAD_ID;
-            var aptho = "./backup/organizations/" + BACKUP_LOAD_ID;
-            var apthpr = "./backup/products/" + BACKUP_LOAD_ID;
-            var apthpj = "./backup/projects/" + BACKUP_LOAD_ID;
-            var apthr = "./backup/repositories/" + BACKUP_LOAD_ID;
-            var apthu = "./backup/members/" + BACKUP_LOAD_ID;
-            var apthmv = "./backup/metricData/" + BACKUP_LOAD_ID;
+            process.env.BACKUP_LOAD_ON = false;
+            process.env.BACKUP_ON = false;
+        } else if (process.env.BACKUP_LOAD_ON == 'true') {
+            process.env.BACKUP_LOAD_ON = true;
+            var apthm = "./backup/metrics/" + process.env.BACKUP_LOAD_ID;
+            var apthv = "./backup/views/" + process.env.BACKUP_LOAD_ID;
+            var aptho = "./backup/organizations/" + process.env.BACKUP_LOAD_ID;
+            var apthpr = "./backup/products/" + process.env.BACKUP_LOAD_ID;
+            var apthpj = "./backup/projects/" + process.env.BACKUP_LOAD_ID;
+            var apthr = "./backup/repositories/" + process.env.BACKUP_LOAD_ID;
+            var apthu = "./backup/members/" + process.env.BACKUP_LOAD_ID;
+            var apthmv = "./backup/metricData/" + process.env.BACKUP_LOAD_ID;
             if (!fs.existsSync(apthm) || !fs.existsSync(apthv) || !fs.existsSync(aptho) || !fs.existsSync(apthpr) ||
                 !fs.existsSync(apthpj) || !fs.existsSync(apthr) || !fs.existsSync(apthu) || !fs.existsSync(apthmv)) {
-                BACKUP_LOAD_ON = false;
-                log.error("Backup ./backup/..../" + BACKUP_LOAD_ID +" not found...");
-            } else if (BACKUP_ON) {
+                process.env.BACKUP_LOAD_ON = false;
+                log.error("Backup ./backup/..../" + process.env.BACKUP_LOAD_ID +" not found...");
+            } else if (process.env.BACKUP_ON == 'true') {
                 log.warn("BACKUP_ON should be false... changing value...");
             }
-            BACKUP_ON = false;
+            process.env.BACKUP_ON = false;
         }
 
         // Shut down function
         var gracefullyShuttinDown = function gracefullyShuttinDown() {
             log.warn('Shut down signal Received ');
             log.warn(" ! Shutting Down SDH-API manually.");
-            if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+            if (process.env.BACKUP_ON  == 'true'|| process.env.BACKUP_UPDATE_METRICS_ON == 'true') {
                 sdhTools.saveBackups(function(){
                     setTimeout(function () {
                         process.exit(0);
@@ -230,7 +226,15 @@
              */
             var launchSwaggerAPI = function () {
                 // Initialize the Swagger middleware
-                swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+                var aux = require("./api/swagger.json");
+                var stringiAux = JSON.stringify(aux);
+                //var parsedAux = JSON.parse(aux);
+                var newHP = process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT;
+                aux.host = newHP;
+                aux.schemes = [process.env.SWAGGER_URL_SCHEMA];
+
+                //swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+                 swaggerTools.initializeMiddleware(aux, function (middleware) {
                     // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
                     app.use(middleware.swaggerMetadata());
 
@@ -242,19 +246,15 @@
 
                     // Serve the Swagger documents and Swagger UI
                     app.use(middleware.swaggerUi());
-                    // Take local IP in URL is null
-                    if (SWAGGER_URL == null) {
-                        SWAGGER_URL = "http://localhost";
-                    }
                     // Start the server
-                    http.createServer(app).listen(SWAGGER_PORT, function () {
-                        setRefreshRate(REFRESH_RATE);
+                    http.createServer(app).listen(process.env.SWAGGER_PORT, function () {
+                        setRefreshRate(process.env.REFRESH_RATE);
                         var now = moment();
                         loadStartDate = moment(loadStartDate);
                         var loadTime = moment.duration(now - loadStartDate).asMilliseconds();
                         log.info("---    SDH-API Ready!!   --- ( " + loadTime / 1000 + " seconds )");
-                        log.info('SDH-API is listening (' + SWAGGER_URL + ':' + SWAGGER_PORT + ')');
-                        log.info('SDH-API Swagger-ui is available on ' + SWAGGER_URL + ':' + SWAGGER_PORT + '/docs');
+                        log.info('SDH-API is listening (' + process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT + ')');
+                        log.info('SDH-API Swagger-ui is available on ' + process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT + '/docs');
                     });
 
                     // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
@@ -287,14 +287,14 @@
 //} else {
     // forks
     // Start the server
-   /* http.createServer(app).listen(SWAGGER_PORT, function () {
-        setRefreshRate(REFRESH_RATE);
+   /* http.createServer(app).listen(process.env.SWAGGER_PORT, function () {
+        setRefreshRate(process.env.REFRESH_RATE);
         var now = moment();
         loadStartDate = moment(loadStartDate);
         var loadTime = moment.duration(now-loadStartDate).asMilliseconds();
         console.log("---    SDH-API Ready!!   --- ( " + loadTime + " ms )");
         console.log('');
-        console.log('SDH-API is listening on port %d (http://localhost:%d)', SWAGGER_PORT, SWAGGER_PORT);
-        console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', SWAGGER_PORT);
+        console.log('SDH-API is listening on port %d (http://localhost:%d)', process.env.SWAGGER_PORT, SWAGGER_PORT);
+        console.log('SDH-API Swagger-ui is available on http://localhost:%d/docs', process.env.SWAGGER_PORT);
     });*/
 //}

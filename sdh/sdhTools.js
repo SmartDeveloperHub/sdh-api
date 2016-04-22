@@ -37,10 +37,10 @@ var getNewTriple = function getNewTriple(triple, dataQ, agentId, theUuid) {
         triple.object = '"' + agentId + '"^^http://www.smartdeveloperhub.org/vocabulary/types#UUID';
     }
     if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/amqp#host") {
-        triple.object = '"' + RABBITHOST.replace('amqp://', '') + '"^^http://www.smartdeveloperhub.org/vocabulary/types#Hostname';
+        triple.object = '"' + process.env.RABBITHOST.replace('amqp://', '') + '"^^http://www.smartdeveloperhub.org/vocabulary/types#Hostname';
     }
     if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/amqp#port") {
-        triple.object = '"' + RABBITPORT + '"^^http://www.smartdeveloperhub.org/vocabulary/types#Port';
+        triple.object = '"' + process.env.RABBITPORT + '"^^http://www.smartdeveloperhub.org/vocabulary/types#Port';
     }
     if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/amqp#routingKey") {
         triple.object = '"' + dataQ + '"^^http://www.smartdeveloperhub.org/vocabulary/types#Name';
@@ -115,9 +115,9 @@ module.exports.parseTriples = function parseTriples (triplesList) {
 var sendAfterWrite = function sendAfterWrite(result, ch) {
     // TODO ERROR control
     // Send file
-    //ch.assertExchange(EXCHANGE, 'topic', {durable: false});
-    ch.publish(EXCHANGE, ROUTINGKEY, new Buffer(result));
-    log.debug(" [x] Sent " + ROUTINGKEY);
+    //ch.assertExchange(process.env.EXCHANGE, 'topic', {durable: false});
+    ch.publish(process.env.EXCHANGE, process.env.ROUTINGKEY, new Buffer(result));
+    log.debug(" [x] Sent " + process.env.ROUTINGKEY);
     log.trace(result);
     return;
 };
@@ -135,9 +135,9 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
         var theUuid = uuid();
         var qName = "scholar.response." + agentId;
         var dataQ;
-        amqp.connect(RABBITHOST + ':' + RABBITPORT, function (err, conn) {
+        amqp.connect(process.env.RABBITHOST + ':' + process.env.RABBITPORT, function (err, conn) {
             if (err) {
-                log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT);
+                log.error('Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT);
                 log.error(err);
                 callback(null);
                 return -1;
@@ -150,7 +150,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                     return -1;
                 }
                 ch.assertQueue('', {durable: false, autoDelete: true, exclusive: false}, function (err, q) {
-                    ch.bindQueue(q.queue, EXCHANGE, qName);
+                    ch.bindQueue(q.queue, process.env.EXCHANGE, qName);
                     ch.consume(q.queue, function (msg) {
                         log.debug(" [x Accept] %s", msg.fields.routingKey);
                         // Parse msg
@@ -206,9 +206,9 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
 
         var sendTtl = function () {
             // Obtain request ttl
-            amqp.connect(RABBITHOST + ':' + RABBITPORT, function (err, conn) {
+            amqp.connect(process.env.RABBITHOST + ':' + process.env.RABBITPORT, function (err, conn) {
                 if (err) {
-                    log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT + ":");
+                    log.error('Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT + ":");
                     log.error(err);
                     callback(null);
                     return -1;
@@ -259,7 +259,7 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
             });
         };
     } catch (err) {
-        log.error('Error connecting ' + RABBITHOST + ':' + RABBITPORT);
+        log.error('Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT);
         callback(null);
     }
 };
