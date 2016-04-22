@@ -1,1193 +1,2014 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "SDH API",
-        "description": "This service provides data to feed SDH dashboard widgets.",
-        "version": "0.0.4",
-        "license": {
-            "name": "Apache License 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "contact": {
-        "name": "Carlos Blanco",
-        "email": "carlos.blanco@centeropenmiddleware.com"
-        }
+  "swagger": "2.0",
+  "info": {
+    "title": "SDH API",
+    "description": "This service provides data to feed SDH dashboard widgets.",
+    "version": "0.1.0",
+    "license": {
+      "name": "Apache License 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "produces": [
-        "application/json"
-    ],
-    "host": "localhost:8080",
-    "basePath": "/",
-    "schemes": [
-        "http"
-    ],
-    "tags": [
-        {
-            "name": "Auth",
-            "description": "Operations about authorization"
-        },
-        {
-            "name": "API",
-            "description": "Operations about API"
-        },
-        {
-            "name": "Organization",
-            "description": "Operations about Organization"
-        },
-        {
-            "name": "Product",
-            "description": "Operations about Products"
-        },
-        {
-            "name": "Project",
-            "description": "Operations about Projects"
-        },
-        {
-            "name": "Repository",
-            "description": "Operations about Repositories"
-        },
-        {
-            "name": "User",
-            "description": "Operations about User"
-        },
-        {
-            "name": "UserRepository",
-            "description": "Operations about Specific User and Repository"
-        },
-        {
-            "name": "Metric",
-            "description": "Metrics. Time-based and aggregated"
-        },
-        {
-            "name": "TimeBasedData",
-            "description": "Time-based data"
-        }
-    ],
-    "paths": {
-        "/auth/login/":{
-            "post": {
-                "x-swagger-router-controller": "Auth",
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "API JSON Definition",
-                "operationId": "login",
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "formData",
-                        "description": "User name",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "password",
-                        "in": "formData",
-                        "description": "User password",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "properties": {
-                                "token": {
-                                    "type": "string",
-                                    "description": "Token to use inside an 'Authentication: Bearer <token>' header"
-                                },
-                                "user": {
-                                    "type": "object",
-                                    "description": "Ldap user information"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication error"
-                    }
-                }
-            }
-        },
-        "/auth/check/":{
-            "get": {
-                "x-swagger-router-controller": "Auth",
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "API JSON Definition",
-                "operationId": "check",
-                "parameters": [ ],
-                "responses": {
-                    "200": {
-                        "description": "Authentication information is correct"
-                    },
-                    "401": {
-                        "description": "Authentication error"
-                    }
-                }
-            }
-        },
-        "/auth/logout/":{
-            "post": {
-                "x-swagger-router-controller": "Auth",
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "API JSON Definition",
-                "operationId": "logout",
-                "parameters": [ ],
-                "responses": {
-                    "200": {
-                        "description": "User was logged out"
-                    },
-                    "401": {
-                        "description": "Authentication error"
-                    }
-                }
-            }
-        },
-        "/api/": {
-            "get": {
-                "x-swagger-router-controller": "API",
-                "tags": [
-                    "API"
-                ],
-                "summary": "API JSON Definition",
-                "operationId": "apiInfo",
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/apitemplate"
-                        }
-                    }
-                }
-            }
-        },
-        "/organization": {
-            "get": {
-                "x-swagger-router-controller": "Organization",
-                "tags": [
-                    "Organization"
-                ],
-                "summary": "Organization description",
-                "operationId": "orgInfo",
-                "responses": {
-                    "200": {
-                        "description": "Organization information",
-                        "schema": {
-                            "$ref": "#/definitions/organizationinfo"
-                        }
-                    }
-                }
-            }
-        },
-        "/products/": {
-            "get": {
-                "x-swagger-router-controller": "Product",
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Products info list",
-                "operationId": "allProductsInfo",
-                "responses": {
-                    "200": {
-                        "description": "Product list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/product"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/products/{prid}": {
-            "get": {
-                "x-swagger-router-controller": "Product",
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Product description",
-                "operationId": "productInfo",
-                "parameters": [
-                    {
-                        "name": "prid",
-                        "in": "path",
-                        "description": "Product id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product info.",
-                        "schema": {
-                            "$ref": "#/definitions/productinfo"
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            }
-        },
-        "/projects/": {
-            "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Projects info list",
-                "operationId": "allProjectsInfo",
-                "responses": {
-                    "200": {
-                        "description": "Project list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/project"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{pjid}": {
-            "get": {
-                "x-swagger-router-controller": "Project",
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Project description",
-                "operationId": "projectInfo",
-                "parameters": [
-                    {
-                        "name": "pjid",
-                        "in": "path",
-                        "description": "Project id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Project info.",
-                        "schema": {
-                            "$ref": "#/definitions/projectinfo"
-                        }
-                    },
-                    "404": {
-                        "description": "Project not found"
-                    }
-                }
-            }
-        },
-        "/repositories/": {
-            "get": {
-                "x-swagger-router-controller": "Repository",
-                "tags": [
-                    "Repository"
-                ],
-                "summary": "Repositories info list",
-                "operationId": "allRepositoriesInfo",
-                "responses": {
-                    "200": {
-                        "description": "Repositories list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/repository"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/repositories/{rid}": {
-            "get": {
-                "x-swagger-router-controller": "Repository",
-                "tags": [
-                    "Repository"
-                ],
-                "summary": "Repository description",
-                "operationId": "repositoryInfo",
-                "parameters": [
-                    {
-                        "name": "rid",
-                        "in": "path",
-                        "description": "Repository id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Repository info.",
-                        "schema": {
-                            "$ref": "#/definitions/repositoryinfo"
-                        }
-                    },
-                    "404": {
-                        "description": "Repository not found"
-                    }
-                }
-            }
-        },
-        "/users/": {
-            "get": {
-                "x-swagger-router-controller": "User",
-                "tags": [
-                    "User"
-                ],
-                "summary": "Users info list",
-                "operationId": "allUsers",
-                "responses": {
-                    "200": {
-                        "description": "Users list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/user"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
-                    }
-                }
-            }
-        },
-        "/users/{uid}": {
-            "get": {
-                "x-swagger-router-controller": "User",
-                "tags": [
-                    "User"
-                ],
-                "summary": "User description",
-                "operationId": "userInfo",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "in": "path",
-                        "description": "User id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Repository info.",
-                        "schema": {
-                            "$ref": "#/definitions/userinfo"
-                        }
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                }
-            }
-        },
-        "/metricinfo/{id}": {
-            "get": {
-                "x-swagger-router-controller": "Metric",
-                "tags": [
-                    "Metric"
-                ],
-                "summary": "Metric Information",
-                "operationId": "metricInfo",
-                "parameters": [
-                      {
-                          "name": "id",
-                          "in": "path",
-                          "description": "Metric id",
-                          "required": true,
-                          "type": "string"
-                      }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Metric info.",
-                        "schema": {
-                            "$ref": "#/definitions/metricinfo"
-                        }
-                    },
-                    "404": {
-                        "description": "Metric not found"
-                    }
-                }
-            }
-        },
-        "/metrics/": {
-            "get": {
-                "x-swagger-router-controller": "Metric",
-                "tags": [
-                    "Metric"
-                ],
-                "summary": "Available metrics list",
-                "operationId": "metricList",
-                "responses": {
-                    "200": {
-                        "description": "Available metrics list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/metricinfo"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/tbdata/": {
-            "get": {
-                "x-swagger-router-controller": "TimeBasedData",
-                "tags": [
-                    "TimeBasedData"
-                ],
-                "summary": "Time Based Data list",
-                "operationId": "timeBasedDataList",
-                "responses": {
-                    "200": {
-                        "description": "Time Based Data list",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/tbdinfo"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/tbdatainfo/{id}": {
-            "get": {
-                "x-swagger-router-controller": "TimeBasedData",
-                "tags": [
-                    "TimeBasedData"
-                ],
-                "summary": "View Information",
-                "operationId": "viewInfo",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Time Based Data id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "View info.",
-                        "schema": {
-                            "$ref": "#/definitions/tbdinfo"
-                        }
-                    },
-                    "404": {
-                        "description": "View not found"
-                    }
-                }
-            }
-        },
-        "/metrics/{id}": {
-            "get": {
-                "x-swagger-router-controller": "Metric",
-                "tags": [
-                    "Metric"
-                ],
-                "summary": "Metric value",
-                "operationId": "getMetric",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Metric id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "rid",
-                        "in": "query",
-                        "description": "Repository id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "pjid",
-                        "in": "query",
-                        "description": "Project id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "prid",
-                        "in": "query",
-                        "description": "Product id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "uid",
-                        "in": "query",
-                        "description": "User id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "From this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "To this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "accumulated",
-                        "in": "query",
-                        "description": "Puntual serie or accumulated serie",
-                        "required": false,
-                        "type": "boolean",
-                        "default": "false"
-                    },
-                    {
-                        "name": "max",
-                        "in": "query",
-                        "description": "Max number of values in serie or 0 for all available values",
-                        "required": false,
-                        "type": "number",
-                        "default": "0"
-                    },
-                    {
-                        "name": "aggr",
-                        "in": "query",
-                        "description": "this value defines the meaning of the data series",
-                        "required": false,
-                        "type": "string",
-                        "default": "sum",
-                        "enum": [
-                            "sum",
-                            "avg",
-                            "max",
-                            "min"
-                        ]
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Organization metric value",
-                        "schema": {
-                            "$ref": "#/definitions/metricresult"
-                        }
-                    },
-                    "404": {
-                        "description": "Metric not found"
-                    }
-                }
-            }
-        },
-        "/tbdata/{id}": {
-            "get": {
-                "x-swagger-router-controller": "TimeBasedData",
-                "tags": [
-                    "TimeBasedData"
-                ],
-                "summary": "Time Based Data value",
-                "operationId": "getTimeBasedData",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Time Based Data id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "rid",
-                        "in": "query",
-                        "description": "Repository id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "pjid",
-                        "in": "query",
-                        "description": "Project id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "prid",
-                        "in": "query",
-                        "description": "Product id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "uid",
-                        "in": "query",
-                        "description": "User id",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "from",
-                        "in": "query",
-                        "description": "From this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    },
-                    {
-                        "name": "to",
-                        "in": "query",
-                        "description": "To this date.",
-                        "required": false,
-                        "type": "string",
-                        "format": "date"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Time Based Data value",
-                        "schema": {
-                            "$ref": "#/definitions/tbdresult"
-                        }
-                    },
-                    "404": {
-                        "description": "Time Based Data not found"
-                    }
-                }
-            }
-        }
+    "contact": {
+      "name": "Carlos Blanco",
+      "email": "carlos.blanco@centeropenmiddleware.com"
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Operations about authorization"
     },
-    "definitions": {
-        "apitemplate": {
-            "properties": {
+    {
+      "name": "API",
+      "description": "Operations about API"
+    },
+    {
+      "name": "Organization",
+      "description": "Operations about Organization"
+    },
+    {
+      "name": "Product",
+      "description": "Operations about Products"
+    },
+    {
+      "name": "Project",
+      "description": "Operations about Projects"
+    },
+    {
+      "name": "Repository",
+      "description": "Operations about Repositories"
+    },
+    {
+      "name": "User",
+      "description": "Operations about User"
+    },
+    {
+      "name": "UserRepository",
+      "description": "Operations about Specific User and Repository"
+    },
+    {
+      "name": "Metric",
+      "description": "Metrics. Time-based and aggregated"
+    },
+    {
+      "name": "TimeBasedData",
+      "description": "Time-based data"
+    }
+  ],
+  "paths": {
+    "/auth/login/": {
+      "post": {
+        "x-swagger-router-controller": "Auth",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "API JSON Definition",
+        "operationId": "login",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "formData",
+            "description": "User name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "User password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "description": "Token to use inside an 'Authentication: Bearer <token>' header"
+                },
+                "user": {
+                  "type": "object",
+                  "description": "Ldap user information"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error"
+          }
+        }
+      }
+    },
+    "/auth/check/": {
+      "get": {
+        "x-swagger-router-controller": "Auth",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "API JSON Definition",
+        "operationId": "check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Authentication information is correct"
+          },
+          "401": {
+            "description": "Authentication error"
+          }
+        }
+      }
+    },
+    "/auth/logout/": {
+      "post": {
+        "x-swagger-router-controller": "Auth",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "API JSON Definition",
+        "operationId": "logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User was logged out"
+          },
+          "401": {
+            "description": "Authentication error"
+          }
+        }
+      }
+    },
+    "/api/": {
+      "get": {
+        "x-swagger-router-controller": "API",
+        "tags": [
+          "API"
+        ],
+        "summary": "API JSON Definition",
+        "operationId": "apiInfo",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "properties": {
                 "swaggerjson": {
-                    "type": "string",
-                    "description": "Swagger json"
+                  "type": "string",
+                  "description": "Swagger json"
                 }
+              }
             }
-        },
-        "organizationinfo": {
-            "properties": {
+          }
+        }
+      }
+    },
+    "/organization": {
+      "get": {
+        "x-swagger-router-controller": "Organization",
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Organization description",
+        "operationId": "orgInfo",
+        "responses": {
+          "200": {
+            "description": "Organization information",
+            "schema": {
+              "properties": {
                 "oid": {
-                    "type": "string",
-                    "description": "Unique organization id"
+                  "type": "string",
+                  "description": "Unique organization id"
                 },
                 "longdesc": {
-                    "type": "string",
-                    "description": "Organization long description"
+                  "type": "string",
+                  "description": "Organization long description"
                 },
                 "shortdesc": {
-                    "type": "string",
-                    "description": "Organization short description"
-                }
-            }
-        },
-        "product": {
-            "properties": {
-                "prid": {
-                    "type": "string",
-                    "description": "Unique Product identifier"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "The Product name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "The Product description"
-                },
-                "tags" : {
-                    "type": "array",
-                    "description": "Tags",
-                    "items": {
-                      "type": "string"
-                    }
-                },
-                "avatar": {
-                    "type": "string",
-                    "description": "Product avatar URL"
-                }
-            }
-        },
-        "productinfo": {
-            "properties": {
-                "prid": {
-                    "type": "string",
-                    "description": "Unique Product identifier"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "The Product name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "The Product description"
-                },
-                "firstCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "First commit date"
-                },
-                "lastCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "Last commit date"
-                },
-                "scmlink": {
-                    "type": "string",
-                    "description": "SCM URL"
-                },
-                "creation": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The Product creation date"
-                },
-                "tags" : {
-                    "type": "array",
-                    "description": "Tags",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "avatar": {
-                    "type": "string",
-                    "description": "Product avatar URL"
-                },
-                "owner" : {
-                    "type": "string",
-                    "description": "Product Owner"
-                },
-                "projects" : {
-                    "type": "array",
-                    "description": "Product projects",
-                    "items": {
-                        "$ref": "#/definitions/project"
-                    }
-                },
-                "users" : {
-                    "type": "object",
-                    "description": "Product users by position"
-                }
-            }
-        },
-        "project": {
-            "properties": {
-                "pjid": {
-                    "type": "string",
-                    "description": "Unique Project identifier"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "The Project name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "The Project description"
-                },
-                "tags" : {
-                    "type": "array",
-                    "description": "Tags",
-                    "items": {
-                      "type": "string"
-                    }
-                },
-                "avatar": {
-                    "type": "string",
-                    "description": "Project avatar URL"
-                }
-            }
-        },
-        "projectinfo": {
-            "properties": {
-                "pjid": {
-                    "type": "string",
-                    "description": "Unique Project identifier"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "The Project name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "The Project description"
-                },
-                "firstCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "First commit date"
-                },
-                "lastCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "Last commit date"
-                },
-                "scmlink": {
-                    "type": "string",
-                    "description": "SCM URL"
-                },
-                "creation": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The Project creation date"
-                },
-                "tags" : {
-                    "type": "array",
-                    "description": "Tags",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "avatar": {
-                    "type": "string",
-                    "description": "Project avatar URL"
-                },
-                "owner" : {
-                    "type": "string",
-                    "description": "Project Owner"
-                },
-                "repositories" : {
-                    "type": "array",
-                    "description": "Project repositories",
-                    "items": {
-                        "$ref": "#/definitions/repository"
-                    }
-                },
-                "users" : {
-                    "type": "object",
-                    "description": "Project users by role"
-                }
-            }
-        },
-        "repository": {
-            "properties": {
-                "rid": {
-                    "type": "string",
-                    "description": "Unique Repository identifier"
-                },
-                "pjid": {
-                    "type": "string",
-                    "description": "Unique Project identifier"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "The Repository name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "The Repository description"
-                },
-                "tags" : {
-                    "type": "array",
-                    "description": "Tags",
-                    "items": {
-                      "type": "string"
-                    }
-                },
-                "avatar": {
-                    "type": "string",
-                    "description": "Repository avatar URL"
-                },
-                "archived" : {
-                  "type": "boolean",
-                  "description": "Indicates if the repository is archived"
-                },
-                "public" : {
-                  "type": "boolean",
-                  "description": "Indicates if the repository is archived"
-                },
-                "owner" : {
                   "type": "string",
-                  "description": "Repository Owner"
+                  "description": "Organization short description"
                 }
+              }
             }
-        },
-        "repositoryinfo": {
-            "properties": {
-                "rid": {
+          }
+        }
+      }
+    },
+    "/products/": {
+      "get": {
+        "x-swagger-router-controller": "Product",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Products info list",
+        "operationId": "allProductsInfo",
+        "responses": {
+          "200": {
+            "description": "Product list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "prid": {
                     "type": "string",
-                    "description": "Unique Repository identifier"
-                },
-                "pjid": {
+                    "description": "Unique Product identifier"
+                  },
+                  "name": {
                     "type": "string",
-                    "description": "Unique Project identifier"
-                },
-                "name": {
+                    "description": "The Product name"
+                  },
+                  "description": {
                     "type": "string",
-                    "description": "The Repository name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "The Repository description"
-                },
-                "firstCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "First commit date"
-                },
-                "lastCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "Last commit date"
-                },
-                "scmlink": {
-                    "type": "string",
-                    "description": "SCM URL"
-                },
-                "creation": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The Repository creation date"
-                },
-                "buildStatus": {
-                    "type": "string",
-                    "description": "Last build status"
-                },
-                "buildDate": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "Last build date"
-                },
-                "tags" : {
+                    "description": "The Product description"
+                  },
+                  "tags": {
                     "type": "array",
                     "description": "Tags",
                     "items": {
-                        "type": "string"
+                      "type": "string"
                     }
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "description": "Product avatar URL"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{prid}": {
+      "get": {
+        "x-swagger-router-controller": "Product",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Product description",
+        "operationId": "productInfo",
+        "parameters": [
+          {
+            "name": "prid",
+            "in": "path",
+            "description": "Product id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product info.",
+            "schema": {
+              "properties": {
+                "prid": {
+                  "type": "string",
+                  "description": "Unique Product identifier"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The Product name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The Product description"
+                },
+                "firstCommit": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "First commit date"
+                },
+                "lastCommit": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Last commit date"
+                },
+                "scmlink": {
+                  "type": "string",
+                  "description": "SCM URL"
+                },
+                "creation": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The Product creation date"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Tags",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "avatar": {
+                  "type": "string",
+                  "description": "Product avatar URL"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "Product Owner"
+                },
+                "projects": {
+                  "type": "array",
+                  "description": "Product projects",
+                  "items": {
+                    "properties": {
+                      "pjid": {
+                        "type": "string",
+                        "description": "Unique Project identifier"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The Project name"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "The Project description"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "description": "Tags",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "Project avatar URL"
+                      }
+                    }
+                  }
+                },
+                "users": {
+                  "type": "object",
+                  "description": "Product users by position"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+    "/projects/": {
+      "get": {
+        "x-swagger-router-controller": "Project",
+        "tags": [
+          "Project"
+        ],
+        "summary": "Projects info list",
+        "operationId": "allProjectsInfo",
+        "responses": {
+          "200": {
+            "description": "Project list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "pjid": {
+                    "type": "string",
+                    "description": "Unique Project identifier"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The Project name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The Project description"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "description": "Project avatar URL"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{pjid}": {
+      "get": {
+        "x-swagger-router-controller": "Project",
+        "tags": [
+          "Project"
+        ],
+        "summary": "Project description",
+        "operationId": "projectInfo",
+        "parameters": [
+          {
+            "name": "pjid",
+            "in": "path",
+            "description": "Project id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project info.",
+            "schema": {
+              "properties": {
+                "pjid": {
+                  "type": "string",
+                  "description": "Unique Project identifier"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The Project name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The Project description"
+                },
+                "firstCommit": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "First commit date"
+                },
+                "lastCommit": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Last commit date"
+                },
+                "scmlink": {
+                  "type": "string",
+                  "description": "SCM URL"
+                },
+                "creation": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The Project creation date"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Tags",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "avatar": {
+                  "type": "string",
+                  "description": "Project avatar URL"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "Project Owner"
+                },
+                "repositories": {
+                  "type": "array",
+                  "description": "Project repositories",
+                  "items": {
+                    "properties": {
+                      "rid": {
+                        "type": "string",
+                        "description": "Unique Repository identifier"
+                      },
+                      "pjid": {
+                        "type": "string",
+                        "description": "Unique Project identifier"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The Repository name"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "The Repository description"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "description": "Tags",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "avatar": {
+                        "type": "string",
+                        "description": "Repository avatar URL"
+                      },
+                      "archived": {
+                        "type": "boolean",
+                        "description": "Indicates if the repository is archived"
+                      },
+                      "public": {
+                        "type": "boolean",
+                        "description": "Indicates if the repository is archived"
+                      },
+                      "owner": {
+                        "type": "string",
+                        "description": "Repository Owner"
+                      }
+                    }
+                  }
+                },
+                "users": {
+                  "type": "object",
+                  "description": "Project users by role"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      }
+    },
+    "/repositories/": {
+      "get": {
+        "x-swagger-router-controller": "Repository",
+        "tags": [
+          "Repository"
+        ],
+        "summary": "Repositories info list",
+        "operationId": "allRepositoriesInfo",
+        "responses": {
+          "200": {
+            "description": "Repositories list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "rid": {
+                    "type": "string",
+                    "description": "Unique Repository identifier"
+                  },
+                  "pjid": {
+                    "type": "string",
+                    "description": "Unique Project identifier"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The Repository name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The Repository description"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "Tags",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "avatar": {
                     "type": "string",
                     "description": "Repository avatar URL"
-                },
-                "archived" : {
+                  },
+                  "archived": {
                     "type": "boolean",
                     "description": "Indicates if the repository is archived"
-                },
-                "public" : {
+                  },
+                  "public": {
                     "type": "boolean",
                     "description": "Indicates if the repository is archived"
-                },
-                "owner" : {
+                  },
+                  "owner": {
                     "type": "string",
                     "description": "Repository Owner"
-                },
-                "users" : {
-                    "type": "object",
-                    "description": "Project users by role"
+                  }
                 }
+              }
             }
-        },
-        "user": {
-            "properties": {
-                "uid": {
-                    "type": "string",
-                    "description": "Unique user identifier"
+          }
+        }
+      }
+    },
+    "/repositories/{rid}": {
+      "get": {
+        "x-swagger-router-controller": "Repository",
+        "tags": [
+          "Repository"
+        ],
+        "summary": "Repository description",
+        "operationId": "repositoryInfo",
+        "parameters": [
+          {
+            "name": "rid",
+            "in": "path",
+            "description": "Repository id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Repository info.",
+            "schema": {
+              "properties": {
+                "rid": {
+                  "type": "string",
+                  "description": "Unique Repository identifier"
+                },
+                "pjid": {
+                  "type": "string",
+                  "description": "Unique Project identifier"
                 },
                 "name": {
-                    "type": "string",
-                    "description": "The user name"
+                  "type": "string",
+                  "description": "The Repository name"
                 },
-                "email": {
-                    "type": "string",
-                    "description": "The user email"
+                "description": {
+                  "type": "string",
+                  "description": "The Repository description"
+                },
+                "firstCommit": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "First commit date"
+                },
+                "lastCommit": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Last commit date"
+                },
+                "scmlink": {
+                  "type": "string",
+                  "description": "SCM URL"
+                },
+                "creation": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The Repository creation date"
+                },
+                "buildStatus": {
+                  "type": "string",
+                  "description": "Last build status"
+                },
+                "buildDate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Last build date"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Tags",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "avatar": {
-                    "type": "string",
-                    "description": "The user avatar URL"
+                  "type": "string",
+                  "description": "Repository avatar URL"
+                },
+                "archived": {
+                  "type": "boolean",
+                  "description": "Indicates if the repository is archived"
+                },
+                "public": {
+                  "type": "boolean",
+                  "description": "Indicates if the repository is archived"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "Repository Owner"
+                },
+                "users": {
+                  "type": "object",
+                  "description": "Project users by role"
                 }
+              }
             }
-        },
-        "userinfo": {
-            "properties": {
-                "uid": {
+          },
+          "404": {
+            "description": "Repository not found"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "x-swagger-router-controller": "User",
+        "tags": [
+          "User"
+        ],
+        "summary": "Users info list",
+        "operationId": "allUsers",
+        "responses": {
+          "200": {
+            "description": "Users list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "uid": {
                     "type": "string",
                     "description": "Unique user identifier"
-                },
-                "name": {
+                  },
+                  "name": {
                     "type": "string",
                     "description": "The user name"
-                },
-                "email": {
+                  },
+                  "email": {
                     "type": "string",
                     "description": "The user email"
-                },
-                "avatar": {
+                  },
+                  "avatar": {
                     "type": "string",
                     "description": "The user avatar URL"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        }
+      }
+    },
+    "/users/{uid}": {
+      "get": {
+        "x-swagger-router-controller": "User",
+        "tags": [
+          "User"
+        ],
+        "summary": "User description",
+        "operationId": "userInfo",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Repository info.",
+            "schema": {
+              "properties": {
+                "uid": {
+                  "type": "string",
+                  "description": "Unique user identifier"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The user name"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The user email"
+                },
+                "avatar": {
+                  "type": "string",
+                  "description": "The user avatar URL"
                 },
                 "scmUserUrl": {
                   "type": "string",
                   "description": "The scm user URL"
                 },
                 "register": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The user registration date"
+                  "type": "string",
+                  "format": "date",
+                  "description": "The user registration date"
                 },
                 "firstCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "User first commit date"
+                  "type": "string",
+                  "format": "date",
+                  "description": "User first commit date"
                 },
                 "lastCommit": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "User last commit date"
+                  "type": "string",
+                  "format": "date",
+                  "description": "User last commit date"
                 },
                 "roles": {
-                    "type": "object",
-                    "description": "All user Roles by Project"
+                  "type": "object",
+                  "description": "All user Roles by Project"
                 },
                 "positions": {
-                    "type": "object",
-                    "description": "All user Positions by Organization"
+                  "type": "object",
+                  "description": "All user Positions by Organization"
                 }
+              }
             }
-        },
-        "metricinfo": {
-            "properties": {
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/metricinfo/{id}": {
+      "get": {
+        "x-swagger-router-controller": "Metric",
+        "tags": [
+          "Metric"
+        ],
+        "summary": "Metric Information",
+        "operationId": "metricInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Metric id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metric info.",
+            "schema": {
+              "properties": {
                 "id": {
-                    "type": "string",
-                    "description": "Unique identifier representing a specific metric"
+                  "type": "string",
+                  "description": "Unique identifier representing a specific metric"
                 },
                 "description": {
-                    "type": "string",
-                    "description": "Metric description"
+                  "type": "string",
+                  "description": "Metric description"
                 },
                 "path": {
-                    "type": "string",
-                    "description": "Metric path schema"
+                  "type": "string",
+                  "description": "Metric path schema"
                 },
                 "params": {
+                  "type": "array",
+                  "description": "Required parameters",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "optional": {
+                  "type": "array",
+                  "description": "Optional parameters",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "aggr": {
+                  "type": "array",
+                  "description": "Accepted aggregators",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "description": "Metric description"
+            }
+          },
+          "404": {
+            "description": "Metric not found"
+          }
+        }
+      }
+    },
+    "/metrics/": {
+      "get": {
+        "x-swagger-router-controller": "Metric",
+        "tags": [
+          "Metric"
+        ],
+        "summary": "Available metrics list",
+        "operationId": "metricList",
+        "responses": {
+          "200": {
+            "description": "Available metrics list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier representing a specific metric"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Metric description"
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "Metric path schema"
+                  },
+                  "params": {
                     "type": "array",
                     "description": "Required parameters",
                     "items": {
-                        "type": "string"
+                      "type": "string"
                     }
-                },
-                "optional": {
+                  },
+                  "optional": {
                     "type": "array",
                     "description": "Optional parameters",
                     "items": {
-                        "type": "string"
+                      "type": "string"
                     }
-                },
-                "aggr": {
+                  },
+                  "aggr": {
                     "type": "array",
                     "description": "Accepted aggregators",
                     "items": {
-                        "type": "string"
+                      "type": "string"
                     }
-                }
-            },
-            "description": "Metric description"
-        },
-        "tbdinfo": {
-            "properties": {
-                "id": {
+                  }
+                },
+                "description": "Metric description"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tbdata/": {
+      "get": {
+        "x-swagger-router-controller": "TimeBasedData",
+        "tags": [
+          "TimeBasedData"
+        ],
+        "summary": "Time Based Data list",
+        "operationId": "timeBasedDataList",
+        "responses": {
+          "200": {
+            "description": "Time Based Data list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
                     "type": "string",
                     "description": "Unique identifier representing a specific time-based data"
-                },
-                "description": {
+                  },
+                  "description": {
                     "type": "string",
                     "description": "Time-based data description"
-                },
-                "path": {
+                  },
+                  "path": {
                     "type": "string",
                     "description": "Time-based data path schema"
-                },
-                "params": {
+                  },
+                  "params": {
                     "type": "array",
                     "description": "Required parameters",
                     "items": {
-                        "type": "string"
+                      "type": "string"
                     }
-                },
-                "optional": {
+                  },
+                  "optional": {
                     "type": "array",
                     "description": "Optional parameters",
                     "items": {
-                        "type": "string"
+                      "type": "string"
                     }
+                  }
+                },
+                "description": "Time-based data description"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tbdatainfo/{id}": {
+      "get": {
+        "x-swagger-router-controller": "TimeBasedData",
+        "tags": [
+          "TimeBasedData"
+        ],
+        "summary": "View Information",
+        "operationId": "viewInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Time Based Data id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "View info.",
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier representing a specific time-based data"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Time-based data description"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Time-based data path schema"
+                },
+                "params": {
+                  "type": "array",
+                  "description": "Required parameters",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "optional": {
+                  "type": "array",
+                  "description": "Optional parameters",
+                  "items": {
+                    "type": "string"
+                  }
                 }
-            },
-            "description": "Time-based data description"
-        },
-        "metricresult": {
-            "properties": {
+              },
+              "description": "Time-based data description"
+            }
+          },
+          "404": {
+            "description": "View not found"
+          }
+        }
+      }
+    },
+    "/metrics/{id}": {
+      "get": {
+        "x-swagger-router-controller": "Metric",
+        "tags": [
+          "Metric"
+        ],
+        "summary": "Metric value",
+        "operationId": "getMetric",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Metric id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "rid",
+            "in": "query",
+            "description": "Repository id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pjid",
+            "in": "query",
+            "description": "Project id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "prid",
+            "in": "query",
+            "description": "Product id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "description": "User id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "From this date.",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "To this date.",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "accumulated",
+            "in": "query",
+            "description": "Puntual serie or accumulated serie",
+            "required": false,
+            "type": "boolean",
+            "default": "false"
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "description": "Max number of values in serie or 0 for all available values",
+            "required": false,
+            "type": "number",
+            "default": "0"
+          },
+          {
+            "name": "aggr",
+            "in": "query",
+            "description": "this value defines the meaning of the data series",
+            "required": false,
+            "type": "string",
+            "default": "sum",
+            "enum": [
+              "sum",
+              "avg",
+              "max",
+              "min"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization metric value",
+            "schema": {
+              "properties": {
                 "values": {
-                    "type": "array",
-                    "description": "De requested value or values for this metric",
-                    "items": {
-                        "type": "number"
-                    }
+                  "type": "array",
+                  "description": "De requested value or values for this metric",
+                  "items": {
+                    "type": "number"
+                  }
                 },
                 "interval": {
-                    "description": "Total sample interval",
-                    "$ref": "#/definitions/interval"
+                  "description": "Total sample interval",
+                  "properties": {
+                    "from": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "from date"
+                    },
+                    "to": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "to date"
+                    }
+                  }
                 },
                 "step": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The interval for each metric"
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The interval for each metric"
                 },
                 "timestamp": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The date on which the metric has been updated"
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The date on which the metric has been updated"
                 },
                 "info": {
-                    "$ref": "#/definitions/metricinfo"
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier representing a specific metric"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Metric description"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Metric path schema"
+                    },
+                    "params": {
+                      "type": "array",
+                      "description": "Required parameters",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "optional": {
+                      "type": "array",
+                      "description": "Optional parameters",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "aggr": {
+                      "type": "array",
+                      "description": "Accepted aggregators",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "description": "Metric description"
                 }
+              }
             }
-        },
-        "tbdresult": {
-            "properties": {
+          },
+          "404": {
+            "description": "Metric not found"
+          }
+        }
+      }
+    },
+    "/tbdata/{id}": {
+      "get": {
+        "x-swagger-router-controller": "TimeBasedData",
+        "tags": [
+          "TimeBasedData"
+        ],
+        "summary": "Time Based Data value",
+        "operationId": "getTimeBasedData",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Time Based Data id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "rid",
+            "in": "query",
+            "description": "Repository id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pjid",
+            "in": "query",
+            "description": "Project id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "prid",
+            "in": "query",
+            "description": "Product id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "uid",
+            "in": "query",
+            "description": "User id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "From this date.",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "To this date.",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Time Based Data value",
+            "schema": {
+              "properties": {
                 "values": {
-                    "type": "string",
-                    "description": "De requested data in JSON"
+                  "type": "string",
+                  "description": "De requested data in JSON"
                 },
                 "interval": {
-                    "description": "Total sample interval",
-                    "$ref": "#/definitions/interval"
+                  "description": "Total sample interval",
+                  "properties": {
+                    "from": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "from date"
+                    },
+                    "to": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "to date"
+                    }
+                  }
                 },
                 "timestamp": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The date on which the tbd has been updated"
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The date on which the tbd has been updated"
                 },
                 "info": {
-                    "$ref": "#/definitions/tbdinfo"
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier representing a specific time-based data"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Time-based data description"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Time-based data path schema"
+                    },
+                    "params": {
+                      "type": "array",
+                      "description": "Required parameters",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "optional": {
+                      "type": "array",
+                      "description": "Optional parameters",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "description": "Time-based data description"
                 }
+              }
             }
+          },
+          "404": {
+            "description": "Time Based Data not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "apitemplate": {
+      "properties": {
+        "swaggerjson": {
+          "type": "string",
+          "description": "Swagger json"
+        }
+      }
+    },
+    "organizationinfo": {
+      "properties": {
+        "oid": {
+          "type": "string",
+          "description": "Unique organization id"
+        },
+        "longdesc": {
+          "type": "string",
+          "description": "Organization long description"
+        },
+        "shortdesc": {
+          "type": "string",
+          "description": "Organization short description"
+        }
+      }
+    },
+    "product": {
+      "properties": {
+        "prid": {
+          "type": "string",
+          "description": "Unique Product identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The Product name"
+        },
+        "description": {
+          "type": "string",
+          "description": "The Product description"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Product avatar URL"
+        }
+      }
+    },
+    "productinfo": {
+      "properties": {
+        "prid": {
+          "type": "string",
+          "description": "Unique Product identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The Product name"
+        },
+        "description": {
+          "type": "string",
+          "description": "The Product description"
+        },
+        "firstCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "First commit date"
+        },
+        "lastCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "Last commit date"
+        },
+        "scmlink": {
+          "type": "string",
+          "description": "SCM URL"
+        },
+        "creation": {
+          "type": "string",
+          "format": "date",
+          "description": "The Product creation date"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Product avatar URL"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Product Owner"
+        },
+        "projects": {
+          "type": "array",
+          "description": "Product projects",
+          "items": {
+            "properties": {
+              "pjid": {
+                "type": "string",
+                "description": "Unique Project identifier"
+              },
+              "name": {
+                "type": "string",
+                "description": "The Project name"
+              },
+              "description": {
+                "type": "string",
+                "description": "The Project description"
+              },
+              "tags": {
+                "type": "array",
+                "description": "Tags",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "avatar": {
+                "type": "string",
+                "description": "Project avatar URL"
+              }
+            }
+          }
+        },
+        "users": {
+          "type": "object",
+          "description": "Product users by position"
+        }
+      }
+    },
+    "project": {
+      "properties": {
+        "pjid": {
+          "type": "string",
+          "description": "Unique Project identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The Project name"
+        },
+        "description": {
+          "type": "string",
+          "description": "The Project description"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Project avatar URL"
+        }
+      }
+    },
+    "projectinfo": {
+      "properties": {
+        "pjid": {
+          "type": "string",
+          "description": "Unique Project identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The Project name"
+        },
+        "description": {
+          "type": "string",
+          "description": "The Project description"
+        },
+        "firstCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "First commit date"
+        },
+        "lastCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "Last commit date"
+        },
+        "scmlink": {
+          "type": "string",
+          "description": "SCM URL"
+        },
+        "creation": {
+          "type": "string",
+          "format": "date",
+          "description": "The Project creation date"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Project avatar URL"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Project Owner"
+        },
+        "repositories": {
+          "type": "array",
+          "description": "Project repositories",
+          "items": {
+            "properties": {
+              "rid": {
+                "type": "string",
+                "description": "Unique Repository identifier"
+              },
+              "pjid": {
+                "type": "string",
+                "description": "Unique Project identifier"
+              },
+              "name": {
+                "type": "string",
+                "description": "The Repository name"
+              },
+              "description": {
+                "type": "string",
+                "description": "The Repository description"
+              },
+              "tags": {
+                "type": "array",
+                "description": "Tags",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "avatar": {
+                "type": "string",
+                "description": "Repository avatar URL"
+              },
+              "archived": {
+                "type": "boolean",
+                "description": "Indicates if the repository is archived"
+              },
+              "public": {
+                "type": "boolean",
+                "description": "Indicates if the repository is archived"
+              },
+              "owner": {
+                "type": "string",
+                "description": "Repository Owner"
+              }
+            }
+          }
+        },
+        "users": {
+          "type": "object",
+          "description": "Project users by role"
+        }
+      }
+    },
+    "repository": {
+      "properties": {
+        "rid": {
+          "type": "string",
+          "description": "Unique Repository identifier"
+        },
+        "pjid": {
+          "type": "string",
+          "description": "Unique Project identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The Repository name"
+        },
+        "description": {
+          "type": "string",
+          "description": "The Repository description"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Repository avatar URL"
+        },
+        "archived": {
+          "type": "boolean",
+          "description": "Indicates if the repository is archived"
+        },
+        "public": {
+          "type": "boolean",
+          "description": "Indicates if the repository is archived"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Repository Owner"
+        }
+      }
+    },
+    "repositoryinfo": {
+      "properties": {
+        "rid": {
+          "type": "string",
+          "description": "Unique Repository identifier"
+        },
+        "pjid": {
+          "type": "string",
+          "description": "Unique Project identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The Repository name"
+        },
+        "description": {
+          "type": "string",
+          "description": "The Repository description"
+        },
+        "firstCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "First commit date"
+        },
+        "lastCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "Last commit date"
+        },
+        "scmlink": {
+          "type": "string",
+          "description": "SCM URL"
+        },
+        "creation": {
+          "type": "string",
+          "format": "date",
+          "description": "The Repository creation date"
+        },
+        "buildStatus": {
+          "type": "string",
+          "description": "Last build status"
+        },
+        "buildDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Last build date"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Repository avatar URL"
+        },
+        "archived": {
+          "type": "boolean",
+          "description": "Indicates if the repository is archived"
+        },
+        "public": {
+          "type": "boolean",
+          "description": "Indicates if the repository is archived"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Repository Owner"
+        },
+        "users": {
+          "type": "object",
+          "description": "Project users by role"
+        }
+      }
+    },
+    "user": {
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Unique user identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The user name"
+        },
+        "email": {
+          "type": "string",
+          "description": "The user email"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "The user avatar URL"
+        }
+      }
+    },
+    "userinfo": {
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Unique user identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "The user name"
+        },
+        "email": {
+          "type": "string",
+          "description": "The user email"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "The user avatar URL"
+        },
+        "scmUserUrl": {
+          "type": "string",
+          "description": "The scm user URL"
+        },
+        "register": {
+          "type": "string",
+          "format": "date",
+          "description": "The user registration date"
+        },
+        "firstCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "User first commit date"
+        },
+        "lastCommit": {
+          "type": "string",
+          "format": "date",
+          "description": "User last commit date"
+        },
+        "roles": {
+          "type": "object",
+          "description": "All user Roles by Project"
+        },
+        "positions": {
+          "type": "object",
+          "description": "All user Positions by Organization"
+        }
+      }
+    },
+    "metricinfo": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier representing a specific metric"
+        },
+        "description": {
+          "type": "string",
+          "description": "Metric description"
+        },
+        "path": {
+          "type": "string",
+          "description": "Metric path schema"
+        },
+        "params": {
+          "type": "array",
+          "description": "Required parameters",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "description": "Optional parameters",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aggr": {
+          "type": "array",
+          "description": "Accepted aggregators",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Metric description"
+    },
+    "tbdinfo": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier representing a specific time-based data"
+        },
+        "description": {
+          "type": "string",
+          "description": "Time-based data description"
+        },
+        "path": {
+          "type": "string",
+          "description": "Time-based data path schema"
+        },
+        "params": {
+          "type": "array",
+          "description": "Required parameters",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "description": "Optional parameters",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Time-based data description"
+    },
+    "metricresult": {
+      "properties": {
+        "values": {
+          "type": "array",
+          "description": "De requested value or values for this metric",
+          "items": {
+            "type": "number"
+          }
         },
         "interval": {
-            "properties": {
-                "from": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "from date"
-                },
-                "to": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "to date"
-                }
+          "description": "Total sample interval",
+          "properties": {
+            "from": {
+              "type": "integer",
+              "format": "int32",
+              "description": "from date"
+            },
+            "to": {
+              "type": "integer",
+              "format": "int32",
+              "description": "to date"
             }
+          }
+        },
+        "step": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The interval for each metric"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The date on which the metric has been updated"
+        },
+        "info": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier representing a specific metric"
+            },
+            "description": {
+              "type": "string",
+              "description": "Metric description"
+            },
+            "path": {
+              "type": "string",
+              "description": "Metric path schema"
+            },
+            "params": {
+              "type": "array",
+              "description": "Required parameters",
+              "items": {
+                "type": "string"
+              }
+            },
+            "optional": {
+              "type": "array",
+              "description": "Optional parameters",
+              "items": {
+                "type": "string"
+              }
+            },
+            "aggr": {
+              "type": "array",
+              "description": "Accepted aggregators",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Metric description"
         }
+      }
+    },
+    "tbdresult": {
+      "properties": {
+        "values": {
+          "type": "string",
+          "description": "De requested data in JSON"
+        },
+        "interval": {
+          "description": "Total sample interval",
+          "properties": {
+            "from": {
+              "type": "integer",
+              "format": "int32",
+              "description": "from date"
+            },
+            "to": {
+              "type": "integer",
+              "format": "int32",
+              "description": "to date"
+            }
+          }
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The date on which the tbd has been updated"
+        },
+        "info": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier representing a specific time-based data"
+            },
+            "description": {
+              "type": "string",
+              "description": "Time-based data description"
+            },
+            "path": {
+              "type": "string",
+              "description": "Time-based data path schema"
+            },
+            "params": {
+              "type": "array",
+              "description": "Required parameters",
+              "items": {
+                "type": "string"
+              }
+            },
+            "optional": {
+              "type": "array",
+              "description": "Optional parameters",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Time-based data description"
+        }
+      }
+    },
+    "interval": {
+      "properties": {
+        "from": {
+          "type": "integer",
+          "format": "int32",
+          "description": "from date"
+        },
+        "to": {
+          "type": "integer",
+          "format": "int32",
+          "description": "to date"
+        }
+      }
     }
+  }
 }
