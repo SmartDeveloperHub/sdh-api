@@ -868,7 +868,7 @@ exports.getTBDValue = function (tid, rid, uid, pjid, prid, from, to, callback) {
         callback(null);
         return;
     }
-    if (BACKUP_LOAD_ON) {
+    if (process.env.BACKUP_LOAD_ON == 'true') {
         var tType = getTargetByPath(tbdTargetByID[tid], true);
         var val = [];
         for (var key in tType) {
@@ -1134,7 +1134,7 @@ var getDummyMetricValue = function getDummyMetricValue(mid, type, minVal, maxVal
  */
 exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumulated, max, aggr, callback) {
     var http_path;
-    if (BACKUP_LOAD_ON){
+    if (process.env.BACKUP_LOAD_ON == 'true'){
         http_path = "BACKUP";
     } else {
         if (typeof metricUriById[mid] !== "undefined") {
@@ -1179,7 +1179,7 @@ exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumula
         }
         //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (!BACKUP_LOAD_ON && http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (process.env.BACKUP_LOAD_ON == 'false' && http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             log.info("Metric GET--> " + realPath);
@@ -1204,7 +1204,7 @@ exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumula
                         log.debug('<-- Metric "' + mid + '"');
                     }
                     log.trace('Metric result: ' + data.result);
-                    if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+                    if (process.env.BACKUP_ON == 'true'|| process.env.BACKUP_UPDATE_METRICS_ON == 'true') {
                         analizeResult(mid, data.result);
                     }
                     callback(data);
@@ -1350,7 +1350,7 @@ exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumula
             log.debug('<-- Dummy metric "' + mid + '"');
             log.trace('Metric result: ' + aux);
             // Backup fake metrics too.
-            if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+            if (process.env.BACKUP_ON == 'true' || process.env.BACKUP_UPDATE_METRICS_ON == 'true') {
                 analizeResult(mid, data.result);
             }
             callback(data);

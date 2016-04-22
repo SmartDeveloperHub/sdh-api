@@ -65,7 +65,7 @@ var staticDataCallback = function staticDataCallback() {
     log.info("        * " + users.length + " Users");
     // End
     // Backups activated?
-    if (BACKUP_ON || BACKUP_UPDATE_METRICS_ON) {
+    if (process.env.BACKUP_ON  == 'true'|| process.env.BACKUP_UPDATE_METRICS_ON  == 'true') {
         sdhTools.saveBackups(theCallback);
     } else {
         theCallback();
@@ -132,8 +132,8 @@ var getInfo = function getInfo() {
  */
 exports.update = function update(callback) {
     theCallback = callback;
-    if (BACKUP_LOAD_ON) {
-        log.info("* No update needed because the backup " + BACKUP_LOAD_ID + " is activated");
+    if (process.env.BACKUP_LOAD_ON == 'true') {
+        log.info("* No update needed because the backup " + process.env.BACKUP_LOAD_ID + " is activated");
         callback(true);
     } else {
         lastUpdate = moment(new Date()).format("YYYYMMDDx");
@@ -147,12 +147,12 @@ exports.init = function init(callback) {
     theCallback = callback;
     lastUpdate = moment(new Date()).format("YYYYMMDDx");
     log.info("Initialising SDH API static info (" + lastUpdate + ")");
-    if (BACKUP_LOAD_ON) {
-        log.warn("BACKUP_LOAD_ON: Loading data from the backup " + BACKUP_LOAD_ID);
-        sdhTools.loadBackup(BACKUP_LOAD_ID, callback);
-    } else if (BACKUP_UPDATE_METRICS_ON) {
+    if (process.env.BACKUP_LOAD_ON == 'true') {
+        log.warn("BACKUP_LOAD_ON: Loading data from the backup " + process.env.BACKUP_LOAD_ID);
+        sdhTools.loadBackup(process.env.BACKUP_LOAD_ID, callback);
+    } else if (process.env.BACKUP_UPDATE_METRICS_ON == 'true') {
         // Get previous metrics values from backup
-        sdhTools.getBackupFile(BACKUP_LOAD_ID, 'metricData', function(result) {
+        sdhTools.getBackupFile(process.env.BACKUP_LOAD_ID, 'metricData', function(result) {
             metricValues = result;
             getInfo();
         });
