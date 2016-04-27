@@ -227,7 +227,6 @@
             var launchSwaggerAPI = function () {
                 // Initialize the Swagger middleware
                 var aux = require("./api/swagger.json");
-                var stringiAux = JSON.stringify(aux);
                 //var parsedAux = JSON.parse(aux);
                 var newHP = process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT;
                 aux.host = newHP;
