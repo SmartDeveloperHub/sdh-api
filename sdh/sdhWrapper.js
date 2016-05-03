@@ -194,7 +194,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                     "description": vList[i].description,
                     //"title": vList[i].title,
                     "params": [param],
-                    "optional": ['from', 'to', 'max', 'accumulated']
+                    "optional": ['from', 'to']
                 };
                 tbdUriById[id] = vList[i].path;
                 tbdTargetByURI[vList[i].path] = vList[i].targetType;
@@ -217,7 +217,7 @@ var normalizeViewList = function normalizeViewList(vList, vListNP) {
                     "description": vListNP[k].description,
                     "title": vListNP[k].title,
                     "params": [],
-                    "optional": ['from', 'to', 'max', 'accumulated']
+                    "optional": ['from', 'to']
                 };
                 tbdUriById[id] = vListNP[i].path;
                 tbdTargetByURI[vListNP[i].path] = vListNP[k].targetType;
