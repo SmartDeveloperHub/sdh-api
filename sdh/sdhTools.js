@@ -24,6 +24,24 @@
 
 // fs, mkdirp and getDirName method is required before load this module
 
+// Set default values for enviroment vars
+if (!process.env.RABBITHOST) {
+    log.warn("Enviroment BACKUP_ON not found");
+    process.env.RABBITHOST = "amqp://138.4.249.224";
+}
+if (!process.env.RABBITPORT) {
+    log.warn("Enviroment RABBITPORT not found");
+    process.env.RABBITPORT = 5672;
+}
+if (!process.env.EXCHANGE) {
+    log.warn("Enviroment EXCHANGE not found");
+    process.env.EXCHANGE = "sdh";
+}
+if (!process.env.ROUTINGKEY) {
+    log.warn("Enviroment ROUTINGKEY not found");
+    process.env.ROUTINGKEY = "scholar.request.query";
+}
+
 /* Aux Methods*/
 var getNewTriple = function getNewTriple(triple, dataQ, agentId, theUuid) {
     if (triple.predicate == "http://www.smartdeveloperhub.org/vocabulary/stoa#messageId") {

@@ -44,6 +44,23 @@
     /* File Log */
     var prettyStdOut = new PrettyStream();
     prettyStdOut.pipe(process.stdout);
+    // default log
+    if (!process.env.CONSOLE_LOG_LEVEL) {
+        process.env.CONSOLE_LOG_LEVEL = 'debug';
+    }
+    if (!process.env.FILE_LOG_PATH) {
+        process.env.FILE_LOG_PATH = './logs/sdh_log';
+    }
+    if (!process.env.FILE_LOG_LEVEL) {
+        process.env.FILE_LOG_LEVEL = 'debug';
+    }
+    if (!process.env.FILE_LOG_PERIOD) {
+        process.env.FILE_LOG_PERIOD = 24;
+    }
+    if (!process.env.FILE_LOG_NFILES) {
+        process.env.FILE_LOG_NFILES = 4;
+    }
+
     GLOBAL.log = null;
     GLOBAL.mkdirp = require("mkdirp");
     GLOBAL.getDirName = require("path").dirname;
@@ -71,7 +88,25 @@
         }
     });
 
+
     var startAPI = function startAPI () {
+        //Check backup enviroment vars. default values
+        if (!process.env.BACKUP_ON) {
+            log.warn("Enviroment BACKUP_ON not found");
+            process.env.BACKUP_ON = 'false';
+        }
+        if (!process.env.BACKUP_LOAD_ON) {
+            log.warn("Enviroment BACKUP_LOAD_ON not found");
+            process.env.BACKUP_LOAD_ON = 'true';
+        }
+        if (!process.env.BACKUP_UPDATE_METRICS_ON) {
+            log.warn("Enviroment BACKUP_UPDATE_METRICS_ON not found");
+            process.env.BACKUP_UPDATE_METRICS_ON = 'false';
+        }
+        if (!process.env.BACKUP_LOAD_ID) {
+            log.warn("Enviroment BACKUP_LOAD_ID not found");
+            process.env.BACKUP_LOAD_ID = '201602121455267022386';
+        }
         log.info("... Starting SDH-API ...");
         //fs
         GLOBAL.fs = require('fs');
@@ -228,44 +263,61 @@
                 // Initialize the Swagger middleware
                 var aux = require("./api/swagger.json");
                 //var parsedAux = JSON.parse(aux);
+                if (!process.env.SWAGGER_URL) {
+                    log.warn("Enviroment SWAGGER_URL not found");
+                    process.env.SWAGGER_URL = "localhost";
+                }
+                if (!process.env.SWAGGER_PORT) {
+                    log.warn("Enviroment SWAGGER_PORT not found");
+                    process.env.SWAGGER_PORT = 8080;
+                }
                 var newHP = process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT;
                 aux.host = newHP;
+                if (!process.env.SWAGGER_URL_SCHEMA) {
+                    log.warn("Enviroment SWAGGER_URL_SCHEMA not found");
+                    process.env.SWAGGER_URL_SCHEMA = "http";
+                }
                 aux.schemes = [process.env.SWAGGER_URL_SCHEMA];
 
                 //swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
                  swaggerTools.initializeMiddleware(aux, function (middleware) {
-                    // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
-                    app.use(middleware.swaggerMetadata());
+                     // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
+                     app.use(middleware.swaggerMetadata());
 
-                    // Validate Swagger requests
-                    app.use(middleware.swaggerValidator());
+                     // Validate Swagger requests
+                     app.use(middleware.swaggerValidator());
 
-                    // Route validated requests to appropriate controller
-                    app.use(middleware.swaggerRouter(options));
+                     // Route validated requests to appropriate controller
+                     app.use(middleware.swaggerRouter(options));
 
-                    // Serve the Swagger documents and Swagger UI
-                    app.use(middleware.swaggerUi());
-                    // Start the server
-                    http.createServer(app).listen(process.env.SWAGGER_PORT, function () {
-                        setRefreshRate(process.env.REFRESH_RATE);
-                        var now = moment();
-                        loadStartDate = moment(loadStartDate);
-                        var loadTime = moment.duration(now - loadStartDate).asMilliseconds();
-                        log.info("---    SDH-API Ready!!   --- ( " + loadTime / 1000 + " seconds )");
-                        log.info('SDH-API is listening (' + process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT + ')');
-                        log.info('SDH-API Swagger-ui is available on ' + process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT + '/docs');
-                    });
+                     // Serve the Swagger documents and Swagger UI
+                     app.use(middleware.swaggerUi());
+                     // Start the server
 
-                    // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
-                    // y que master sea el que actualice estas cosas mientras el resto de procesos escuchan a las
-                    // peticiones de la api.
-                    // opcion 2 que cada proceso pida su propia mierda al agora y vayan por libre
-                    // opcion 3 que los hilos se creen cuando se tengan las variables locales y master se las pase uno a uno
-                    // para simular que se comparten
-                    /*for (var i = 0; i < numCPUs; i++) {
-                     cluster.fork();
-                     }*/
-                });
+                     if (!process.env.REFRESH_RATE) {
+                         log.warn("Enviroment REFRESH_RATE not found");
+                         process.env.REFRESH_RATE = 3600;
+                     }
+                     http.createServer(app).listen(process.env.SWAGGER_PORT, function () {
+                         setRefreshRate(process.env.REFRESH_RATE);
+                         var now = moment();
+                         loadStartDate = moment(loadStartDate);
+                         var loadTime = moment.duration(now - loadStartDate).asMilliseconds();
+                         log.info("---    SDH-API Ready!!   --- ( " + loadTime / 1000 + " seconds )");
+                         log.info('SDH-API is listening (' + process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT + ')');
+                         log.info('SDH-API Swagger-ui is available on ' + process.env.SWAGGER_URL + ':' + process.env.SWAGGER_PORT + '/docs');
+                     });
+
+                     // Fork workers. No comparten nada. Opcion 1 para clusterizar. Base de datos con las variables globales
+                     // y que master sea el que actualice estas cosas mientras el resto de procesos escuchan a las
+                     // peticiones de la api.
+                     // opcion 2 que cada proceso pida su propia mierda al agora y vayan por libre
+                     // opcion 3 que los hilos se creen cuando se tengan las variables locales y master se las pase uno a uno
+                     // para simular que se comparten
+                     /*for (var i = 0; i < numCPUs; i++) {
+                      cluster.fork();
+                      }*/
+                 });
             };
             process.on('uncaughtException', function (err) {
                 log.error(err);

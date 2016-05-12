@@ -23,11 +23,40 @@
 'use strict';
 
 try {
+    /* Default enviroment vars */
+    if (!process.env.SESSION_INFO_URL) {
+        log.warn("Enviroment SESSION_INFO_URL not found");
+        process.env.SESSION_INFO_URL = "ldap://demo.smartdeveloperhub.org:9010";
+    }
+    if (!process.env.SESSION_INFO_BINDDN) {
+        log.warn("Enviroment SESSION_INFO_BINDDN not found");
+        process.env.SESSION_INFO_BINDDN = 'cn=admin,dc=ldap,dc=smartdeveloperhub,dc=org';
+    }
+    if (!process.env.SESSION_INFO_BINDCREDENTIALS) {
+        log.warn("Enviroment SESSION_INFO_BINDCREDENTIALS not found");
+        process.env.SESSION_INFO_BINDCREDENTIALS = '<password>';
+    }
+    if (!process.env.SESSION_INFO_SEARCHBASE) {
+        log.warn("Enviroment SESSION_INFO_SEARCHBASE not found");
+        process.env.SESSION_INFO_SEARCHBASE = 'cn=users,dc=ldap,dc=smartdeveloperhub,dc=org';
+    }
+    if (!process.env.SESSION_INFO_SEARCHFILTER) {
+        log.warn("Enviroment SESSION_INFO_SEARCHFILTER not found");
+        process.env.SESSION_INFO_SEARCHFILTER = '(uid={{username}})';
+    }
+    if (!process.env.SESSION_DURATION) {
+        log.warn("Enviroment SESSION_DURATION not found");
+        process.env.SESSION_DURATION = 3600000;
+    }
+    if (!process.env.SESSION_GARBAGE_COLLECTOR) {
+        log.warn("Enviroment SESSION_GARBAGE_COLLECTOR not found");
+        process.env.SESSION_GARBAGE_COLLECTOR = 600000;
+    }
+
     // PRIVATE METHODS
     var hasExpired = function hasExpired(session) {
         return session['info']['lastAccess'] + process.env.SESSION_DURATION < Date.now();
     };
-
 
     // PUBLIC METHODS
     var getSession = function getSession(token, checkExpiration) {
