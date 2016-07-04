@@ -52,7 +52,9 @@ var getProjectsInfo = function getProjectsInfo(returnCallback) {
         '?URI org:id ?id',
         '?URI doap:name ?name',
         '?URI foaf:depiction ?_im',
-        '?_im foaf:depicts ?avatar'
+        '?_im foaf:depicts ?avatar',
+        '?URI doap:description ?desc',
+        '?URI org:createdOn ?createdOn'
     ];
 
     var parsedTrip = sdhTools.parseTriples(projectTriples);
@@ -77,7 +79,9 @@ var getProductsInfo = function getProductsInfo(returnCallback) {
             '?URI org:id ?id',
             '?URI skos:prefLabel ?name',
             '?URI foaf:depiction ?_im',
-            '?_im foaf:depicts ?avatar'
+            '?_im foaf:depicts ?avatar',
+            '?URI org:description ?desc',
+            '?URI org:createdOn ?createdOn'
         ];
         var parsedTrip = sdhTools.parseTriples(prodTriples);
 
@@ -375,7 +379,9 @@ var normalizeProductList = function normalizeProductList(plist) {
             var newProduct = {
                 prid: plist[i].id,
                 name: plist[i].name,
-                avatar: plist[i].avatar
+                avatar: plist[i].avatar,
+                description: plist[i].desc,
+                createdon: plist[i].createdOn
             };
             __productsById[plist[i].id] = newProduct;
             __productsByURI[plist[i].URI] = newProduct;
@@ -399,7 +405,9 @@ var normalizeProjectList = function normalizeProjectList(plist) {
             var newProject = {
                 pjid: plist[i].id,
                 name: plist[i].name,
-                avatar: plist[i].avatar
+                avatar: plist[i].avatar,
+                description: plist[i].desc,
+                createdon: plist[i].createdOn
             };
             __projectsById[plist[i].id] = newProject;
             __projectsByURI[plist[i].URI] = newProject;
