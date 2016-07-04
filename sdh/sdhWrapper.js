@@ -47,77 +47,17 @@ var getDemoViews = function getDemoViews() {
 };
 
 var getDemoMetrics = function getDemoMetrics() {
+    var metById = require('../demoMetrics/demoMetrics').dummy;
     // Add Fake metrics 4 Demo
-    var metById = {};
-
-    metById["member-speed-fake"] = {
-        "id" : "member-speed-fake",
-        "title": 'Member speed',
-        "path" : "/metrics/member-speed-fake",
-        "description" : "Member speed",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['avg']
-    };
-    metricUriById["member-speed-fake"] = {"avg": "floatProg"};
-
-    metById["member-collaboration-fake"] = {
-        "id" : "member-collaboration-fake",
-        "title": 'Member collaboration',
-        "path" : "/metrics/member-collaboration-fake",
-        "description" : "Member collaboration",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['avg']
-    };
-    metricUriById["member-collaboration-fake"] = {"avg": "floatProg"};
-
-    metById["director-popularity-fake"] = {
-        "id" : "director-popularity-fake",
-        "title": 'Director popularity',
-        "path" : "/metrics/director-popularity-fake",
-        "description" : "Director popularity",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['avg']
-    };
-    metricUriById["director-popularity-fake"] = {"avg": "float_1"};
-
-    metById["pmanager-popularity-fake"] = {
-        "id" : "pmanager-popularity-fake",
-        "title": 'Product Manager popularity',
-        "path" : "/metrics/pmanager-popularity-fake",
-        "description" : "Product Manager popularity",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['avg']
-    };
-    metricUriById["pmanager-popularity-fake"] = {"avg": "float_2"};
-
-    metById["product-popularity-fake"] = {
-        "id" : "product-popularity-fake",
-        "title": 'Product popularity',
-        "path" : "/metrics/product-popularity-fake",
-        "description" : "Product popularity",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum']
-    };
-    metricUriById["product-popularity-fake"] = {"sum": "float"};
-
-    metById["director-externalcompanies-fake"] = {
-        "id" : "director-externalcompanies-fake",
-        "title": 'Director external companies',
-        "path" : "/metrics/director-externalcompanies-fake",
-        "description" : "Director external companies",
-        "params": ['uid'],
-        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
-        "aggr": ['sum']
-    };
-    metricUriById["director-externalcompanies-fake"] = {"sum": "int_1497"};
+    //var metById = {};
+    var metConfig = require('../demoMetrics/demoMetrics').config;
+    for (var mkey in metConfig) {
+        // Dummy metrics without URI. only meta config.
+        metricUriById[mkey] = metConfig[mkey];
+    }
 
     fakeMet = Object.keys(metById).length;
-    return metById; // TODO array
+    return metById;
 };
 
 var getParamId = function getParamId (uri) {
