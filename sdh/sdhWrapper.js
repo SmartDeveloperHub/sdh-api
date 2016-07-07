@@ -306,8 +306,7 @@ var getMetricList = function getMetricList(returnCallback) {
  * Get Metric List from SDH Platform
  * @param returnCallback
  */
-var
-    getTbdList = function getTbdList(returnCallback) {
+var getTbdList = function getTbdList(returnCallback) {
     try {
         //TODO
         //returnCallback({viewList: require('./tbds').tbds});
@@ -1119,7 +1118,7 @@ exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumula
         }
         //qpObject['aggr'] = aggr;
         var querystring = require("querystring");
-        if (process.env.BACKUP_LOAD_ON == 'false' && http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3") {
+        if (process.env.BACKUP_LOAD_ON == 'false' && http_path !== "floatProg" && http_path !== "float" && http_path !== "int_1497" && http_path !== "float_1" && http_path !== "float_2" && http_path !== "progresiveRandom1" && http_path !== "progresiveRandom2" && http_path !== "progresiveRandom3" && http_path.indexOf("autorange") == -1) {
             // Real Metric!
             var realPath = http_path + '?' + querystring.stringify(qpObject);
             log.info("Metric GET--> " + realPath);
@@ -1251,6 +1250,28 @@ exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumula
                 aux = [];
                 for (var g = 0; g < max; g++) {
                     aux.push(randomIntFromInterval(14,97));
+                }
+            // Autorange Float
+            } else if (http_path.indexOf("autorangeF_") > -1) {
+                var tags = http_path.split('_');
+                var t2 = parseFloat(tags[2]);
+                var t1 = parseFloat(tags[1]);
+                aux = [];
+                if (tags.length == 3 && typeof t1 == 'number' && typeof t2 == 'number') {
+                    for (var g = 0; g < max; g++) {
+                        aux.push(randomFloatFromInterval(t1, t2));
+                    }
+                }
+                // Autorange Int
+            } else if (http_path.indexOf("autorangeI_") > -1) {
+                var tags = http_path.split('_');
+                var t2 = parseInt(tags[2]);
+                var t1 = parseInt(tags[1]);
+                aux = [];
+                if (tags.length == 3 && typeof t1 == 'number' && typeof t2 == 'number') {
+                    for (var g = 0; g < max; g++) {
+                        aux.push(randomIntFromInterval(t1, t2));
+                    }
                 }
             // Progresive Random float
             } else if (http_path == "floatProg") {
