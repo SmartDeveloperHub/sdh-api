@@ -130,7 +130,7 @@ module.exports.parseTriples = function parseTriples (triplesList) {
     return nodes;
 };
 
-var sendAfterWrite = function sendAfterWrite(result, ch) {
+var sendAfterWrite = function sendAfterWrite(result, conn, ch) {
     // TODO ERROR control
     // Send file
     //ch.assertExchange(process.env.EXCHANGE, 'topic', {durable: false});
@@ -140,16 +140,28 @@ var sendAfterWrite = function sendAfterWrite(result, ch) {
     return;
 };
 
-module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
+module.exports.getfromSDH = function getfromSDH(bNodes, origCallback) {
+    var callback = function(_conn, _ch, fData, id) {
+
+        if (_ch) {
+            log.debug('...Channel closed...');
+            _ch.close();
+        }
+        if (_conn) {
+            log.debug('...Connection closed...');
+            _conn.close();
+        }
+        origCallback(fData);
+    };
     try {
         if (!bNodes.length) {
             log.error('Bad bNodes parameter. N3 Node Array expected');
-            callback(null);
+            callback(null, null, null, "error, bNodes must be an array");
             return -1;
         }
         // generate Agent ID for each request
         var agentId = uuid();
-        // generate UUIDfor each request
+        // generate UUID for each request
         var theUuid = uuid();
         var qName = "scholar.response." + agentId;
         var dataQ;
@@ -157,16 +169,17 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
             if (err) {
                 log.error('Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT);
                 log.error(err);
-                callback(null);
+                callback(conn, null, null, 'Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT);
                 return -1;
             }
             conn.createChannel(function (err, ch) {
                 if (err) {
                     log.error('Error creating channel (ttl send):');
                     log.error(err);
-                    callback(null);
+                    callback(conn, ch, null, 'Error creating channel');
                     return -1;
                 }
+                // Channel and connection OK
                 ch.assertQueue('', {durable: false, autoDelete: true, exclusive: false}, function (err, q) {
                     ch.bindQueue(q.queue, process.env.EXCHANGE, qName);
                     ch.consume(q.queue, function (msg) {
@@ -179,11 +192,13 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                             if (error) {
                                 log.error("Error parsing accept ttl:");
                                 log.error(error);
+                                callback(conn, ch, null, "Error parsing accept ttl:");
                                 return -1;
                             }
                             if (triple) {
                                 trip.push(triple);
-                                if (triple.predicate === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' && triple.object === "http://www.smartdeveloperhub.org/vocabulary/stoa#Accepted") {
+                                if (triple.predicate === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' &&
+                                    triple.object === "http://www.smartdeveloperhub.org/vocabulary/stoa#Accepted") {
                                     // Success
                                     isOk = true;
                                 }
@@ -193,25 +208,23 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
                                     log.error('Error parsing response. http://www.smartdeveloperhub.org/vocabulary/stoa#Accepted type not found');
                                     log.trace(prefixes);
                                     log.trace(trip);
-                                    log.debug('...Connection close...');
-                                    conn.close();
+                                    callback(conn, ch, null, 'Error parsing response. http://www.smartdeveloperhub.org/vocabulary/stoa#Accepted type not found');
                                 }
                             }
                         });
                     }, {noAck: true});
                 });
-                // Data
+                // getting Data
                 ch.assertQueue('', {durable: false, autoDelete: true, exclusive: false}, function (err, q) {
                     //ch.assertQueue('', {exclusive: false, durable: false, autoDelete: true}, function (err, q) {
                     dataQ = q.queue;
-                    sendTtl();
+                    sendTtl(conn);
                     var finalResponse = [];
                     ch.consume(q.queue, function (msg) {
                         if (msg.properties.headers.state == 'end') {
                             log.debug(" [x Data] %s: ", msg.fields.routingKey);
                             log.debug('...Connection close...');
-                            conn.close();
-                            callback(finalResponse);
+                            callback(conn, ch, finalResponse, "All Right!");
                         } else {
                             var dt = JSON.parse(msg.content.toString());
                             finalResponse = finalResponse.concat(dt);
@@ -222,63 +235,57 @@ module.exports.getfromSDH = function getfromSDH(bNodes, callback) {
             });
         });
 
-        var sendTtl = function () {
+        var sendTtl = function (conn) {
             // Obtain request ttl
-            amqp.connect(process.env.RABBITHOST + ':' + process.env.RABBITPORT, function (err, conn) {
+            conn.createChannel(function (err, ch) {
                 if (err) {
-                    log.error('Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT + ":");
+                    log.error('Error creating channel (ttl send):');
                     log.error(err);
-                    callback(null);
+                    callback(conn, ch, null, "sendTtl. Error creating channel");
                     return -1;
                 }
-                conn.createChannel(function (err, ch) {
+                // Generate the ttl
+                fs.readFile('./sdh/curatorExample.ttl', 'utf8', function (err, data) {
                     if (err) {
-                        log.error('Error creating channel (ttl send):');
+                        log.error('Error reading ./sdh/curatorExample.ttl');
                         log.error(err);
-                        callback(null);
+                        callback(conn, ch, null, "sendTtl. Error reading ttl example file");
                         return -1;
                     }
-                    // Generate the ttl
-                    fs.readFile('./sdh/curatorExample.ttl', 'utf8', function (err, data) {
-                        if (err) {
-                            log.error('Error reading ./sdh/curatorExample.ttl');
-                            log.error(err);
+                    // Parse file
+                    var parser = N3.Parser();
+                    var triples = [];
+                    parser.parse(data, function (error, triple, prefixes) {
+                        if (error) {
+                            log.error("Error parsing ttl:");
+                            log.error(error);
+                            callback(conn, ch, null, "sendTtl. Reading example ttl. Error parsing ttl:");
                             return -1;
                         }
-                        // Parse file
-                        var parser = N3.Parser();
-                        var triples = [];
-                        parser.parse(data, function (error, triple, prefixes) {
-                            if (error) {
-                                log.error("Error parsing ttl:");
-                                log.error(error);
-                                return -1;
-                            }
-                            if (triple) {
-                                triples.push(getNewTriple(triple, dataQ, agentId, theUuid));
-                            } else {
-
-                                getNewTtl(triples, prefixes, bNodes,
-                                    function (error, result) {
-                                        if (error) {
-                                            log.error("Error rewriting ttl.");
-                                            log.error(error);
-                                            return -1;
-                                        }
-                                        // send ttl
-                                        sendAfterWrite(result, ch);
-                                        return;
+                        if (triple) {
+                            triples.push(getNewTriple(triple, dataQ, agentId, theUuid));
+                        } else {
+                            getNewTtl(triples, prefixes, bNodes,
+                                function (error, result) {
+                                    if (error) {
+                                        log.error("Error rewriting ttl.");
+                                        log.error(error);
+                                        callback(conn, ch, null, "sendTtl. Error rewriting ttl");
+                                        return -1;
                                     }
-                                );
-                            }
-                        });
+                                    // send ttl
+                                    sendAfterWrite(result, conn, ch);
+                                    return;
+                                }
+                            );
+                        }
                     });
                 });
             });
         };
     } catch (err) {
         log.error('Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT);
-        callback(null);
+        callback(null, null, null, 'Error connecting ' + process.env.RABBITHOST + ':' + process.env.RABBITPORT);
     }
 };
 
@@ -405,6 +412,8 @@ module.exports.loadBackup = function loadBackup (id, callback) {
     };
     // Metrics
     getBackupFile(id, 'metrics', function(result) {
+
+        //TODO add fake metrics
         metrics = result.list;
         metricsById = result.byId;
         metricUriById = result.uris;
@@ -412,6 +421,7 @@ module.exports.loadBackup = function loadBackup (id, callback) {
     });
     // Views
     getBackupFile(id, 'views', function(result) {
+        //TODO add fake metrics
         tbds = result.list;
         tbdById = result.byId;
         tbdUriById = result.uris;
