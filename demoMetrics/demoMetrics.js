@@ -22,7 +22,7 @@
 
 'use strict';
 
-exports.dummy = {
+var dummy = {
     "member-speed-fake": {
         "id": "member-speed-fake",
         "title": 'Member speed',
@@ -89,11 +89,12 @@ exports.dummy = {
     }
 };
 
-exports.config = {
+var config = {
+    // only for demo
     "product-workload": {
-        "sum": "int0200"
+        "sum": "autorangeI_0_200"
     },
-    {
+    // first demo fake metrics
     "member-speed-fake": {
         "avg": "floatProg"
     },
@@ -113,3 +114,74 @@ exports.config = {
         "sum": "int_1497"
     }
 };
+
+// Add generic metrics for demo
+/*
+member-issues-breakdown-{0-24} (uid)
+product-issues-breakdown-{0-24} (prid)
+project-issues-breakdown-{0-24} (pjid)
+product-member-issues-breakdown-{0-24} (prid,uid)
+project-member-issues-breakdown-{0-24} (pjid,uid)
+*/
+
+for (var i = 0; i < 25; i ++) {
+    var utid = "member-issues-breakdown-" + i;
+    dummy[utid] = {
+        "id" : utid,
+        "title": 'Member Issues Breakdown (' + i + ')',
+        "path" : "/metrics/" + utid,
+        "description" : 'Member Issues Breakdown (' + i + ')',
+        "params": ['uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    config[utid] = {"sum": "autorangeI_0_200"};
+    var prtid = "product-issues-breakdown-" + i;
+    dummy[prtid] = {
+        "id" : prtid,
+        "title": 'Product Issues Breakdown (' + i + ')',
+        "path" : "/metrics/" + prtid,
+        "description" : 'Product Issues Breakdown (' + i + ')',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    config[prtid] = {"sum": "autorangeI_0_200"};
+    var pjtid = "project-issues-breakdown-" + i;
+    dummy[pjtid] = {
+        "id" : pjtid,
+        "title": 'Project Issues Breakdown (' + i + ')',
+        "path" : "/metrics/" + pjtid,
+        "description" : 'Project Issues Breakdown (' + i + ')',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    config[pjtid] = {"sum": "autorangeI_0_200"};
+    var pmtid = "product-member-issues-breakdown-" + i;
+    dummy[pmtid] = {
+        "id" : pmtid,
+        "title": 'Product Member Issues Breakdown (' + i + ')',
+        "path" : "/metrics/" + pmtid,
+        "description" : 'Product Member Issues Breakdown (' + i + ')',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    config[pmtid] = {"sum": "autorangeI_0_200"};
+    var pjmtid = "project-member-issues-breakdown-" + i;
+    dummy[pjmtid] = {
+        "id" : pjmtid,
+        "title": 'Project Member Issues Breakdown (' + i + ')',
+        "path" : "/metrics/" + pjmtid,
+        "description" : 'Project Member Issues Breakdown (' + i + ')',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    };
+    config[pjmtid] = {"sum": "autorangeI_0_200"};
+}
+
+
+exports.config = config;
+exports.dummy = dummy;
