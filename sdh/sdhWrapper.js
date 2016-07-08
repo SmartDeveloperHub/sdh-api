@@ -47,17 +47,18 @@ var getDemoViews = function getDemoViews() {
 };
 
 var getDemoMetrics = function getDemoMetrics() {
-    var metById = require('../demoMetrics/demoMetrics').dummy;
-    // Add Fake metrics 4 Demo
-    //var metById = {};
-    var metConfig = require('../demoMetrics/demoMetrics').config;
-    for (var mkey in metConfig) {
+    var dummyMets = require('../demoMetrics/demoMetrics');
+    var met = {
+        metricsById: {},
+        metricUriById: {}
+    };
+    for (var mkey in dummyMets.dummy) {
+        met.metricsById[mkey] = dummyMets.dummy[mkey];
         // Dummy metrics without URI. only meta config.
-        metricUriById[mkey] = metConfig[mkey];
+        met.metricUriById[mkey] = dummyMets.config[mkey];
     }
-
-    fakeMet = Object.keys(metById).length;
-    return metById;
+    fakeMet = Object.keys(dummyMets.dummy).length;
+    return met;
 };
 
 var getParamId = function getParamId (uri) {
@@ -196,7 +197,9 @@ var parseID = function parseID(mid) {
 var normalizeMetricList = function normalizeMetricList(mList, mListNP) {
     // realId model: aggr-metric
     var newList = [];
-    metricsById = getDemoMetrics();
+    var met = getDemoMetrics();
+    metricsById: met.metricsById;
+    metricUriById: met.metricUriById;
     if(mList !== null) {
         for (var i = 0; i < mList.length; i++) {
             var parsedID = parseID(mList[i].id);
