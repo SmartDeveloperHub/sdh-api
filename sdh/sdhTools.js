@@ -412,11 +412,26 @@ module.exports.loadBackup = function loadBackup (id, callback) {
     };
     // Metrics
     getBackupFile(id, 'metrics', function(result) {
-
-        //TODO add fake metrics
         metrics = result.list;
         metricsById = result.byId;
         metricUriById = result.uris;
+        var dummyMets = require('../demoMetrics/demoMetrics');
+        for (var mkey in dummyMets.dummy) {
+            if (metricsById[mkey]) {
+                for (var m = 0; m < metrics.length; m ++) {
+                    if (metrics[m].id == mkey) {
+                        metrics[m] = dummyMets.dummy[mkey];
+                    }
+                }
+            } else {
+                metrics.push(dummyMets.dummy[mkey]);
+            }
+            metricsById[mkey] = dummyMets.dummy[mkey];
+            // Dummy metrics without URI. only meta config.
+            metricUriById[mkey] = dummyMets.config[mkey];
+        }
+        fakeMet = Object.keys(dummyMets.dummy).length;
+
         loadingEnd();
     });
     // Views

@@ -1155,7 +1155,18 @@ exports.getMetricValue = function (mid, rid, uid, pjid, prid, from, to, accumula
                 if (!metricValues[mid]) {
                     // No backup data about this metric
                     log.warn("No backup data for the metric " + mid + '"');
-                    http_path = "progresiveRandom1";
+                    if (typeof metricUriById[mid] !== "undefined") {
+                        if (typeof metricUriById[mid][aggr] !== "undefined") {
+                            http_path = metricUriById[mid][aggr];
+                        } else {
+                            log.error("Unexpected error getting metric. aggregator '" + aggr + "' in '" + mid + "' metric is not available!");
+                            callback(null);
+                        }
+                    } else {
+                        log.trace("weird metric. backup and dummy?");
+                        http_path = "progresiveRandom1";
+                    }
+
                     // continue with a generic progresiveRandom1 dummy metric
                 } else {
                     // Use Metric Backup.
