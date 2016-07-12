@@ -46,6 +46,7 @@
     "bunyan-prettystream": "*",
     "mkdirp": "*",
     "slack-node": "*",
-    "dotenv": "*"
+    "dotenv": "*",
+    "async": "*"
   }
 }
