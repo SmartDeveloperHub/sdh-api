@@ -86,6 +86,429 @@ var dummy = {
         "params": ['prid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum']
+    },
+    "project-workload": {
+        "id" : "project-workload",
+        "title": 'Project workload',
+        "path" : "/metrics/project-workload",
+        "description" : "Project workload",
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-reopen-issues": {
+        "id" : "product-reopen-issues",
+        "title": 'Product Reopen Issues',
+        "path" : "/metrics/product-reopen-issues",
+        "description" : "Product Reopen Issues",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-reopen-intime": {
+        "id" : "product-reopen-intime",
+        "title": 'Product Reopen In Time',
+        "path" : "/metrics/product-reopen-intime",
+        "description" : "Product Reopen In Time",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-open-issues": {
+        "id" : "product-open-issues",
+        "title": 'Product Open Issues',
+        "path" : "/metrics/product-open-issues",
+        "description" : "Product Open Issues",
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-activity": {
+        "id" : "member-product-activity",
+        "title": 'Member Product Activity',
+        "path" : "/metrics/member-product-activity",
+        "description" : 'Member Product Activity',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-active-issues": {
+        "id" : "member-product-active-issues",
+        "title": 'Member Product Active Issues',
+        "path" : "/metrics/member-product-active-issues",
+        "description" : 'Member Product Active Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-active-reopened-issues": {
+        "id" : "member-product-active-reopened-issues",
+        "title": 'Member Product Active Reopened Issues',
+        "path" : "/metrics/member-product-active-reopened-issues",
+        "description" : 'Member Product Active Reopened Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-timetofix": {
+        "id" : "member-product-timetofix",
+        "title": 'Member Product Time To Fix',
+        "path" : "/metrics/member-product-timetofix",
+        "description" : 'Member Product Time To Fix',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['avg']
+    },
+    "product-opened-issues": {
+        "id" : "product-opened-issues",
+        "title": 'Opened Issues',
+        "path" : "/metrics/product-opened-issues",
+        "description" : 'Product Opened Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-inprogress-issues": {
+        "id" : "product-inprogress-issues",
+        "title": 'In Progress Issues',
+        "path" : "/metrics/product-inprogress-issues",
+        "description" : 'Product In Progress Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-closed-issues": {
+        "id" : "product-closed-issues",
+        "title": 'Closed Issues',
+        "path" : "/metrics/product-closed-issues",
+        "description" : 'Product Closed Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-trivial-issues": {
+        "id" : "product-trivial-issues",
+        "title": 'Trivial Issues',
+        "path" : "/metrics/product-trivial-issues",
+        "description" : 'Product Trivial Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-normal-issues": {
+        "id" : "product-normal-issues",
+        "title": 'Normal Issues',
+        "path" : "/metrics/product-normal-issues",
+        "description" : 'Product Normal Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-high-issues": {
+        "id" : "product-high-issues",
+        "title": 'High Issues',
+        "path" : "/metrics/product-high-issues",
+        "description" : 'Product High Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-critical-issues": {
+        "id" : "product-critical-issues",
+        "title": 'Critical Issues',
+        "path" : "/metrics/product-critical-issues",
+        "description" : 'Product Critical Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "product-blocker-issues": {
+        "id" : "product-blocker-issues",
+        "title": 'Blocker Issues',
+        "path" : "/metrics/product-blocker-issues",
+        "description" : 'Product Blocker Issues',
+        "params": ['prid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-opened-issues": {
+        "id" : "member-product-opened-issues",
+        "title": 'Opened Issues',
+        "path" : "/metrics/member-product-opened-issues",
+        "description" : 'Member Product Opened Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-inprogress-issues": {
+        "id" : "member-product-inprogress-issues",
+        "title": 'In Progress Issues',
+        "path" : "/metrics/member-product-inprogress-issues",
+        "description" : 'Member Product In Progress Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-closed-issues": {
+        "id" : "member-product-closed-issues",
+        "title": 'Closed Issues',
+        "path" : "/metrics/member-product-closed-issues",
+        "description" : 'Member Product Closed Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-trivial-issues": {
+        "id" : "member-product-trivial-issues",
+        "title": 'Trivial Issues',
+        "path" : "/metrics/member-product-trivial-issues",
+        "description" : 'Member Product Trivial Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-normal-issues": {
+        "id" : "member-product-normal-issues",
+        "title": 'Normal Issues',
+        "path" : "/metrics/member-product-normal-issues",
+        "description" : 'Member Product Normal Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-high-issues": {
+        "id" : "member-product-high-issues",
+        "title": 'High Issues',
+        "path" : "/metrics/member-product-high-issues",
+        "description" : 'Member Product High Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-critical-issues": {
+        "id" : "member-product-critical-issues",
+        "title": 'Critical Issues',
+        "path" : "/metrics/member-product-critical-issues",
+        "description" : 'Member Product Critical Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-product-blocker-issues": {
+        "id" : "member-product-blocker-issues",
+        "title": 'Blocker Issues',
+        "path" : "/metrics/member-product-blocker-issues",
+        "description" : 'Member Product Blocker Issues',
+        "params": ['prid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-reopen-issues": {
+        "id" : "project-reopen-issues",
+        "title": 'Project Reopen Issues',
+        "path" : "/metrics/project-reopen-issues",
+        "description" : "Project Reopen Issues",
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-reopen-intime": {
+        "id" : "project-reopen-intime",
+        "title": 'Project Reopen In Time',
+        "path" : "/metrics/project-reopen-intime",
+        "description" : "Project Reopen In Time",
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-open-issues": {
+        "id" : "project-open-issues",
+        "title": 'Project Open Issues',
+        "path" : "/metrics/project-open-issues",
+        "description" : "Project Open Issues",
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-activity": {
+        "id" : "member-project-activity",
+        "title": 'Member Project Activity',
+        "path" : "/metrics/member-project-activity",
+        "description" : 'Member Project Activity',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-active-issues": {
+        "id" : "member-project-active-issues",
+        "title": 'Member Project Active Issues',
+        "path" : "/metrics/member-project-active-issues",
+        "description" : 'Member Project Active Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-active-reopened-issues": {
+        "id" : "member-project-active-reopened-issues",
+        "title": 'Member Project Active Reopened Issues',
+        "path" : "/metrics/member-project-active-reopened-issues",
+        "description" : 'Member Project Active Reopened Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-timetofix": {
+        "id" : "member-project-timetofix",
+        "title": 'Member Project Time To Fix',
+        "path" : "/metrics/member-project-timetofix",
+        "description" : 'Member Project Time To Fix',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['avg']
+    },
+    "project-opened-issues": {
+        "id" : "project-opened-issues",
+        "title": 'Opened Issues',
+        "path" : "/metrics/project-opened-issues",
+        "description" : 'Project Opened Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-inprogress-issues": {
+        "id" : "project-inprogress-issues",
+        "title": 'In Progress Issues',
+        "path" : "/metrics/project-inprogress-issues",
+        "description" : 'Project In Progress Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-closed-issues": {
+        "id" : "project-closed-issues",
+        "title": 'Closed Issues',
+        "path" : "/metrics/project-closed-issues",
+        "description" : 'Project Closed Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-trivial-issues": {
+        "id" : "project-trivial-issues",
+        "title": 'Trivial Issues',
+        "path" : "/metrics/project-trivial-issues",
+        "description" : 'Project Trivial Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-normal-issues": {
+        "id" : "project-normal-issues",
+        "title": 'Normal Issues',
+        "path" : "/metrics/project-normal-issues",
+        "description" : 'Project Normal Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-high-issues": {
+        "id" : "project-high-issues",
+        "title": 'High Issues',
+        "path" : "/metrics/project-high-issues",
+        "description" : 'Project High Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-critical-issues": {
+        "id" : "project-critical-issues",
+        "title": 'Critical Issues',
+        "path" : "/metrics/project-critical-issues",
+        "description" : 'Project Critical Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "project-blocker-issues": {
+        "id" : "project-blocker-issues",
+        "title": 'Blocker Issues',
+        "path" : "/metrics/project-blocker-issues",
+        "description" : 'Project Blocker Issues',
+        "params": ['pjid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-opened-issues": {
+        "id" : "member-project-opened-issues",
+        "title": 'Opened Issues',
+        "path" : "/metrics/member-project-opened-issues",
+        "description" : 'Member Project Opened Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-inprogress-issues": {
+        "id" : "member-project-inprogress-issues",
+        "title": 'In Progress Issues',
+        "path" : "/metrics/member-project-inprogress-issues",
+        "description" : 'Member Project In Progress Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-closed-issues": {
+        "id" : "member-project-closed-issues",
+        "title": 'Closed Issues',
+        "path" : "/metrics/member-project-closed-issues",
+        "description" : 'Member Project Closed Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-trivial-issues": {
+        "id" : "member-project-trivial-issues",
+        "title": 'Trivial Issues',
+        "path" : "/metrics/member-project-trivial-issues",
+        "description" : 'Member Project Trivial Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-normal-issues": {
+        "id" : "member-project-normal-issues",
+        "title": 'Normal Issues',
+        "path" : "/metrics/member-project-normal-issues",
+        "description" : 'Member Project Normal Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-high-issues": {
+        "id" : "member-project-high-issues",
+        "title": 'High Issues',
+        "path" : "/metrics/member-project-high-issues",
+        "description" : 'Member Project High Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-critical-issues": {
+        "id" : "member-project-critical-issues",
+        "title": 'Critical Issues',
+        "path" : "/metrics/member-project-critical-issues",
+        "description" : 'Member Project Critical Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
+    },
+    "member-project-blocker-issues": {
+        "id" : "member-project-blocker-issues",
+        "title": 'Blocker Issues',
+        "path" : "/metrics/member-project-blocker-issues",
+        "description" : 'Member Project Blocker Issues',
+        "params": ['pjid', 'uid'],
+        "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
+        "aggr": ['sum']
     }
 };
 
@@ -94,7 +517,21 @@ var config = {
     "product-workload": {
         "sum": "autorangeI_0_200"
     },
-    // first demo fake metrics
+    "project-workload": {
+        "sum": "autorangeI_0_200"
+    },
+    "product-reopen-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "product-reopen-intime": {
+        "sum": "autorangeI_0_15"
+    },
+    "product-open-issues": {
+        "sum": "autorangeI_10_200"
+    },
+    "member-product-active-issues": {
+        "sum": "autorangeI_4_300"
+    },
     "member-speed-fake": {
         "avg": "floatProg"
     },
@@ -112,6 +549,138 @@ var config = {
     },
     "director-externalcompanies-fake": {
         "sum": "autorangeI_14_97"
+    },
+    "member-product-activity": {
+        "sum": "autorangeI_9_99"
+    },
+    "member-product-member-activity": {
+        "sum": "autorangeI_9_99"
+    },
+    "member-product-active-reopened-issues": {
+        "sum": "autorangeI_0_20"
+    },
+    "member-product-timetofix": {
+        "avg": "autorangeI_0_969397"
+    },
+    "product-opened-issues": {
+        "sum": "autorangeI_0_300"
+    },
+    "product-inprogress-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "product-closed-issues": {
+        "sum": "autorangeI_0_1222"
+    },
+    "product-trivial-issues": {
+        "sum": "autorangeI_0_50"
+    },
+    "product-normal-issues": {
+        "sum": "autorangeI_0_150"
+    },
+    "product-high-issues": {
+        "sum": "autorangeI_0_70"
+    },
+    "product-critical-issues": {
+        "sum": "autorangeI_0_25"
+    },
+    "product-blocker-issues": {
+        "sum": "autorangeI_0_12"
+    },
+    "member-product-opened-issues": {
+        "sum": "autorangeI_0_150"
+    },
+    "member-product-inprogress-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "member-product-closed-issues": {
+        "sum": "autorangeI_0_900"
+    },
+    "member-product-trivial-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "member-product-normal-issues": {
+        "sum": "autorangeI_0_50"
+    },
+    "member-product-high-issues": {
+        "sum": "autorangeI_0_28"
+    },
+    "member-product-critical-issues": {
+        "sum": "autorangeI_0_13"
+    },
+    "member-product-blocker-issues": {
+        "sum": "autorangeI_0_8"
+    },
+    "project-reopen-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "project-reopen-intime": {
+        "sum": "autorangeI_0_15"
+    },
+    "project-open-issues": {
+        "sum": "autorangeI_10_200"
+    },
+    "member-project-active-issues": {
+        "sum": "autorangeI_4_300"
+    },
+    "member-project-activity": {
+        "sum": "autorangeI_9_99"
+    },
+    "member-project-member-activity": {
+        "sum": "autorangeI_9_99"
+    },
+    "member-project-active-reopened-issues": {
+        "sum": "autorangeI_0_20"
+    },
+    "member-project-timetofix": {
+        "avg": "autorangeI_0_969397"
+    },
+    "project-opened-issues": {
+        "sum": "autorangeI_0_300"
+    },
+    "project-inprogress-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "project-closed-issues": {
+        "sum": "autorangeI_0_1222"
+    },
+    "project-trivial-issues": {
+        "sum": "autorangeI_0_50"
+    },
+    "project-normal-issues": {
+        "sum": "autorangeI_0_150"
+    },
+    "project-high-issues": {
+        "sum": "autorangeI_0_70"
+    },
+    "project-critical-issues": {
+        "sum": "autorangeI_0_25"
+    },
+    "project-blocker-issues": {
+        "sum": "autorangeI_0_12"
+    },
+    "member-project-opened-issues": {
+        "sum": "autorangeI_0_150"
+    },
+    "member-project-inprogress-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "member-project-closed-issues": {
+        "sum": "autorangeI_0_900"
+    },
+    "member-project-trivial-issues": {
+        "sum": "autorangeI_0_10"
+    },
+    "member-project-normal-issues": {
+        "sum": "autorangeI_0_50"
+    },
+    "member-project-high-issues": {
+        "sum": "autorangeI_0_28"
+    },
+    "member-project-critical-issues": {
+        "sum": "autorangeI_0_13"
+    },
+    "member-project-blocker-issues": {
+        "sum": "autorangeI_0_8"
     }
 };
 
