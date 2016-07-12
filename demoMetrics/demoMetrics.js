@@ -92,7 +92,7 @@ var dummy = {
         "title": 'Project workload',
         "path" : "/metrics/project-workload",
         "description" : "Project workload",
-        "params": ['uid'],
+        "params": ['pjid'],
         "optional": ['from', 'to',  'max', 'accumulated', 'aggr'],
         "aggr": ['sum']
     },
