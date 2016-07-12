@@ -1,6 +1,6 @@
 {
   "name": "sdh-api",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "This service is part of Smart Developer Hub project developed at Center Open Middleware, UPM. Provides data to feed widgets and graphics contained in the dashboards. 2015",
   "license": "Apache-2.0",
   "author": {
