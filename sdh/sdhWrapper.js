@@ -755,13 +755,218 @@ exports.setAvailableMetrics = function setAvailableMetrics(callback) {
     });
 };
 
+// TODO ASYNC
+var async = require('async');
+var asyncHandler = function(req, res) {
+    async.parallel(
+        [
+            /*
+             * First external endpoint
+             */
+            function (callback) {
+                var url = "http://external1.com/api/some_endpoint";
+                request(url, function (err, response, body) {
+                    // JSON body
+                    if (err) {
+                        console.log(err);
+                        callback(true);
+                        return;
+                    }
+                    obj = JSON.parse(body);
+                    callback(false, obj);
+                });
+            },
+            /*
+             * Second external endpoint
+             */
+            function (callback) {
+                var url = "http://external2.com/api/some_endpoint";
+                request(url, function (err, response, body) {
+                    // JSON body
+                    if (err) {
+                        console.log(err);
+                        callback(true);
+                        return;
+                    }
+                    obj = JSON.parse(body);
+                    callback(false, obj);
+                });
+            },
+        ],
+        /*
+         * Collate results
+         */
+        function (err, results) {
+            if (err) {
+                console.log(err);
+                res.send(500, "Server Error");
+                return;
+            }
+            res.send({api1: results[0], api2: results[1]});
+        }
+    );
+};
+
+// Dynamic var, the information may not be complete. only for getProduct/project methods
+var productDirectors = {};
+var productManagers = {};
+var getNewHandler = function(viewId, dirId) {
+    return function (callback) {
+        // http://localhost:8080/tbdata/view-director-products?uid=1004
+        var url = "http://localhost:8080/tbdata/" + viewId + "?uid=" + dirId;
+        log.debug("new Handler for: " + url);
+        request(url, function (err, response, body) {
+            // JSON body
+            if (err) {
+                log.error(err);
+                callback(true);
+                return;
+            }
+            var obj = JSON.parse(body);
+            callback(false, obj);
+        });
+    };
+};
+
+var getDMProducts = function getDMProducts(directorsIds, managersIds, callB) {
+    // Generate views request promises for managers and directors
+    var directorHandlers = [];
+    for (var a = 0; a < directorsIds.length; a ++) {
+        directorHandlers.push(getNewHandler("view-director-products", directorsIds[a]));
+    }
+    var managerHandlers = [];
+    for (var a = 0; a < managersIds.length; a ++) {
+        managerHandlers.push(getNewHandler("view-pmanager-products", managersIds[a]));
+    }
+    var mixedRequests = directorHandlers.concat(managerHandlers);
+
+    //
+    var directorProducts = {};
+    var managerProducts = {};
+    // Make request in parallel
+    async.parallel(
+        mixedRequests,
+        /*
+         * Collate results
+         */
+        function (err, results) {
+            if (err) {
+                console.log(err);
+                callB(null, null);
+            }
+            for (var i = 0; i < results.length; i ++) {
+                // Each request
+                if (i < directorHandlers.length) {
+                    // Director request results
+                    directorProducts[directorsIds[i]] = results[i].values;
+                } else {
+                    // Product Managers request results
+                    managerProducts[managersIds[i-directorHandlers.length]] = results[i].values;
+                }
+            }
+            callB(directorProducts, managerProducts);
+        }
+    );
+};
+
+var getDMsLinks = function getDMsLinks(cb) {
+    // Get directors ids
+    var directorsIds = [];
+    var managersIds = [];
+    for (var key in usersById) {
+        var a = usersById[key].positionsByOrgId[1];
+        if (a && a[0] == 1) { //(1 Directors; 2 ProductManagers; 3 Architects; 4 Developers)
+            // Director
+            directorsIds.push(key);
+        } else if (a && a[0] == 2) {
+            // Product Manager
+            managersIds.push(key);
+        }
+    }
+    // Get view-director-products for each director
+    getDMProducts(directorsIds, managersIds, function(dProducts, mProducts) {
+        if (dProducts == null || mProducts == null) {
+            cb(null);
+        }
+        for (var dirId in dProducts) {
+            for (var dpIndex = 0; dpIndex < dProducts[dirId].length; dpIndex++) {
+                // Update product Directors
+                if (productDirectors[dProducts[dirId][dpIndex].prid]) {
+                    log.trace('2 directors same product??. current: ' + productDirectors[dProducts[dirId][dpIndex].prid] + "; discarted: " + dirId)
+                    continue;
+                }
+                productDirectors[dProducts[dirId][dpIndex].prid] = {
+                    "name": usersById[dirId].name,
+                    "avatar": usersById[dirId].avatar,
+                    "nick": usersById[dirId].nick,
+                    "email": usersById[dirId].email,
+                    "uid": usersById[dirId].uid
+                };
+            }
+        }
+        for (var mngId in mProducts) {
+            for (var mpIndex = 0; mpIndex < mProducts[mngId].length; mpIndex++) {
+                // Update product Managers
+                if (productManagers[mProducts[mngId][mpIndex].prid]) {
+                    log.trace('2 managers same product??. current: ' + productManagers[mProducts[mngId][mpIndex].prid] + "; discarted: " + mngId)
+                    continue;
+                }
+                productManagers[mProducts[mngId][mpIndex].prid] = {
+                    "name": usersById[mngId].name,
+                    "avatar": usersById[mngId].avatar,
+                    "nick": usersById[mngId].nick,
+                    "email": usersById[mngId].email,
+                    "uid": usersById[mngId].uid
+                };
+            }
+        }
+        cb();
+    })
+};
+
 /** TODO
  * Get specific product information
  * @param prid {Object} Product Id.
  * @param returnCallback
  */
 exports.getProductInfo = function getProductInfo(prid, returnCallback) {
-    returnCallback(productsById[prid]);
+    // TODO. Only for demo. this info must be from Agora services
+    var basicPInfo = productsById[prid];
+    var localCallback = function localCallback(err) {
+        if (err) {
+            productDirectors[prid] = {
+                "name": "unknown",
+                "avatar": null,
+                "nick": "unknown",
+                "email": [],
+                "uid": "unknownUserId"
+            };
+            productDirectors[prid] = {
+                "name": "unknown",
+                "avatar": null,
+                "nick": "unknown",
+                "email": [],
+                "uid": "unknownUserId"
+            };
+        }
+        returnCallback({
+            "prid": basicPInfo.prid,
+            "name": basicPInfo.name,
+            "avatar": basicPInfo.avatar,
+            "description": basicPInfo.description,
+            "createdon": basicPInfo.createdon,
+            "director": productDirectors[prid],
+            "manager": productManagers[prid]
+        })
+    };
+
+    // Add Director and Manager
+    if (!productDirectors[prid]) {
+        getDMsLinks(localCallback);
+    } else {
+        localCallback();
+    }
+    //returnCallback(productsById[prid]);
 };
 
 /** TODO
@@ -770,7 +975,7 @@ exports.getProductInfo = function getProductInfo(prid, returnCallback) {
  * @param returnCallback
  */
 exports.getProjectInfo = function getProjectInfo(pjid, returnCallback) {
-        returnCallback(projectsById[pjid]);
+    //returnCallback(projectsById[pjid]);
 };
 
 /** TODO
