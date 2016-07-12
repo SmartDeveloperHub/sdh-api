@@ -111,7 +111,7 @@ var config = {
         "sum": "float"
     },
     "director-externalcompanies-fake": {
-        "sum": "int_1497"
+        "sum": "autorangeI_14_97"
     }
 };
 

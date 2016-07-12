@@ -198,8 +198,8 @@ var normalizeMetricList = function normalizeMetricList(mList, mListNP) {
     // realId model: aggr-metric
     var newList = [];
     var met = getDemoMetrics();
-    metricsById: met.metricsById;
-    metricUriById: met.metricUriById;
+    metricsById = met.metricsById;
+    metricUriById = met.metricUriById;
     if(mList !== null) {
         for (var i = 0; i < mList.length; i++) {
             var parsedID = parseID(mList[i].id);
